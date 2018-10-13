@@ -74,5 +74,5 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
-fastlane/readme.md
+# fastlane/readme.md
 >>>>>>> 4a0af4172363ffdaa81aeec8c96268abb5ef1f79
