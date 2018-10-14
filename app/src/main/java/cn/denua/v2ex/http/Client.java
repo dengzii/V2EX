@@ -13,13 +13,13 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
+import cn.denua.v2ex.http.converters.StringConvertFactory;
 import cn.denua.v2ex.http.cookie.CookiesManager;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 public class Client {
 
-    private static final long TIMEOUT = 300L;
     private static final long READ_TIMEOUT = 300L;
     private static final long WRITE_TIMEOUT = 300L;
     private static final long CONNECT_TIMEOUT = 300L;
@@ -32,6 +32,7 @@ public class Client {
     private Client(){}
 
     public static Client getInstance(){
+
         if ((null==client)){
             synchronized (Client.class){
                 if ((null==client))
@@ -39,6 +40,10 @@ public class Client {
             }
         }
         return client;
+    }
+
+    public Retrofit getRetrofit() {
+        return retrofit;
     }
 
     public void init(Context context){
@@ -57,11 +62,14 @@ public class Client {
 //                })
 //                .sslSocketFactory(Objects.requireNonNull(getSslFactory()))
                 .build();
+
         retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
+                .callFactory(okHttpClient)
+                .addConverterFactory(new StringConvertFactory())
                 .build();
-
     }
+
     private SSLSocketFactory getSslFactory(){
 
 

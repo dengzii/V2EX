@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
+import cn.denua.v2ex.http.Client;
+import cn.denua.v2ex.http.converters.StringConverter;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,9 +47,7 @@ public class V2EX {
 
     public static void init(){
 
-        client = new Retrofit.Builder()
-                .baseUrl(URL_BASE)
-                .build();
+        client = Client.getInstance().getRetrofit();
     }
 
     private V2EX(){
@@ -58,18 +58,13 @@ public class V2EX {
     public static void login(String account, String password){
 
         api api = client.create(cn.denua.v2ex.api.api.class);
-        Call<ResponseBody> call = api.getLoginPage();
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<String> call = api.getLoginPage();
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
                 Log.d(TAG, "onResponse: "+ call.request().url().toString());
                 if (response.isSuccessful()){
-                    Document document = null;
-                    try {
-                        document = Jsoup.parse(response.body().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    Document document = Jsoup.parse(response.body());
                     Elements elements = document.select("input");
 
                     for (Iterator<Element> it = elements.iterator(); it.hasNext(); ) {
@@ -81,7 +76,7 @@ public class V2EX {
                 }
             }
 
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.e(TAG, "onFailure: ");
             }
         });
@@ -89,13 +84,16 @@ public class V2EX {
 
     public static void main(String[] args) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://www.baidu.com/").build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://www.baidu.com/")
+                .addConverterFactory(new StringConverter())
+                .build();
+
         baidu baidu = retrofit.create(cn.denua.v2ex.api.baidu.class);
-        Call<ResponseBody> call = baidu.search("hello");
+        Call<String> call = baidu.search("hello");
         try {
-            Response<ResponseBody> response= call.execute();
+            Response<String> response= call.execute();
             if (response.isSuccessful()){
-                System.out.println("main: " + response.body().string());
+                System.out.println("main: " + response.body());
             }
 
         } catch (IOException e) {
@@ -108,13 +106,13 @@ public class V2EX {
 interface baidu{
 
     @GET("s")
-    Call<ResponseBody> search(@Query("wd") String keyword);
+    Call<String> search(@Query("wd") String keyword);
 }
 //@SuppressWarnings("ALL")
 interface api{
 
     @GET("signin")
-    Call<ResponseBody> getLoginPage();
+    Call<String> getLoginPage();
 
     @GET("_captcha")
     Call<ResponseBody> getCaptcha(@Query("once") String once);
