@@ -14,6 +14,8 @@ public class StringConvertFactory extends Converter.Factory {
     private StringConverter stringConverter = new StringConverter();
     private static StringConvertFactory stringConverterFactory = new StringConvertFactory();
 
+    private StringConvertFactory(){}
+
     public static StringConvertFactory getInstance(){
         return stringConverterFactory;
     }

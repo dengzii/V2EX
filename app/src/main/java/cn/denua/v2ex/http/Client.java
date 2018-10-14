@@ -66,7 +66,7 @@ public class Client {
         retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
                 .callFactory(okHttpClient)
-                .addConverterFactory(new StringConvertFactory())
+                .addConverterFactory(StringConvertFactory.getInstance())
                 .build();
     }
 

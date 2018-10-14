@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import cn.denua.v2ex.http.Client;
-import cn.denua.v2ex.http.converters.StringConverter;
+import cn.denua.v2ex.http.converters.StringConvertFactory;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,7 +85,7 @@ public class V2EX {
     public static void main(String[] args) {
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://www.baidu.com/")
-                .addConverterFactory(new StringConverter())
+                .addConverterFactory(StringConvertFactory.getInstance())
                 .build();
 
         baidu baidu = retrofit.create(cn.denua.v2ex.api.baidu.class);
