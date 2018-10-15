@@ -77,7 +77,7 @@ public class PersistentCookieStore{
         //将cookies缓存到内存中 如果缓存过期 就重置此cookie
         if (!cookie.persistent()) {
             if (!cookies.containsKey(url.host())) {
-                cookies.put(url.host(), new ConcurrentHashMap<String, Cookie>());
+                cookies.put(url.host(), new ConcurrentHashMap<>());
             }
             cookies.get(url.host()).put(name, cookie);
         } else {

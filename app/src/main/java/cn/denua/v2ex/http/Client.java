@@ -1,6 +1,7 @@
 package cn.denua.v2ex.http;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -15,45 +16,40 @@ import javax.net.ssl.X509TrustManager;
 
 import cn.denua.v2ex.http.converters.StringConverterFactory;
 import cn.denua.v2ex.http.cookie.CookiesManager;
+import cn.denua.v2ex.http.cookie.TransientCookieJar;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 public class Client {
 
-    private static final long READ_TIMEOUT = 300L;
-    private static final long WRITE_TIMEOUT = 300L;
-    private static final long CONNECT_TIMEOUT = 300L;
+    private static final long READ_TIMEOUT = 3000L;
+    private static final long WRITE_TIMEOUT = 3000L;
+    private static final long CONNECT_TIMEOUT = 3000L;
 
-    private  Retrofit retrofit;
-    private  CookiesManager cookiesManager;
+    private static final String BASE_URL = "https://www.v2ex.com/";
 
-    private static Client client;
-
+    private static Retrofit retrofit;
+    private static CookiesManager cookiesManager;
     private Client(){}
 
-    public static Client getInstance(){
-
-        if ((null==client)){
-            synchronized (Client.class){
-                if ((null==client))
-                    client = new Client();
-            }
+    public static Retrofit getRetrofit(){
+        if (retrofit == null){
+            throw new NullPointerException("Retrofit need init, call Client.init(Context) first.");
         }
-        return client;
-    }
-
-    public Retrofit getRetrofit() {
         return retrofit;
     }
 
-    public void init(Context context){
+    public static void init(@Nullable Context context){
 
-        cookiesManager = new CookiesManager(context);
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .cookieJar(cookiesManager)
+                .cookieJar(
+                        context == null
+                        ? new TransientCookieJar()
+                        : (cookiesManager = new CookiesManager(context)))
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
+                .addInterceptor(HeadersInterceptor.instance())
 //                .hostnameVerifier(new HostnameVerifier() {
 //                    @Override
 //                    public boolean verify(String hostname, SSLSession session) {
@@ -64,10 +60,17 @@ public class Client {
                 .build();
 
         retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
                 .client(okHttpClient)
                 .callFactory(okHttpClient)
+//                .addConverterFactory(BitmapConverterFactory.getInstance())
                 .addConverterFactory(StringConverterFactory.getInstance())
                 .build();
+    }
+
+    public void clearCookies(){
+
+        cookiesManager.removeAll();
     }
 
     private SSLSocketFactory getSslFactory(){

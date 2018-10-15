@@ -1,4 +1,4 @@
 package cn.denua.v2ex.model;
 
-public class AccountModel {
+public class AccountModel extends V2exModel{
 }
