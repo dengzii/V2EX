@@ -13,7 +13,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
-import cn.denua.v2ex.http.converters.StringConvertFactory;
+import cn.denua.v2ex.http.converters.StringConverterFactory;
 import cn.denua.v2ex.http.cookie.CookiesManager;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -66,7 +66,7 @@ public class Client {
         retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
                 .callFactory(okHttpClient)
-                .addConverterFactory(StringConvertFactory.getInstance())
+                .addConverterFactory(StringConverterFactory.getInstance())
                 .build();
     }
 

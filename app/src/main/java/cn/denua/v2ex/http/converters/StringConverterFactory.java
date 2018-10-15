@@ -9,14 +9,14 @@ import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
-public class StringConvertFactory extends Converter.Factory {
+public class StringConverterFactory extends Converter.Factory {
 
     private StringConverter stringConverter = new StringConverter();
-    private static StringConvertFactory stringConverterFactory = new StringConvertFactory();
+    private static StringConverterFactory stringConverterFactory = new StringConverterFactory();
 
-    private StringConvertFactory(){}
+    private StringConverterFactory(){}
 
-    public static StringConvertFactory getInstance(){
+    public static StringConverterFactory getInstance(){
         return stringConverterFactory;
     }
 
