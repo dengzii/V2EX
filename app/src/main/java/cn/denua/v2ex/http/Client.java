@@ -30,6 +30,7 @@ public class Client {
 
     private static Retrofit retrofit;
     private static CookiesManager cookiesManager;
+    private static TransientCookieJar transientCookieJar;
     private Client(){}
 
     public static Retrofit getRetrofit(){
@@ -44,7 +45,7 @@ public class Client {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cookieJar(
                         context == null
-                        ? new TransientCookieJar()
+                        ? (transientCookieJar = new TransientCookieJar())
                         : (cookiesManager = new CookiesManager(context)))
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
