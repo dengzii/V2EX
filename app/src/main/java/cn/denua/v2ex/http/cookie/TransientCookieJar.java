@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Cookie;
@@ -22,7 +21,7 @@ import okhttp3.HttpUrl;
 public class TransientCookieJar implements CookieJar {
 
     // cookie key value pairs for each host
-    private Map<String, ConcurrentHashMap<String, Cookie>> cookies = new HashMap<>();
+    private HashMap<String, ConcurrentHashMap<String, Cookie>> cookies = new HashMap<>();
 
     @Override
     public void saveFromResponse(@NonNull HttpUrl httpUrl, @NonNull List<Cookie> list) {
