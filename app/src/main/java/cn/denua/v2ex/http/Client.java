@@ -20,11 +20,17 @@ import cn.denua.v2ex.http.cookie.TransientCookieJar;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
+/*
+ * Retrofit client
+ *
+ * @user denua
+ * @date 2018/10/18
+ */
 public class Client {
 
-    private static final long READ_TIMEOUT = 3000L;
-    private static final long WRITE_TIMEOUT = 3000L;
-    private static final long CONNECT_TIMEOUT = 3000L;
+    private static final long READ_TIMEOUT = 5000L;
+    private static final long WRITE_TIMEOUT = 5000L;
+    private static final long CONNECT_TIMEOUT = 5000L;
 
     private static final String BASE_URL = "https://www.v2ex.com/";
 
@@ -45,19 +51,14 @@ public class Client {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cookieJar(
                         context == null
-                        ? (transientCookieJar = new TransientCookieJar())
+                        ? new TransientCookieJar()
                         : (cookiesManager = new CookiesManager(context)))
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .addInterceptor(HeadersInterceptor.instance())
-//                .hostnameVerifier(new HostnameVerifier() {
-//                    @Override
-//                    public boolean verify(String hostname, SSLSession session) {
-//                        return false;
-//                    }
-//                })
-//                .sslSocketFactory(Objects.requireNonNull(getSslFactory()))
+                .followRedirects(false)
+                .followSslRedirects(false)
                 .build();
 
         retrofit = new Retrofit.Builder()

@@ -32,14 +32,6 @@ import retrofit2.http.Query;
 /**
  * 注册 /signup   webview 实现
  *
- * 登录 /signin
- * {
- *     'username'
- *     'password'
- *     'checkcode'
- *     next /
- *     once number
- * }
  */
 
 @SuppressWarnings("ALL")
@@ -105,20 +97,9 @@ public class V2EX {
         }
 //        System.out.println(response.body());
         String[] fieldsName = V2exUtil.getLoginFieldNameFromHtml(response.body());
-        for (String s:
-             fieldsName) {
-//            Log.d(TAG, "test: " + s);
-            System.out.println(s);
-        }
 
         Response<ResponseBody> captcha = v2exApi.getCaptcha(fieldsName[3]).execute();
-//        Log.d(TAG, "test: " + captcha.headers().get("content-length"));
-        System.out.println(captcha.headers().get("content-length"));
-        System.out.println(captcha.headers().get("content-type"));
-        if (!captcha.isSuccessful()){
-            Log.e(TAG,captcha.code() + captcha.message());
-        }
-//        onCaptcha.onCaptcha(captcha.body());
+
         InputStream inputStream = captcha.body().byteStream();
         File file = new File("D:\\captcha.png");
         file.deleteOnExit();
@@ -132,18 +113,36 @@ public class V2EX {
         fileOutputStream.close();
 
         Map<String, String> form = new HashMap<>();
-//        System.out.println("check code:");
+
+        System.out.println("CheckCode:");
         form.put(fieldsName[0], "denua1");
         form.put(fieldsName[1], "vxmm1713.");
         form.put(fieldsName[2], new Scanner(System.in).nextLine());
         form.put("once", fieldsName[3]);
         form.put("next", "/");
 
+        System.out.println("\n \t THE REQUEST FORM:");
+        for (Iterator<Map.Entry<String, String>> it = form.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<String, String> field = it.next();
+            System.out.println(field.getKey() + ":" + field.getValue());
+        }
+        System.out.println("\t \t END\n");
+
         Response<String> login= v2exApi.postLogin(form).execute();
         if (!login.isSuccessful()){
             System.out.println(login.code() + login.message());
         }
-        System.out.println(login.body());
+        Iterator<String> h = login.headers().names().iterator();
+        for (Iterator<String> it = h; it.hasNext(); ) {
+            String s = it.next();
+            System.out.println(s + "===" + login.headers().get(s));
+        }
+
+//        System.out.println(login.body());
+        System.out.println("V2EX.test" + login.code() + login.message());
+
+        Response<String> home = v2exApi.getHome().execute();
+//        System.out.println(home.body());
     }
 
     public interface OnCaptcha{
@@ -153,6 +152,9 @@ public class V2EX {
 
 //@SuppressWarnings("ALL")
 interface V2exApi{
+
+    @GET("/")
+    Call<String> getHome();
 
     @GET("signin")
     Call<String> getLoginPage();

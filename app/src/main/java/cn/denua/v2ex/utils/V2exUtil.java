@@ -14,11 +14,15 @@ public class V2exUtil {
         Elements elements = document.select(".sl");
         int i=0;
         for (Element element : elements) {
-            System.out.println(element.text());
             String name = element.attr("name");
             result[i++] = name;
         }
         result[3] = document.selectFirst("input[name=once]").val();
         return result;
+    }
+
+    public static String[] getInfoFromHtml(String html){
+
+        return null;
     }
 }
