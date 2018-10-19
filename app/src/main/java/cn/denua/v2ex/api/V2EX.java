@@ -81,7 +81,15 @@ public class V2EX {
         form.put("next", "/");
 
         try {
-            Logger.d(TAG, v2exApi.postLogin(form).execute().body());;
+
+            Response<String> response= v2exApi.postLogin(form).execute();
+
+            for (String h :
+                    response.headers().names()) {
+                Logger.i(h + "--"+ response.headers().get(h));
+            }
+//            Logger.d(response.body());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
