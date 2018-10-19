@@ -2,6 +2,8 @@ package cn.denua.v2ex.http.cookie;
 
 import android.support.annotation.NonNull;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -62,10 +64,10 @@ public class TransientCookieJar implements CookieJar {
     @Override
     public void saveFromResponse(@NonNull HttpUrl httpUrl, @NonNull List<Cookie> list) {
 
-        System.out.println(httpUrl.toString() + "\tTransientCookieJar.saveFromResponse size: " + list.size());
+        Logger.d (httpUrl.toString() + "\tTransientCookieJar.saveFromResponse size: " + list.size());
         if (list.size() > 0) {
             for (Cookie item : list) {
-                System.out.println("\t" + item.name() + ": " + item.value());
+                Logger.d("\t" + item.name() + ": " + item.value());
                 add(httpUrl, item);
             }
         }
@@ -80,10 +82,10 @@ public class TransientCookieJar implements CookieJar {
             Collection<Cookie> cookie = cookies.get(url.host()).values();
             ret.addAll(cookie);
         }
-        System.out.println( url.toString() + "\tTransientCookieJar.loadForRequest");
+        Logger.d ( url.toString() + "\tTransientCookieJar.loadForRequest");
         for (Iterator<Cookie> it = ret.iterator(); it.hasNext(); ) {
             Cookie cookieIterator = it.next();
-            System.out.println("\t"+cookieIterator.name() + ": "+cookieIterator.value());
+            Logger.d ("\t"+cookieIterator.name() + ": "+cookieIterator.value());
         }
         return ret;
     }

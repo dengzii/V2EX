@@ -22,7 +22,7 @@ public class HeadersInterceptor implements Interceptor{
             "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0";
     private static final String CLIENT_HEADER = "v2ex third-part client for android";
 
-    public static HeadersInterceptor instance(){
+    public static HeadersInterceptor getInstance(){
         return interceptor;
     }
 

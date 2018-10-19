@@ -15,6 +15,7 @@ import java.util.Scanner;
 
 import cn.denua.v2ex.http.Client;
 import cn.denua.v2ex.utils.V2exUtil;
+import okhttp3.Request;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -58,7 +59,6 @@ public class V2EX {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private static Bitmap getCaptcha() throws IOException {
@@ -82,6 +82,7 @@ public class V2EX {
 
         try {
 
+            Request request = v2exApi.postLogin(form).request();
             Response<String> response= v2exApi.postLogin(form).execute();
 
             for (String h :

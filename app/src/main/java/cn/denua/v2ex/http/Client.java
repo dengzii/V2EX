@@ -53,7 +53,7 @@ public class Client {
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
-                .addInterceptor(HeadersInterceptor.instance())
+//                .addInterceptor(HeadersInterceptor.instance())
                 .sslSocketFactory(HttpsUtil.getSslSocketFactory(trustManager), trustManager)
                 .hostnameVerifier((hostname, session) -> true)
 //                .followRedirects(false)

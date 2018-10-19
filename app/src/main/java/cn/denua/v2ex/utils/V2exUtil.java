@@ -9,7 +9,6 @@ public class V2exUtil {
 
     public static String[] washLoginFieldName(String html){
 
-        System.out.println(html);
         String[] result = new String[4];
         Document document = Jsoup.parse(html);
         Elements elements = document.select(".sl");
