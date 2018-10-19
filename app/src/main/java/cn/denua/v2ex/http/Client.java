@@ -3,20 +3,15 @@ package cn.denua.v2ex.http;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
+import cn.denua.v2ex.http.converters.BitmapConverterFactory;
 import cn.denua.v2ex.http.converters.StringConverterFactory;
 import cn.denua.v2ex.http.cookie.CookiesManager;
 import cn.denua.v2ex.http.cookie.TransientCookieJar;
+import cn.denua.v2ex.utils.HttpsUtil;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
@@ -37,6 +32,7 @@ public class Client {
     private static Retrofit retrofit;
     private static CookiesManager cookiesManager;
     private static TransientCookieJar transientCookieJar;
+
     private Client(){}
 
     public static Retrofit getRetrofit(){
@@ -48,6 +44,7 @@ public class Client {
 
     public static void init(@Nullable Context context){
 
+        X509TrustManager trustManager = HttpsUtil.getX509TrustManager();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cookieJar(
                         context == null
@@ -57,15 +54,17 @@ public class Client {
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .addInterceptor(HeadersInterceptor.instance())
-                .followRedirects(false)
-                .followSslRedirects(false)
+                .sslSocketFactory(HttpsUtil.getSslSocketFactory(trustManager), trustManager)
+                .hostnameVerifier((hostname, session) -> true)
+//                .followRedirects(false)
+//                .followSslRedirects(false)
                 .build();
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)
                 .callFactory(okHttpClient)
-//                .addConverterFactory(BitmapConverterFactory.getInstance())
+                .addConverterFactory(BitmapConverterFactory.getInstance())
                 .addConverterFactory(StringConverterFactory.getInstance())
                 .build();
     }
@@ -75,36 +74,4 @@ public class Client {
         cookiesManager.removeAll();
     }
 
-    private SSLSocketFactory getSslFactory(){
-
-
-        X509TrustManager trustManager = new X509TrustManager() {
-            @Override
-            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-
-            }
-
-            @Override
-            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-
-            }
-
-            @Override
-            public X509Certificate[] getAcceptedIssuers() {
-                return new X509Certificate[0];
-            }
-        };
-
-        SSLContext sslContext = null;
-
-        try {
-            sslContext = SSLContext.getInstance("SSL");
-            X509TrustManager[] trustManagers = new X509TrustManager[]{trustManager};
-            sslContext.init(null, trustManagers, new SecureRandom());
-
-        } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            e.printStackTrace();
-        }
-        return sslContext != null ? sslContext.getSocketFactory() : null;
-    }
 }

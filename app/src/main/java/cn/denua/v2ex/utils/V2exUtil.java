@@ -7,8 +7,9 @@ import org.jsoup.select.Elements;
 
 public class V2exUtil {
 
-    public static String[] getLoginFieldNameFromHtml(String html){
+    public static String[] washLoginFieldName(String html){
 
+        System.out.println(html);
         String[] result = new String[4];
         Document document = Jsoup.parse(html);
         Elements elements = document.select(".sl");
@@ -21,8 +22,11 @@ public class V2exUtil {
         return result;
     }
 
-    public static String[] getInfoFromHtml(String html){
+    public static String[] washProfileInfo(String html){
 
+        Document document = Jsoup.parse(html);
+
+        Element element = document.selectFirst("tbody > tr > td");
         return null;
     }
 }

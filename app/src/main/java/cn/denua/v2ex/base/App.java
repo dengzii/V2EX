@@ -2,6 +2,9 @@ package cn.denua.v2ex.base;
 
 import android.app.Application;
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
+
 import cn.denua.v2ex.api.V2EX;
 import cn.denua.v2ex.http.Client;
 
@@ -13,7 +16,9 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         app = this;
-        Client.init(this);
+
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        Client.init(null);
         V2EX.init();
     }
 

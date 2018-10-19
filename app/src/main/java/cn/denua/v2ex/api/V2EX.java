@@ -1,12 +1,8 @@
 package cn.denua.v2ex.api;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,12 +17,12 @@ import cn.denua.v2ex.http.Client;
 import cn.denua.v2ex.utils.V2exUtil;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -40,6 +36,8 @@ public class V2EX {
     private static final String TAG = "V2EX";
     private static final String URL_BASE = "https://www.v2ex.com/";
 
+    private static String[] fields;
+
     private static V2exApi v2exApi;
 
     public static void init(){
@@ -51,39 +49,53 @@ public class V2EX {
 
     }
 
-    public static void preLogin(){
+    public static void preLogin(CaptchaLinstener captchaLinstener){
 
-        Call<String> call = v2exApi.getLoginPage();
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
-                Log.d(TAG, "onResponse: "+ call.request().url().toString());
-                if (response.isSuccessful()){
-                    Document document = Jsoup.parse(response.body());
-                    Elements elements = document.select("input");
+        try {
+            Response<String> response = v2exApi.getLoginPage().execute();
+            fields = V2exUtil.washLoginFieldName(response.body());
+            captchaLinstener.onCaptcha(getCaptcha());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-                    for (Iterator<Element> it = elements.iterator(); it.hasNext(); ) {
-                        Element e = it.next();
-                        Log.d(TAG, "name: " + e.attr("name") + "val:" + e.attr("value"));
-                    }
-                }else {
-                    Log.e(TAG, "onResponse: " + response.message() + response.code());
-                }
-            }
-
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.e(TAG, "onFailure: ");
-            }
-        });
     }
-    public static void login(String account, String password){
 
+    private static Bitmap getCaptcha() throws IOException {
 
+        return v2exApi.getCaptcha2(fields[3]).execute().body();
+    }
+
+    public interface CaptchaLinstener{
+        void onCaptcha(Bitmap bitmap);
+    }
+
+    public static void login(String account, String password, String checkCode){
+
+        Map<String, String> form= new HashMap<>();
+
+        form.put(fields[0], account);
+        form.put(fields[1], password);
+        form.put(fields[2], checkCode);
+        form.put("once", fields[3]);
+        form.put("next", "/");
+
+        try {
+            Logger.d(TAG, v2exApi.postLogin(form).execute().body());;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) throws IOException {
         Client.init(null);
-        test();
+        test1();
+    }
+     public static void test1() throws IOException {
+
+        V2exApi v2exApi = Client.getRetrofit().create(V2exApi.class);
+        Response<String> res = v2exApi.getMyTopic().execute();
+         System.out.println(res.body());
     }
 
     public static void test() throws IOException {
@@ -96,7 +108,7 @@ public class V2EX {
             System.err.println("====");
         }
 //        System.out.println(response.body());
-        String[] fieldsName = V2exUtil.getLoginFieldNameFromHtml(response.body());
+        String[] fieldsName = V2exUtil.washLoginFieldName(response.body());
 
         Response<ResponseBody> captcha = v2exApi.getCaptcha(fieldsName[3]).execute();
 
@@ -141,8 +153,8 @@ public class V2EX {
 //        System.out.println(login.body());
         System.out.println("V2EX.test" + login.code() + login.message());
 
-        Response<String> home = v2exApi.getHome().execute();
-//        System.out.println(home.body());
+        Response<String> home = v2exApi.getMyTopic().execute();
+        System.out.println(home.code() + home.body());
     }
 
     public interface OnCaptcha{
@@ -168,4 +180,10 @@ interface V2exApi{
     @POST("signin")
     @FormUrlEncoded
     Call<String> postLogin(@FieldMap Map<String, String> form);
+
+    @GET("member/{user}")
+    Call<String> getProfile(@Path("user")String user);
+
+    @GET("my/topics")
+    Call<String> getMyTopic();
 }
