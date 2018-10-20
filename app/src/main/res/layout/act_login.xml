@@ -22,7 +22,7 @@
         <TextView android:text="@string/account" />
 
         <EditText
-            android:text="denua1"
+            android:text=""
             android:id="@+id/et_account"
             android:layout_width="250dp"
             android:inputType="text"
@@ -31,7 +31,7 @@
         <TextView android:text="@string/password" />
 
         <EditText
-            android:text="vxmm1713."
+            android:text=""
             android:id="@+id/et_password"
             android:layout_width="250dp"
             android:inputType="text"

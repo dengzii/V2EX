@@ -27,7 +27,8 @@ public interface LoginApi{
     Call<Bitmap> getCaptcha(@Query("once") String once);
 
     @POST("signin")
-    @Headers({"Referer:https://www.v2ex.com/signin", "Origin:https://www.v2ex.com"})
+    @Headers({"Referer:https://www.v2ex.com/signin",
+              "Origin:https://www.v2ex.com"})
     @FormUrlEncoded
     Call<String> postLogin(@FieldMap Map<String, String> form);
 
