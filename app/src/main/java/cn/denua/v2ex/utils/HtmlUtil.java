@@ -31,10 +31,18 @@ public class HtmlUtil {
 
         Elements elements = document.select("form>table>tbody>tr");
         Iterator<Element> ele = elements.iterator();
-        String member = ele.next().child(1).text();
+
+        int member = Integer.valueOf(ele.next().child(1).text().substring(6,15).trim());
         String userName = ele.next().child(1).text();
+        String pic = ele.next().baseUri();
 
+        AccountModel accountModel = new AccountModel(userName, pic, member);
 
-        return null;
+        ele.next();
+        ele.next();
+        ele.next();
+        accountModel.setJoin(ele.next().child(1).text());
+
+        return accountModel;
     }
 }

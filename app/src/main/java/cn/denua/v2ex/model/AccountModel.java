@@ -15,6 +15,8 @@ public class AccountModel extends V2exModel{
     private int favorTopics;
     private int following;
 
+    private String join;
+
     public AccountModel(String id, String pic, int number){
 
         this.id = id;
@@ -55,6 +57,7 @@ public class AccountModel extends V2exModel{
         this.favorNodes = in.readInt();
         this.favorTopics = in.readInt();
         this.following = in.readInt();
+        this.join = in.readString();
     }
 
 
@@ -73,6 +76,7 @@ public class AccountModel extends V2exModel{
         dest.writeInt(favorNodes);
         dest.writeInt(favorTopics);
         dest.writeInt(following);
+        dest.writeString(join);
     }
 
     public String getId() {
@@ -137,5 +141,13 @@ public class AccountModel extends V2exModel{
 
     public void setFollowing(int following) {
         this.following = following;
+    }
+
+    public String getJoin() {
+        return join;
+    }
+
+    public void setJoin(String join) {
+        this.join = join;
     }
 }
