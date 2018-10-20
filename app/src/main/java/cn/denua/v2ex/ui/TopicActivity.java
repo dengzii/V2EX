@@ -2,9 +2,10 @@ package cn.denua.v2ex.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
-public class TopicActivity extends AppCompatActivity {
+import cn.denua.v2ex.base.BaseActivity;
+
+public class TopicActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

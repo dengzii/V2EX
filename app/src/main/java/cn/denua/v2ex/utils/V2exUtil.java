@@ -21,11 +21,13 @@ public class V2exUtil {
         return result;
     }
 
-    public static String[] washProfileInfo(String html){
+    public static String[] washSettingsInfo(String html){
 
         Document document = Jsoup.parse(html);
 
-        Element element = document.selectFirst("tbody > tr > td");
+        Elements elements = document.select("form>table>tbody>tr");
+
+
         return null;
     }
 }

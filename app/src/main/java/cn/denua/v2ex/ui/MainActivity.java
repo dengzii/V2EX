@@ -2,7 +2,6 @@ package cn.denua.v2ex.ui;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -13,8 +12,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.api.V2EX;
+import cn.denua.v2ex.base.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
 
