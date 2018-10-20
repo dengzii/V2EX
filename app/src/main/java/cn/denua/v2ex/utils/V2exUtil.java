@@ -5,6 +5,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.Iterator;
+
 public class V2exUtil {
 
     public static String[] washLoginFieldName(String html){
@@ -26,7 +28,9 @@ public class V2exUtil {
         Document document = Jsoup.parse(html);
 
         Elements elements = document.select("form>table>tbody>tr");
-
+        Iterator<Element> ele = elements.iterator();
+        String member = ele.next().child(1).text();
+        String userName = ele.next().child(1).text();
 
         return null;
     }

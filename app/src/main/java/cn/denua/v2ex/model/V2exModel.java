@@ -1,7 +1,8 @@
 package cn.denua.v2ex.model;
 
-public class V2exModel {
+import android.os.Parcel;
+import android.os.Parcelable;
 
-
+abstract class V2exModel implements Parcelable{
 
 }
