@@ -7,7 +7,9 @@ import org.jsoup.select.Elements;
 
 import java.util.Iterator;
 
-public class V2exUtil {
+import cn.denua.v2ex.model.AccountModel;
+
+public class HtmlUtil {
 
     public static String[] washLoginFieldName(String html){
 
@@ -23,7 +25,7 @@ public class V2exUtil {
         return result;
     }
 
-    public static String[] washSettingsInfo(String html){
+    public static AccountModel washSettingsInfo(String html){
 
         Document document = Jsoup.parse(html);
 
@@ -31,6 +33,7 @@ public class V2exUtil {
         Iterator<Element> ele = elements.iterator();
         String member = ele.next().child(1).text();
         String userName = ele.next().child(1).text();
+
 
         return null;
     }

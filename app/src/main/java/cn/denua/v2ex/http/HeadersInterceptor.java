@@ -16,11 +16,6 @@ import okio.Okio;
 public class HeadersInterceptor implements Interceptor{
 
     private static final HeadersInterceptor interceptor = new HeadersInterceptor();
-    private static final String ANDROID_HEADER =
-            "Mozilla/5.0 (Linux; Android 7.0; PLUS Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.98 Mobile Safari/537.36";
-    private static final String PC_HEADER =
-            "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0";
-    private static final String CLIENT_HEADER = "v2ex third-part client for android";
 
     public static HeadersInterceptor getInstance(){
         return interceptor;
@@ -32,7 +27,6 @@ public class HeadersInterceptor implements Interceptor{
         Request originRequest = chain.request();
         Request updateRequest = originRequest.newBuilder()
                 .addHeader("host", originRequest.url().host())
-                .addHeader("User-Agent", PC_HEADER)
                 .addHeader("upgrade-insecure-requests", "1")
                 .addHeader("DNT", "1")
                 .addHeader("TE","Trailers")
@@ -41,9 +35,7 @@ public class HeadersInterceptor implements Interceptor{
                 .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
                 .addHeader("Accept-Language", "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2")
                 .build();
-
-        Response response = chain.proceed(updateRequest);
-        return response;
+        return chain.proceed(updateRequest);
     }
 
     private RequestBody gzip(final RequestBody body) {

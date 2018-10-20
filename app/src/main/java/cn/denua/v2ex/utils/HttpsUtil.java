@@ -24,7 +24,7 @@ import cn.denua.v2ex.base.App;
  * X.509 TrustManager
  * SslSocketFactory
  *
- * @user denua
+ * @author denua
  * @date 2018/10/19
  */
 public class HttpsUtil {
