@@ -2,12 +2,9 @@ package cn.denua.v2ex.http.cookie;
 
 import android.support.annotation.NonNull;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -63,11 +60,8 @@ public class TransientCookieJar implements CookieJar {
     }
     @Override
     public void saveFromResponse(@NonNull HttpUrl httpUrl, @NonNull List<Cookie> list) {
-
-        Logger.d (httpUrl.toString() + "\tTransientCookieJar.saveFromResponse size: " + list.size());
         if (list.size() > 0) {
             for (Cookie item : list) {
-                Logger.d("\t" + item.name() + ": " + item.value());
                 add(httpUrl, item);
             }
         }
@@ -81,11 +75,6 @@ public class TransientCookieJar implements CookieJar {
         if (cookies.containsKey(url.host())) {
             Collection<Cookie> cookie = cookies.get(url.host()).values();
             ret.addAll(cookie);
-        }
-        Logger.d ( url.toString() + "\tTransientCookieJar.loadForRequest");
-        for (Iterator<Cookie> it = ret.iterator(); it.hasNext(); ) {
-            Cookie cookieIterator = it.next();
-            Logger.d ("\t"+cookieIterator.name() + ": "+cookieIterator.value());
         }
         return ret;
     }
@@ -109,7 +98,7 @@ public class TransientCookieJar implements CookieJar {
             repairedCookie = new Cookie.Builder()
                     .domain(cookie.domain())
                     .name(cookie.name())
-                    .expiresAt(System.currentTimeMillis() + 1000000)
+                    .expiresAt(System.currentTimeMillis() + 2000000)
                     .path(cookie.path())
                     .value(cookie.value())
                     .build();

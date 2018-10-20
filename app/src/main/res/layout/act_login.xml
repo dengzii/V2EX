@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridLayout
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:columnCount="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView android:text="@string/account" />
+
+        <EditText
+            android:text="denua1"
+            android:id="@+id/et_account"
+            android:layout_width="250dp"
+            android:inputType="text"
+            tools:ignore="LabelFor" />
+
+        <TextView android:text="@string/password" />
+
+        <EditText
+            android:text="vxmm1713."
+            android:id="@+id/et_password"
+            android:layout_width="250dp"
+            android:inputType="text"
+            tools:ignore="LabelFor,TextFields" />
+
+        <ImageView
+            android:id="@+id/iv_captcha"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_columnSpan="2" />
+
+        <TextView android:text="@string/captcha_code" />
+
+        <EditText
+            android:id="@+id/et_check_code"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/bt_login"
+            android:layout_columnSpan="2"
+            android:layout_width="match_parent"
+            android:text="@string/login" />
+    </GridLayout>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -87,11 +87,26 @@ public class LoginService {
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
                 if (success){
+                    getSettingsPage();
+                    return;
+                }
+                callBack.onFailed(msg);
+            }
+        });
+    }
+
+    private void getSettingsPage(){
+
+        loginApi.getInfo().enqueue(new ResponseHandler<String>() {
+            @Override
+            public void handle(boolean success, String result, Call<String> call, String msg) {
+                if (success){
                     callBack.onSuccess(HtmlUtil.washSettingsInfo(result));
                     return;
                 }
                 callBack.onFailed(msg);
             }
         });
+
     }
 }

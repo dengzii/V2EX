@@ -1,6 +1,6 @@
 package cn.denua.v2ex.ui;
 
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
@@ -11,7 +11,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.denua.v2ex.R;
-import cn.denua.v2ex.api.V2EX;
 import cn.denua.v2ex.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
@@ -31,22 +30,11 @@ public class MainActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        new Thread(() -> V2EX.preLogin(MainActivity.this::setIvCaptcha)).start();
-
-    }
-
-    public void setIvCaptcha(Bitmap bitmap){
-        runOnUiThread(()->ivCaptcha.setImageBitmap(bitmap));
     }
 
     @OnClick(R.id.bt_test)
     public void test(View view){
 
-        new Thread(()->V2EX.login("denua1","vxmm1713.", etCheckCode.getText().toString())).start();
-//        webView.loadUrl("https://www.v2ex.com/signin");
-//        WebSettings settings = webView.getSettings();
-//        settings.setAllowContentAccess(true);
-//        settings.setAppCachePath(getCacheDir().getAbsolutePath());
-//        settings.setUserAgentString("Mozilla/5.0 (Linux; Android 7.0; PLUS Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.98 Mobile Safari/537.36");
+        startActivity(new Intent(this, LoginActivity.class));
     }
 }
