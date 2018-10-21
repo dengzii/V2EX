@@ -1,13 +1,11 @@
 package cn.denua.v2ex.model;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Account extends V2exModel{
+public class Account extends Member implements Parcelable {
 
-    private String id;
-    private String pic;
     private int number;
-
     private int balance;
     private int notifications;
 
@@ -20,13 +18,13 @@ public class Account extends V2exModel{
     public Account(String id, String pic, int number){
 
         this.id = id;
-        this.pic = pic;
+        this.picUrl = pic;
         this.number = number;
     }
 
     public Account(String id, String pic, int number, int balance, int notifications, int favorNodes, int favorTopics, int following) {
         this.id = id;
-        this.pic = pic;
+        this.picUrl = pic;
         this.number = number;
         this.balance = balance;
         this.notifications = notifications;
@@ -50,7 +48,7 @@ public class Account extends V2exModel{
     private Account(Parcel in){
 
         this.id = in.readString();
-        this.pic = in.readString();
+        this.picUrl = in.readString();
         this.number = in.readInt();
         this.balance = in.readInt();
         this.notifications = in.readInt();
@@ -69,7 +67,7 @@ public class Account extends V2exModel{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeString(pic);
+        dest.writeString(picUrl);
         dest.writeInt(number);
         dest.writeInt(balance);
         dest.writeInt(notifications);
@@ -88,11 +86,11 @@ public class Account extends V2exModel{
     }
 
     public String getPic() {
-        return pic;
+        return picUrl;
     }
 
     public void setPic(String pic) {
-        this.pic = pic;
+        this.picUrl = pic;
     }
 
     public int getNumber() {

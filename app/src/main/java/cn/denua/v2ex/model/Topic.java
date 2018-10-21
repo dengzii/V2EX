@@ -21,5 +21,9 @@ public class Topic {
 
     private String content;
 
-    private String[] replays;
+    private Member author;
+    private Node node;
+
+    private Replay[] replays;
+
 }

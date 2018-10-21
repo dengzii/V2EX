@@ -7,8 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.X509TrustManager;
 
-import cn.denua.v2ex.http.converters.BitmapConverterFactory;
-import cn.denua.v2ex.http.converters.StringConverterFactory;
+import cn.denua.v2ex.http.converters.ConverterFactory;
 import cn.denua.v2ex.http.cookie.CookiesManager;
 import cn.denua.v2ex.http.cookie.TransientCookieJar;
 import cn.denua.v2ex.utils.HttpsUtil;
@@ -64,8 +63,7 @@ public class Client {
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)
                 .callFactory(okHttpClient)
-                .addConverterFactory(BitmapConverterFactory.getInstance())
-                .addConverterFactory(StringConverterFactory.getInstance())
+                .addConverterFactory(ConverterFactory.getInstance())
                 .build();
     }
 
