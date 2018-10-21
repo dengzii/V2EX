@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.BaseActivity;
-import cn.denua.v2ex.model.AccountModel;
+import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.LoginListener;
 import cn.denua.v2ex.service.LoginService;
 
@@ -65,7 +65,7 @@ public class LoginActivity extends BaseActivity implements LoginListener {
     }
 
     @Override
-    public void onSuccess(AccountModel accountModel) {
+    public void onSuccess(Account accountModel) {
         Toast.makeText(this, accountModel.getId() + " - " + accountModel.getJoin(), Toast.LENGTH_SHORT).show();
     }
 }

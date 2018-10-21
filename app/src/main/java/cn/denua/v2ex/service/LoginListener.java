@@ -2,7 +2,7 @@ package cn.denua.v2ex.service;
 
 import android.graphics.Bitmap;
 
-import cn.denua.v2ex.model.AccountModel;
+import cn.denua.v2ex.model.Account;
 
 /*
  * 登录状态监听
@@ -13,5 +13,5 @@ import cn.denua.v2ex.model.AccountModel;
 public interface LoginListener {
     void onCaptcha(Bitmap bitmap);
     void onFailed(String msg);
-    void onSuccess(AccountModel accountModel);
+    void onSuccess(Account accountModel);
 }

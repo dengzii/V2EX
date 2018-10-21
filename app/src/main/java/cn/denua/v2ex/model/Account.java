@@ -2,7 +2,7 @@ package cn.denua.v2ex.model;
 
 import android.os.Parcel;
 
-public class AccountModel extends V2exModel{
+public class Account extends V2exModel{
 
     private String id;
     private String pic;
@@ -17,14 +17,14 @@ public class AccountModel extends V2exModel{
 
     private String join;
 
-    public AccountModel(String id, String pic, int number){
+    public Account(String id, String pic, int number){
 
         this.id = id;
         this.pic = pic;
         this.number = number;
     }
 
-    public AccountModel(String id, String pic, int number, int balance, int notifications, int favorNodes, int favorTopics, int following) {
+    public Account(String id, String pic, int number, int balance, int notifications, int favorNodes, int favorTopics, int following) {
         this.id = id;
         this.pic = pic;
         this.number = number;
@@ -35,19 +35,19 @@ public class AccountModel extends V2exModel{
         this.following = following;
     }
 
-    public static Creator<AccountModel> CREATOR = new Creator<AccountModel>() {
+    public static Creator<Account> CREATOR = new Creator<Account>() {
         @Override
-        public AccountModel createFromParcel(Parcel source) {
-            return new AccountModel(source );
+        public Account createFromParcel(Parcel source) {
+            return new Account(source );
         }
 
         @Override
-        public AccountModel[] newArray(int size) {
-            return new AccountModel[size];
+        public Account[] newArray(int size) {
+            return new Account[size];
         }
     };
 
-    private AccountModel(Parcel in){
+    private Account(Parcel in){
 
         this.id = in.readString();
         this.pic = in.readString();

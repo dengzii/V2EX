@@ -95,6 +95,10 @@ public class LoginService {
         });
     }
 
+    /**
+     * 从设置页面获取用户信息并返回结果
+     *
+     */
     private void getSettingsPage(){
 
         loginApi.getInfo().enqueue(new ResponseHandler<String>() {

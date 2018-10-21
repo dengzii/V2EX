@@ -7,7 +7,7 @@ import org.jsoup.select.Elements;
 
 import java.util.Iterator;
 
-import cn.denua.v2ex.model.AccountModel;
+import cn.denua.v2ex.model.Account;
 
 public class HtmlUtil {
 
@@ -25,7 +25,7 @@ public class HtmlUtil {
         return result;
     }
 
-    public static AccountModel washSettingsInfo(String html){
+    public static Account washSettingsInfo(String html){
 
         Document document = Jsoup.parse(html);
         System.out.println(html);
@@ -36,7 +36,7 @@ public class HtmlUtil {
         String userName = ele.next().child(1).text();
         String pic = ele.next().baseUri();
 
-        AccountModel accountModel = new AccountModel(userName, pic, member);
+        Account accountModel = new Account(userName, pic, member);
 
         ele.next();
         ele.next();
