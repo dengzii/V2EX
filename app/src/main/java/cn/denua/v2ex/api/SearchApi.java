@@ -1,5 +1,8 @@
 package cn.denua.v2ex.api;
 
+import org.json.JSONObject;
+
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -35,11 +38,10 @@ import retrofit2.http.Url;
  */
 public interface SearchApi {
 
-//    https://www.sov2ex.com/api/search
-
     /**
      * 搜索
      *
+     * @param url  https://www.sov2ex.com/api/search
      * @param keywords 搜索关键词
      * @param from 与第一个结果的偏移
      * @param size  结果数量
@@ -50,15 +52,15 @@ public interface SearchApi {
      * @param node  指定节点
      * @param operate   关键词关系参数
      */
-    @GET
-    void search(@Url String url,
-                @Query("q")String keywords,
-                @Query("from")int from,
-                @Query("size")int size,
-                @Query("sort")String sort,
-                @Query("order")int order,
-                @Query("gte")int gte,
-                @Query("lte")int lte,
-                @Query("node")String node,
-                @Query("operate")String operate);
+    @GET()
+    Call<JSONObject> search(@Url String url,
+                            @Query("q")String keywords,
+                            @Query("from")int from,
+                            @Query("size")int size,
+                            @Query("sort")String sort,
+                            @Query("order")int order,
+                            @Query("gte")int gte,
+                            @Query("lte")int lte,
+                            @Query("node")String node,
+                            @Query("operate")String operate);
 }

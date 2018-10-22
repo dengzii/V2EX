@@ -36,7 +36,18 @@ public class CookiesManager implements CookieJar {
 
         if (cookies.size() > 0) {
             for (Cookie item : cookies) {
-                cookieStore.add(url, item);
+                Cookie fixedCookie = item;
+                long maxAge = System.currentTimeMillis() + 2000000L;
+                if (item.expiresAt()>maxAge){
+                    fixedCookie = new Cookie.Builder()
+                            .domain(item.domain())
+                            .name(item.name())
+                            .expiresAt(System.currentTimeMillis() + 2000000L)
+                            .path(item.path())
+                            .value(item.value())
+                            .build();
+                }
+                cookieStore.add(url, fixedCookie);
             }
         }
     }

@@ -21,7 +21,6 @@ public abstract class ResponseHandler<T> implements Callback<T> {
     protected Handler handler;
 
     public ResponseHandler(){
-
         handler = new Handler(Looper.getMainLooper());
     }
 

@@ -46,6 +46,7 @@ public class HeadersInterceptor implements Interceptor{
         Request originRequest = chain.request();
         Request updateRequest = originRequest.newBuilder()
                 .headers(headers)
+                .addHeader("Host", originRequest.url().host())
                 .build();
         return chain.proceed(updateRequest);
     }

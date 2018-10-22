@@ -28,10 +28,9 @@ public class HtmlUtil {
     public static Account washSettingsInfo(String html){
 
         Document document = Jsoup.parse(html);
-        System.out.println(html);
         Elements elements = document.select("form>table>tbody>tr");
         Iterator<Element> ele = elements.iterator();
-
+        System.out.println(document);
         int member = Integer.valueOf(ele.next().child(1).text().substring(6,14).trim());
         String userName = ele.next().child(1).text();
         String pic = ele.next().baseUri();

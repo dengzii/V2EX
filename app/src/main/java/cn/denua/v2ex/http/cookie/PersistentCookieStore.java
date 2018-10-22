@@ -75,15 +75,17 @@ public class PersistentCookieStore{
         String name = getCookieToken(cookie);
 
         //将cookies缓存到内存中 如果缓存过期 就重置此cookie
-        if (!cookie.persistent()) {
+        if (cookie.persistent()) {
             if (!cookies.containsKey(url.host())) {
                 cookies.put(url.host(), new ConcurrentHashMap<>());
             }
             cookies.get(url.host()).put(name, cookie);
         } else {
             if (cookies.containsKey(url.host())) {
-                cookies.get(url.host()).remove(name);
+                remove(url, cookie);
+                return;
             }
+            return;
         }
 
         //将cookies持久化到本地

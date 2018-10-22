@@ -21,6 +21,8 @@ public class LoginService {
 
     private LoginApi loginApi;
     private String[] fieldNames;
+    private String userName;
+
     private LoginListener callBack;
 
     public LoginService(LoginListener loginListener){
@@ -37,12 +39,21 @@ public class LoginService {
         loginApi.getLoginPage().enqueue(new ResponseHandler<String>() {
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
-                if (success){
-                    fieldNames = HtmlUtil.washLoginFieldName(result);
-                    getCaptcha(fieldNames[3]);
+
+                if (!success || result.matches("\\S*登录受限\\S*")){
+                    callBack.onFailed(!success
+                            ?msg
+                            :"登录次数过多,该IP已被禁止,一天后尝试或切换IP。");
                     return;
                 }
-                callBack.onFailed(msg);
+                try{
+                    fieldNames = HtmlUtil.washLoginFieldName(result);
+                }catch (Exception e){
+                    callBack.onFailed(e.getLocalizedMessage());
+                    return;
+                }
+
+                getCaptcha(fieldNames[3]);
             }
         });
 
@@ -86,11 +97,17 @@ public class LoginService {
         loginApi.postLogin(form).enqueue(new ResponseHandler<String>() {
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
-                if (success){
-                    getSettingsPage();
+                if (!success||!result.matches("\\S*class=\"top\">"+userName+"</a>\\S*")){
+                    callBack.onFailed(!success
+                            ?msg
+                            :"登录失败");
                     return;
                 }
-                callBack.onFailed(msg);
+//                if (!success){
+//                    callBack.onFailed(msg);
+//                    return;
+//                }
+                getSettingsPage();
             }
         });
     }
@@ -104,11 +121,16 @@ public class LoginService {
         loginApi.getInfo().enqueue(new ResponseHandler<String>() {
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
-                if (success){
-                    callBack.onSuccess(HtmlUtil.washSettingsInfo(result));
-                    return;
+                if (result.matches("\\S*你要查看的页面需要先登录\\S*")){
+                    callBack.onFailed("获取用户信息失败, 登录失败.");
                 }
-                callBack.onFailed(msg);
+                try {
+                    callBack.onSuccess(HtmlUtil.washSettingsInfo(result));
+                }catch (Exception e){
+                    callBack.onFailed("获取用户信息失败, " + e.getLocalizedMessage());
+                    e.printStackTrace();
+                }
+
             }
         });
 
