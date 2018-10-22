@@ -18,7 +18,7 @@ public class App extends Application {
         app = this;
 
         Logger.addLogAdapter(new AndroidLogAdapter());
-        Client.init(this);
+        Client.init(null);
         V2EX.init();
     }
 

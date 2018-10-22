@@ -64,13 +64,13 @@ public class TransientCookieJar implements CookieJar {
         if (name.equals("A2@.v2ex.com")){
             name="A2@www.v2ex.com";
         }
-        System.out.println(cookie.toString());
-        long magAge = System.currentTimeMillis() + 2000000L;
-        if (cookie.expiresAt()>magAge){
+
+        long maxAge = System.currentTimeMillis() + 2000000L;
+        if ((cookie.expiresAt() > maxAge)){
             fixedCookie = new Cookie.Builder()
                     .domain(cookie.domain())
                     .name(cookie.name())
-                    .expiresAt(System.currentTimeMillis() + 2000000)
+                    .expiresAt(maxAge)
                     .path(cookie.path())
                     .value(cookie.value())
                     .build();

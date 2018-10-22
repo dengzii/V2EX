@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import java.io.IOException;
 
-import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -17,27 +16,13 @@ import okio.Okio;
 public class HeadersInterceptor implements Interceptor{
 
     private static final HeadersInterceptor interceptor = new HeadersInterceptor();
-    private Headers headers;
 
     public static HeadersInterceptor getInstance(){
         return interceptor;
     }
 
     private HeadersInterceptor(){
-        initialDefaultHeader();
-    }
 
-    private void initialDefaultHeader(){
-
-        headers = new Headers.Builder()
-                .add("upgrade-insecure-requests", "1")
-                .add("DNT", "1")
-                .add("TE","Trailers")
-                .add("Cache-Control", "na-cache")
-                .add("Connection", "keep-alive")
-                .add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-                .add("Accept-Language", "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2")
-                .build();
     }
 
     @Override
@@ -45,8 +30,7 @@ public class HeadersInterceptor implements Interceptor{
 
         Request originRequest = chain.request();
         Request updateRequest = originRequest.newBuilder()
-                .headers(headers)
-                .addHeader("Host", originRequest.url().host())
+                .addHeader("host", originRequest.url().host())
                 .build();
         return chain.proceed(updateRequest);
     }

@@ -21,7 +21,6 @@ public class LoginService {
 
     private LoginApi loginApi;
     private String[] fieldNames;
-    private String userName;
 
     private LoginListener callBack;
 
@@ -29,7 +28,6 @@ public class LoginService {
         this.callBack = loginListener;
         this.loginApi = Client.getRetrofit().create(LoginApi.class);
     }
-
     /**
      * 预登录获取验证码
      *
@@ -97,16 +95,14 @@ public class LoginService {
         loginApi.postLogin(form).enqueue(new ResponseHandler<String>() {
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
-                if (!success||!result.matches("\\S*class=\"top\">"+userName+"</a>\\S*")){
-                    callBack.onFailed(!success
-                            ?msg
-                            :"登录失败");
+                if (!success || (null==result)){
+                    callBack.onFailed(msg);
                     return;
                 }
-//                if (!success){
-//                    callBack.onFailed(msg);
-//                    return;
-//                }
+                if (result.matches("\\S*登录有点问题\\S*")){
+                    callBack.onFailed("验证码或账号信息不正确.");
+                }
+
                 getSettingsPage();
             }
         });
