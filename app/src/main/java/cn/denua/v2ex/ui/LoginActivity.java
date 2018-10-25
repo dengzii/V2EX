@@ -66,6 +66,6 @@ public class LoginActivity extends BaseActivity implements LoginListener {
 
     @Override
     public void onSuccess(Account accountModel) {
-        Toast.makeText(this, accountModel.getId() + " - " + accountModel.getJoin(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, accountModel.nickName + " - " + accountModel.join, Toast.LENGTH_SHORT).show();
     }
 }

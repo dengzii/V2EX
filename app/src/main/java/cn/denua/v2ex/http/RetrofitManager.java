@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
+import cn.denua.v2ex.http.converters.BitmapConverterFactory;
 import cn.denua.v2ex.http.cookie.CookiesManager;
 import cn.denua.v2ex.http.cookie.TransientCookieJar;
 import okhttp3.OkHttpClient;
@@ -79,8 +80,8 @@ public class RetrofitManager {
                 .client(okHttpClient)
                 .callFactory(okHttpClient)
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(BitmapConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
-//                .addConverterFactory(BitmapConverter.Factory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }

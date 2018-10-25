@@ -6,4 +6,21 @@
     <string name="captcha_code">验证码</string>
     <string name="login">登录</string>
 
+    <string name="checked">签 到</string>
+    <string name="message">消 息</string>
+    <string name="latest_topic">最新话题</string>
+    <string name="hot_topic">热门话题</string>
+    <string name="all_node">所有节点</string>
+    <string name="post">发 帖</string>
+    <string name="theme">主 题</string>
+    <string name="settings">设 置</string>
+
+    <string name="following">关 注</string>
+    <string name="search">搜 索</string>
+    
+    <string name="favor">收 藏</string>
+    <string name="like">喜 欢</string>
+
+    <string name="author">denua</string>
+
 </resources>

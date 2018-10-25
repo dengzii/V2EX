@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.denua.v2ex.api.LoginApi;
-import cn.denua.v2ex.http.Client;
 import cn.denua.v2ex.http.ResponseHandler;
+import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.utils.HtmlUtil;
 import retrofit2.Call;
 
@@ -26,7 +26,7 @@ public class LoginService {
 
     public LoginService(LoginListener loginListener){
         this.callBack = loginListener;
-        this.loginApi = Client.getRetrofit().create(LoginApi.class);
+        this.loginApi = RetrofitManager.create(LoginApi.class);
     }
     /**
      * 预登录获取验证码
@@ -50,7 +50,6 @@ public class LoginService {
                     callBack.onFailed(e.getLocalizedMessage());
                     return;
                 }
-
                 getCaptcha(fieldNames[3]);
             }
         });

@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import java.util.Map;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -27,10 +27,9 @@ public interface LoginApi{
     Call<Bitmap> getCaptcha(@Query("once") String once);
 
     @POST("signin")
-    @Headers({"Referer:https://www.v2ex.com/signin",
-              "Origin:https://www.v2ex.com"})
+    @Headers({"Referer:https://www.v2ex.com/signin",  "Origin:https://www.v2ex.com"})
     @FormUrlEncoded
-    Call<String> postLogin(@Body Map<String, String> form);
+    Call<String> postLogin(@FieldMap Map<String, String> form);
 
     @GET("settings")
     Call<String> getInfo();

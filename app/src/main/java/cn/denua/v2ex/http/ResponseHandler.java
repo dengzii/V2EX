@@ -26,7 +26,7 @@ public abstract class ResponseHandler<T> implements Callback<T> {
 
     @Override
     public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
-
+        t.printStackTrace();
         handler.post(()->handle(false, null, call, t.getLocalizedMessage() + "\t" + t.getMessage()));
     }
 

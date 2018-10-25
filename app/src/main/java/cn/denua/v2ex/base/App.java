@@ -5,8 +5,8 @@ import android.app.Application;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
-import cn.denua.v2ex.api.V2EX;
-import cn.denua.v2ex.http.Client;
+import cn.denua.v2ex.http.RetrofitManager;
+
 
 public class App extends Application {
 
@@ -18,8 +18,7 @@ public class App extends Application {
         app = this;
 
         Logger.addLogAdapter(new AndroidLogAdapter());
-        Client.init(null);
-        V2EX.init();
+        RetrofitManager.init(null);
     }
 
     public static Application getApplication(){

@@ -2,10 +2,16 @@ package cn.denua.v2ex.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,12 +23,10 @@ public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
 
-    @BindView(R.id.iv_captcha)
-    public ImageView ivCaptcha;
-    @BindView(R.id.et_check_code)
-    public EditText etCheckCode;
-    @BindView(R.id.webview)
-    public WebView webView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +34,14 @@ public class MainActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
+        try {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+            setSupportActionBar(toolbar);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
-    @OnClick(R.id.bt_test)
     public void test(View view){
 
         startActivity(new Intent(this, LoginActivity.class));

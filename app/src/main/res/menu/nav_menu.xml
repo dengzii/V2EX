@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/it_check"
+        android:title="@string/checked"/>
+    <item android:id="@+id/it_message"
+        android:title="@string/message"/>
+    <item android:id="@+id/it_post"
+        android:title="@string/post"/>
+    <item android:id="@+id/it_following"
+        android:title="@string/following"/>
+    <item android:id="@+id/it_settings"
+        android:title="@string/settings"/>
+    <item android:id="@+id/it_login_out"
+        android:title="@string/login"/>
+</menu>

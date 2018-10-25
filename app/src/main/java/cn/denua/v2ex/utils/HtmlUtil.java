@@ -27,21 +27,19 @@ public class HtmlUtil {
 
     public static Account washSettingsInfo(String html){
 
+        Account account = new Account();
         Document document = Jsoup.parse(html);
         Elements elements = document.select("form>table>tbody>tr");
         Iterator<Element> ele = elements.iterator();
-        System.out.println(document);
-        int member = Integer.valueOf(ele.next().child(1).text().substring(6,14).trim());
-        String userName = ele.next().child(1).text();
-        String pic = ele.next().baseUri();
 
-        Account accountModel = new Account(userName, pic, member);
-
+        account.number = Integer.valueOf(ele.next().child(1).text().substring(6,14).trim());
+        account.nickName = ele.next().child(1).text();
+        account.picUrl = ele.next().baseUri();
         ele.next();
         ele.next();
         ele.next();
-        accountModel.setJoin(ele.next().child(1).text());
+        account.join = ele.next().child(1).text();
 
-        return accountModel;
+        return account;
     }
 }
