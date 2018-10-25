@@ -8,6 +8,6 @@ package cn.denua.v2ex.model;
  */
 public class Tag {
 
-    private String id;
-    private String name;
+    public String id;
+    public String name;
 }

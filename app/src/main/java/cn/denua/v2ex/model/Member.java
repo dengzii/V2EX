@@ -8,13 +8,13 @@ package cn.denua.v2ex.model;
  */
 public class Member {
 
-    protected String id;
-    private String nickName;
-    private String number;
-    protected String picUrl;
+    public String id;
+    public String nickName;
+    public String number;
+    public String picUrl;
 
-    private String site;
-    private String twiter;
-    private String discription;
+    public String site;
+    public String twiter;
+    public String discription;
 
 }

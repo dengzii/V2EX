@@ -5,33 +5,17 @@ import android.os.Parcelable;
 
 public class Account extends Member implements Parcelable {
 
-    private int number;
-    private int balance;
-    private int notifications;
+    public int number;
+    public int balance;
+    public int notifications;
 
-    private int favorNodes;
-    private int favorTopics;
-    private int following;
+    public int favorNodes;
+    public int favorTopics;
+    public int following;
 
-    private String join;
+    public String join;
 
-    public Account(String id, String pic, int number){
-
-        this.id = id;
-        this.picUrl = pic;
-        this.number = number;
-    }
-
-    public Account(String id, String pic, int number, int balance, int notifications, int favorNodes, int favorTopics, int following) {
-        this.id = id;
-        this.picUrl = pic;
-        this.number = number;
-        this.balance = balance;
-        this.notifications = notifications;
-        this.favorNodes = favorNodes;
-        this.favorTopics = favorTopics;
-        this.following = following;
-    }
+    public Account(){}
 
     public static Creator<Account> CREATOR = new Creator<Account>() {
         @Override
@@ -75,77 +59,5 @@ public class Account extends Member implements Parcelable {
         dest.writeInt(favorTopics);
         dest.writeInt(following);
         dest.writeString(join);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPic() {
-        return picUrl;
-    }
-
-    public void setPic(String pic) {
-        this.picUrl = pic;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public int getBalance() {
-        return balance;
-    }
-
-    public void setBalance(int balance) {
-        this.balance = balance;
-    }
-
-    public int getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(int notifications) {
-        this.notifications = notifications;
-    }
-
-    public int getFavorNodes() {
-        return favorNodes;
-    }
-
-    public void setFavorNodes(int favorNodes) {
-        this.favorNodes = favorNodes;
-    }
-
-    public int getFavorTopics() {
-        return favorTopics;
-    }
-
-    public void setFavorTopics(int favorTopics) {
-        this.favorTopics = favorTopics;
-    }
-
-    public int getFollowing() {
-        return following;
-    }
-
-    public void setFollowing(int following) {
-        this.following = following;
-    }
-
-    public String getJoin() {
-        return join;
-    }
-
-    public void setJoin(String join) {
-        this.join = join;
     }
 }

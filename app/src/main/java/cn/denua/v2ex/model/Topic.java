@@ -10,20 +10,20 @@ package cn.denua.v2ex.model;
  */
 public class Topic {
 
-    private String id;
+    public String id;
 
-    private String title;
-    private String time_pass;
+    public String title;
+    public String time_pass;
 
-    private int clicks;
-    private int favors;
-    private int thanks;
+    public int clicks = 0;
+    public int favors = 0;
+    public int thanks = 0;
+    public int replay = 0;
 
-    private String content;
+    public String content;
 
-    private Member author;
-    private Node node;
+    public Member author;
+    public Node node;
 
-    private Replay[] replays;
-
+    public Replay[] replays;
 }

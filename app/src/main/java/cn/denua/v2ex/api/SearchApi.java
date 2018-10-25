@@ -1,10 +1,13 @@
 package cn.denua.v2ex.api;
 
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
-import retrofit2.Call;
+import java.util.HashMap;
+
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 /*
@@ -53,14 +56,20 @@ public interface SearchApi {
      * @param operate   关键词关系参数
      */
     @GET()
-    Call<JSONObject> search(@Url String url,
-                            @Query("q")String keywords,
-                            @Query("from")int from,
-                            @Query("size")int size,
-                            @Query("sort")String sort,
-                            @Query("order")int order,
-                            @Query("gte")int gte,
-                            @Query("lte")int lte,
-                            @Query("node")String node,
-                            @Query("operate")String operate);
+    Observable<JsonObject> search(@Url String url,
+                              @Query("q")String keywords,
+                              @Query("from")int from,
+                              @Query("size")int size,
+                              @Query("sort")String sort,
+                              @Query("order")int order,
+                              @Query("gte")int gte,
+                              @Query("lte")int lte,
+                              @Query("node")String node,
+                              @Query("operate")String operate);
+
+    @GET()
+    Observable<JsonObject> search(@Url String url, @Query("q")String keywords);
+
+    @GET()
+    Observable<JsonObject> search(@Url String url, @QueryMap HashMap<String, String> param);
 }

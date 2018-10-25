@@ -8,10 +8,10 @@ package cn.denua.v2ex.model;
  */
 public class Replay {
 
-    private String id;
-    private Member member;
-    private Member[] at;
-    private String content;
-    private String ago;
-    private String via;
+    public String id;
+    public Member member;
+    public Member[] at;
+    public String content;
+    public String ago;
+    public String via;
 }

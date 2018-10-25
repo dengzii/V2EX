@@ -31,10 +31,20 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    api 'com.android.support:design:27.1.1'
+
     api 'com.squareup.retrofit2:retrofit:2.4.0'
+    api 'com.squareup.retrofit2:converter-gson:2.4.0'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    api 'com.squareup.retrofit2:converter-scalars:2.4.0'
+
     api 'com.jakewharton:butterknife:8.8.1'
-    api 'com.google.code.gson:gson:2.8.2'
+    api 'com.google.code.gson:gson:2.8.5'
     api 'com.orhanobut:logger:2.2.0'
 
+    api 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    api "io.reactivex.rxjava2:rxjava:2.2.0"
+
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'org.jetbrains:annotations:15.0'
 }

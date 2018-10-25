@@ -8,8 +8,8 @@ package cn.denua.v2ex.model;
  */
 public class Node {
 
-    private String id;
-    private String name;
-    private String topics;
+    public String id;
+    public String name;
+    public String topics;
 
 }
