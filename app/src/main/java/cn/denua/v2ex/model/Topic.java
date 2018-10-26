@@ -13,7 +13,7 @@ public class Topic {
     public String id;
 
     public String title;
-    public String time_pass;
+    public String refreshTime;
 
     public int clicks = 0;
     public int favors = 0;

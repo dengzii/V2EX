@@ -16,5 +16,4 @@ public class Member {
     public String site;
     public String twiter;
     public String discription;
-
 }

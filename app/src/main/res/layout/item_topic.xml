@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="90dp"
+    android:layout_marginBottom="1dp">
+
+    <ImageView
+        android:id="@+id/iv_user_pic"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/placeholder"
+        android:textColor="@color/secondary"
+        android:textSize="6pt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_user_pic" />
+
+
+    <TextView
+        android:id="@+id/tv_replay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="5pt"
+        android:text="@string/placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_latest_refresh" />
+
+    <TextView
+        android:id="@+id/tv_latest_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="5pt"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_node"/>
+
+    <TextView
+        android:id="@+id/tv_node"
+        android:textSize="5pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/placeholder"
+        android:padding="1dp"
+        android:textColor="@color/primary"
+        android:background="@color/accent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingStart="66dp"
+        android:paddingEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_replay"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/placeholder"
+            android:textColor="@color/black"
+            android:textIsSelectable="true"
+            android:textSize="7pt"
+            app:layout_constraintBottom_toTopOf="@+id/tv_username"
+            app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </FrameLayout>
+</android.support.constraint.ConstraintLayout>

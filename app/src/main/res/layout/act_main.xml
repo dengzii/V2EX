@@ -7,9 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    tools:openDrawer="start"
     tools:context=".ui.MainActivity">
 
     <android.support.design.widget.CoordinatorLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,38 +19,51 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:titleTextColor="@color/accent"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:navigationIcon="@drawable/ic_menu"
-                app:titleMarginStart="0dp"
-                app:title="@string/app_name" />
+                <android.support.v7.widget.Toolbar
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:titleTextColor="@color/accent"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:navigationIcon="@drawable/ic_menu"
+                    app:titleMarginStart="0dp"
+                    app:title="@string/app_name" />
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/view_pager_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    app:tabBackground="@color/primary"
+                    app:tabTextColor="@color/secondary"
+                    app:tabSelectedTextColor="@color/accent"/>
 
         </android.support.design.widget.AppBarLayout>
+
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
     <LinearLayout
         android:layout_gravity="start"
         android:layout_width="260dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <android.support.design.widget.NavigationView
+            android:id="@+id/navigation"
             app:headerLayout="@layout/w_nav_header"
             android:layout_gravity="start"
             android:layout_width="260dp"
             android:layout_height="match_parent"
-            app:menu="@menu/nav_menu"/>
+            app:menu="@menu/nav_drawer"/>
 
     </LinearLayout>
 
