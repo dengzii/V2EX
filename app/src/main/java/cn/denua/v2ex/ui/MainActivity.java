@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2018 denua.
+ */
+
 package cn.denua.v2ex.ui;
 
 import android.os.Bundle;
@@ -11,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,9 +23,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
-import cn.denua.v2ex.adapter.MainViewPagerAdapter;
+import cn.denua.v2ex.adapter.MainPagerAdapter;
 import cn.denua.v2ex.base.BaseActivity;
 import cn.denua.v2ex.fragment.HotTopicFragment;
+import cn.denua.v2ex.utils.Config;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -46,30 +50,26 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         ButterKnife.bind(this);
         initView();
-
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new HotTopicFragment());
-        fragments.add(new HotTopicFragment());
-        viewPager.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), fragments));
     }
-
     private void initView(){
 
         setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.toolbar_main);
-        TabLayout.Tab tab = tabLayout.newTab();
-        tab.setText("最 热");
-        TabLayout.Tab tab1 = tabLayout.newTab();
-        tab1.setText("最 热");
-        tabLayout.addTab(tab,0);
-        tabLayout.addTab(tab1,1);
 
         tabLayout.setupWithViewPager(viewPager);
+
+        for (int i=0;i<Config.HOME_TAB_TITLES.size();i++){
+            tabLayout.addTab(tabLayout.newTab());
+        }
+
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(Gravity.START));
         navigationView.setNavigationItemSelectedListener(this);
-    }
 
-    public void onTabSelected(){}
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(new HotTopicFragment());
+        fragments.add(new HotTopicFragment());
+        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragments));
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

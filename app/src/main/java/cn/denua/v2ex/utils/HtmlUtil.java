@@ -32,13 +32,13 @@ public class HtmlUtil {
         Elements elements = document.select("form>table>tbody>tr");
         Iterator<Element> ele = elements.iterator();
 
-        account.number = Integer.valueOf(ele.next().child(1).text().substring(6,14).trim());
-        account.nickName = ele.next().child(1).text();
-        account.picUrl = ele.next().baseUri();
+        account.setCreated(15555555); Long.valueOf(ele.next().child(1).text().substring(6,14).trim());
+        account.setUsername(ele.next().child(1).text());
+        account.setAvatar_mini(ele.next().baseUri());
         ele.next();
         ele.next();
         ele.next();
-        account.join = ele.next().child(1).text();
+        account.setJoin(ele.next().child(1).text());
 
         return account;
     }

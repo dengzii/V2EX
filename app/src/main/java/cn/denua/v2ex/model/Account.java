@@ -5,15 +5,14 @@ import android.os.Parcelable;
 
 public class Account extends Member implements Parcelable {
 
-    public int number;
-    public int balance;
-    public int notifications;
+    private int balance;
+    private int notifications;
 
-    public int favorNodes;
-    public int favorTopics;
-    public int following;
+    private int favorNodes;
+    private int favorTopics;
+    private int following;
 
-    public String join;
+    private String join;
 
     public Account(){}
 
@@ -31,9 +30,9 @@ public class Account extends Member implements Parcelable {
 
     private Account(Parcel in){
 
-        this.id = in.readString();
-        this.picUrl = in.readString();
-        this.number = in.readInt();
+        this.setId(in.readInt());
+        this.setAvatar_mini(in.readString());
+        this.setCreated(in.readLong());
         this.balance = in.readInt();
         this.notifications = in.readInt();
         this.favorNodes = in.readInt();
@@ -50,14 +49,63 @@ public class Account extends Member implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(picUrl);
-        dest.writeInt(number);
+        dest.writeInt(getId());
+        dest.writeString(getAvatar_mini());
+        dest.writeLong(getCreated());
         dest.writeInt(balance);
         dest.writeInt(notifications);
         dest.writeInt(favorNodes);
         dest.writeInt(favorTopics);
         dest.writeInt(following);
         dest.writeString(join);
+    }
+
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public int getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(int notifications) {
+        this.notifications = notifications;
+    }
+
+    public int getFavorNodes() {
+        return favorNodes;
+    }
+
+    public void setFavorNodes(int favorNodes) {
+        this.favorNodes = favorNodes;
+    }
+
+    public int getFavorTopics() {
+        return favorTopics;
+    }
+
+    public void setFavorTopics(int favorTopics) {
+        this.favorTopics = favorTopics;
+    }
+
+    public int getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(int following) {
+        this.following = following;
+    }
+
+    public String getJoin() {
+        return join;
+    }
+
+    public void setJoin(String join) {
+        this.join = join;
     }
 }

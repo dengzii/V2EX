@@ -1,5 +1,6 @@
 package cn.denua.v2ex.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,19 +19,20 @@ import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.adapter.RecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseFragment;
-import cn.denua.v2ex.model.Member;
-import cn.denua.v2ex.model.Node;
 import cn.denua.v2ex.model.Topic;
+import cn.denua.v2ex.service.TopicListener;
+import cn.denua.v2ex.service.TopicService;
 
-public class HotTopicFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class HotTopicFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, TopicListener {
 
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+    TopicService topicService = new TopicService();
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    @BindView(R.id.rv_topics)
+    RecyclerView recyclerView;
+    RecyclerViewAdapter adapter;
+    List<Topic> topics = new ArrayList<>();
 
     @Nullable
     @Override
@@ -41,53 +43,35 @@ public class HotTopicFragment extends BaseFragment implements SwipeRefreshLayout
 
         ButterKnife.bind(this, view);
 
-        RecyclerView recyclerView = view.findViewById(R.id.rv_topics);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        Topic topic = new Topic();
-        Node node = new Node();
-        node.name = "V2EX";
-        Member member = new Member();
-        member.nickName = "nickname";
+        topicService.getHot(this);
 
-        topic.title = "Hello World, whats you name ?Hello World, whats you name ?Hello World, whats you name ?Hello World, whats you name ?Hello World, whats you name ?";
-        topic.author = member;
-        topic.refreshTime = "1 小时前";
-        topic.replay = 100;
-        topic.node = node;
-        List<Topic> topics = new ArrayList<>();
-
-        topics.add(topic);
-        topics.add(topic);
-        topics.add(topic);
-        topics.add(topic);
-        topics.add(topic);
-        topics.add(topic);
-        topics.add(topic);
-        topics.add(topic);
-        topics.add(topic);
-        topics.add(topic);
-        topics.add(topic);topics.add(topic);topics.add(topic);topics.add(topic);topics.add(topic);topics.add(topic);
-        topics.add(topic);topics.add(topic);topics.add(topic);topics.add(topic);topics.add(topic);topics.add(topic);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(topics);
+        adapter = new RecyclerViewAdapter(getContext(), topics);
         recyclerView.setAdapter(adapter);
 
+        swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this);
         return view;
     }
 
+
     @Override
     public void onRefresh() {
-        new Thread(()->{
-            try {
-                Thread.sleep(3000);
-                swipeRefreshLayout.setRefreshing(false);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+
+    }
+
+    @Override
+    public void onTopics(List<Topic> topics) {
+        swipeRefreshLayout.setRefreshing(false);
+        adapter.setTopics(topics);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onError(String msg) {
+
     }
 }

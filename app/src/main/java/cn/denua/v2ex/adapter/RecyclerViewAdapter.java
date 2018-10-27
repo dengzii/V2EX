@@ -1,5 +1,7 @@
 package cn.denua.v2ex.adapter;
 
+import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -16,9 +20,11 @@ import cn.denua.v2ex.model.Topic;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
     private List<Topic> topics;
+    private Context context;
 
-    public RecyclerViewAdapter(List<Topic> topics){
+    public RecyclerViewAdapter(Context context, List<Topic> topics){
         this.topics = topics;
+        this.context = context;
     }
 
     @NonNull
@@ -30,15 +36,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return new MyViewHolder(view);
     }
 
+    public void setTopics(List<Topic> topics) {
+        this.topics = topics;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Topic topic = topics.get(position);
-        holder.tvNickname.setText(topic.author.nickName);
-        holder.tvContent.setText(topic.title);
-        holder.tvRefreshTime.setText(topic.refreshTime);
-        holder.tvNode.setText(topic.node.name);
-        holder.tvReplay.setText(String.valueOf(topic.replay));
+        if (topic == null)
+            return;
+        holder.tvNickname.setText(topic.getMember().getUsername());
+        holder.tvContent.setText(topic.getTitle());
+        holder.tvRefreshTime.setText(String.valueOf(topic.getLast_touched()));
+        holder.tvNode.setText(topic.getNode().getName());
+        holder.tvReplay.setText(String.valueOf(topic.getReplies()));
+        Glide.with(context).load("https:" + topic.getMember().getAvatar_large()).into(holder.ivUserPic);
     }
 
     @Override

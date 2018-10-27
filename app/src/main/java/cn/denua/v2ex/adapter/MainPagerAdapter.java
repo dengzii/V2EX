@@ -1,6 +1,7 @@
 package cn.denua.v2ex.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -9,13 +10,17 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-public class MainViewPagerAdapter extends FragmentPagerAdapter {
+import cn.denua.v2ex.utils.Config;
+
+public class MainPagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragmentList;
+    private List<String> titles;
 
-    public MainViewPagerAdapter(FragmentManager fragmentManager, List<Fragment> fragmentList){
+    public MainPagerAdapter(FragmentManager fragmentManager, List<Fragment> fragmentList){
         super(fragmentManager);
         this.fragmentList = fragmentList;
+        this.titles = Config.HOME_TAB_TITLES;
         fragmentManager.beginTransaction().commitAllowingStateLoss();
     }
 
@@ -39,7 +44,13 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
         return fragmentList.get(position);
     }
 
-//    @NonNull
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return titles.get(position);
+    }
+
+    //    @NonNull
 //    @Override
 //    public Object instantiateItem(@NonNull ViewGroup container, int position) {
 //
