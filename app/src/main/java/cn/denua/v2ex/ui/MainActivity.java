@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.adapter.MainPagerAdapter;
 import cn.denua.v2ex.base.BaseActivity;
-import cn.denua.v2ex.fragment.HotTopicFragment;
+import cn.denua.v2ex.fragment.TopicFragment;
 import cn.denua.v2ex.utils.Config;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,6 +43,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @BindView(R.id.view_pager_tab)
     TabLayout tabLayout;
 
+    private List<Fragment> topicFragments = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         ButterKnife.bind(this);
         initView();
     }
+
     private void initView(){
 
         setSupportActionBar(toolbar);
@@ -58,17 +61,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         tabLayout.setupWithViewPager(viewPager);
 
-        for (int i=0;i<Config.HOME_TAB_TITLES.size();i++){
+        for (String s:Config.HOME_TAB_TITLES){
             tabLayout.addTab(tabLayout.newTab());
+            topicFragments.add(TopicFragment.newInstance(s));
         }
 
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(Gravity.START));
         navigationView.setNavigationItemSelectedListener(this);
 
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new HotTopicFragment());
-        fragments.add(new HotTopicFragment());
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragments));
+        // viewPager Fragment
+        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), topicFragments));
     }
 
     @Override

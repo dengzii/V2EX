@@ -17,10 +17,11 @@ public class Config {
     public static List<String> HOME_TAB_TITLES = new ArrayList<String>(){{
         add("热 门");
         add("最 新");
+        add("热 门");
     }};
 
-
     static {
+
         BASE_URL.put("www.sov2ex.com","https://www.sov2ex.com/");
     }
 }

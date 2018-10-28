@@ -1,7 +1,7 @@
 package cn.denua.v2ex.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
+
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,13 +44,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Topic topic = topics.get(position);
-        if (topic == null)
-            return;
         holder.tvNickname.setText(topic.getMember().getUsername());
         holder.tvContent.setText(topic.getTitle());
         holder.tvRefreshTime.setText(String.valueOf(topic.getLast_touched()));
         holder.tvNode.setText(topic.getNode().getName());
         holder.tvReplay.setText(String.valueOf(topic.getReplies()));
+
         Glide.with(context).load("https:" + topic.getMember().getAvatar_large()).into(holder.ivUserPic);
     }
 

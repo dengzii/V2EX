@@ -1,13 +1,9 @@
 package cn.denua.v2ex.adapter;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.View;
-import android.view.ViewGroup;
-
 import java.util.List;
 
 import cn.denua.v2ex.utils.Config;
@@ -21,7 +17,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         super(fragmentManager);
         this.fragmentList = fragmentList;
         this.titles = Config.HOME_TAB_TITLES;
-        fragmentManager.beginTransaction().commitAllowingStateLoss();
+//        fragmentManager.beginTransaction().commitAllowingStateLoss();
     }
 
 //    @Override
