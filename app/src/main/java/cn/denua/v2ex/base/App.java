@@ -2,6 +2,7 @@ package cn.denua.v2ex.base;
 
 import android.app.Application;
 
+import com.blankj.utilcode.util.Utils;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
@@ -19,6 +20,7 @@ public class App extends Application {
 
         Logger.addLogAdapter(new AndroidLogAdapter());
         RetrofitManager.init(null);
+        Utils.init(this);
     }
 
     public static Application getApplication(){

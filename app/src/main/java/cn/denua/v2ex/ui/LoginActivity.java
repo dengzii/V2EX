@@ -16,6 +16,7 @@ import cn.denua.v2ex.base.BaseActivity;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.LoginListener;
 import cn.denua.v2ex.service.LoginService;
+import cn.denua.v2ex.utils.Config;
 
 /*
  * LoginActivity
@@ -30,7 +31,7 @@ public class LoginActivity extends BaseActivity implements LoginListener {
     @BindView(R.id.et_password)
     EditText etPassword;
     @BindView(R.id.et_check_code)
-    EditText etCaptachCode;
+    EditText etCaptchaCode;
     @BindView(R.id.iv_captcha)
     ImageView ivCaptcha;
 
@@ -51,7 +52,7 @@ public class LoginActivity extends BaseActivity implements LoginListener {
         loginService.login(
                 etAccount.getText().toString(),
                 etPassword.getText().toString(),
-                etCaptachCode.getText().toString());
+                etCaptchaCode.getText().toString());
     }
 
     @Override
@@ -66,6 +67,9 @@ public class LoginActivity extends BaseActivity implements LoginListener {
 
     @Override
     public void onSuccess(Account accountModel) {
-        Toast.makeText(this, accountModel.getUsername() + " - " + accountModel.getCreated(), Toast.LENGTH_SHORT).show();
+        Config.account = accountModel;
+        Config.account.setLogin(true);
+        setResult(100);
+        finish();
     }
 }

@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.TimeUtils;
+import com.blankj.utilcode.util.Utils;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -44,13 +46,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Topic topic = topics.get(position);
+
         holder.tvNickname.setText(topic.getMember().getUsername());
         holder.tvContent.setText(topic.getTitle());
-        holder.tvRefreshTime.setText(String.valueOf(topic.getLast_touched()));
+
+        String lastTouched = TimeUtils.getFitTimeSpanByNow(topic.getLast_touched()*1000, 4);
+        String userPicUrl = topic.getMember().getAvatar_large();
+        lastTouched = lastTouched.startsWith("-")?lastTouched.substring(1):lastTouched;
+
+        holder.tvRefreshTime.setText(lastTouched);
         holder.tvNode.setText(topic.getNode().getName());
         holder.tvReplay.setText(String.valueOf(topic.getReplies()));
 
-        Glide.with(context).load("https:" + topic.getMember().getAvatar_large()).into(holder.ivUserPic);
+        Glide.with(context).load(userPicUrl).into(holder.ivUserPic);
     }
 
     @Override

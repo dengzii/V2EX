@@ -4,6 +4,7 @@
 
 package cn.denua.v2ex.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,7 +16,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +36,7 @@ import cn.denua.v2ex.utils.Config;
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
+    private final int LOGIN_REQUEST_CODE = 100;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -43,7 +49,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @BindView(R.id.view_pager_tab)
     TabLayout tabLayout;
 
+    private ImageView ivUserPic;
+    private TextView tvUserName;
+
     private List<Fragment> topicFragments = new ArrayList<>();
+    private MenuItem miLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +65,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void initView(){
-
         setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.toolbar_main);
 
@@ -69,8 +78,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(Gravity.START));
         navigationView.setNavigationItemSelectedListener(this);
 
-        // viewPager Fragment
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), topicFragments));
+
+        ivUserPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.iv_user_pic);
+        tvUserName = (TextView ) navigationView.getHeaderView(0).findViewById(R.id.tv_username);
+        miLogin = navigationView.getMenu().findItem(R.id.it_login_out);
+
+        ivUserPic.setImageResource(R.drawable.ic_launcher_foreground);
+        tvUserName.setText(getResources().getText(R.string.not_login));
     }
 
     @Override
@@ -96,6 +111,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
                 break;
             default:
+
                 Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 break;
         }
@@ -108,9 +124,28 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.search:
                 Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.it_login_out:
+                startActivityForResult(new Intent(this, LoginActivity.class), LOGIN_REQUEST_CODE);
+                break;
             default:
                 Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
         }
         return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case LOGIN_REQUEST_CODE:
+                if (Config.account.isLogin()){
+                    tvUserName.setText(Config.account.getUsername());
+                    miLogin.setTitle(R.string.logout);
+                    miLogin.setIcon(R.drawable.ic_logout);
+                    Glide.with(this).load(Config.account.getAvatar_normal()).into(ivUserPic);
+                }
+                break;
+        }
     }
 }

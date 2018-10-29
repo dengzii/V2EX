@@ -16,8 +16,8 @@ public interface MemberApi {
 
 
     @GET("api/members/show.json")
-    Observable<JsonObject> getMemberDetail(@Query("username") String username);
+    Observable<JsonObject> getMember(@Query("username") String username);
 
     @GET("api/members/show.json")
-    Observable<JsonObject> getMemberDetail(@Query("id") int id);
+    Observable<JsonObject> getMember(@Query("id") int id);
 }

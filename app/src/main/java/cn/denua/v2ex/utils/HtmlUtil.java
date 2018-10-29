@@ -28,17 +28,14 @@ public class HtmlUtil {
     public static Account washSettingsInfo(String html){
 
         Account account = new Account();
+
+        if (html.matches("\\S*V2EX 第 \\d* 号会员\\S*"));
+
         Document document = Jsoup.parse(html);
         Elements elements = document.select("form>table>tbody>tr");
         Iterator<Element> ele = elements.iterator();
 
-        account.setCreated(15555555); Long.valueOf(ele.next().child(1).text().substring(6,14).trim());
-        account.setUsername(ele.next().child(1).text());
-        account.setAvatar_mini(ele.next().baseUri());
-        ele.next();
-        ele.next();
-        ele.next();
-        account.setJoin(ele.next().child(1).text());
+        ele.next().child(1).text().substring(6,14);
 
         return account;
     }

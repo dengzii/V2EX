@@ -10,71 +10,88 @@
 
     <ImageView
         android:id="@+id/iv_user_pic"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_launcher_background"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_username"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_username"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/placeholder"
+        android:textColor="@color/secondary"
+        android:textSize="5pt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/iv_user_pic" />
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/placeholder"
-        android:textColor="@color/secondary"
-        android:textSize="6pt"
+        android:text="@string/comment"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_user_pic" />
-
+        app:layout_constraintStart_toEndOf="@+id/tv_username"
+        app:layout_constraintTop_toTopOf="@+id/tv_replay" />
 
     <TextView
         android:id="@+id/tv_replay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="2dp"
         android:layout_marginBottom="8dp"
-        android:textSize="5pt"
+        android:gravity="center"
         android:text="@string/placeholder"
+        android:textAlignment="center"
+        android:textSize="5pt"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_latest_refresh" />
+        app:layout_constraintStart_toEndOf="@+id/textView" />
 
     <TextView
         android:id="@+id/tv_latest_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="5pt"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/placeholder"
+        android:textSize="5pt"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_node"/>
+        app:layout_constraintStart_toEndOf="@+id/tv_replay"
+        app:layout_constraintTop_toTopOf="@+id/tv_replay" />
 
     <TextView
         android:id="@+id/tv_node"
-        android:textSize="5pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_round_corners_5dp"
+        android:gravity="center"
+        android:paddingStart="5dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="2dp"
         android:text="@string/placeholder"
-        android:padding="1dp"
         android:textColor="@color/primary"
-        android:background="@color/accent"
+        android:textSize="5pt"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_latest_refresh" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:paddingStart="66dp"
+        android:paddingStart="50dp"
         android:paddingEnd="8dp"
         app:layout_constraintBottom_toTopOf="@+id/tv_replay"
         app:layout_constraintTop_toTopOf="parent">

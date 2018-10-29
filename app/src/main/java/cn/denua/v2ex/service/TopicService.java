@@ -14,6 +14,7 @@ import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.utils.RxUtil;
+
 /*
  *
  * @author denua

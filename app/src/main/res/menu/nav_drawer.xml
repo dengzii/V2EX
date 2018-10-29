@@ -2,15 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/it_check"
+        android:icon="@drawable/ic_coordinates"
         android:title="@string/checked"/>
     <item android:id="@+id/it_message"
+        android:icon="@drawable/ic_message"
         android:title="@string/message"/>
     <item android:id="@+id/it_post"
+        android:icon="@drawable/ic_editor"
         android:title="@string/post"/>
+    <item android:id="@+id/it_node"
+        android:icon="@drawable/ic_label"
+        android:title="@string/node"/>
     <item android:id="@+id/it_following"
+        android:icon="@drawable/ic_favor"
         android:title="@string/following"/>
     <item android:id="@+id/it_settings"
+        android:icon="@drawable/ic_setup"
         android:title="@string/settings"/>
     <item android:id="@+id/it_login_out"
+        android:icon="@drawable/ic_login"
         android:title="@string/login"/>
 </menu>
