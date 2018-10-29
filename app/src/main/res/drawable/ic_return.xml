@@ -1,0 +1,8 @@
+<!--
+  ~ Copyright (c) 2018 denua.
+  -->
+
+<vector android:height="24dp" android:viewportHeight="1024"
+    android:viewportWidth="1024" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#8a8a8a" android:pathData="M694.27,809.02l-295.81,-286.85 295.36,-274.75a32,32 0,0 0,-43.62 -46.85l-320,297.7a32,32 0,0 0,-0.51 46.4l320,310.3a32.03,32.03 0,0 0,44.58 -45.95"/>
+</vector>
