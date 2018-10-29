@@ -14,6 +14,8 @@ public class Account extends Member implements Parcelable {
 
     private String join;
 
+    private boolean login = false;
+
     public Account(){}
 
     public static Creator<Account> CREATOR = new Creator<Account>() {
@@ -107,5 +109,13 @@ public class Account extends Member implements Parcelable {
 
     public void setJoin(String join) {
         this.join = join;
+    }
+
+    public boolean isLogin() {
+        return login;
+    }
+
+    public void setLogin(boolean login) {
+        this.login = login;
     }
 }

@@ -38,8 +38,6 @@ public class Topic {
     private Replay[] replay;
 
 
-
-
     public int getId() {
         return id;
     }
