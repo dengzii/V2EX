@@ -20,11 +20,13 @@ import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.adapter.RecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseFragment;
+import cn.denua.v2ex.base.BaseNetworkFragment;
+import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.service.TopicListener;
 import cn.denua.v2ex.service.TopicService;
 
-public class TopicFragment extends BaseFragment implements TopicListener {
+public class TopicFragment extends BaseNetworkFragment implements ResponseListener<List<Topic>> {
 
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -77,20 +79,19 @@ public class TopicFragment extends BaseFragment implements TopicListener {
         super.onActivityCreated(savedInstanceState);
 
         swipeRefreshLayout.setRefreshing(true);
-        TopicService.getTopic(getContentType(), this);
+        TopicService.getInstance().getTopic(getContentType(), this, this);
     }
 
     @Override
-    public void onTopics(List<Topic> topics) {
-
+    public void onComplete(List<Topic> result) {
         swipeRefreshLayout.setRefreshing(false);
-        this.topics = topics;
+        this.topics = result;
         adapter.setTopics(topics);
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onError(String msg) {
+    public void onFailed(String msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }

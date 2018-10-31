@@ -10,15 +10,16 @@ import java.util.Map;
 
 import cn.denua.v2ex.api.LoginApi;
 import cn.denua.v2ex.api.MemberApi;
+import cn.denua.v2ex.base.BaseService;
 import cn.denua.v2ex.http.ResponseHandler;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.http.RxObserver;
+import cn.denua.v2ex.interfaces.IResponsibleView;
+import cn.denua.v2ex.interfaces.NextResponseListener;
+import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
-import cn.denua.v2ex.model.Member;
 import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import retrofit2.Call;
 
 /*
@@ -27,18 +28,24 @@ import retrofit2.Call;
  * @author denua
  * @date 2018/10/20
  */
-public class LoginService {
+public class LoginService<V extends IResponsibleView> extends BaseService<V, Account> {
 
     private LoginApi loginApi;
     private String[] fieldNames;
 
     private String username;
-    private LoginListener callBack;
+    private NextResponseListener<Bitmap, Account> callBack;
 
-    public LoginService(LoginListener loginListener){
-        this.callBack = loginListener;
-        this.loginApi = RetrofitManager.create(LoginApi.class);
+    public LoginService(V iResponsibleView, NextResponseListener<Bitmap, Account> loginListener){
+        super(iResponsibleView, loginListener);
+        callBack = loginListener;
+        loginApi = RetrofitManager.create(LoginApi.class);
     }
+    public LoginService(V iResponsibleView){
+        super(iResponsibleView);
+        loginApi = RetrofitManager.create(LoginApi.class);
+    }
+
     /**
      * 预登录获取验证码
      *
@@ -50,7 +57,7 @@ public class LoginService {
             public void handle(boolean success, String result, Call<String> call, String msg) {
 
                 if (!success || result.matches("[\\S\\s]+登录受限[\\S\\s]+")){
-                    callBack.onFailed(!success
+                    returnFailed(!success
                             ?msg
                             :"登录次数过多,该IP已被禁止,一天后尝试或切换IP。");
                     return;
@@ -58,7 +65,7 @@ public class LoginService {
                 try{
                     fieldNames = HtmlUtil.washLoginFieldName(result);
                 }catch (Exception e){
-                    callBack.onFailed(e.getLocalizedMessage());
+                    returnFailed(e.getLocalizedMessage());
                     return;
                 }
                 getCaptcha(fieldNames[3]);
@@ -67,21 +74,16 @@ public class LoginService {
 
     }
 
-    /**
-     * 获取验证码
-     *
-     * @param once once
-     */
     private void getCaptcha(String once){
 
         loginApi.getCaptcha(once).enqueue(new ResponseHandler<Bitmap>() {
             @Override
             public void handle(boolean success, Bitmap result, Call<Bitmap> call, String msg) {
                 if (success){
-                    callBack.onCaptcha(result);
+                    callBack.onNextResult(result);
                     return;
                 }
-                callBack.onFailed(msg);
+                returnFailed(msg);
             }
         });
     }
@@ -107,14 +109,14 @@ public class LoginService {
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
                 if (!success || (null==result)){
-                    callBack.onFailed(msg);
+                    returnFailed(msg);
                     return;
                 }
                 if (result.matches("[\\S\\s]+登录有点问题[\\S\\s]+")){
-                    callBack.onFailed("验证码或账号信息不正确.");
+                    returnFailed("验证码或账号信息不正确.");
                     return;
                 }
-                getSettingsPage();
+                getInfo(username, callBack);
             }
         });
     }
@@ -122,36 +124,37 @@ public class LoginService {
     /**
      * 从设置页面获取用户信息并返回结果
      *
+     * @param un    用户名
+     * @param responseListener  请求结果回调接口
      */
-    private void getSettingsPage(){
+    public void getInfo(String un, ResponseListener<Account> responseListener){
 
         loginApi.getInfo().enqueue(new ResponseHandler<String>() {
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
                 if (result.matches("[\\S\\s]+你要查看的页面需要先登录[\\S\\s]+")){
-                    callBack.onFailed("获取用户信息失败, 登录失败.");
+                    onFailed("获取用户信息失败, 登录失败.");
                     return;
                 }
-                if (result.matches("[\\S\\s]+" + username + "[\\S\\s]+")){
+                if (result.matches("[\\S\\s]+" + un + "[\\S\\s]+")){
                     RetrofitManager.create(MemberApi.class)
-                            .getMember(username)
+                            .getMember(un)
                             .compose(RxUtil.io2main())
                             .subscribe(new RxObserver<JsonObject>() {
                                 @Override
                                 public void _onNext(JsonObject jsonObject) {
                                     Account account = new Gson().fromJson(jsonObject, Account.class);
-                                    callBack.onSuccess(account);
+                                    responseListener.onComplete(account);
                                 }
                                 @Override
                                 public void _onError(String msg) {
-                                    callBack.onFailed(msg);
+                                    onFailed(msg);
                                 }
                             });
                     return;
                 }
-                callBack.onFailed("登录失败.");
+                responseListener.onFailed("登录失败.");
             }
         });
-
     }
 }

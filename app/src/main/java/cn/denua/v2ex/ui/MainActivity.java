@@ -5,6 +5,7 @@
 package cn.denua.v2ex.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -29,13 +30,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.adapter.MainPagerAdapter;
-import cn.denua.v2ex.base.BaseActivity;
+import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.fragment.TopicFragment;
+import cn.denua.v2ex.interfaces.ResponseListener;
+import cn.denua.v2ex.model.Account;
+import cn.denua.v2ex.service.LoginService;
 import cn.denua.v2ex.utils.Config;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseNetworkActivity implements NavigationView.OnNavigationItemSelectedListener, ResponseListener<Account> {
 
-    private static final String TAG = "MainActivity";
+    private final String TAG = "MainActivity";
     private final int LOGIN_REQUEST_CODE = 100;
 
     @BindView(R.id.toolbar)
@@ -89,6 +93,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (Config.account.getUsername() != null){
+            new LoginService(this).getInfo(Config.account.getUsername(), this);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_main, menu);
         return super.onCreateOptionsMenu(menu);
@@ -139,13 +152,33 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         switch (requestCode){
             case LOGIN_REQUEST_CODE:
-                if (Config.account.isLogin()){
-                    tvUserName.setText(Config.account.getUsername());
-                    miLogin.setTitle(R.string.logout);
-                    miLogin.setIcon(R.drawable.ic_logout);
-                    Glide.with(this).load(Config.account.getAvatar_normal()).into(ivUserPic);
-                }
+                if (resultCode == LoginActivity.RESULT_SUCCESS)
+                    setLoggedInStatus();
+                break;
+            case 0:
+                break;
+            default:
                 break;
         }
+    }
+
+    @Override
+    public void onFailed(String msg) {
+
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setLoggedInStatus(){
+
+        tvUserName.setText(Config.account.getUsername());
+        miLogin.setTitle(R.string.logout);
+        miLogin.setIcon(R.drawable.ic_logout);
+        Glide.with(this).load(Config.account.getAvatar_large()).into(ivUserPic);
+    }
+
+    @Override
+    public void onComplete(Account result) {
+        Config.account = result;
+        setLoggedInStatus();
     }
 }

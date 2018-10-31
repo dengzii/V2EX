@@ -13,8 +13,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.BaseActivity;
+import cn.denua.v2ex.base.BaseNetworkActivity;
+import cn.denua.v2ex.interfaces.NextResponseListener;
 import cn.denua.v2ex.model.Account;
-import cn.denua.v2ex.service.LoginListener;
 import cn.denua.v2ex.service.LoginService;
 import cn.denua.v2ex.utils.Config;
 
@@ -24,7 +25,9 @@ import cn.denua.v2ex.utils.Config;
  * @author denua
  * @date 2018/10/20
  */
-public class LoginActivity extends BaseActivity implements LoginListener {
+public class LoginActivity extends BaseNetworkActivity implements NextResponseListener<Bitmap,Account> {
+
+    public static final int RESULT_SUCCESS = 6;
 
     @BindView(R.id.et_account)
     EditText etAccount;
@@ -43,7 +46,7 @@ public class LoginActivity extends BaseActivity implements LoginListener {
         setContentView(R.layout.act_login);
         ButterKnife.bind(this);
 
-        loginService = new LoginService(this);
+        loginService = new LoginService(this,this);
         loginService.preLogin();
     }
 
@@ -56,20 +59,20 @@ public class LoginActivity extends BaseActivity implements LoginListener {
     }
 
     @Override
-    public void onCaptcha(Bitmap bitmap) {
-        ivCaptcha.setImageBitmap(bitmap);
-    }
-
-    @Override
     public void onFailed(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onSuccess(Account accountModel) {
-        Config.account = accountModel;
+    public void onNextResult(Bitmap next) {
+        ivCaptcha.setImageBitmap(next);
+    }
+
+    @Override
+    public void onComplete(Account result) {
+        Config.account = result;
         Config.account.setLogin(true);
-        setResult(100);
+        setResult(RESULT_SUCCESS);
         finish();
     }
 }

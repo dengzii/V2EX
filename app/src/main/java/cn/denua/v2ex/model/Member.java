@@ -63,12 +63,12 @@ public class Member {
     public String getAvatar_normal() {
         return avatar_normal==null
                 ?getAvatar_mini()
-                :fixScheme(avatar_normal);
+                :fixScheme(avatar_normal).replace("mini","normal");
     }
 
     public void setAvatar_normal(String avatar_normal) {
 
-        this.avatar_normal = fixScheme(avatar_normal).replace("mini","normal");
+        this.avatar_normal = avatar_normal;
     }
 
     public String getStatus() {
@@ -90,11 +90,11 @@ public class Member {
     public String getAvatar_large() {
         return avatar_large==null
                 ?getAvatar_normal()
-                :fixScheme(avatar_large);
+                :fixScheme(avatar_large).replace("mini","large");
     }
 
     public void setAvatar_large(String avatar_large) {
-        this.avatar_large = fixScheme(avatar_large).replace("mini","large");
+        this.avatar_large = avatar_large;
     }
 
     public String getWebsite() {
