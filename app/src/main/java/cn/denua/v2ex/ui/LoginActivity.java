@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,7 +62,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
 
     @Override
     public void onFailed(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        ToastUtils.showShort(msg);
     }
 
     @Override
@@ -70,9 +72,10 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
 
     @Override
     public void onComplete(Account result) {
+
         Config.account = result;
-        Config.account.setLogin(true);
         setResult(RESULT_SUCCESS);
+
         finish();
     }
 }

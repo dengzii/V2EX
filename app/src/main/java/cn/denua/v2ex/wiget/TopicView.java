@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +27,7 @@ import cn.denua.v2ex.ui.NodeActivity;
  *
  * @author denua
  * @date 2018/10/31 12
+ * @date 2018/10/31 12
  */
 public class TopicView extends FrameLayout {
 
@@ -45,18 +44,19 @@ public class TopicView extends FrameLayout {
     @BindView(R.id.tv_node)
     TextView tvNode;
 
-    public TopicView(Context context, ViewGroup parent) {
+    public TopicView(Context context ) {
         super(context);
-        initView(context, this);
+        initView(context);
     }
 
     public TopicView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initView(context, this);
+        initView(context);
+        this.getRootView();
     }
 
-    private void initView(Context context, ViewGroup parent){
-        inflate(context, R.layout.view_topic, parent);
+    private void initView(Context context ){
+        inflate(context, R.layout.view_topic, this);
         ButterKnife.bind(this);
     }
 

@@ -1,9 +1,17 @@
+/*
+ * Copyright (c) 2018 denua.
+ */
+
 package cn.denua.v2ex.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Account extends Member implements Parcelable {
+import java.io.Serializable;
+
+public class Account extends Member implements Serializable, Parcelable {
+
+    private static final long serialVersionUID  = 1L;
 
     private int balance;
     private int notifications;
@@ -14,53 +22,7 @@ public class Account extends Member implements Parcelable {
 
     private String join;
 
-    private boolean login = false;
-
     public Account(){}
-
-    public static Creator<Account> CREATOR = new Creator<Account>() {
-        @Override
-        public Account createFromParcel(Parcel source) {
-            return new Account(source );
-        }
-
-        @Override
-        public Account[] newArray(int size) {
-            return new Account[size];
-        }
-    };
-
-    private Account(Parcel in){
-
-        this.setId(in.readInt());
-        this.setAvatar_mini(in.readString());
-        this.setCreated(in.readLong());
-        this.balance = in.readInt();
-        this.notifications = in.readInt();
-        this.favorNodes = in.readInt();
-        this.favorTopics = in.readInt();
-        this.following = in.readInt();
-        this.join = in.readString();
-    }
-
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(getId());
-        dest.writeString(getAvatar_mini());
-        dest.writeLong(getCreated());
-        dest.writeInt(balance);
-        dest.writeInt(notifications);
-        dest.writeInt(favorNodes);
-        dest.writeInt(favorTopics);
-        dest.writeInt(following);
-        dest.writeString(join);
-    }
 
 
     public int getBalance() {
@@ -111,11 +73,71 @@ public class Account extends Member implements Parcelable {
         this.join = join;
     }
 
-    public boolean isLogin() {
-        return login;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setLogin(boolean login) {
-        this.login = login;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.balance);
+        dest.writeInt(this.notifications);
+        dest.writeInt(this.favorNodes);
+        dest.writeInt(this.favorTopics);
+        dest.writeInt(this.following);
+        dest.writeString(this.join);
+        dest.writeInt(this.id);
+        dest.writeString(this.username);
+        dest.writeString(this.number);
+        dest.writeString(this.avatar_normal);
+        dest.writeString(this.status);
+        dest.writeString(this.avatar_mini);
+        dest.writeString(this.avatar_large);
+        dest.writeString(this.website);
+        dest.writeString(this.github);
+        dest.writeString(this.psn);
+        dest.writeString(this.twitter);
+        dest.writeString(this.bio);
+        dest.writeString(this.tagline);
+        dest.writeLong(this.created);
+        dest.writeString(this.location);
+        dest.writeString(this.btc);
     }
+
+    protected Account(Parcel in) {
+        this.balance = in.readInt();
+        this.notifications = in.readInt();
+        this.favorNodes = in.readInt();
+        this.favorTopics = in.readInt();
+        this.following = in.readInt();
+        this.join = in.readString();
+        this.id = in.readInt();
+        this.username = in.readString();
+        this.number = in.readString();
+        this.avatar_normal = in.readString();
+        this.status = in.readString();
+        this.avatar_mini = in.readString();
+        this.avatar_large = in.readString();
+        this.website = in.readString();
+        this.github = in.readString();
+        this.psn = in.readString();
+        this.twitter = in.readString();
+        this.bio = in.readString();
+        this.tagline = in.readString();
+        this.created = in.readLong();
+        this.location = in.readString();
+        this.btc = in.readString();
+    }
+
+    public static final Creator<Account> CREATOR = new Creator<Account>() {
+        @Override
+        public Account createFromParcel(Parcel source) {
+            return new Account(source);
+        }
+
+        @Override
+        public Account[] newArray(int size) {
+            return new Account[size];
+        }
+    };
 }

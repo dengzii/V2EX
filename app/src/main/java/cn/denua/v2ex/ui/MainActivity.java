@@ -5,7 +5,6 @@
 package cn.denua.v2ex.ui;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -108,6 +107,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         if (username!= null){
             new LoginService(this).getInfo(username,this);
         }
+
     }
 
     @Override
@@ -163,8 +163,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             case LOGIN_REQUEST_CODE:
                 if (resultCode == LoginActivity.RESULT_SUCCESS)
                     setLoggedInStatus();
-                break;
-            case 0:
                 break;
             default:
                 break;

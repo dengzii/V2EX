@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,23 +70,18 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         adapter = new RecyclerViewAdapter(getContext(), topics);
         recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setOnRefreshListener(this);
+        onRefresh();
         return savedView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        onRefresh();
     }
 
     @Override
     public void onRefresh() {
         TopicService.getInstance().getTopic(getContentType(), this, this);
-    }
-
-    @Override
-    public void onStartRequest() {
-        swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
@@ -103,8 +100,6 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
 
     @Override
     public void onFailed(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        ToastUtils.showShort(msg);
     }
-
-
 }

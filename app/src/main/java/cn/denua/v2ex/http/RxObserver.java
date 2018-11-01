@@ -1,6 +1,5 @@
 package cn.denua.v2ex.http;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -21,7 +20,7 @@ public abstract class RxObserver<T> implements Observer<T> {
 
     @Override
     public void onError(Throwable e) {
-        _onError(e.getLocalizedMessage() + "\n" + e.getMessage());
+        _onError(e.getLocalizedMessage());
     }
 
     @Override

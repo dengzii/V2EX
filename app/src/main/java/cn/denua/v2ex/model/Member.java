@@ -8,26 +8,26 @@ package cn.denua.v2ex.model;
  */
 public class Member {
 
-    private int id;
-    private String username;
-    private String number;
-    private String avatar_normal;
+    protected int id;
+    protected String username;
+    protected String number;
+    protected String avatar_normal;
 
-    private String status;
+    protected String status;
 
-    private String avatar_mini;
-    private String avatar_large;
+    protected String avatar_mini;
+    protected String avatar_large;
 
-    private String website;
-    private String github;
-    private String psn;
-    private String twitter;
+    protected String website;
+    protected String github;
+    protected String psn;
+    protected String twitter;
 
-    private String bio;
-    private String tagline;
-    private long created;
-    private String location;
-    private String btc;
+    protected String bio;
+    protected String tagline;
+    protected long created;
+    protected String location;
+    protected String btc;
 
 
     private String fixScheme(String url){

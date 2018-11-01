@@ -18,17 +18,14 @@ import cn.denua.v2ex.model.Account;
  */
 public class Config {
 
-    enum PrefKey{
-        UserName, LatestLogin
-    }
 
     public static final String CONFIG_PREF_FILE_NAME = "pref_config";
 
     public static final HashMap<String, String> BASE_URL = new HashMap<>();
     public static final HashMap<String, String> CONFIG = new HashMap<>();
 
-
     public static Account account = new Account();
+    public static boolean IsLogin = false;
 
     public static List<String> HOME_TAB_TITLES = new ArrayList<>();
 
@@ -38,15 +35,25 @@ public class Config {
         HOME_TAB_TITLES.add("热 门");
         HOME_TAB_TITLES.add("最 新");
         HOME_TAB_TITLES.add("热 门");
+
         CONFIG.put("username", null);
         CONFIG.put("last_touched", null);
 
         BASE_URL.put("www.sov2ex.com","https://www.sov2ex.com/");
     }
 
+    public static void persistentAccount(){
+
+        SharedPreferences.Editor editor= App.getApplication().getSharedPreferences(CONFIG_PREF_FILE_NAME, Context.MODE_PRIVATE).edit();
+        editor.putInt("id", account.getId());
+        editor.putString("username", account.getUsername());
+        editor.putString("avatar", account.getAvatar_large());
+        editor.putLong("created", account.getCreated());
+        editor.apply();
+    }
+
     public static void persetentUserName(String username){
 
         SharedPreferences sharedPreferences = App.getApplication().getSharedPreferences(CONFIG_PREF_FILE_NAME, Context.MODE_PRIVATE);
-        sharedPreferences.getString(ConfigKey.UserName.name(),null);
     }
 }
