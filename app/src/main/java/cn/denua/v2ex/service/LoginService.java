@@ -133,7 +133,7 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
                 if (result.matches("[\\S\\s]+你要查看的页面需要先登录[\\S\\s]+")){
-                    onFailed("获取用户信息失败, 登录失败.");
+                    responseListener.onFailed("获取用户信息失败, 登录失败.");
                     return;
                 }
                 if (result.matches("[\\S\\s]+" + un + "[\\S\\s]+")){
@@ -148,7 +148,7 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
                                 }
                                 @Override
                                 public void _onError(String msg) {
-                                    onFailed(msg);
+                                    responseListener.onFailed(msg);
                                 }
                             });
                     return;

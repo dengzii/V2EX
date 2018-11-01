@@ -19,6 +19,6 @@ public interface IResponsibleView {
 
     void onStartRequest();
     void onProcessData(int progress);
-    void onRequestComplete();
+    void onCompleteRequest();
     int getContextStatus();
 }

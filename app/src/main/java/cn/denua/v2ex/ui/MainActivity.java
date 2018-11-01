@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,14 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         setContentView(R.layout.act_main);
 
         ButterKnife.bind(this);
+        ImmersionBar.with(this).init();
         initView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ImmersionBar.with(this).destroy();
     }
 
     private void initView(){
@@ -96,8 +104,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     protected void onStart() {
         super.onStart();
 
-        if (Config.account.getUsername() != null){
-            new LoginService(this).getInfo(Config.account.getUsername(), this);
+        String username = Config.account.getUsername();
+        if (username!= null){
+            new LoginService(this).getInfo(username,this);
         }
     }
 
@@ -181,4 +190,5 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         Config.account = result;
         setLoggedInStatus();
     }
+
 }

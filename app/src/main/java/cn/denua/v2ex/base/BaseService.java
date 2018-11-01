@@ -46,24 +46,19 @@ public class BaseService<V extends IResponsibleView, T> {
         return view;
     }
 
-    protected void onFailed(String message){
-
-        if (view.getContextStatus() != IResponsibleView.VIEW_STATUS_ACTIVATED){
-            responseListener.onFailed(message);
-        }
-    }
-
     protected void returnFailed(String msg){
 
-        if (view.getContextStatus() != IResponsibleView.VIEW_STATUS_ACTIVATED){
+        if (view.getContextStatus() == IResponsibleView.VIEW_STATUS_ACTIVATED){
             responseListener.onFailed(msg);
         }
+        view.onCompleteRequest();
     }
 
     protected void returnSuccess(T result){
-        if (view.getContextStatus() != IResponsibleView.VIEW_STATUS_ACTIVATED) {
+        if (view.getContextStatus() == IResponsibleView.VIEW_STATUS_ACTIVATED) {
             responseListener.onComplete(result);
         }
+        view.onCompleteRequest();
     }
 
     protected void setResponseListener(ResponseListener<T> responseListener) {
@@ -74,7 +69,7 @@ public class BaseService<V extends IResponsibleView, T> {
         view.onStartRequest();
     }
 
-    protected void onRequestComplete(){
-        view.onRequestComplete();
+    protected void onCompleteRequest(){
+        view.onCompleteRequest();
     }
 }

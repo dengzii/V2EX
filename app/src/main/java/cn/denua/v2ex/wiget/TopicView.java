@@ -5,18 +5,24 @@
 package cn.denua.v2ex.wiget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.TimeUtils;
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.base.App;
+import cn.denua.v2ex.model.Topic;
+import cn.denua.v2ex.ui.NodeActivity;
 
 /*
  * Topic 话题列表的 item, 自定义 view
@@ -27,42 +33,48 @@ import cn.denua.v2ex.R;
 public class TopicView extends FrameLayout {
 
     @BindView(R.id.iv_user_pic)
-    private ImageView ivUserPic;
+    ImageView ivUserPic;
     @BindView(R.id.tv_title)
-    private TextView tvTitle;
+    TextView tvTitle;
     @BindView(R.id.tv_username)
-    private TextView tvUsername;
+    TextView tvUsername;
     @BindView(R.id.tv_replay)
-    private TextView tvReply;
+    TextView tvReply;
     @BindView(R.id.tv_latest_touched)
-    private TextView tvLastTouched;
+    TextView tvLastTouched;
     @BindView(R.id.tv_node)
-    private TextView tvNode;
+    TextView tvNode;
 
-    public TopicView(Context context) {
+    public TopicView(Context context, ViewGroup parent) {
         super(context);
-        LayoutInflater.from(context).inflate(R.layout.view_topic, this,true);
-        ButterKnife.bind(this);
+        initView(context, this);
     }
 
     public TopicView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        LayoutInflater.from(context).inflate(R.layout.view_topic, this,true);
+        initView(context, this);
+    }
+
+    private void initView(Context context, ViewGroup parent){
+        inflate(context, R.layout.view_topic, parent);
         ButterKnife.bind(this);
     }
 
-    public TopicView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-    public void setData(String ... args){
-        tvTitle.setText(args[0]);
-        tvUsername.setText(args[1]);
-        tvReply.setText(args[2]);
-        tvLastTouched.setText(args[3]);
-        tvNode.setText(args[4]);
-    }
+    public void  loadDataFromTopic(Topic topic){
 
-    public ImageView getIvUserPic(){
-        return this.ivUserPic;
+        String lastTouched = TimeUtils.getFitTimeSpanByNow(topic.getLast_touched()*1000, 4);
+        String userPicUrl = topic.getMember().getAvatar_large();
+        lastTouched = lastTouched.startsWith("-")?lastTouched.substring(1):lastTouched;
+
+        tvTitle.setText(topic.getTitle());
+        tvUsername.setText(topic.getMember().getUsername());
+        tvReply.setText(String.valueOf(topic.getReplies()));
+        tvLastTouched.setText(lastTouched);
+        tvNode.setText(topic.getNode().getName());
+        Glide.with(this).load(userPicUrl).into(ivUserPic);
+
+        tvNode.setOnClickListener(v->{
+            App.getApplication().startActivity(new Intent(getContext(), NodeActivity.class));
+        });
     }
 }

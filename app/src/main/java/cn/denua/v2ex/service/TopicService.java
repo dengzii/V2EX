@@ -80,7 +80,7 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
         @Override
         public void onSubscribe(Disposable d) {
             super.onSubscribe(d);
-
+            onStartRequest();
         }
 
         @Override
@@ -89,7 +89,7 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
         }
         @Override
         public void _onError(String msg) {
-            onFailed(msg);
+            returnFailed(msg);
         }
     };
 

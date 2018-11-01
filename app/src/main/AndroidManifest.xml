@@ -17,6 +17,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.2"/>
+
         <activity android:name=".ui.MainActivity"
             android:theme="@style/NoActionBar">
             <intent-filter>
@@ -28,6 +32,7 @@
         <activity android:name=".ui.WelcomeActivity"/>
         <activity android:name=".ui.TopicActivity"/>
         <activity android:name=".ui.LoginActivity"/>
+        <activity android:name=".ui.NodeActivity"/>
     </application>
 
 </manifest>

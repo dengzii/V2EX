@@ -9,7 +9,7 @@ import android.annotation.SuppressLint;
 import cn.denua.v2ex.interfaces.IResponsibleView;
 
 /*
- *
+ * 带网络请求的 Activity base 类
  *
  * @author denua
  * @date 2018/10/30 15
@@ -28,7 +28,7 @@ public class BaseNetworkActivity extends BaseActivity implements IResponsibleVie
     }
 
     @Override
-    public void onRequestComplete() {
+    public void onCompleteRequest() {
     }
 
     @Override

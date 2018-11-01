@@ -1,6 +1,5 @@
 package cn.denua.v2ex.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,22 +18,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.adapter.RecyclerViewAdapter;
-import cn.denua.v2ex.base.BaseFragment;
 import cn.denua.v2ex.base.BaseNetworkFragment;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Topic;
-import cn.denua.v2ex.service.TopicListener;
 import cn.denua.v2ex.service.TopicService;
 
-public class TopicFragment extends BaseNetworkFragment implements ResponseListener<List<Topic>> {
+public class TopicFragment extends BaseNetworkFragment implements ResponseListener<List<Topic>>, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
-
     @BindView(R.id.rv_topics)
     RecyclerView recyclerView;
-    RecyclerViewAdapter adapter;
-    List<Topic> topics = new ArrayList<>();
+
+    private RecyclerViewAdapter adapter;
+    private List<Topic> topics = new ArrayList<>();
 
     public static TopicFragment newInstance(String contentType){
 
@@ -70,28 +67,44 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerViewAdapter(getContext(), topics);
         recyclerView.setAdapter(adapter);
-
+        swipeRefreshLayout.setOnRefreshListener(this);
         return savedView;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onResume() {
+        super.onResume();
+        onRefresh();
+    }
 
-        swipeRefreshLayout.setRefreshing(true);
+    @Override
+    public void onRefresh() {
         TopicService.getInstance().getTopic(getContentType(), this, this);
     }
 
     @Override
+    public void onStartRequest() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
     public void onComplete(List<Topic> result) {
-        swipeRefreshLayout.setRefreshing(false);
+
         this.topics = result;
         adapter.setTopics(topics);
         adapter.notifyDataSetChanged();
     }
 
     @Override
+    public void onCompleteRequest() {
+        super.onCompleteRequest();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
     public void onFailed(String msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
+
+
 }
