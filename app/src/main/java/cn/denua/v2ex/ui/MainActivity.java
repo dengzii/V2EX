@@ -20,9 +20,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,14 +102,13 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
 
-        String username = Config.account.getUsername();
-        if (username!= null){
-            new LoginService(this).getInfo(username,this);
+        if (Config.restoreAccount()){
+            return;
         }
-
+//        new LoginService(this).getInfo(null,this);
     }
 
     @Override
@@ -162,7 +163,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         switch (requestCode){
             case LOGIN_REQUEST_CODE:
                 if (resultCode == LoginActivity.RESULT_SUCCESS)
-                    setLoggedInStatus();
+                    setUserStatus();
                 break;
             default:
                 break;
@@ -175,7 +176,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
-    private void setLoggedInStatus(){
+    private void setUserStatus(){
 
         tvUserName.setText(Config.account.getUsername());
         miLogin.setTitle(R.string.logout);
@@ -186,7 +187,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     @Override
     public void onComplete(Account result) {
         Config.account = result;
-        setLoggedInStatus();
+        setUserStatus();
     }
 
 }

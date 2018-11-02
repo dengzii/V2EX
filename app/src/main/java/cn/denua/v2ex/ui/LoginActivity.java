@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
 
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -61,6 +63,17 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
     }
 
     @Override
+    public void onStartRequest() {
+        super.onStartRequest();
+
+    }
+
+    @Override
+    public void onCompleteRequest() {
+        super.onCompleteRequest();
+    }
+
+    @Override
     public void onFailed(String msg) {
         ToastUtils.showShort(msg);
     }
@@ -75,7 +88,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
 
         Config.account = result;
         setResult(RESULT_SUCCESS);
-
+        Config.persistentAccount();
         finish();
     }
 }

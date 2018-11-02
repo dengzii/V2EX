@@ -3,6 +3,14 @@ package cn.denua.v2ex.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +27,9 @@ import cn.denua.v2ex.model.Account;
 public class Config {
 
 
-    public static final String CONFIG_PREF_FILE_NAME = "pref_config";
+    public static final String FILE_CONFIG_PREF = "pref_config";
+    public static final String DIR_USER_PERSISTENT = "data";
+    public static final String FILE_USER_PERSISTENT = "user_status";
 
     public static final HashMap<String, String> BASE_URL = new HashMap<>();
     public static final HashMap<String, String> CONFIG = new HashMap<>();
@@ -42,18 +52,19 @@ public class Config {
         BASE_URL.put("www.sov2ex.com","https://www.sov2ex.com/");
     }
 
-    public static void persistentAccount(){
+    public static boolean persistentAccount(){
 
-        SharedPreferences.Editor editor= App.getApplication().getSharedPreferences(CONFIG_PREF_FILE_NAME, Context.MODE_PRIVATE).edit();
-        editor.putInt("id", account.getId());
-        editor.putString("username", account.getUsername());
-        editor.putString("avatar", account.getAvatar_large());
-        editor.putLong("created", account.getCreated());
+        SharedPreferences.Editor editor= App.getApplication().getSharedPreferences(FILE_CONFIG_PREF, Context.MODE_PRIVATE).edit();
+        String gsonAccount = new Gson().toJson(account);
+        editor.putString("saved_status", gsonAccount);
         editor.apply();
+        return true;
     }
 
-    public static void persetentUserName(String username){
+    public static boolean restoreAccount() {
 
-        SharedPreferences sharedPreferences = App.getApplication().getSharedPreferences(CONFIG_PREF_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences editor = App.getApplication().getSharedPreferences(FILE_CONFIG_PREF, Context.MODE_PRIVATE);
+        account = new Gson().fromJson(editor.getString("saved_status",null), Account.class);
+        return account != null;
     }
 }
