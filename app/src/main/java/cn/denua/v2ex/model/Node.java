@@ -1,5 +1,8 @@
 package cn.denua.v2ex.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /*
@@ -8,25 +11,25 @@ import com.google.gson.annotations.SerializedName;
  * @author denua
  * @date 2018/10/21
  */
-public class Node {
+public class Node implements Parcelable {
 
-    private int id;
-    private String name;
-    private String title;
-    private int topics;
-    private String footer;
-    private String header;
+    protected int id;
+    protected String name;
+    protected String title;
+    protected int topics;
+    protected String footer;
+    protected String header;
 
-    private String title_alternative;
+    protected String title_alternative;
 
-    private String parent_node_name;
+    protected String parent_node_name;
 
-    private int starts;
-    private boolean root;
+    protected int starts;
+    protected boolean root;
 
-    private String avart_normal;
-    private String avart_mini;
-    private String avart_large;
+    protected String avart_normal;
+    protected String avart_mini;
+    protected String avart_large;
 
     public int getId() {
         return id;
@@ -131,4 +134,58 @@ public class Node {
     public void setAvart_large(String avart_large) {
         this.avart_large = avart_large;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.title);
+        dest.writeInt(this.topics);
+        dest.writeString(this.footer);
+        dest.writeString(this.header);
+        dest.writeString(this.title_alternative);
+        dest.writeString(this.parent_node_name);
+        dest.writeInt(this.starts);
+        dest.writeByte(this.root ? (byte) 1 : (byte) 0);
+        dest.writeString(this.avart_normal);
+        dest.writeString(this.avart_mini);
+        dest.writeString(this.avart_large);
+    }
+
+    public Node() {
+    }
+
+    protected Node(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.title = in.readString();
+        this.topics = in.readInt();
+        this.footer = in.readString();
+        this.header = in.readString();
+        this.title_alternative = in.readString();
+        this.parent_node_name = in.readString();
+        this.starts = in.readInt();
+        this.root = in.readByte() != 0;
+        this.avart_normal = in.readString();
+        this.avart_mini = in.readString();
+        this.avart_large = in.readString();
+    }
+
+    public static final Creator<Node> CREATOR = new Creator<Node>() {
+        @Override
+        public Node createFromParcel(Parcel source) {
+            return new Node(source);
+        }
+
+        @Override
+        public Node[] newArray(int size) {
+            return new Node[size];
+        }
+    };
 }

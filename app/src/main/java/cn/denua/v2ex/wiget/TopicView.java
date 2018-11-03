@@ -45,8 +45,13 @@ public class TopicView extends FrameLayout {
     @BindView(R.id.tv_node)
     TextView tvNode;
 
+    private Context context;
+    private Topic topic;
+    private int topicId;
+
     public TopicView(Context context ) {
         super(context);
+        this.context = context;
         initView(context);
     }
 
@@ -59,7 +64,7 @@ public class TopicView extends FrameLayout {
     private void initView(Context context ){
         inflate(context, R.layout.view_topic, this);
         ButterKnife.bind(this);
-        setOnClickListener(v -> context.startActivity(new Intent(context, TopicActivity.class)));
+        setOnClickListener(v -> goToTopicDetail());
     }
 
     public void  loadDataFromTopic(Topic topic){
@@ -68,7 +73,9 @@ public class TopicView extends FrameLayout {
         String userPicUrl = topic.getMember().getAvatar_large();
         lastTouched = lastTouched.startsWith("-")?lastTouched.substring(1):lastTouched;
 
+        this.topic = topic;
         tvTitle.setText(topic.getTitle());
+        tvTitle.setOnClickListener(v -> goToTopicDetail());
         tvUsername.setText(topic.getMember().getUsername());
         tvReply.setText(String.valueOf(topic.getReplies()));
         tvLastTouched.setText(lastTouched);
@@ -76,7 +83,21 @@ public class TopicView extends FrameLayout {
         Glide.with(this).load(userPicUrl).into(ivUserPic);
 
         tvNode.setOnClickListener(v->{
-            App.getApplication().startActivity(new Intent(getContext(), NodeActivity.class));
+            goToNodeDetail();
         });
+    }
+
+    private void goToNodeDetail(){
+
+        Intent intent = new Intent(context, NodeActivity.class);
+        intent.putExtra("node", topic.getNode());
+        context.startActivity(intent);
+    }
+
+    private void goToTopicDetail(){
+
+        Intent intent = new Intent(context, TopicActivity.class);
+        intent.putExtra("topic",topic);
+        context.startActivity(intent);
     }
 }

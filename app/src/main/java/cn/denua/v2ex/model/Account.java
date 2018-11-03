@@ -16,14 +16,42 @@ public class Account extends Member implements Serializable, Parcelable {
     private int balance;
     private int notifications;
 
+    private int gold;
+    private int silver;
+    private int bronze;
+
     private int favorNodes;
     private int favorTopics;
     private int following;
 
     private String join;
 
-    public Account(){}
+    public Account(){ }
 
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public int getSilver() {
+        return silver;
+    }
+
+    public void setSilver(int silver) {
+        this.silver = silver;
+    }
+
+    public int getBronze() {
+        return bronze;
+    }
+
+    public void setBronze(int bronze) {
+        this.bronze = bronze;
+    }
 
     public int getBalance() {
         return balance;
@@ -73,6 +101,7 @@ public class Account extends Member implements Serializable, Parcelable {
         this.join = join;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -80,8 +109,12 @@ public class Account extends Member implements Serializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
         dest.writeInt(this.balance);
         dest.writeInt(this.notifications);
+        dest.writeInt(this.gold);
+        dest.writeInt(this.silver);
+        dest.writeInt(this.bronze);
         dest.writeInt(this.favorNodes);
         dest.writeInt(this.favorTopics);
         dest.writeInt(this.following);
@@ -105,8 +138,12 @@ public class Account extends Member implements Serializable, Parcelable {
     }
 
     protected Account(Parcel in) {
+        super(in);
         this.balance = in.readInt();
         this.notifications = in.readInt();
+        this.gold = in.readInt();
+        this.silver = in.readInt();
+        this.bronze = in.readInt();
         this.favorNodes = in.readInt();
         this.favorTopics = in.readInt();
         this.following = in.readInt();

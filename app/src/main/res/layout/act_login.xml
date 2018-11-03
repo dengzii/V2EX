@@ -37,11 +37,21 @@
             android:inputType="text"
             tools:ignore="LabelFor,TextFields" />
 
-        <ImageView
-            android:id="@+id/iv_captcha"
+        <FrameLayout
+            android:layout_height="40dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_columnSpan="2" />
+            android:layout_columnSpan="2">
+            <ImageView
+                android:id="@+id/iv_captcha"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/progress_captcha"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
 
         <TextView android:text="@string/captcha_code" />
 

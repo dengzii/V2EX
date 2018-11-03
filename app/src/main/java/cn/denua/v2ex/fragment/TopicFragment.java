@@ -35,6 +35,8 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     private RecyclerViewAdapter adapter;
     private List<Topic> topics = new ArrayList<>();
 
+    private TopicService topicService;
+
     public static TopicFragment newInstance(String contentType){
 
         TopicFragment topicFragment = new TopicFragment();
@@ -50,6 +52,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         if ( getArguments() != null){
             this.setContentType(getArguments().getString("contentType"));
         }
+        topicService = new TopicService<>(this, this);
     }
     @Nullable
     @Override
@@ -79,7 +82,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
 
     @Override
     public void onRefresh() {
-        TopicService.getInstance().getTopic(getContentType(), this, this);
+        topicService.getTopic(getContentType());
     }
 
     @Override

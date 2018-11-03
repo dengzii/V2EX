@@ -2,7 +2,6 @@ package cn.denua.v2ex.adapter;
 
 import android.content.Context;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,9 +10,7 @@ import android.widget.FrameLayout;
 
 import java.util.List;
 
-import cn.denua.v2ex.base.App;
 import cn.denua.v2ex.model.Topic;
-import cn.denua.v2ex.ui.TopicActivity;
 import cn.denua.v2ex.wiget.TopicView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {

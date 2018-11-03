@@ -11,6 +11,7 @@ import java.util.List;
 
 import cn.denua.v2ex.api.TopicApi;
 import cn.denua.v2ex.base.BaseService;
+import cn.denua.v2ex.fragment.TopicFragment;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.interfaces.IResponsibleView;
@@ -20,37 +21,35 @@ import cn.denua.v2ex.utils.RxUtil;
 import io.reactivex.disposables.Disposable;
 
 /*
+ * 话题相关请求
  *
  * @author denua
  * @date 2018/10/25
  */
 public class TopicService<V extends IResponsibleView> extends BaseService<V, List<Topic>> {
 
-    private static TopicApi topicApi;
-    private static TopicService topicService = new TopicService<>();
+    private static TopicApi topicApi = RetrofitManager.create(TopicApi.class);
 
-    private TopicService(){
-        topicApi = RetrofitManager.create(TopicApi.class);
+    public TopicService(V v, ResponseListener<List<Topic>> topicListener){
+        this.view = v;
+        attachView(v);
+        setResponseListener(topicListener);
     }
 
-    public static TopicService getInstance(){
-        return topicService;
-    }
+    public void getTopic(String type){
 
-    public void getTopic(String type, V v, ResponseListener<List<Topic>> topicListener){
-
-        this.attachView(v);
-        topicService.setResponseListener(topicListener);
         switch (type){
             case "热 门":
-                topicService.getHot();
+                getHot();
                 break;
             case "最 新":
-                topicService.getLatest();
+                getLatest();
                 break;
             case "关 注":
+
                 break;
             case "全 部":
+
                 break;
             case "None":
 
@@ -85,11 +84,18 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
 
         @Override
         public void _onNext(JsonArray jsonElements) {
+
             handleJsonArray(jsonElements);
         }
         @Override
         public void _onError(String msg) {
             returnFailed(msg);
+        }
+
+        @Override
+        public void onComplete() {
+            super.onComplete();
+            onCompleteRequest();
         }
     };
 

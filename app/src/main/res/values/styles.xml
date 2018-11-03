@@ -18,4 +18,21 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="ImmersionStyleTheme" parent="AppTheme">
+
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+
+    <style name="TextTitle">
+        <item name="android:textSize">7pt</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="TextNormal">
+        <item name="android:textSize">7pt</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

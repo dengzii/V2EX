@@ -8,9 +8,12 @@ import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.X509TrustManager;
+
 import cn.denua.v2ex.http.converters.BitmapConverterFactory;
 import cn.denua.v2ex.http.cookie.CookiesManager;
 import cn.denua.v2ex.http.cookie.TransientCookieJar;
+import cn.denua.v2ex.utils.HttpsUtil;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -51,7 +54,7 @@ public class RetrofitManager {
      */
     public static void init(@Nullable Context context){
 
-//        X509TrustManager trustManager = HttpsUtil.getX509TrustManager();
+        X509TrustManager trustManager = HttpsUtil.getX509TrustManager();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cookieJar(
                         context == null
@@ -61,7 +64,7 @@ public class RetrofitManager {
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .addInterceptor(HeadersInterceptor.getInstance())
-//                .sslSocketFactory(HttpsUtil.getSslSocketFactory(trustManager), trustManager)
+                .sslSocketFactory(HttpsUtil.getSslSocketFactory(trustManager), trustManager)
 //                .hostnameVerifier((hostname, session) -> true)
 //                .followRedirects(false)
 //                .followSslRedirects(false)
@@ -100,7 +103,7 @@ public class RetrofitManager {
         return retrofit.create(tClass);
     }
 
-    public void clearCookies(){
+    public static void clearCookies(){
 
         cookiesManager.removeAll();
     }

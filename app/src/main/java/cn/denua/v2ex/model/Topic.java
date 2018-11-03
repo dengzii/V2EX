@@ -1,5 +1,8 @@
 package cn.denua.v2ex.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /*
  * v2ex topic
  * 包含一个话题的所有回复
@@ -8,7 +11,7 @@ package cn.denua.v2ex.model;
  * @author denua
  * @date 2018/10/21
  */
-public class Topic {
+public class Topic implements Parcelable {
 
     private int id;
 
@@ -34,9 +37,6 @@ public class Topic {
     private Member member;
 
     private Node node;
-
-    private Replay[] replay;
-
 
     public int getId() {
         return id;
@@ -158,11 +158,61 @@ public class Topic {
         this.node = node;
     }
 
-    public Replay[] getReplay() {
-        return replay;
+    public Topic() {
     }
 
-    public void setReplay(Replay[] replay) {
-        this.replay = replay;
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.title);
+        dest.writeLong(this.last_touched);
+        dest.writeLong(this.last_modified);
+        dest.writeString(this.url);
+        dest.writeLong(this.created);
+        dest.writeInt(this.clicks);
+        dest.writeInt(this.favors);
+        dest.writeInt(this.thanks);
+        dest.writeInt(this.replies);
+        dest.writeString(this.content);
+        dest.writeString(this.content_rendered);
+        dest.writeString(this.last_reply_by);
+        dest.writeParcelable(this.member, flags);
+        dest.writeParcelable(this.node, flags);
+    }
+
+    protected Topic(Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.last_touched = in.readLong();
+        this.last_modified = in.readLong();
+        this.url = in.readString();
+        this.created = in.readLong();
+        this.clicks = in.readInt();
+        this.favors = in.readInt();
+        this.thanks = in.readInt();
+        this.replies = in.readInt();
+        this.content = in.readString();
+        this.content_rendered = in.readString();
+        this.last_reply_by = in.readString();
+        this.member = in.readParcelable(Member.class.getClassLoader());
+        this.node = in.readParcelable(Node.class.getClassLoader());
+    }
+
+    public static final Creator<Topic> CREATOR = new Creator<Topic>() {
+        @Override
+        public Topic createFromParcel(Parcel source) {
+            return new Topic(source);
+        }
+
+        @Override
+        public Topic[] newArray(int size) {
+            return new Topic[size];
+        }
+    };
 }

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -22,6 +23,7 @@ import cn.denua.v2ex.interfaces.NextResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.LoginService;
 import cn.denua.v2ex.utils.Config;
+import cn.denua.v2ex.wiget.ProgressDialog;
 
 /*
  * LoginActivity
@@ -41,8 +43,11 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
     EditText etCaptchaCode;
     @BindView(R.id.iv_captcha)
     ImageView ivCaptcha;
-
+    @BindView(R.id.progress_captcha)
+    ProgressBar progressBar;
     private LoginService loginService;
+
+    private ProgressDialog progressDialog = new ProgressDialog();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,8 +55,11 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
         setContentView(R.layout.act_login);
         ButterKnife.bind(this);
 
+        progressDialog.setTitle("登录中...");
         loginService = new LoginService<>(this,this);
         loginService.preLogin();
+        ivCaptcha.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.bt_login)
@@ -60,6 +68,14 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
                 etAccount.getText().toString(),
                 etPassword.getText().toString(),
                 etCaptchaCode.getText().toString());
+        progressDialog.show(getSupportFragmentManager(), "login_progress");
+    }
+
+    @OnClick(R.id.iv_captcha)
+    public void refresh(ImageView view){
+        loginService.preLogin();
+        ivCaptcha.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -75,18 +91,25 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
 
     @Override
     public void onFailed(String msg) {
+        progressDialog.dismiss();
+        loginService.preLogin();
         ToastUtils.showShort(msg);
     }
 
     @Override
     public void onNextResult(Bitmap next) {
+        ivCaptcha.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
         ivCaptcha.setImageBitmap(next);
     }
 
     @Override
     public void onComplete(Account result) {
 
+        progressDialog.dismiss();
+
         Config.account = result;
+        Config.IsLogin = true;
         setResult(RESULT_SUCCESS);
         Config.persistentAccount();
         finish();

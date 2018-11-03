@@ -22,11 +22,10 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
-import com.gyf.barlibrary.ImmersionBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,10 +33,12 @@ import cn.denua.v2ex.R;
 import cn.denua.v2ex.adapter.MainPagerAdapter;
 import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.fragment.TopicFragment;
+import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.LoginService;
 import cn.denua.v2ex.utils.Config;
+import cn.denua.v2ex.wiget.MessageDialog;
 
 @SuppressWarnings("RedundantCast")
 public class MainActivity extends BaseNetworkActivity implements NavigationView.OnNavigationItemSelectedListener, ResponseListener<Account> {
@@ -58,6 +59,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private ImageView ivUserPic;
     private TextView tvUserName;
+    private TextView tvBalance;
 
     private List<Fragment> topicFragments = new ArrayList<>();
     private MenuItem miLogin;
@@ -68,14 +70,13 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         setContentView(R.layout.act_main);
 
         ButterKnife.bind(this);
-        ImmersionBar.with(this).init();
         initView();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ImmersionBar.with(this).destroy();
+
     }
 
     private void initView(){
@@ -96,6 +97,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         ivUserPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.iv_user_pic);
         tvUserName = (TextView ) navigationView.getHeaderView(0).findViewById(R.id.tv_username);
+        tvBalance = (TextView) navigationView.getHeaderView(0).findViewById(R.id.balance);
+
         miLogin = navigationView.getMenu().findItem(R.id.it_login_out);
 
         ivUserPic.setImageResource(R.drawable.ic_launcher_foreground);
@@ -107,7 +110,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         super.onResume();
 
         if (Config.restoreAccount()){
-//            setUserStatus();
             new LoginService<>(this).getInfo(this);
         }
     }
@@ -135,7 +137,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
                 break;
             default:
-
                 Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 break;
         }
@@ -149,7 +150,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.it_login_out:
-                startActivityForResult(new Intent(this, LoginActivity.class), LOGIN_REQUEST_CODE);
+                changeUserStatus();
                 break;
             default:
                 Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
@@ -171,22 +172,55 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         }
     }
 
-    @Override
-    public void onFailed(String msg) {
-        ToastUtils.showShort(msg);
+    private void changeUserStatus(){
+
+        drawerLayout.closeDrawer(Gravity.START);
+        if (Config.IsLogin){
+            MessageDialog dialog = new MessageDialog();
+            dialog.setTitle("提示");
+            dialog.setMessage("登出?");
+            dialog.setConfirmListener(this::logout);
+            dialog.show(getSupportFragmentManager(), "logout_confirm");
+        }else{
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
+    private void logout(){
+
+        Config.IsLogin = false;
+        Config.account = new Account();
+        Config.persistentAccount();
+        RetrofitManager.clearCookies();
+        setUserStatus();
     }
 
     private void setUserStatus(){
 
-        tvUserName.setText(Config.account.getUsername());
-        miLogin.setTitle(R.string.logout);
-        miLogin.setIcon(R.drawable.ic_logout);
-        Glide.with(this).load(Config.account.getAvatar_large()).into(ivUserPic);
+        if (Config.IsLogin){
+            ToastUtils.showShort(R.string.login_success);
+            miLogin.setIcon(R.drawable.ic_logout);
+            Glide.with(this).load(Config.account.getAvatar_large()).into(ivUserPic);
+            tvUserName.setText(Config.account.getUsername());
+            miLogin.setTitle(R.string.logout);
+            tvBalance.setText(String.valueOf(Config.account.getBalance()));
+        }else{
+            tvUserName.setText(R.string.not_login);
+            miLogin.setTitle(R.string.login);
+            tvBalance.setText(R.string.zero);
+            miLogin.setIcon(R.drawable.ic_login);
+            ivUserPic.setImageResource(R.drawable.ic_launcher_foreground);
+        }
     }
-
+    @Override
+    public void onFailed(String msg) {
+        Config.IsLogin = false;
+        ToastUtils.showShort(msg);
+    }
     @Override
     public void onComplete(Account result) {
         Config.account = result;
+        Config.IsLogin = true;
         setUserStatus();
     }
 
