@@ -6,6 +6,7 @@ package cn.denua.v2ex.model;
  * @author denua
  * @date 2018/10/21
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class Member {
 
     protected int id;

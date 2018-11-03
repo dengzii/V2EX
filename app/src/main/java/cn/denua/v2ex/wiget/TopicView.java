@@ -21,6 +21,7 @@ import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.App;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.ui.NodeActivity;
+import cn.denua.v2ex.ui.TopicActivity;
 
 /*
  * Topic 话题列表的 item, 自定义 view
@@ -58,6 +59,7 @@ public class TopicView extends FrameLayout {
     private void initView(Context context ){
         inflate(context, R.layout.view_topic, this);
         ButterKnife.bind(this);
+        setOnClickListener(v -> context.startActivity(new Intent(context, TopicActivity.class)));
     }
 
     public void  loadDataFromTopic(Topic topic){

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018 denua.
+  -->
+
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:text="Topic"
+        android:text="Node"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

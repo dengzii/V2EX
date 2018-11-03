@@ -44,7 +44,6 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
 
         return topicFragment;
     }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +51,6 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
             this.setContentType(getArguments().getString("contentType"));
         }
     }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

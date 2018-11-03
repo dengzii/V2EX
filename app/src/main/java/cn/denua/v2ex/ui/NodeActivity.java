@@ -4,6 +4,10 @@
 
 package cn.denua.v2ex.ui;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+
+import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.BaseNetworkActivity;
 
 /*
@@ -14,5 +18,9 @@ import cn.denua.v2ex.base.BaseNetworkActivity;
  */
 public class NodeActivity extends BaseNetworkActivity {
 
-
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.act_node);
+    }
 }

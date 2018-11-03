@@ -5,12 +5,6 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,13 +46,12 @@ public class Config {
         BASE_URL.put("www.sov2ex.com","https://www.sov2ex.com/");
     }
 
-    public static boolean persistentAccount(){
+    public static void persistentAccount(){
 
         SharedPreferences.Editor editor= App.getApplication().getSharedPreferences(FILE_CONFIG_PREF, Context.MODE_PRIVATE).edit();
         String gsonAccount = new Gson().toJson(account);
         editor.putString("saved_status", gsonAccount);
         editor.apply();
-        return true;
     }
 
     public static boolean restoreAccount() {

@@ -58,7 +58,7 @@ public class PersistentCookieStore{
                     Cookie decodedCookie = decodeCookie(encodedCookie);
                     if (decodedCookie != null) {
                         if (!cookies.containsKey(entry.getKey())) {
-                            cookies.put(entry.getKey(), new ConcurrentHashMap<String, Cookie>());
+                            cookies.put(entry.getKey(), new ConcurrentHashMap<>());
                         }
                         cookies.get(entry.getKey()).put(name, decodedCookie);
                     }

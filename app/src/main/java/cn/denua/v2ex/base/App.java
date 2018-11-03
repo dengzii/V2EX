@@ -19,7 +19,7 @@ public class App extends Application {
         app = this;
 
         Logger.addLogAdapter(new AndroidLogAdapter());
-        RetrofitManager.init(null);
+        RetrofitManager.init(this);
         Utils.init(this);
     }
 

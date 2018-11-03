@@ -39,6 +39,7 @@ import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.LoginService;
 import cn.denua.v2ex.utils.Config;
 
+@SuppressWarnings("RedundantCast")
 public class MainActivity extends BaseNetworkActivity implements NavigationView.OnNavigationItemSelectedListener, ResponseListener<Account> {
 
     private final String TAG = "MainActivity";
@@ -106,9 +107,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         super.onResume();
 
         if (Config.restoreAccount()){
-            return;
+//            setUserStatus();
+            new LoginService<>(this).getInfo(this);
         }
-//        new LoginService(this).getInfo(null,this);
     }
 
     @Override
@@ -172,8 +173,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     @Override
     public void onFailed(String msg) {
-
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        ToastUtils.showShort(msg);
     }
 
     private void setUserStatus(){

@@ -7,6 +7,8 @@ import com.google.gson.JsonObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cn.denua.v2ex.api.LoginApi;
 import cn.denua.v2ex.api.MemberApi;
@@ -30,10 +32,14 @@ import retrofit2.Call;
  */
 public class LoginService<V extends IResponsibleView> extends BaseService<V, Account> {
 
+    public static final String STATUS_NEED_LOGIN = "未登录";
+    public static final String STATUS_IP_BANED = "IP在一天内被禁止登录";
+    public static final String STATUS_GET_INFO_FAILED = "获取用户信息失败";
+    public static final String STATUS_WRONG_FIELDS = "登录字段错误";
+
+
     private LoginApi loginApi;
     private String[] fieldNames;
-
-    private String username;
     private NextResponseListener<Bitmap, Account> callBack;
 
     public LoginService(V iResponsibleView, NextResponseListener<Bitmap, Account> loginListener){
@@ -57,15 +63,13 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
             public void handle(boolean success, String result, Call<String> call, String msg) {
 
                 if (!success || result.matches("[\\S\\s]+登录受限[\\S\\s]+")){
-                    returnFailed(!success
-                            ?msg
-                            :"登录次数过多,该IP已被禁止,一天后尝试或切换IP。");
+                    callBack.onFailed(!success ? msg : STATUS_IP_BANED);
                     return;
                 }
                 try{
                     fieldNames = HtmlUtil.washLoginFieldName(result);
                 }catch (Exception e){
-                    returnFailed(e.getLocalizedMessage());
+                    callBack.onFailed(e.getLocalizedMessage());
                     return;
                 }
                 getCaptcha(fieldNames[3]);
@@ -83,7 +87,7 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
                     callBack.onNextResult(result);
                     return;
                 }
-                returnFailed(msg);
+                callBack.onFailed(msg);
             }
         });
     }
@@ -96,7 +100,6 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
      */
     public void login(String account, String password, String checkCode){
 
-        this.username = account;
         Map<String, String> form= new HashMap<>();
 
         form.put(fieldNames[0], account);
@@ -109,14 +112,18 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
                 if (!success || (null==result)){
-                    returnFailed(msg);
+                    callBack.onFailed(msg);
+                    return;
+                }
+                if (result.matches("[\\S\\s]+登录受限[\\S\\s]+")){
+                    callBack.onFailed(STATUS_IP_BANED);
                     return;
                 }
                 if (result.matches("[\\S\\s]+登录有点问题[\\S\\s]+")){
-                    returnFailed("验证码或账号信息不正确.");
+                    callBack.onFailed(STATUS_WRONG_FIELDS);
                     return;
                 }
-                getInfo(username, callBack);
+                getInfo(callBack);
             }
         });
     }
@@ -124,21 +131,21 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
     /**
      * 从设置页面获取用户信息并返回结果
      *
-     * @param un    用户名
      * @param responseListener  请求结果回调接口
      */
-    public void getInfo(String un, ResponseListener<Account> responseListener){
+    public void getInfo(ResponseListener<Account> responseListener){
 
         loginApi.getInfo().enqueue(new ResponseHandler<String>() {
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
                 if (result.matches("[\\S\\s]+你要查看的页面需要先登录[\\S\\s]+")){
-                    responseListener.onFailed("获取用户信息失败, 登录失败.");
+                    responseListener.onFailed(STATUS_NEED_LOGIN);
                     return;
                 }
-                if (result.matches("[\\S\\s]+" + un + "[\\S\\s]+")){
+                Matcher matcher = Pattern.compile("href=\"/member/([^\"]+)\"").matcher(result);
+                if (matcher.find()){
                     RetrofitManager.create(MemberApi.class)
-                            .getMember(un)
+                            .getMember(matcher.group(1))
                             .compose(RxUtil.io2main())
                             .subscribe(new RxObserver<JsonObject>() {
                                 @Override
@@ -153,7 +160,7 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
                             });
                     return;
                 }
-                responseListener.onFailed("登录失败.");
+                responseListener.onFailed(STATUS_GET_INFO_FAILED);
             }
         });
     }

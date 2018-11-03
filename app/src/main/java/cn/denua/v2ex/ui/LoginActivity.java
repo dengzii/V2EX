@@ -50,7 +50,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
         setContentView(R.layout.act_login);
         ButterKnife.bind(this);
 
-        loginService = new LoginService(this,this);
+        loginService = new LoginService<>(this,this);
         loginService.preLogin();
     }
 
