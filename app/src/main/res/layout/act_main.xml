@@ -6,7 +6,6 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:openDrawer="start"
     tools:context=".ui.MainActivity">
 
@@ -54,8 +53,7 @@
     <LinearLayout
         android:layout_gravity="start"
         android:layout_width="260dp"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
         <android.support.design.widget.NavigationView
             android:id="@+id/navigation"

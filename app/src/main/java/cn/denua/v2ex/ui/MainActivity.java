@@ -4,6 +4,8 @@
 
 package cn.denua.v2ex.ui;
 
+import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,13 +15,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.RequestFuture;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 
@@ -38,6 +44,7 @@ import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.LoginService;
 import cn.denua.v2ex.utils.Config;
+import cn.denua.v2ex.utils.StatusBarUtil;
 import cn.denua.v2ex.wiget.MessageDialog;
 
 @SuppressWarnings("RedundantCast")
@@ -69,17 +76,27 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_main);
 
+        StatusBarUtil.hideActionBar(this);
         ButterKnife.bind(this);
         initView();
+
+        if (Config.restoreAccount()){
+            new LoginService<>(this).getInfo(this);
+        }
+    }
+
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        return super.onCreateView(name, context, attrs);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
     private void initView(){
+
         setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.toolbar_main);
 
@@ -108,10 +125,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (Config.restoreAccount()){
-            new LoginService<>(this).getInfo(this);
-        }
     }
 
     @Override
@@ -137,7 +150,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
                 break;
             default:
-                Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -146,14 +158,23 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.search:
-                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+            case R.id.it_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.it_check:
+                break;
+            case R.id.it_node:
+                break;
+            case R.id.it_following:
+                break;
+            case R.id.it_post:
+                break;
+            case R.id.it_message:
                 break;
             case R.id.it_login_out:
                 changeUserStatus();
                 break;
-            default:
-                Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+            default:break;
         }
         return false;
     }
@@ -198,7 +219,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     private void setUserStatus(){
 
         if (Config.IsLogin){
-            ToastUtils.showShort(R.string.login_success);
             miLogin.setIcon(R.drawable.ic_logout);
             Glide.with(this).load(Config.account.getAvatar_large()).into(ivUserPic);
             tvUserName.setText(Config.account.getUsername());

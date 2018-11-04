@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import cn.denua.v2ex.base.App;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.ui.NodeActivity;
 import cn.denua.v2ex.ui.TopicActivity;
+import cn.denua.v2ex.ui.UserDetailActivity;
 
 /*
  * Topic 话题列表的 item, 自定义 view
@@ -47,24 +50,32 @@ public class TopicView extends FrameLayout {
 
     private Context context;
     private Topic topic;
-    private int topicId;
 
-    public TopicView(Context context ) {
+    private boolean isLastItem;
+
+    public TopicView(Context context) {
         super(context);
-        this.context = context;
+        this.context = App.getApplication();
         initView(context);
+        setOnClickListener(v -> goToTopicDetail());
+        tvTitle.setOnClickListener(v -> goToTopicDetail());
     }
 
     public TopicView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         initView(context);
-        this.getRootView();
+    }
+
+    public TopicView(Context context, AttributeSet attrs, int defStyleAttrs, int defStyleAttrsRes){
+        super(context, attrs, defStyleAttrs, defStyleAttrsRes);
+        this.context = context;
+        initView(context);
     }
 
     private void initView(Context context ){
         inflate(context, R.layout.view_topic, this);
         ButterKnife.bind(this);
-        setOnClickListener(v -> goToTopicDetail());
     }
 
     public void  loadDataFromTopic(Topic topic){
@@ -75,16 +86,22 @@ public class TopicView extends FrameLayout {
 
         this.topic = topic;
         tvTitle.setText(topic.getTitle());
-        tvTitle.setOnClickListener(v -> goToTopicDetail());
         tvUsername.setText(topic.getMember().getUsername());
         tvReply.setText(String.valueOf(topic.getReplies()));
         tvLastTouched.setText(lastTouched);
         tvNode.setText(topic.getNode().getName());
         Glide.with(this).load(userPicUrl).into(ivUserPic);
 
-        tvNode.setOnClickListener(v->{
-            goToNodeDetail();
-        });
+        tvNode.setOnClickListener(v->goToNodeDetail());
+        tvUsername.setOnClickListener(v->goToUserDetail());
+        ivUserPic.setOnClickListener(v -> goToUserDetail());
+    }
+
+    private void goToUserDetail(){
+
+        Intent intent = new Intent(context, UserDetailActivity.class);
+        intent.putExtra("user", topic.getMember());
+        context.startActivity(intent);
     }
 
     private void goToNodeDetail(){
@@ -99,5 +116,17 @@ public class TopicView extends FrameLayout {
         Intent intent = new Intent(context, TopicActivity.class);
         intent.putExtra("topic",topic);
         context.startActivity(intent);
+    }
+
+    public void setLastItem() {
+
+        this.tvNode.setVisibility(INVISIBLE);
+        TextView textView = new TextView(context);
+        textView.setText(R.string.no_more);
+        textView.setPadding(0,0,0, 80);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        textView.setGravity(Gravity.CENTER);
+        textView.setLayoutParams(layoutParams);
+        addView(textView);
     }
 }

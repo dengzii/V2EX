@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
@@ -33,6 +33,10 @@
     <style name="TextNormal">
         <item name="android:textSize">7pt</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="TextSmall">
+        <item name="android:textSize">5pt</item>
+        <item name="android:textColor">@color/accent</item>
     </style>
 
 </resources>

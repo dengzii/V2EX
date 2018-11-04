@@ -46,6 +46,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
 
         return topicFragment;
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +55,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         }
         topicService = new TopicService<>(this, this);
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -71,6 +73,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         adapter = new RecyclerViewAdapter(getContext(), topics);
         recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setRefreshing(true);
         onRefresh();
         return savedView;
     }
@@ -78,11 +81,13 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     @Override
     public void onResume() {
         super.onResume();
+
     }
 
     @Override
     public void onRefresh() {
         topicService.getTopic(getContentType());
+
     }
 
     @Override

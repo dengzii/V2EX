@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.List;
 
 import cn.denua.v2ex.model.Topic;
@@ -29,6 +31,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = new TopicView(context);
+
         view.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
         return new MyViewHolder(view);
     }
@@ -40,7 +43,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        holder.topicView.loadDataFromTopic(topics.get(position));
+        Topic topic = topics.get(position);
+        if (topic == null){
+            holder.topicView.setLastItem();
+            return;
+        }
+        holder.topicView.loadDataFromTopic(topic);
     }
 
     @Override

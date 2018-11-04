@@ -33,6 +33,9 @@
         <activity android:name=".ui.TopicActivity" />
         <activity android:name=".ui.LoginActivity"/>
         <activity android:name=".ui.NodeActivity"/>
+        <activity android:name=".ui.SettingsActivity"/>
+        <activity android:name=".ui.UserDetailActivity"/>
+
     </application>
 
 </manifest>

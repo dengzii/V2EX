@@ -9,6 +9,7 @@
     <string name="not_login">未登录</string>
     <string name="login_success">登录成功</string>
 
+    <string name="topic">话 题</string>
     <string name="checked">签 到</string>
     <string name="message">消 息</string>
     <string name="latest">最 新</string>
@@ -34,4 +35,5 @@
     <string name="placeholder">XXX</string>
     <string name="zero">0</string>
 
+    <string name="no_more">没有更多了 ~ </string>
 </resources>
