@@ -2,35 +2,30 @@ package cn.denua.v2ex.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.webkit.WebView;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.BaseActivity;
+import cn.denua.v2ex.base.BaseNetworkActivity;
+import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Topic;
+import cn.denua.v2ex.service.TopicService;
 import cn.denua.v2ex.wiget.TopicView;
 
-public class TopicActivity extends BaseActivity {
+public class TopicActivity extends BaseNetworkActivity implements ResponseListener<List<Topic>> {
 
-//    @BindView(R.id.iv_user_pic)
-//    ImageView mUserPic;
-//    @BindView(R.id.tv_topic_title)
-//    TextView mTitle;
-//    @BindView(R.id.tv_latest_touched)
-//    TextView mLastTouched;
-//    @BindView(R.id.tv_username)
-//    TextView mUsername;
     @BindView(R.id.webView)
     WebView mWebView;
     @BindView(R.id.topicView)
     TopicView mTopicView;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private Topic topic;
     private Reply[] replies;
@@ -46,13 +41,31 @@ public class TopicActivity extends BaseActivity {
         initView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    private void onRefresh(){
+
+        new TopicService<>(this, this).getReply(topic.getId(), 1);
+    }
+
     private void initView(){
 
         mTopicView.loadDataFromTopic(topic);
-//        Glide.with(this).load(topic.getMember().getAvatar_large()).into(mUserPic);
-//        mTitle.setText(topic.getTitle());
-//        mLastTouched.setText(com.blankj.utilcode.util.TimeUtils.getFitTimeSpanByNow(topic.getLast_touched(), 4));
-//        mUsername.setText(topic.getMember().getUsername());
         mWebView.loadData(topic.getContent_rendered(), "text/html", "utf-8");
+        swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
+    }
+
+    @Override
+    public void onComplete(List<Topic> result) {
+
+    }
+
+    @Override
+    public void onFailed(String msg) {
+
     }
 }

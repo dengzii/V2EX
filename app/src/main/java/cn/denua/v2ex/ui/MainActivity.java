@@ -76,18 +76,12 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_main);
 
-        StatusBarUtil.hideActionBar(this);
         ButterKnife.bind(this);
         initView();
 
         if (Config.restoreAccount()){
             new LoginService<>(this).getInfo(this);
         }
-    }
-
-    @Override
-    public View onCreateView(String name, Context context, AttributeSet attrs) {
-        return super.onCreateView(name, context, attrs);
     }
 
     @Override

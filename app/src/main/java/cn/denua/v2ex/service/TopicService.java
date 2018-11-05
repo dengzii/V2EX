@@ -11,7 +11,6 @@ import java.util.List;
 
 import cn.denua.v2ex.api.TopicApi;
 import cn.denua.v2ex.base.BaseService;
-import cn.denua.v2ex.fragment.TopicFragment;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.interfaces.IResponsibleView;
@@ -46,13 +45,10 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
                 getLatest();
                 break;
             case "关 注":
-
                 break;
             case "全 部":
-
                 break;
             case "None":
-
                 break;
             default:
                 break;
@@ -72,6 +68,22 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
         topicApi.getLatestTopic()
                 .compose(RxUtil.io2main())
                 .subscribe(jsonArrayToTopicsObserver);
+    }
+
+    public void getReply(int id, int page){
+
+        topicApi.getTopicDetail(id, page)
+                .compose(RxUtil.io2main())
+                .subscribe(new RxObserver<String>() {
+                    @Override
+                    public void _onNext(String s) {
+
+                    }
+                    @Override
+                    public void _onError(String msg) {
+                        returnFailed(msg);
+                    }
+                });
     }
 
     private RxObserver<JsonArray> jsonArrayToTopicsObserver = new RxObserver<JsonArray>() {

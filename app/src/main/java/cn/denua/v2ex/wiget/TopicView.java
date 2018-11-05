@@ -4,11 +4,14 @@
 
 package cn.denua.v2ex.wiget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -31,7 +34,6 @@ import cn.denua.v2ex.ui.UserDetailActivity;
  *
  * @author denua
  * @date 2018/10/31 12
- * @date 2018/10/31 12
  */
 public class TopicView extends FrameLayout {
 
@@ -51,14 +53,13 @@ public class TopicView extends FrameLayout {
     private Context context;
     private Topic topic;
 
-    private boolean isLastItem;
-
+    @SuppressLint("ClickableViewAccessibility")
     public TopicView(Context context) {
         super(context);
         this.context = App.getApplication();
         initView(context);
         setOnClickListener(v -> goToTopicDetail());
-        tvTitle.setOnClickListener(v -> goToTopicDetail());
+        tvTitle.setOnTouchListener((v,e)->{onTouchEvent(e);return false;});
     }
 
     public TopicView(Context context, @Nullable AttributeSet attrs) {

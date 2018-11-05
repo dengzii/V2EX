@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="18dp"
         android:layout_marginBottom="12dp"
-        android:background="@drawable/selector_text_button_background"
+        android:background="@drawable/selector_text_button_accent_light"
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

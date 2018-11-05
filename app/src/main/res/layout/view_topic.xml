@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="85dp"
-    android:background="@color/white"
+    android:background="@drawable/ripple_light_accent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
@@ -38,6 +38,7 @@
 
         <TextView
             android:id="@+id/textView"
+            android:text="@string/reply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -75,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/shape_round_corners_5dp"
+            android:background="@drawable/selector_text_button_accent_light"
             android:gravity="center"
             android:paddingTop="4dp"
             android:paddingStart="6dp"

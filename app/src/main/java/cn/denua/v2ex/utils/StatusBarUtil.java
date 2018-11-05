@@ -38,6 +38,16 @@ public class StatusBarUtil {
         window.setNavigationBarColor(Color.TRANSPARENT);
     }
 
+    public static void addStatusViewWithColor(Activity activity, int color) {
+        ViewGroup contentView =
+                (ViewGroup) activity.getWindow().getDecorView().findViewById(android.R.id.content);
+        View statusBarView = new View(activity);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight(activity));
+        statusBarView.setBackgroundColor(color);
+        contentView.addView(statusBarView, layoutParams);
+    }
+
     public static void fitSystemWindow(Activity activity){
         ViewGroup viewGroup = (ViewGroup) activity.findViewById(android.R.id.content);
         if (viewGroup.getChildCount()>0){

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018 denua.
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:state_pressed="true"
+        android:state_focused="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/accentLight"/>
+            <corners android:radius="2dp"/>
+            <padding android:bottom="8dp"
+                android:right="12dp"
+                android:top="8dp"
+                android:left="12dp"/>
+        </shape>
+    </item>
+
+    <item>
+        <shape
+            android:shape="rectangle">
+            <solid android:color="@color/accent"/>
+            <corners android:radius="2dp"/>
+            <padding android:bottom="8dp"
+                android:right="12dp"
+                android:top="8dp"
+                android:left="12dp"/>
+        </shape>
+    </item>
+
+</selector>

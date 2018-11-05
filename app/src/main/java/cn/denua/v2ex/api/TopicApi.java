@@ -17,7 +17,7 @@ import retrofit2.http.Query;
 public interface TopicApi {
 
     @GET("t/{id}")
-    Observable<String> getTopicDetail(@Query("id") String id);
+    Observable<String> getTopicDetail(@Query("id") int id, @Query("p") int page);
 
     @GET("api/topics/hot.json")
     Observable<JsonArray> getHotTopic();
