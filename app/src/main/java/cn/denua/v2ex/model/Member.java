@@ -33,6 +33,10 @@ public class Member implements Parcelable {
     protected String location;
     protected String btc;
 
+    public Member() {
+
+    }
+
 
     private String fixScheme(String url){
             return url.startsWith("https:")
@@ -199,7 +203,9 @@ public class Member implements Parcelable {
         dest.writeString(this.btc);
     }
 
-    public Member() {
+    public Member(String username, String avatar_normal) {
+        this.username = username;
+        this.avatar_normal = avatar_normal;
     }
 
     protected Member(Parcel in) {

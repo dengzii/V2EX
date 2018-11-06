@@ -1,6 +1,8 @@
 package cn.denua.v2ex.service;
 
 
+import android.os.Parcel;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -16,6 +18,7 @@ import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Topic;
+import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
 import io.reactivex.disposables.Disposable;
 
@@ -70,14 +73,23 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
                 .subscribe(jsonArrayToTopicsObserver);
     }
 
-    public void getReply(int id, int page){
+    public void getReply(Topic topicCopy, int page){
 
-        topicApi.getTopicDetail(id, page)
-                .compose(RxUtil.io2main())
+//        Parcel parcel = Parcel.obtain();
+//        topic.writeToParcel(parcel, 0);
+//        Topic topicCopy = Topic.CREATOR.createFromParcel(parcel);
+
+        topicApi.getTopicDetail(topicCopy.getId(), page)
+//                .compose(RxUtil.io2main())
                 .subscribe(new RxObserver<String>() {
                     @Override
                     public void _onNext(String s) {
-
+                        if (page == 1){
+                            HtmlUtil.attachRepliesAndDetail(topicCopy, s);
+                        }else {
+                            HtmlUtil.attachReplies(topicCopy, s);
+                        }
+                        returnSuccess(new ArrayList<Topic>(){{add(topicCopy);}});
                     }
                     @Override
                     public void _onError(String msg) {
@@ -85,6 +97,7 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
                     }
                 });
     }
+
 
     private RxObserver<JsonArray> jsonArrayToTopicsObserver = new RxObserver<JsonArray>() {
 

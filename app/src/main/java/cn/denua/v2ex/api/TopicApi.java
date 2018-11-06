@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /*
@@ -17,7 +18,7 @@ import retrofit2.http.Query;
 public interface TopicApi {
 
     @GET("t/{id}")
-    Observable<String> getTopicDetail(@Query("id") int id, @Query("p") int page);
+    Observable<String> getTopicDetail(@Path("id") int id, @Query("p") int page);
 
     @GET("api/topics/hot.json")
     Observable<JsonArray> getHotTopic();

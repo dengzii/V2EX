@@ -1,5 +1,7 @@
 package cn.denua.v2ex.model;
 
+import java.util.List;
+
 /*
  * Topic replay
  *
@@ -8,35 +10,28 @@ package cn.denua.v2ex.model;
  */
 public class Reply {
 
-    private String id;
+    private int id;
     private Member member;
-    private Member[] at;
     private String content;
     private String ago;
     private String via;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private List<Reply> at;
 
     public Member getMember() {
         return member;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setMember(Member member) {
         this.member = member;
-    }
-
-    public Member[] getAt() {
-        return at;
-    }
-
-    public void setAt(Member[] at) {
-        this.at = at;
     }
 
     public String getContent() {
@@ -61,5 +56,13 @@ public class Reply {
 
     public void setVia(String via) {
         this.via = via;
+    }
+
+    public List<Reply> getAt() {
+        return at;
+    }
+
+    public void setAt(List<Reply> at) {
+        this.at = at;
     }
 }

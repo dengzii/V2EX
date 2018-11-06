@@ -3,6 +3,9 @@ package cn.denua.v2ex.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  * v2ex topic
  * 包含一个话题的所有回复
@@ -37,6 +40,10 @@ public class Topic implements Parcelable {
     private Member member;
 
     private Node node;
+
+    private List<Reply> replyList;
+
+    private List<Tag> tags = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -162,6 +169,27 @@ public class Topic implements Parcelable {
     }
 
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public List<Reply> getReplyList() {
+        return replyList;
+    }
+
+    public void setReplyList(List<Reply> replyList) {
+        this.replyList = replyList;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -184,6 +212,8 @@ public class Topic implements Parcelable {
         dest.writeString(this.last_reply_by);
         dest.writeParcelable(this.member, flags);
         dest.writeParcelable(this.node, flags);
+        dest.writeList(this.replyList);
+        dest.writeList(this.tags);
     }
 
     protected Topic(Parcel in) {
@@ -202,6 +232,10 @@ public class Topic implements Parcelable {
         this.last_reply_by = in.readString();
         this.member = in.readParcelable(Member.class.getClassLoader());
         this.node = in.readParcelable(Node.class.getClassLoader());
+        this.replyList = new ArrayList<Reply>();
+        in.readList(this.replyList, Reply.class.getClassLoader());
+        this.tags = new ArrayList<Tag>();
+        in.readList(this.tags, Tag.class.getClassLoader());
     }
 
     public static final Creator<Topic> CREATOR = new Creator<Topic>() {

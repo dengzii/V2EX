@@ -49,7 +49,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
     private void onRefresh(){
 
-        new TopicService<>(this, this).getReply(topic.getId(), 1);
+        new TopicService<>(this, this).getReply(topic, 1);
     }
 
     private void initView(){

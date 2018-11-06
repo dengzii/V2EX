@@ -26,7 +26,13 @@ public class Account extends Member implements Serializable, Parcelable {
 
     private String join;
 
-    public Account(){ }
+    public Account(){
+        super();
+    }
+
+    public Account(String username, String avatar_normal) {
+        super(username, avatar_normal);
+    }
 
 
     public int getGold() {

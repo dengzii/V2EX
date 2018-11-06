@@ -8,6 +8,17 @@ package cn.denua.v2ex.model;
  */
 public class Tag {
 
-    public String id;
-    public String name;
+    private String name;
+
+    public Tag(String name){
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

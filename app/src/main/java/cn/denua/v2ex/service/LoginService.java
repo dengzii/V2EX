@@ -1,6 +1,5 @@
 package cn.denua.v2ex.service;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.google.gson.Gson;
@@ -68,7 +67,7 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
                     return;
                 }
                 try{
-                    fieldNames = HtmlUtil.washLoginFieldName(result);
+                    fieldNames = HtmlUtil.getLoginFieldName(result);
                 }catch (Exception e){
                     callBack.onFailed(e.getLocalizedMessage());
                     return;
@@ -132,7 +131,7 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
     /**
      * 从设置页面获取用户信息并返回结果
      *
-     * @param responseListener  请求结果回调接口
+     * @param responseListener 请求结果回调接口
      */
     public void getInfo(ResponseListener<Account> responseListener){
 
@@ -152,7 +151,7 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
                                 @Override
                                 public void _onNext(JsonObject jsonObject) {
                                     Account account = new Gson().fromJson(jsonObject, Account.class);
-                                    attachAccountInfo(account, result);
+                                    HtmlUtil.attachAccountInfo(account, result);
                                     responseListener.onComplete(account);
                                 }
                                 @Override
@@ -165,42 +164,5 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
                 responseListener.onFailed(STATUS_GET_INFO_FAILED);
             }
         });
-    }
-
-    private void attachAccountInfo(Account account, String html){
-
-        account.setFavorNodes(matcherGroup1Int("<span class=\"bigger\">(\\d+)</span>" +
-                "<div class=\"sep3\"></div><span class=\"fade\">节点收藏</span>", html));
-        account.setFavorTopics(matcherGroup1Int("<span class=\"bigger\">(\\d+)</span>" +
-                "<div class=\"sep3\"></div><span class=\"fade\">主题收藏</span>", html));
-        account.setFollowing(matcherGroup1Int("<span class=\"bigger\">(\\d+)</span>" +
-                "<div class=\"sep3\"></div><span class=\"fade\">特别关注</span>", html));
-
-        account.setNotifications(matcherGroup1Int("([\\d]+) 条未读提醒", html));
-        account.setJoin(matcherGroup1("已在 ([\\d :+-]+) 完成验证", html));
-        account.setNumber(matcherGroup1("V2EX 第 (\\d+) 号会员", html));
-
-        account.setGold(matcherGroup1Int("(\\d+) <img src=\"/static/img/gold@2x.png\"" +
-                " height=\"16\" ", html));
-        account.setSilver(matcherGroup1Int("(\\d+) <img src=\"/static/img/silver@2x." +
-                "png\" height=\"16\"" ,  html));
-        account.setBronze(matcherGroup1Int("(\\d+) <img src=\"/static/img/bronze@2x" +
-                ".png\" height=\"16\"", html));
-
-        account.setBalance(account.getBronze()+account.getSilver()*100+account.getGold()*10000);
-    }
-
-    private String matcherGroup1(String regex, String html){
-
-        Matcher matcher = Pattern.compile(regex).matcher(html);
-        if (matcher.find()){
-            return matcher.group(1);
-        }
-        return "";
-    }
-
-    private int matcherGroup1Int(String regex, String html){
-        String res = (matcherGroup1(regex, html));
-        return res.equals("") ? 0: Integer.valueOf(res);
     }
 }
