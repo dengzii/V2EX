@@ -161,6 +161,11 @@ public class Node implements Parcelable {
     public Node() {
     }
 
+    public Node(String name, String title){
+        this.name = name;
+        this.title = title;
+    }
+
     protected Node(Parcel in) {
         this.id = in.readInt();
         this.name = in.readString();

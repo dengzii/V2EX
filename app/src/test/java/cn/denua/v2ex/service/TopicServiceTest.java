@@ -18,6 +18,7 @@ import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Reply;
+import cn.denua.v2ex.model.Tag;
 import cn.denua.v2ex.model.Topic;
 
 public class TopicServiceTest {
@@ -41,8 +42,9 @@ public class TopicServiceTest {
                         jsonElements.forEach(jsonElement -> {
                             Topic topic = new Gson().fromJson(jsonElement, Topic.class);
                             System.out.println(topic.getTitle());
-                            System.out.println(topic.getReplies());
-                            System.out.println(topic.getContent());
+                            System.out.print(topic.getReplies());
+                            System.out.print(topic.getReplies());
+                            System.out.print(topic.getContent());
                         });
                     }
                     @Override
@@ -56,7 +58,7 @@ public class TopicServiceTest {
     public void getReply(){
 
         Topic topic = new Topic();
-        topic.setId(505186);
+        topic.setId(505378);
 
         new TopicService<>(new IResponsibleView() {
             @Override
@@ -75,18 +77,42 @@ public class TopicServiceTest {
         }, new ResponseListener<List<Topic>>() {
             @Override
             public void onComplete(List<Topic> result) {
-                List<Reply> replies = result.get(0).getReplyList();
+                Topic topic1 = result.get(0);
+                List<Reply> replies = topic1.getReplyList();
+
+                Log.d("CsrfToken", topic1.getCsrfToken());
+                Log.d("Node:", topic1.getNode().getName() + topic1.getNode().getTitle());
+                Log.d("Thanks:", String.valueOf(topic1.getThanks()));
+                Log.d("Clicks:", String.valueOf(topic1.getClicks()));
+
+                for (Tag tag:topic1.getTags()){
+                    Log.d("Tag", tag.getName());
+                }
+
+                if (replies == null){
+                    Log.e(null, "No replies exists.");
+                    return;
+                }
                 for (Reply reply:replies){
-                    System.out.println(reply.getMember().getUsername());
-                    System.out.println(reply.getContent());
-                    System.out.println(reply.getId());
+                    Log.d(null,  reply.getMember().getAvatar_normal());
+                    Log.d(null, reply.getMember().getUsername() + reply.getAgo() + reply.getId() + reply.getVia());
+                    Log.d(null, reply.getContent());
+                    Log.d(null, "================================================================");
                 }
             }
             @Override
             public void onFailed(String msg) {
-                System.err.println(msg);
+                Log.d(null, msg);
             }
         })
         .getReply(topic, 1);
+    }
+    static class Log{
+        static void d(String t, String s){
+            System.out.println((t == null? "" : (t+"\t")) +s);
+        }
+        static void e(String t, String s){
+            System.err.println(s);
+        }
     }
 }

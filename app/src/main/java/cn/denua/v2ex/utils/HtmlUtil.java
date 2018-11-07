@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.model.Member;
+import cn.denua.v2ex.model.Node;
 import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Tag;
 import cn.denua.v2ex.model.Topic;
@@ -36,10 +37,9 @@ public class HtmlUtil {
     public static void attachRepliesAndDetail(Topic topic, String html){
 
         Document document = Jsoup.parse(html);
-
         Iterator<Element> it = document.select(".box > .cell > .fr > .tag").iterator();
-
         List<Tag> tags = new ArrayList<>();
+
         for ( ; it.hasNext(); ) {
             Element element = it.next();
             tags.add(new Tag(element.text()));
@@ -47,28 +47,43 @@ public class HtmlUtil {
         topic.setClicks(matcherGroup1Int(" · (\\d+) 次点击", html));
         topic.setTags(tags);
 
+        String nodeName = matcherGroup1("<a href=\"/go/([^\"])+\">[^<]+</a>", html);
+        String nodeTitle = matcherGroup1("<a href=\"/go/[^\"]+\">([^<]+)</a>", html);
+        topic.setNode(new Node(nodeName, nodeTitle));
+        topic.setFavors(matcherGroup1Int("∙  (\\d+) 人收藏 ", html));
+        topic.setThanks(matcherGroup1Int("∙  (\\d+) 人感谢", html));
+        topic.setCsrfToken(matcherGroup1("var csrfToken = \"([^\"]+)", html));
+
         attachReplies(topic, html);
     }
 
     public static void attachReplies(Topic topic, String html){
 
+        if (matcherGroup1Int("<span class=\"gray\">(\\d+) 回复 &nbsp;<strong", html) == 0){
+            topic.setReplyList(null);
+            return;
+        }
+
         Document document = Jsoup.parse(html);
         Iterator<Element> elements = document.select(".box > .cell").iterator();
 
         List<Reply> replies = new ArrayList<>();
+        elements.next();
+        elements.next();
+
         for (elements.next(); elements.hasNext(); ) {
             Element e = elements.next();
             Reply reply = new Reply();
-            String cell = e.html();
-            String username = matcherGroup1("href=\"/member/([^\"]+)\"", cell);
-            String avatar_normal =
-                    matcherGroup1("<img src=\"([^\"]+)\" class=\"avatar\"", cell);
+            String cell = e.toString();
 
+            reply.setMember(new Member(
+                    matcherGroup1("href=\"/member/([^\"]+)\"", cell),
+                    matcherGroup1("<img src=\"([^\"]+)\" class=\"avatar\"", cell)));
             reply.setId(matcherGroup1Int("id=\"r_(\\d+)\"", cell));
-            reply.setMember(new Member(username, avatar_normal));
-            reply.setAgo(matcherGroup1("<span class=\"ago\">([^\"]+)</span>", cell));
-            reply.setVia(matcherGroup1("(via [^\"]+)", cell));
-//            reply.setContent(e.selectFirst(".reply_content").text());
+            reply.setAgo(matcherGroup1("<span class=\"ago\">([^\"]+前)", cell));
+            reply.setVia(matcherGroup1("(via [^<]+)", cell));
+            reply.setContent(e.selectFirst(".reply_content").html());
+            reply.setLike(matcherGroup1Int("<span class=\"small fade\">♥ (\\d+)</span>", cell));
 
             replies.add(reply);
         }
@@ -112,7 +127,7 @@ public class HtmlUtil {
     }
 
     private static int matcherGroup1Int(String regex, String html){
-        String res = (matcherGroup1(regex, html));
+        String res = matcherGroup1(regex, html);
         return res.equals("") ? 0: Integer.valueOf(res);
     }
 }

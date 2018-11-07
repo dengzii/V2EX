@@ -15,6 +15,8 @@ public class Reply {
     private String content;
     private String ago;
     private String via;
+    private int like;
+    private int floor;
 
     private List<Reply> at;
 
@@ -64,5 +66,21 @@ public class Reply {
 
     public void setAt(List<Reply> at) {
         this.at = at;
+    }
+
+    public int getLike() {
+        return like;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
+
+    public void setLike(int like) {
+        this.like = like;
     }
 }

@@ -18,12 +18,8 @@ public class Topic implements Parcelable {
 
     private int id;
 
-    private String title;
-
     private long last_touched;
     private long last_modified;
-
-    private String url;
     private long created;
 
     private int clicks = 0;
@@ -31,19 +27,18 @@ public class Topic implements Parcelable {
     private int thanks = 0;
     private int replies = 0;
 
+    private String title;
     private String content;
-
     private String content_rendered;
-
     private String last_reply_by = "";
+    private String url;
 
     private Member member;
-
     private Node node;
-
     private List<Reply> replyList;
-
     private List<Tag> tags = new ArrayList<>();
+
+    private String csrfToken;
 
     public int getId() {
         return id;
@@ -163,6 +158,14 @@ public class Topic implements Parcelable {
 
     public void setNode(Node node) {
         this.node = node;
+    }
+
+    public String getCsrfToken() {
+        return csrfToken;
+    }
+
+    public void setCsrfToken(String csrfToken) {
+        this.csrfToken = csrfToken;
     }
 
     public Topic() {

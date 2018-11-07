@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -25,4 +26,7 @@ public interface TopicApi {
 
     @GET("api/topics/latest.json")
     Observable<JsonArray> getLatestTopic();
+
+    @POST("/down/topic")
+    Observable<String> downVote(@Path("id") int topicId, @Query("t") String v);
 }
