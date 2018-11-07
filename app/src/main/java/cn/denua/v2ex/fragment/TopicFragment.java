@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
 
@@ -19,7 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
-import cn.denua.v2ex.adapter.RecyclerViewAdapter;
+import cn.denua.v2ex.adapter.TopicRecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseNetworkFragment;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Topic;
@@ -32,7 +31,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     @BindView(R.id.rv_topics)
     RecyclerView recyclerView;
 
-    private RecyclerViewAdapter adapter;
+    private TopicRecyclerViewAdapter adapter;
     private List<Topic> topics = new ArrayList<>();
 
     private TopicService topicService;
@@ -70,7 +69,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerViewAdapter(getContext(), topics);
+        adapter = new TopicRecyclerViewAdapter(getContext(), topics);
         recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);

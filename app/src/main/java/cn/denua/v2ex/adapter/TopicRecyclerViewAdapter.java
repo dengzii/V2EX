@@ -8,19 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.List;
 
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.wiget.TopicView;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<TopicRecyclerViewAdapter.MyViewHolder> {
 
     private List<Topic> topics;
     private Context context;
 
-    public RecyclerViewAdapter(Context context, List<Topic> topics){
+    public TopicRecyclerViewAdapter(Context context, List<Topic> topics){
 
         this.topics = topics;
         this.context = context;

@@ -1,5 +1,8 @@
 package cn.denua.v2ex.utils;
 
+import com.blankj.utilcode.util.RegexUtils;
+import com.orhanobut.logger.Logger;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -37,7 +40,7 @@ public class HtmlUtil {
     public static void attachRepliesAndDetail(Topic topic, String html){
 
         Document document = Jsoup.parse(html);
-        Iterator<Element> it = document.select(".box > .cell > .fr > .tag").iterator();
+        Iterator<Element> it = document.select("#Main > .box > .cell > .fr > .tag").iterator();
         List<Tag> tags = new ArrayList<>();
 
         for ( ; it.hasNext(); ) {
@@ -53,33 +56,35 @@ public class HtmlUtil {
         topic.setFavors(matcherGroup1Int("∙  (\\d+) 人收藏 ", html));
         topic.setThanks(matcherGroup1Int("∙  (\\d+) 人感谢", html));
         topic.setCsrfToken(matcherGroup1("var csrfToken = \"([^\"]+)", html));
+        topic.setReplies(matcherGroup1Int("<span class=\"gray\">(\\d+) 回复 &nbsp;<strong", html));
 
         attachReplies(topic, html);
     }
 
     public static void attachReplies(Topic topic, String html){
 
-        if (matcherGroup1Int("<span class=\"gray\">(\\d+) 回复 &nbsp;<strong", html) == 0){
+        if (topic.getReplies() == 0){
             topic.setReplyList(null);
             return;
         }
 
         Document document = Jsoup.parse(html);
-        Iterator<Element> elements = document.select(".box > .cell").iterator();
+
+        Iterator<Element> elementIterator = document.select("#Main > .box > .cell[id]").iterator();
 
         List<Reply> replies = new ArrayList<>();
-        elements.next();
-        elements.next();
 
-        for (elements.next(); elements.hasNext(); ) {
-            Element e = elements.next();
+        for (; elementIterator.hasNext(); ) {
+            Element e = elementIterator.next();
+
             Reply reply = new Reply();
             String cell = e.toString();
+            int id = matcherGroup1Int("id=\"r_(\\d+)\"", cell);
 
+            reply.setId(id);
             reply.setMember(new Member(
                     matcherGroup1("href=\"/member/([^\"]+)\"", cell),
                     matcherGroup1("<img src=\"([^\"]+)\" class=\"avatar\"", cell)));
-            reply.setId(matcherGroup1Int("id=\"r_(\\d+)\"", cell));
             reply.setAgo(matcherGroup1("<span class=\"ago\">([^\"]+前)", cell));
             reply.setVia(matcherGroup1("(via [^<]+)", cell));
             reply.setContent(e.selectFirst(".reply_content").html());

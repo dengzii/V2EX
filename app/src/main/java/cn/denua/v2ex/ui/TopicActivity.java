@@ -3,15 +3,22 @@ package cn.denua.v2ex.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 
+import com.blankj.utilcode.util.ToastUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
-import cn.denua.v2ex.base.BaseActivity;
+import cn.denua.v2ex.adapter.ReplyRecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseNetworkActivity;
+import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Topic;
@@ -27,8 +34,14 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    @BindView(R.id.rv_reply)
+    RecyclerView mRecycleView;
+
     private Topic topic;
-    private Reply[] replies;
+    private List<Reply> replies = new ArrayList<>();
+
+    private ReplyRecyclerViewAdapter mRecyclerViewAdapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,18 +67,41 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
     private void initView(){
 
+        mRecyclerViewAdapter = new ReplyRecyclerViewAdapter(this, replies);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecycleView.setLayoutManager(layoutManager);
+        mRecycleView.setAdapter(mRecyclerViewAdapter);
+
         mTopicView.loadDataFromTopic(topic);
         mWebView.loadData(topic.getContent_rendered(), "text/html", "utf-8");
         swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
     }
 
     @Override
+    public void onCompleteRequest() {
+        super.onCompleteRequest();
+        ToastUtils.showShort("Request complete");
+    }
+
+    @Override
     public void onComplete(List<Topic> result) {
 
+        this.topic = result.get(0);
+        this.replies = topic.getReplyList();
+        swipeRefreshLayout.setRefreshing(false);
+        mRecyclerViewAdapter.setReplies(this.replies);
+        mRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public int getContextStatus() {
+        return IResponsibleView.VIEW_STATUS_ACTIVATED;
     }
 
     @Override
     public void onFailed(String msg) {
 
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -80,7 +80,7 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
 //        Topic topicCopy = Topic.CREATOR.createFromParcel(parcel);
 
         topicApi.getTopicDetail(topicCopy.getId(), page)
-//                .compose(RxUtil.io2main())
+                .compose(RxUtil.io2main())
                 .subscribe(new RxObserver<String>() {
                     @Override
                     public void _onNext(String s) {
