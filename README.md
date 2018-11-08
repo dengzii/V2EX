@@ -3,14 +3,38 @@ V2EX third-part client for Android
 
 V2EX 第三方 Android 客户端
 
-## toolkit and environment
+## Screenshot
+
+// TODO
+
+## Summary
+
+- Material Design style
+- smooth animation
+- multiple theme
+- friendly user interface
+- most important : **Open Source**
+
+## Features
+
+1. login to v2ex
+2. fill account information
+3. check every
+4. favor , focus member, node, topic
+5. view topic, member, node detail
+5. thanks, like and dislike, down vote and up vote
+6. add comment and reply to comment, hide comment
+7. custom home page tab
+8. post topic, receive message, comment
+
+## Toolkit and environment
 
 - JDK 8
 - Gradle 3.2.1
 - AndroidStudio 3.22
 - Android SDK 27
 
-## dependencies
+## Dependencies
 
 - Retrofit 2.4.0
 - ButterKnife 8.8.1
