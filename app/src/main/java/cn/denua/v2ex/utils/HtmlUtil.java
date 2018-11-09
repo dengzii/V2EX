@@ -1,8 +1,5 @@
 package cn.denua.v2ex.utils;
 
-import com.blankj.utilcode.util.RegexUtils;
-import com.orhanobut.logger.Logger;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -87,8 +84,15 @@ public class HtmlUtil {
                     matcherGroup1("<img src=\"([^\"]+)\" class=\"avatar\"", cell)));
             reply.setAgo(matcherGroup1("<span class=\"ago\">([^\"]+前)", cell));
             reply.setVia(matcherGroup1("(via [^<]+)", cell));
-            reply.setContent(e.selectFirst(".reply_content").html());
             reply.setLike(matcherGroup1Int("<span class=\"small fade\">♥ (\\d+)</span>", cell));
+
+            Element element = e.selectFirst(".reply_content");
+            for (Element img:element.select("img")){
+                img.attr("width","100%");
+                img.attr("height","auto");
+            }
+
+            reply.setContent(element.html());
 
             replies.add(reply);
         }
@@ -120,6 +124,17 @@ public class HtmlUtil {
                 ".png\" height=\"16\"", html));
 
         account.setBalance(account.getBronze()+account.getSilver()*100+account.getGold()*10000);
+    }
+
+    public static String applyHtmlStyle(String html){
+
+        Document document = Jsoup.parse(html);
+        for (Element img:document.select("img")){
+            img.attr("width","100%");
+            img.attr("height","auto");
+        }
+
+        return document.toString();
     }
 
     private static String matcherGroup1(String regex, String html){

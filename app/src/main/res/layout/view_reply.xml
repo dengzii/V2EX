@@ -6,7 +6,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="10dp">
@@ -27,19 +26,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/placeholder"
         app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
-        app:layout_constraintTop_toTopOf="@+id/iv_user_pic" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_ago"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="@string/placeholder"
+        app:layout_constraintBottom_toTopOf="@+id/tv_floor"
         app:layout_constraintStart_toEndOf="@+id/tv_username"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_username" />
 
     <TextView
         android:id="@+id/tv_via"
@@ -56,31 +56,33 @@
         android:id="@+id/tv_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/placeholder"
+        app:layout_constraintBottom_toTopOf="@+id/tv_floor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_username" />
 
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:paddingEnd="40dp"
-        android:paddingStart="0dp"
+        android:layout_marginTop="8dp"
+        android:textSize="6.5pt"
+        android:textColor="@color/primary"
         android:text="@string/placeholder"
-        app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
-        app:layout_constraintTop_toBottomOf="@+id/tv_username" />
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/iv_user_pic" />
 
     <TextView
         android:id="@+id/tv_floor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/placeholder"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_content"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -88,6 +90,7 @@
         android:layout_height="1px"
         android:layout_marginTop="10dp"
         android:background="@color/accent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content" />
 
 </android.support.constraint.ConstraintLayout>

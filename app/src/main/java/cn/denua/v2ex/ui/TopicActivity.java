@@ -1,14 +1,13 @@
 package cn.denua.v2ex.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
-
-import com.blankj.utilcode.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,7 @@ import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.service.TopicService;
+import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.wiget.TopicView;
 
 public class TopicActivity extends BaseNetworkActivity implements ResponseListener<List<Topic>> {
@@ -32,7 +32,9 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @BindView(R.id.topicView)
     TopicView mTopicView;
     @BindView(R.id.refresh_layout)
-    SwipeRefreshLayout swipeRefreshLayout;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.scrollView)
+    NestedScrollView mScrollView;
 
     @BindView(R.id.rv_reply)
     RecyclerView mRecycleView;
@@ -54,17 +56,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         initView();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    private void onRefresh(){
-
-        new TopicService<>(this, this).getReply(topic, 1);
-    }
-
+    @SuppressLint("ClickableViewAccessibility")
     private void initView(){
 
         mRecyclerViewAdapter = new ReplyRecyclerViewAdapter(this, replies);
@@ -72,16 +64,28 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecycleView.setLayoutManager(layoutManager);
         mRecycleView.setAdapter(mRecyclerViewAdapter);
+        mRecycleView.setNestedScrollingEnabled(false);
 
         mTopicView.loadDataFromTopic(topic);
-        mWebView.loadData(topic.getContent_rendered(), "text/html", "utf-8");
-        swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
+        mWebView.loadData(HtmlUtil.applyHtmlStyle(topic.getContent_rendered()),
+                "text/html", "utf-8");
+        mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
+
+        mWebView.setVerticalScrollBarEnabled(false);
+        mWebView.setHorizontalScrollBarEnabled(false);
+        mWebView.setNetworkAvailable(true);
     }
+
+    private void onRefresh(){
+        new TopicService<>(this, this).getReply(topic, 1);
+    }
+
+
 
     @Override
     public void onCompleteRequest() {
         super.onCompleteRequest();
-        ToastUtils.showShort("Request complete");
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -89,19 +93,19 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
         this.topic = result.get(0);
         this.replies = topic.getReplyList();
-        swipeRefreshLayout.setRefreshing(false);
         mRecyclerViewAdapter.setReplies(this.replies);
         mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override
     public int getContextStatus() {
+
         return IResponsibleView.VIEW_STATUS_ACTIVATED;
     }
 
     @Override
     public void onFailed(String msg) {
 
-        swipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 }
