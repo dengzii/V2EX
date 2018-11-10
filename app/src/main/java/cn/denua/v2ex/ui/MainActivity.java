@@ -4,8 +4,6 @@
 
 package cn.denua.v2ex.ui;
 
-import android.app.ActionBar;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,23 +13,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.RequestFuture;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +37,6 @@ import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.LoginService;
 import cn.denua.v2ex.utils.Config;
-import cn.denua.v2ex.utils.StatusBarUtil;
 import cn.denua.v2ex.wiget.MessageDialog;
 
 @SuppressWarnings("RedundantCast")
@@ -197,7 +189,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             dialog.setConfirmListener(this::logout);
             dialog.show(getSupportFragmentManager(), "logout_confirm");
         }else{
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivityForResult(new Intent(this, LoginActivity.class),
+                    LOGIN_REQUEST_CODE);
         }
     }
 
