@@ -56,6 +56,13 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         initView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mSwipeRefreshLayout.setRefreshing(true);
+        onRefresh();
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private void initView(){
 
@@ -77,6 +84,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     }
 
     private void onRefresh(){
+
         new TopicService<>(this, this).getReply(topic, 1);
     }
 

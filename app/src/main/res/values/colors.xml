@@ -13,5 +13,7 @@
     <color name="red">#f00</color>
     <color name="blue">#00f</color>
     <color name="green">#0f0</color>
-
+    
+    <color name="label_normal">#bababa</color>
+    <color name="label_accent">#bbbbbb</color>
 </resources>

@@ -7,8 +7,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="10dp">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/iv_user_pic"
@@ -22,11 +21,11 @@
 
     <TextView
         android:id="@+id/tv_username"
-        style="@style/TextNormal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:textSize="6.5pt"
         android:text="@string/placeholder"
         app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
         app:layout_constraintTop_toTopOf="parent" />
@@ -75,13 +74,22 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_user_pic" />
 
     <TextView
+        android:id="@+id/tv_poster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/poster"
+        android:textColor="@color/primary"
+        app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username" />
+
+    <TextView
         android:id="@+id/tv_floor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/placeholder"
-        app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
+        android:text="@string/place_holder_floor"
+        app:layout_constraintStart_toEndOf="@+id/tv_poster"
         app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 
     <ImageView
@@ -90,7 +98,6 @@
         android:layout_height="1px"
         android:layout_marginTop="10dp"
         android:background="@color/accent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_content" />
 
 </android.support.constraint.ConstraintLayout>

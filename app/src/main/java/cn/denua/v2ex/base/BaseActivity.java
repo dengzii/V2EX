@@ -21,7 +21,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UnexpectedExceptionHandler.getInstance().init();
+//        UnexpectedExceptionHandler.getInstance().init();
     }
 
     @Override

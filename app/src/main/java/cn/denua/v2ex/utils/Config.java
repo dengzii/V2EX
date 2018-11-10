@@ -33,6 +33,11 @@ public class Config {
 
     public static List<String> HOME_TAB_TITLES = new ArrayList<>();
 
+    public static boolean REPLY_AGO_FULL;
+    public static boolean REPLY_POSTER_HIGHLIGHT;
+    public static boolean REPLY_HIDE_ZERO;
+    public static boolean REPLY_THANKS_LONG_CLICK;
+    public static boolean REPLY_OPRATE_SLIDING_MODE;
 
     static {
 

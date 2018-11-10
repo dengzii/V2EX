@@ -28,6 +28,7 @@ import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.ui.NodeActivity;
 import cn.denua.v2ex.ui.TopicActivity;
 import cn.denua.v2ex.ui.UserDetailActivity;
+import cn.denua.v2ex.utils.ImageLoader;
 
 /*
  * Topic 话题列表的 item, 自定义 view
@@ -91,7 +92,7 @@ public class TopicView extends FrameLayout {
         tvReply.setText(String.valueOf(topic.getReplies()));
         tvLastTouched.setText(lastTouched);
         tvNode.setText(topic.getNode().getName());
-        Glide.with(this).load(userPicUrl).into(ivUserPic);
+        ImageLoader.load(userPicUrl, ivUserPic, this);
 
         tvNode.setOnClickListener(v->goToNodeDetail());
         tvUsername.setOnClickListener(v->goToUserDetail());

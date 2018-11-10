@@ -28,12 +28,17 @@
     <string name="reply">回复</string>
     <string name="comment">评论</string>
 
-
     <string name="confirm">确 定</string>
     <string name="cancel">取 消</string>
     <string name="author">denua</string>
     <string name="placeholder">XXX</string>
     <string name="zero">0</string>
 
+
+    <string name="poster">帖主</string>
     <string name="no_more">没有更多了 ~ </string>
+
+    <string name="place_holder_floor">#%1$d</string>
+
+
 </resources>
