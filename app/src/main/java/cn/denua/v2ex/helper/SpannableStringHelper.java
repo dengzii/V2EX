@@ -2,7 +2,7 @@
  * Copyright (c) 2018 denua.
  */
 
-package cn.denua.v2ex.Helper;
+package cn.denua.v2ex.helper;
 
 /*
  * spannable string util, format string to spannable string

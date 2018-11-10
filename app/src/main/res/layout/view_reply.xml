@@ -55,11 +55,22 @@
         android:id="@+id/tv_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="@string/placeholder"
-        app:layout_constraintBottom_toTopOf="@+id/tv_floor"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="8dp"
+        android:text="@string/zero"
+        app:layout_constraintBottom_toTopOf="@+id/tv_poster"
+        app:layout_constraintEnd_toStartOf="@+id/iv_like"
         app:layout_constraintTop_toTopOf="@+id/tv_username" />
+
+    <ImageView
+        android:id="@+id/iv_like"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_like"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_like"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_like" />
+
 
     <TextView
         android:id="@+id/tv_content"

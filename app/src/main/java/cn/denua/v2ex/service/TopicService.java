@@ -94,8 +94,7 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
                     }
                 });
     }
-
-
+    
     private RxObserver<JsonArray> jsonArrayToTopicsObserver = new RxObserver<JsonArray>() {
 
         @Override

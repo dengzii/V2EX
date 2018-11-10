@@ -8,14 +8,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
@@ -27,11 +30,13 @@ import android.widget.Toast;
 
 
 import com.blankj.utilcode.util.SpanUtils;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,13 +68,15 @@ public class ReplyView extends FrameLayout  {
     @BindView(R.id.tv_via)
     TextView mVia;
     @BindView(R.id.tv_like)
-    TextView mLike;
+    TextView mLikeCount;
     @BindView(R.id.tv_content)
     TextView mContent;
     @BindView(R.id.tv_floor)
     TextView mFloor;
     @BindView(R.id.tv_poster)
     TextView mPoster;
+    @BindView(R.id.iv_like)
+    ImageView mLike;
 
     private Reply reply;
     private Context context;
@@ -94,67 +101,67 @@ public class ReplyView extends FrameLayout  {
 
     public void setReply(Reply reply){
         this.reply = reply;
+        int like = reply.getLike();
 
         mUserName.setText(reply.getMember().getUsername());
         mAgo.setText(reply.getAgo());
         mVia.setText(reply.getVia());
         mPoster.setVisibility(reply.isPoster()?VISIBLE:GONE);
-        mLike.setText(String.valueOf(reply.getLike()));
-        mContent.setText(getFormatReplyContent(reply.getContent()));
+        mLikeCount.setText(like==0?"":String.valueOf(like));
+        mLike.setOnClickListener(v -> thankReply(reply.getId()));
+
+        mContent.setText(getSpannableReplyContent(reply.getContent()));
         mContent.setMovementMethod(LinkMovementMethod.getInstance());
-        mContent.setHighlightColor(Color.parseColor("#ff0000"));
         mFloor.setText(String.format(getResources().getString(R.string.place_holder_floor), reply.getFloor()));
         mUserName.setOnClickListener(this::goTOUserDetail);
         mUserPic.setOnClickListener(this::goTOUserDetail);
+
         ImageLoader.load(reply.getMember().getAvatar_large(), mUserPic, this);
     }
 
-    private SpannableString getFormatReplyContent(String content){
+    private SpannableStringBuilder getSpannableReplyContent(String content){
 
-        String mContent = content.replace("<br>", "")
-                                 .replace("@\n","@")
-                                 .replaceAll("<img src[^>]+>","[IMAGE]")
-                                 .replaceAll("<a target[^>]+>http[^<]+</a>", "[LINK]");
+        String input = content.replaceAll("<br>","")
+                .replace("@\n", "");
 
-        String regex = "<a href=\"/member/\\w+\">(\\w+)</a>";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(mContent);
+        String regex = "<a href=\"/member/\\w+\">(\\w+)</a>" +
+                "|<a target=\"_blank\" href=\"(http[^\"]+)\" [^>]+>[^>]+>" +
+                "|<img src=\"(http[^\"]+)\" [^>]+>";
 
-        List<int[]> group = new ArrayList<>();
-        Queue<String> at = new PriorityQueue<>();
+        Matcher matcher = Pattern.compile(regex).matcher(input);
+
+        String[] split = input.split(regex);
+        SpanUtils spanUtils = new SpanUtils();
+        int index=0;
+
         while (matcher.find()){
-            String result = matcher.group(1);
-            mContent = mContent.replaceFirst(regex, result);
+            spanUtils.append(split[index++])
+                    .setForegroundColor(Color.BLACK);
 
-            int start = matcher.start();
-            int end = start + result.length();
-            at.add(result);
-            group.add(new int[]{start-1, end});
-        }
-        SpannableString spannableString = SpannableString.valueOf(mContent);
-
-        UnderlineSpan underlineSpan = new UnderlineSpan(){
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                ds.setColor(Color.RED);
-                ds.setUnderlineText(false);
+            com.orhanobut.logger.Logger.d("Group", split[index-1], matcher.group(1), matcher.group(2), matcher.group(3));
+            if (matcher.group(1)!=null){
+                spanUtils.append("@" + matcher.group(1))
+                        .setClickSpan(new ReplyAtMemberClickSpan(matcher.group(1)))
+                        .setForegroundColor(Color.RED)
+                        .setBold();
+            }else if (matcher.group(2) != null){
+                spanUtils.append(matcher.group(2))
+                        .setUrl(matcher.group(2))
+                        .setForegroundColor(Color.BLUE)
+                        .setClickSpan(new LinkClickSpan(matcher.group(2)));
+            }else if (matcher.group(3) != null){
+                spanUtils.appendImage(R.drawable.ic_launcher_background)
+                        .setClickSpan(new ImageClickSpan(matcher.group(3)));
             }
-        };
-        for (int[] item:group){
-            int start   = item[0];
-            int end     = item[1];
-
-            spannableString.setSpan(
-                    new ReplyAtMemberClickSpan(at.poll()),
-                    start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            spannableString.setSpan(
-                    new StyleSpan(Typeface.BOLD),
-                    start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            spannableString.setSpan(
-                    underlineSpan,
-                    start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         }
-        return spannableString;
+        if (index != split.length){
+            spanUtils.append(split[index]);
+        }
+        return spanUtils.create();
+    }
+
+    private void thankReply(int id){
+        Toast.makeText(context, "Thank you "+id, Toast.LENGTH_SHORT).show();
     }
 
     private void goTOUserDetail(View view){
@@ -185,6 +192,32 @@ public class ReplyView extends FrameLayout  {
         @Override
         public void onClick(@NonNull View widget) {
             Toast.makeText(context, this.username, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class LinkClickSpan extends ClickableSpan{
+
+        private String mUri;
+        LinkClickSpan(String uri){
+            this.mUri = uri;
+        }
+        @Override
+        public void onClick(@NonNull View widget) {
+            Toast.makeText(context, "Link:"+mUri, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class ImageClickSpan extends ClickableSpan{
+
+        private String mUri;
+
+        public ImageClickSpan(String mUri) {
+            this.mUri = mUri;
+        }
+
+        @Override
+        public void onClick(@NonNull View widget) {
+            Toast.makeText(context, "Image: "+mUri, Toast.LENGTH_SHORT).show();
         }
     }
 }

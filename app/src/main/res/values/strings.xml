@@ -38,7 +38,7 @@
     <string name="poster">帖主</string>
     <string name="no_more">没有更多了 ~ </string>
 
-    <string name="place_holder_floor">#%1$d</string>
+    <string name="place_holder_floor"># %1$d</string>
 
 
 </resources>
