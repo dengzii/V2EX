@@ -15,10 +15,19 @@ public class Reply {
     private String content;
     private String ago;
     private String via;
+    private boolean isPoster;
     private int like;
     private int floor;
 
     private List<Reply> at;
+
+    public boolean isPoster() {
+        return isPoster;
+    }
+
+    public void setPoster(boolean poster) {
+        isPoster = poster;
+    }
 
     public Member getMember() {
         return member;

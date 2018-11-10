@@ -61,30 +61,32 @@ public class HtmlUtil {
     public static void attachReplies(Topic topic, String html){
 
         if (topic.getReplies() == 0){
-            topic.setReplyList(null);
+            topic.setReplyList(new ArrayList<>());
             return;
         }
 
         Document document = Jsoup.parse(html);
-
         Iterator<Element> elementIterator = document.select("#Main > .box > .cell[id]").iterator();
 
         List<Reply> replies = new ArrayList<>();
+        String poster = topic.getMember().getUsername();
 
-        for (; elementIterator.hasNext(); ) {
+        for (int f=0; elementIterator.hasNext(); f++) {
             Element e = elementIterator.next();
 
             Reply reply = new Reply();
             String cell = e.toString();
             int id = matcherGroup1Int("id=\"r_(\\d+)\"", cell);
+            String username = matcherGroup1("href=\"/member/([^\"]+)\"", cell);
+            String avatarNormal = matcherGroup1("<img src=\"([^\"]+)\" class=\"avatar\"", cell);
 
             reply.setId(id);
-            reply.setMember(new Member(
-                    matcherGroup1("href=\"/member/([^\"]+)\"", cell),
-                    matcherGroup1("<img src=\"([^\"]+)\" class=\"avatar\"", cell)));
+            reply.setMember(new Member(username, avatarNormal));
+            reply.setPoster(username.equals(poster));
             reply.setAgo(matcherGroup1("<span class=\"ago\">([^\"]+前)", cell));
             reply.setVia(matcherGroup1("(via [^<]+)", cell));
             reply.setLike(matcherGroup1Int("<span class=\"small fade\">♥ (\\d+)</span>", cell));
+            reply.setFloor(f);
 
             Element element = e.selectFirst(".reply_content");
             for (Element img:element.select("img")){

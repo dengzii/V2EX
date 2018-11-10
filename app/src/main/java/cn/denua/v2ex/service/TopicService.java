@@ -1,8 +1,5 @@
 package cn.denua.v2ex.service;
 
-
-import android.os.Parcel;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
