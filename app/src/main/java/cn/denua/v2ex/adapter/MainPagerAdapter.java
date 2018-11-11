@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import java.util.List;
 
-import cn.denua.v2ex.utils.Config;
+import cn.denua.v2ex.Config;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
 

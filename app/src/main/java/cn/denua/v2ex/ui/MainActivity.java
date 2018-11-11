@@ -36,7 +36,7 @@ import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.LoginService;
-import cn.denua.v2ex.utils.Config;
+import cn.denua.v2ex.Config;
 import cn.denua.v2ex.wiget.MessageDialog;
 
 @SuppressWarnings("RedundantCast")

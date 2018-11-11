@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
+import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.model.Member;
 
@@ -26,12 +27,11 @@ public class UserDetailActivity extends BaseNetworkActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.act_user_detail);
     }
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
         return super.onCreateView(name, context, attrs);
-
     }
 }

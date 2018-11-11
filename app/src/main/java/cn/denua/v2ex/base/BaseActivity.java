@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 
+import cn.denua.v2ex.R;
 import cn.denua.v2ex.utils.UnexpectedExceptionHandler;
 
 import static cn.denua.v2ex.utils.StatusBarUtil.getStatusBarHeight;
@@ -22,6 +23,9 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 //        UnexpectedExceptionHandler.getInstance().init();
+
+//        setTheme(R.style.MainTheme);
+//        recreate();
     }
 
     @Override

@@ -1,4 +1,8 @@
-package cn.denua.v2ex.utils;
+/*
+ * Copyright (c) 2018 denua.
+ */
+
+package cn.denua.v2ex;
 
 import android.content.Context;
 import android.content.SharedPreferences;

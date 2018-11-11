@@ -55,10 +55,6 @@ import cn.denua.v2ex.utils.ImageLoader;
  */
 public class ReplyView extends FrameLayout  {
 
-    private static final int TYPE_AT    = 0;
-    private static final int TYPE_LINK  = 1;
-    private static final int TYPE_IMAGE = 2;
-
     @BindView(R.id.iv_user_pic)
     ImageView mUserPic;
     @BindView(R.id.tv_username)
@@ -135,10 +131,10 @@ public class ReplyView extends FrameLayout  {
         int index=0;
 
         while (matcher.find()){
-            spanUtils.append(split[index++])
-                    .setForegroundColor(Color.BLACK);
-
-            com.orhanobut.logger.Logger.d("Group", split[index-1], matcher.group(1), matcher.group(2), matcher.group(3));
+            if (split.length != 0){
+                spanUtils.append(split[index++]).setLineHeight(20)
+                        .setForegroundColor(Color.BLACK);
+            }
             if (matcher.group(1)!=null){
                 spanUtils.append("@" + matcher.group(1))
                         .setClickSpan(new ReplyAtMemberClickSpan(matcher.group(1)))
@@ -146,8 +142,8 @@ public class ReplyView extends FrameLayout  {
                         .setBold();
             }else if (matcher.group(2) != null){
                 spanUtils.append(matcher.group(2))
-                        .setUrl(matcher.group(2))
                         .setForegroundColor(Color.BLUE)
+                        .setUnderline()
                         .setClickSpan(new LinkClickSpan(matcher.group(2)));
             }else if (matcher.group(3) != null){
                 spanUtils.appendImage(R.drawable.ic_launcher_background)
@@ -177,10 +173,10 @@ public class ReplyView extends FrameLayout  {
         ButterKnife.bind(this);
     }
 
-    private class ReplyAtMemberClickSpan extends ClickableSpan{
+    public class ReplyAtMemberClickSpan extends ClickableSpan{
 
         private String username;
-        ReplyAtMemberClickSpan(String username){
+        public ReplyAtMemberClickSpan(String username){
             this.username = username;
         }
 
@@ -195,7 +191,7 @@ public class ReplyView extends FrameLayout  {
         }
     }
 
-    private class LinkClickSpan extends ClickableSpan{
+    public class LinkClickSpan extends ClickableSpan{
 
         private String mUri;
         LinkClickSpan(String uri){
@@ -207,11 +203,11 @@ public class ReplyView extends FrameLayout  {
         }
     }
 
-    private class ImageClickSpan extends ClickableSpan{
+    public class ImageClickSpan extends ClickableSpan{
 
         private String mUri;
 
-        public ImageClickSpan(String mUri) {
+        ImageClickSpan(String mUri) {
             this.mUri = mUri;
         }
 
