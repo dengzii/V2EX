@@ -52,27 +52,7 @@
 
     </style>
 
-    <style name="MainTheme.NoActionbar" parent="NoActionBar">
-        <item name="colorPrimary">@color/blue_grey_primary</item>
-        <item name="colorAccent">@color/blue_grey_accent</item>
-        <item name="colorPrimaryDark">@color/blue_grey_primary_dark</item>
-        <item name="colorError">@color/blue_grey_accent</item>
-        <item name="android:textColor">@color/blue_grey_text</item>
-        <item name="android:textColorSecondary">@color/blue_grey_secondary_text</item>
-
-        <item name="attr_color_background">@color/white</item>
-
-        <item name="attr_color_primary">@color/blue_grey_primary</item>
-        <item name="attr_color_primary_light">@color/blue_grey_primary_light</item>
-        <item name="attr_color_primary_dark">@color/blue_grey_primary_dark</item>
-        <item name="attr_color_accent">@color/blue_grey_accent</item>
-        <item name="attr_color_text_secondary">@color/blue_grey_secondary_text</item>
-        <item name="attr_color_text">@color/blue_grey_text</item>
-        <item name="attr_color_icons">@color/blue_grey_icons</item>
-        <item name="attr_color_divider">@color/blue_grey_divider</item>
-
-        <item name="attr_color_text_secondary_inverse">@color/blue_grey_primary_dark</item>
-        <item name="attr_color_text_inverse">@color/blue_grey_primary_light</item>
+    <style name="MainTheme.NoActionbar" >
 
         <item name="windowActionBar">false</item>
         <item name="android:windowActionBar">false</item>

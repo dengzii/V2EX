@@ -54,7 +54,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
         ButterKnife.bind(this);
 
         setTitle(R.string.login);
-        progressDialog.setTitle("登录中...");
+        progressDialog.setTitle(getResources().getString(R.string.logging_in));
         loginService = new LoginService<>(this,this);
         loginService.preLogin();
         ivCaptcha.setVisibility(View.GONE);
