@@ -4,5 +4,5 @@
 
 <vector android:height="24dp" android:viewportHeight="1024"
     android:viewportWidth="1024" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="#8a8a8a" android:pathData="M544.45,499.2l284.58,-284.58a32,32 0,0 0,-45.25 -45.25L499.2,453.95 214.62,169.38a32,32 0,0 0,-45.25 45.25l284.58,284.58 -284.58,284.58a32,32 0,0 0,45.25 45.25l284.58,-284.58 284.58,284.58a31.9,31.9 0,0 0,45.25 0,32 32,0 0,0 0,-45.25L544.45,499.2z"/>
+    <path android:fillColor="?attr_color_icons" android:pathData="M544.45,499.2l284.58,-284.58a32,32 0,0 0,-45.25 -45.25L499.2,453.95 214.62,169.38a32,32 0,0 0,-45.25 45.25l284.58,284.58 -284.58,284.58a32,32 0,0 0,45.25 45.25l284.58,-284.58 284.58,284.58a31.9,31.9 0,0 0,45.25 0,32 32,0 0,0 0,-45.25L544.45,499.2z"/>
 </vector>

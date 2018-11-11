@@ -16,4 +16,33 @@
     
     <color name="label_normal">#bababa</color>
     <color name="label_accent">#bbbbbb</color>
+
+    <color name="blue_grey_primary_dark">#455A64</color>
+    <color name="blue_grey_primary_light">#CFD8DC</color>
+    <color name="blue_grey_primary">#607D8B</color>
+    <color name="blue_grey_accent">#4CAF50</color>
+    <color name="blue_grey_text">#212121</color>
+    <color name="blue_grey_secondary_text">#757575</color>
+    <color name="blue_grey_divider">#BDBDBD</color>
+    <color name="blue_grey_icons">#757575</color>
+    <color name="blut_grey_text_lightish">#e2e2e2</color>
+
+    <color name="teal_primary">#009688</color>
+    <color name="teal_primary_dark">#00796B</color>
+    <color name="teal_primary_light">#B2DFDB</color>
+    <color name="teal_accent">#FF9800</color>
+    <color name="teal_primary_text">#212121</color>
+    <color name="teal_secondary_text">#757575</color>
+    <color name="teal_icons">#FFFFFF</color>
+    <color name="teal_divider">#BDBDBD</color>
+
+    <color name="green_primary">#4CAF50</color>
+    <color name="green_primary_dark">#388E3C</color>
+    <color name="green_primary_light">#C8E6C9</color>
+    <color name="green_accent">#FF5252</color>
+    <color name="green_primary_text">#212121</color>
+    <color name="green_secondary_text">#757575</color>
+    <color name="green_icons">#FFFFFF</color>
+    <color name="green_divider">#BDBDBD</color>
+
 </resources>

@@ -26,6 +26,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textSize="6.5pt"
+        android:textColor="?attr_color_text"
         android:text="@string/placeholder"
         app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,6 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:textColor="?attr_color_text_secondary"
         android:text="@string/placeholder"
         app:layout_constraintBottom_toTopOf="@+id/tv_floor"
         app:layout_constraintStart_toEndOf="@+id/tv_username"
@@ -56,6 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:textColor="?attr_color_text_secondary"
         android:text="@string/zero"
         app:layout_constraintBottom_toTopOf="@+id/tv_poster"
         app:layout_constraintEnd_toStartOf="@+id/iv_like"
@@ -99,6 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:textColor="@color/blue_grey_secondary_text"
         android:text="@string/place_holder_floor"
         app:layout_constraintStart_toEndOf="@+id/tv_poster"
         app:layout_constraintTop_toBottomOf="@+id/tv_username" />

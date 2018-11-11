@@ -16,6 +16,7 @@
     <TextView
         android:id="@+id/tv_title"
         style="@style/TextTitle"
+        android:textColor="?attr_color_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

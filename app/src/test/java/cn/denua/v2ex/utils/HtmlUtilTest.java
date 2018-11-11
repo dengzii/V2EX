@@ -4,19 +4,11 @@
 
 package cn.denua.v2ex.utils;
 
-import com.blankj.utilcode.util.SpanUtils;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.junit.Assert.*;
 
 /*
  * HtmlUtil test

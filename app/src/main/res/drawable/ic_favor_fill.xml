@@ -9,7 +9,7 @@
         android:viewportHeight="24.0">
 
     <path
-        android:fillColor="#8a8a8a"
+        android:fillColor="?attr_color_icons"
         android:pathData="M17,3L7,3c-1.1,0 -1.99,0.9 -1.99,2L5,21l7,-3 7,3L19,5c0,-1.1 -0.9,-2 -2,-2"/>
 
 </vector>

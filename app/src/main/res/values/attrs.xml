@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018 denua.
+  -->
+
+<resources>
+    
+    <attr name="attr_color_primary"         format="reference|color"/>
+    <attr name="attr_color_primary_light"   format="reference|color"/>
+    <attr name="attr_color_primary_dark"    format="reference|color"/>
+    <attr name="attr_color_secondary"       format="reference|color"/>
+    <attr name="attr_color_accent"          format="reference|color"/>
+    <attr name="attr_color_text"            format="reference|color"/>
+    <attr name="attr_color_text_secondary"  format="reference|color"/>
+    <attr name="attr_color_icons"           format="reference|color"/>
+    <attr name="attr_color_divider"         format="reference|color"/>
+    <attr name="attr_color_background"      format="reference|color"/>
+
+    <attr name="attr_color_text_inverse"            format="reference|color"/>
+    <attr name="attr_color_text_secondary_inverse"  format="reference|color"/>
+    <attr name="attr_color_text_lightish" format="reference|color"/>
+
+
+</resources>

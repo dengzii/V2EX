@@ -4,7 +4,12 @@
   -->
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/accent">
+    android:color="?attr_color_primary">
 
-    <item android:drawable="@drawable/shape_accent_rectangle"/>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="?attr_color_background"/>
+            <corners android:radius="0dp"/>
+        </shape>
+    </item>
 </ripple>

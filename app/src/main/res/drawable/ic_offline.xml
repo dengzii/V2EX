@@ -4,6 +4,6 @@
 
 <vector android:height="24dp" android:viewportHeight="1024"
     android:viewportWidth="1024" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="#8a8a8a" android:pathData="M512,832c-176.45,0 -320,-143.55 -320,-320S335.55,192 512,192s320,143.55 320,320 -143.55,320 -320,320m0,-704C300.26,128 128,300.26 128,512s172.26,384 384,384 384,-172.26 384,-384S723.74,128 512,128"/>
-    <path android:fillColor="#8a8a8a" android:pathData="M645.54,473.6h-256a32,32 0,0 0,0 64h256a32,32 0,0 0,0 -64"/>
+    <path android:fillColor="?attr_color_icons" android:pathData="M512,832c-176.45,0 -320,-143.55 -320,-320S335.55,192 512,192s320,143.55 320,320 -143.55,320 -320,320m0,-704C300.26,128 128,300.26 128,512s172.26,384 384,384 384,-172.26 384,-384S723.74,128 512,128"/>
+    <path android:fillColor="?attr_color_icons" android:pathData="M645.54,473.6h-256a32,32 0,0 0,0 64h256a32,32 0,0 0,0 -64"/>
 </vector>
