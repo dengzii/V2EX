@@ -9,20 +9,18 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
-
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.denua.v2ex.R;
-import cn.denua.v2ex.base.BaseActivity;
 import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.interfaces.NextResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.LoginService;
-import cn.denua.v2ex.utils.Config;
+import cn.denua.v2ex.Config;
 import cn.denua.v2ex.wiget.ProgressDialog;
 
 /*
@@ -55,6 +53,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
         setContentView(R.layout.act_login);
         ButterKnife.bind(this);
 
+        setTitle(R.string.login);
         progressDialog.setTitle("登录中...");
         loginService = new LoginService<>(this,this);
         loginService.preLogin();
@@ -64,6 +63,15 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
 
     @OnClick(R.id.bt_login)
     public void login(View view){
+
+        String mAccount = etAccount.getText().toString();
+        String mPassword = etPassword.getText().toString();
+        String mCaptcha = etCaptchaCode.getText().toString();
+
+        if (mAccount.trim().equals("")||mPassword.trim().equals("")||mCaptcha.trim().equals("")){
+            Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+            return;
+        }
         loginService.login(
                 etAccount.getText().toString(),
                 etPassword.getText().toString(),
@@ -91,8 +99,13 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
 
     @Override
     public void onFailed(String msg) {
-        progressDialog.dismiss();
-        loginService.preLogin();
+        if (progressDialog !=null && progressDialog.isAdded()){
+            progressDialog.dismiss();
+        }
+        if (msg.equals(LoginService.STATUS_WRONG_FIELDS)) {
+            loginService.preLogin();
+        }
+        progressBar.setVisibility(View.GONE);
         ToastUtils.showShort(msg);
     }
 

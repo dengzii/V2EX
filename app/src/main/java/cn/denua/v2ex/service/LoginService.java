@@ -138,6 +138,10 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
         loginApi.getInfo().enqueue(new ResponseHandler<String>() {
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
+                if (!success){
+                    responseListener.onFailed(msg);
+                    return;
+                }
                 if (result.matches("[\\S\\s]+你要查看的页面需要先登录[\\S\\s]+")){
                     responseListener.onFailed(STATUS_NEED_LOGIN);
                     return;
