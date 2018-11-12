@@ -68,6 +68,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setThemeNoActionBar();
         setContentView(R.layout.act_main);
 
         ButterKnife.bind(this);
@@ -76,11 +77,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         if (Config.restoreAccount()){
             new LoginService<>(this).getInfo(this);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     private void initView(){
@@ -161,6 +157,10 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 break;
             case R.id.it_login_out:
                 changeUserStatus();
+                break;
+            case R.id.it_change_theme:
+                Config.sCurrentTheme = R.style.GreenTheme;
+                recreate();
                 break;
             default:break;
         }

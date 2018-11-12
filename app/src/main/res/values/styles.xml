@@ -3,7 +3,11 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:navigationBarColor">@color/transparent</item>
     </style>
-    
+    <style name="MaterialTheme" parent="android:Theme.Material">
+        <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="attr_color_text_link">@color/default_text_link</item>
+    </style>
+
     <style name="MainTheme" parent="AppTheme">
         <item name="colorPrimary">@color/blue_grey_primary</item>
         <item name="colorAccent">@color/blue_grey_accent</item>
@@ -32,8 +36,42 @@
         <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
     </style>
 
-    <style name="MainTheme.NoActionbar">
+    <style name="GreenTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/green_primary</item>
+        <item name="colorAccent">@color/green_accent</item>
+        <item name="colorPrimaryDark">@color/green_primary_dark</item>
+        <item name="colorError">@color/green_accent</item>
 
+        <item name="android:textColor">@color/green_primary_text</item>
+        <item name="android:textColorSecondary">@color/green_secondary_text</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorForeground">@color/green_primary_text</item>
+
+        <item name="attr_color_background">@color/white</item>
+        <item name="attr_color_primary">@color/green_primary</item>
+        <item name="attr_color_primary_light">@color/green_primary_light</item>
+        <item name="attr_color_primary_dark">@color/green_primary_dark</item>
+        <item name="attr_color_accent">@color/green_accent</item>
+        <item name="attr_color_text_secondary">@color/green_secondary_text</item>
+        <item name="attr_color_text">@color/green_primary_text</item>
+        <item name="attr_color_icons">@color/green_secondary_text</item>
+        <item name="attr_color_divider">@color/green_divider</item>
+
+        <item name="attr_color_text_lightish">@color/green_text_lightish</item>
+        <item name="attr_color_text_secondary_inverse">@color/green_primary_dark</item>
+        <item name="attr_color_text_inverse">@color/green_primary_light</item>
+
+        <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
+    </style>
+
+    <style name="MainTheme.NoActionbar">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="GreenTheme.NoActionbar">
         <item name="windowActionBar">false</item>
         <item name="android:windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

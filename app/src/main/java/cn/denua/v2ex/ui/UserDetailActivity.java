@@ -27,6 +27,7 @@ public class UserDetailActivity extends BaseNetworkActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setThemeNoActionBar();
         setContentView(R.layout.act_user_detail);
     }
 

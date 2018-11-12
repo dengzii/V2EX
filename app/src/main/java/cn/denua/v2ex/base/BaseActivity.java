@@ -1,12 +1,13 @@
 package cn.denua.v2ex.base;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 
+import cn.denua.v2ex.Config;
 import cn.denua.v2ex.R;
-import cn.denua.v2ex.utils.UnexpectedExceptionHandler;
 
 import static cn.denua.v2ex.utils.StatusBarUtil.getStatusBarHeight;
 
@@ -16,6 +17,7 @@ import static cn.denua.v2ex.utils.StatusBarUtil.getStatusBarHeight;
  * @user denua
  * @date 2018/10/20
  */
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
     @Override
@@ -24,8 +26,7 @@ public class BaseActivity extends AppCompatActivity {
 
 //        UnexpectedExceptionHandler.getInstance().init();
 
-//        setTheme(R.style.MainTheme);
-//        recreate();
+        setTheme();
     }
 
     @Override
@@ -41,9 +42,21 @@ public class BaseActivity extends AppCompatActivity {
 //        addStatusBarPlaceHolder();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void setTheme(){
+        setTheme(Config.sCurrentTheme);
+    }
+
+    protected void setThemeNoActionBar(){
+        switch (Config.sCurrentTheme){
+            case R.style.MainTheme:
+                setTheme(R.style.MainTheme_NoActionbar);
+                break;
+            case R.style.GreenTheme:
+                setTheme(R.style.GreenTheme_NoActionbar);
+                break;
+            default:
+                break;
+        }
     }
 
     protected void addStatusBarPlaceHolder(){

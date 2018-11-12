@@ -4,4 +4,5 @@
   -->
 <resources>
 
+    <dimen name="avatar_margin_start">15dp</dimen>
 </resources>

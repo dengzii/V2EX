@@ -22,4 +22,6 @@
     <item android:id="@+id/it_login_out"
         android:icon="@drawable/ic_login"
         android:title="@string/login"/>
+    <item android:id="@+id/it_change_theme"
+        android:title="@string/theme"/>
 </menu>

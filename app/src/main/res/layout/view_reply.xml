@@ -6,6 +6,10 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="10dp"
+    android:paddingBottom="15dp"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -13,8 +17,6 @@
         android:id="@+id/iv_user_pic"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:src="@drawable/shape_round_corners_5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,8 +25,7 @@
         android:id="@+id/tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="10dp"
         android:textSize="6.5pt"
         android:textColor="?attr_color_text"
         android:text="@string/placeholder"
@@ -35,7 +36,7 @@
         android:id="@+id/tv_ago"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="10dp"
         android:textColor="?attr_color_text_secondary"
         android:text="@string/placeholder"
         app:layout_constraintBottom_toTopOf="@+id/tv_floor"
@@ -48,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/placeholder"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_ago"
         app:layout_constraintStart_toEndOf="@+id/tv_ago"
         app:layout_constraintTop_toTopOf="@+id/tv_ago" />
@@ -68,7 +69,6 @@
         android:id="@+id/iv_like"
         android:layout_width="wrap_content"
         android:layout_height="18dp"
-        android:layout_marginEnd="8dp"
         android:src="@drawable/ic_like"
         app:layout_constraintBottom_toBottomOf="@+id/tv_like"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,19 +79,18 @@
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
         android:textSize="6.5pt"
         android:textColor="@color/primary"
         android:text="@string/placeholder"
-        app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toBottomOf="@+id/iv_user_pic" />
 
     <TextView
         android:id="@+id/tv_poster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="10dp"
         android:text="@string/poster"
         android:textColor="@color/primary"
         app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
@@ -101,18 +100,11 @@
         android:id="@+id/tv_floor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="10dp"
         android:textColor="@color/blue_grey_secondary_text"
         android:text="@string/place_holder_floor"
         app:layout_constraintStart_toEndOf="@+id/tv_poster"
         app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginTop="10dp"
-        android:background="@color/accent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_content" />
 
 </android.support.constraint.ConstraintLayout>

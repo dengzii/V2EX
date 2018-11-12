@@ -36,6 +36,7 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
     public static final String STATUS_IP_BANED = "IP在一天内被禁止登录";
     public static final String STATUS_GET_INFO_FAILED = "获取用户信息失败";
     public static final String STATUS_WRONG_FIELDS = "登录字段错误";
+    public static final String STATUS_EMPTY_RESPONSE_BODY = "响应体为空";
 
 
     private LoginApi loginApi;
@@ -140,6 +141,10 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
             public void handle(boolean success, String result, Call<String> call, String msg) {
                 if (!success){
                     responseListener.onFailed(msg);
+                    return;
+                }
+                if (result == null){
+                    responseListener.onFailed(STATUS_EMPTY_RESPONSE_BODY);
                     return;
                 }
                 if (result.matches("[\\S\\s]+你要查看的页面需要先登录[\\S\\s]+")){

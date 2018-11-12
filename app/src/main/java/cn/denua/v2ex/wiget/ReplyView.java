@@ -7,20 +7,13 @@ package cn.denua.v2ex.wiget;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.ImageSpan;
-import android.text.style.StyleSpan;
-import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -28,15 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.blankj.utilcode.util.SpanUtils;
-import com.bumptech.glide.Glide;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,10 +61,16 @@ public class ReplyView extends FrameLayout  {
 
     private Reply reply;
     private Context context;
+    private int mColorLink;
 
     public ReplyView(@NonNull Context context) {
         super(context);
         this.context = context;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.mColorLink = getResources().getColor(R.color.default_text_link, context.getTheme());
+        }else{
+            this.mColorLink = getResources().getColor(R.color.default_text_link);
+        }
         initView();
     }
 
@@ -118,31 +109,30 @@ public class ReplyView extends FrameLayout  {
     private SpannableStringBuilder getSpannableReplyContent(String content){
 
         String input = content.replaceAll("<br>","")
-                .replace("@\n", "");
+                                .replace("@\n", "");
 
-        String regex = "<a href=\"/member/\\w+\">(\\w+)</a>" +
-                "|<a target=\"_blank\" href=\"(http[^\"]+)\" [^>]+>[^>]+>" +
-                "|<img src=\"(http[^\"]+)\" [^>]+>";
+        String regex =  "<a href=\"/member/\\w+\">(\\w+)</a>" +
+                        "|<a target=\"_blank\" href=\"(http[^\"]+)\" [^>]+>[^>]+>" +
+                        "|<img src=\"(http[^\"]+)\" [^>]+>";
 
         Matcher matcher = Pattern.compile(regex).matcher(input);
-
         String[] split = input.split(regex);
         SpanUtils spanUtils = new SpanUtils();
-        int index=0;
 
+        int index=0;
         while (matcher.find()){
             if (split.length != 0){
-                spanUtils.append(split[index++]).setLineHeight(20)
+                spanUtils.append(split[index++])
+//                        .setLineHeight(30)
                         .setForegroundColor(Color.BLACK);
             }
             if (matcher.group(1)!=null){
                 spanUtils.append("@" + matcher.group(1))
                         .setClickSpan(new ReplyAtMemberClickSpan(matcher.group(1)))
-                        .setForegroundColor(Color.RED)
+                        .setForegroundColor(mColorLink)
                         .setBold();
             }else if (matcher.group(2) != null){
                 spanUtils.append(matcher.group(2))
-                        .setForegroundColor(Color.BLUE)
                         .setUnderline()
                         .setClickSpan(new LinkClickSpan(matcher.group(2)));
             }else if (matcher.group(3) != null){

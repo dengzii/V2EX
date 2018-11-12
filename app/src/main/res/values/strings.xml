@@ -40,6 +40,9 @@
     <string name="logging_in">登录中……</string>
     <string name="alert">提 示</string>
     <string name="are_you_sure_logout">你确定要登出?</string>
+    <string name="username_format_error">用户名格式错误</string>
+    <string name="password_format_error">密码格式错误</string>
+    <string name="captcha_format_error">验证码格式错误</string>
 
     <string name="place_holder_floor"># %1$d</string>
 

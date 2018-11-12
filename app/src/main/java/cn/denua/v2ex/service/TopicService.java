@@ -80,6 +80,10 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
                 .compose(RxUtil.io2main())
                 .subscribe(new RxObserver<String>() {
                     @Override
+                    public void onSubscribe(Disposable d) {
+                        onStartRequest();
+                    }
+                    @Override
                     public void _onNext(String s) {
                         if (page == 1){
                             HtmlUtil.attachRepliesAndDetail(topicCopy, s);

@@ -1,72 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="15dp"
+    android:paddingEnd="15dp"
+    android:paddingStart="15dp">
 
-    <GridLayout
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:columnCount="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <ImageView
+        android:id="@+id/iv_captcha"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
 
-        <TextView android:text="@string/account" />
+    <ProgressBar
+        android:id="@+id/progress_captcha"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
 
-        <EditText
-            android:text=""
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@string/username_format_error">
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/et_account"
-            android:layout_width="250dp"
-            android:inputType="text"
-            tools:ignore="LabelFor" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/account" />
+    </android.support.design.widget.TextInputLayout>
 
-        <TextView android:text="@string/password" />
-
-        <EditText
-            android:text=""
+    <android.support.design.widget.TextInputLayout
+        app:errorEnabled="true"
+        app:errorTextAppearance="@string/password_format_error"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="?attr_color_text_lightish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/et_password"
-            android:layout_width="250dp"
-            android:inputType="text"
-            tools:ignore="LabelFor,TextFields" />
-
-        <FrameLayout
-            android:layout_height="40dp"
             android:layout_width="match_parent"
-            android:layout_columnSpan="2">
-            <ImageView
-                android:id="@+id/iv_captcha"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <ProgressBar
-                android:visibility="gone"
-                android:id="@+id/progress_captcha"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/password"/>
+    </android.support.design.widget.TextInputLayout>
 
-
-        <TextView android:text="@string/captcha_code" />
-
-        <EditText
+    <android.support.design.widget.TextInputLayout
+        app:errorEnabled="true"
+        app:errorTextAppearance="@string/captcha_format_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/et_check_code"
-            android:inputType="text"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/bt_login"
-            android:layout_columnSpan="2"
             android:layout_width="match_parent"
-            android:text="@string/login" />
-    </GridLayout>
+            android:layout_height="wrap_content"
+            android:hint="@string/captcha_code"/>
+    </android.support.design.widget.TextInputLayout>
 
+    <Button
+        android:id="@+id/bt_login"
+        android:text="@string/login"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
