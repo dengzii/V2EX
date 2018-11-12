@@ -4,14 +4,9 @@
 
 package cn.denua.v2ex.wiget;
 
-import android.os.Bundle;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import cn.denua.v2ex.R;
 
@@ -21,57 +16,33 @@ import cn.denua.v2ex.R;
  * @author denua
  * @date 2018/11/03 21
  */
-public class MessageDialog extends DialogFragment {
+public class MessageDialog extends android.support.v7.app.AlertDialog {
 
-    private String title;
-    private String message;
-
-    private CancelListener cancelListener;
-    private ConfirmListener confirmListener;
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.view_message_dialog, container);
-        view.findViewById(R.id.tv_cancel).setOnClickListener(v ->{
-            if (cancelListener!=null) {
-                cancelListener.onCancel();
-            }else {
-                dismiss();
-            }
-
-        });
-        view.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
-            if (confirmListener!=null)
-                confirmListener.onConfirm();
-            dismiss();
-        });
-
-        ((TextView)view.findViewById(R.id.tv_title)).setText(title);
-        ((TextView)view.findViewById(R.id.tv_content)).setText(message);
-
-        return view;
+    public MessageDialog(Context context){
+        super(context);
     }
-    public interface CancelListener{
-        void onCancel();
-    }
-    public interface ConfirmListener{
-        void onConfirm();
+    public MessageDialog(@NonNull Context context, int theme) {
+        super(context, theme);
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void showDialog(){
+        create();
+        show();
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setNegativeCallBack(OnClickListener negativeCallBack){
+
+        setButton(AlertDialog.BUTTON_NEGATIVE,
+                getContext().getResources().getText(R.string.cancel),
+                negativeCallBack);
     }
 
-    public void setCancelListener(CancelListener cancel) {
-        this.cancelListener = cancel;
-    }
-    public void setConfirmListener(ConfirmListener confirmListener){
-        this.confirmListener = confirmListener;
+    public void init(String title, String message, OnClickListener onClickListener){
+
+        setTitle(title);
+        setMessage(message);
+        setButton(AlertDialog.BUTTON_POSITIVE,
+                getContext().getResources().getText(R.string.confirm),
+                onClickListener);
     }
 }

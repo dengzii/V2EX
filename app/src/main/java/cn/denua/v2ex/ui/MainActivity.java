@@ -4,6 +4,8 @@
 
 package cn.denua.v2ex.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -183,11 +185,12 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         drawerLayout.closeDrawer(Gravity.START);
         if (Config.IsLogin){
-            MessageDialog dialog = new MessageDialog();
-            dialog.setTitle("提示");
-            dialog.setMessage("登出?");
-            dialog.setConfirmListener(this::logout);
-            dialog.show(getSupportFragmentManager(), "logout_confirm");
+            MessageDialog dialog = new MessageDialog(this);
+            dialog.init(getResources().getString(R.string.alert),
+                        getResources().getString(R.string.are_you_sure_logout),
+                        (dialog1, which) -> logout());
+            dialog.setNegativeCallBack((dialog12, which) -> dialog12.dismiss());
+            dialog.showDialog();
         }else{
             startActivityForResult(new Intent(this, LoginActivity.class),
                     LOGIN_REQUEST_CODE);

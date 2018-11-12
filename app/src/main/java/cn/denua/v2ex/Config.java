@@ -43,6 +43,8 @@ public class Config {
     public static boolean REPLY_THANKS_LONG_CLICK;
     public static boolean REPLY_OPRATE_SLIDING_MODE;
 
+    public static int sCurrentTheme = R.style.MainTheme;
+
     static {
 
         HOME_TAB_TITLES.add("热 门");
