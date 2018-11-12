@@ -18,9 +18,9 @@ V2EX 第三方 Android 客户端
 ## Features
 
 1. login to v2ex
-2. fill account information
-3. check every
-4. favor , focus member, node, topic
+2. full account information
+3. check in everyday
+4. favor, focus member, node, topic
 5. view topic, member, node detail
 5. thanks, like and dislike, down vote and up vote
 6. add comment and reply to comment, hide comment
