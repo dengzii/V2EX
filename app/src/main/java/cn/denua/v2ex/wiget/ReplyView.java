@@ -82,10 +82,6 @@ public class ReplyView extends FrameLayout  {
         super(context, attrs, defStyleAttr);
     }
 
-    public ReplyView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
     public void setReply(Reply reply){
         this.reply = reply;
         int like = reply.getLike();

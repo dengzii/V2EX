@@ -3,6 +3,7 @@ package cn.denua.v2ex.ui;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,11 +35,11 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
     public static final int RESULT_SUCCESS = 6;
 
     @BindView(R.id.et_account)
-    EditText etAccount;
+    TextInputEditText etAccount;
     @BindView(R.id.et_password)
-    EditText etPassword;
+    TextInputEditText etPassword;
     @BindView(R.id.et_check_code)
-    EditText etCaptchaCode;
+    TextInputEditText etCaptchaCode;
     @BindView(R.id.iv_captcha)
     ImageView ivCaptcha;
     @BindView(R.id.progress_captcha)
@@ -64,14 +65,23 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
     @OnClick(R.id.bt_login)
     public void login(View view){
 
-        String mAccount = etAccount.getText().toString();
-        String mPassword = etPassword.getText().toString();
-        String mCaptcha = etCaptchaCode.getText().toString();
+        String mAccount = etAccount.getText().toString().trim();
+        String mPassword = etPassword.getText().toString().trim();
+        String mCaptcha = etCaptchaCode.getText().toString().trim();
 
-        if (mAccount.trim().equals("")||mPassword.trim().equals("")||mCaptcha.trim().equals("")){
-            Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+        if (mAccount.equals("")){
+            etAccount.setError(getString(R.string.captcha_format_error));
             return;
         }
+        if (mPassword.equals("")){
+            etPassword.setError(getString(R.string.password_format_error));
+            return;
+        }
+        if (mCaptcha.equals("")){
+            etCaptchaCode.setError(getString(R.string.captcha_format_error));
+            return;
+        }
+
         loginService.login(
                 etAccount.getText().toString(),
                 etPassword.getText().toString(),
