@@ -1,6 +1,7 @@
 package cn.denua.v2ex.base;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,14 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void setTheme(){
         setTheme(Config.sCurrentTheme);
+    }
+
+    protected int getColorRes(int resId){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return getResources().getColor(resId, getTheme());
+        }else {
+            return getResources().getColor(resId);
+        }
     }
 
     protected void setThemeNoActionBar(){

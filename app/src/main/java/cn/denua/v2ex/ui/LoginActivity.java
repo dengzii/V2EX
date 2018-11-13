@@ -70,7 +70,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
         String mCaptcha = etCaptchaCode.getText().toString().trim();
 
         if (mAccount.equals("")){
-            etAccount.setError(getString(R.string.captcha_format_error));
+            etAccount.setError(getString(R.string.username_format_error));
             return;
         }
         if (mPassword.equals("")){
