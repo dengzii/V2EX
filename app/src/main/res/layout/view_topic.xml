@@ -15,12 +15,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
+    <cn.denua.v2ex.wiget.CircleImageView
         android:id="@+id/iv_user_pic"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
-        android:background="?attr_color_primary"
+        android:background="@drawable/ic_none"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

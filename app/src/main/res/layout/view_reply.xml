@@ -13,11 +13,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <cn.denua.v2ex.wiget.CircleImageView
         android:id="@+id/iv_user_pic"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/shape_round_corners_5dp"
+        android:src="@drawable/ic_none"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,7 +65,7 @@
         app:layout_constraintEnd_toStartOf="@+id/iv_like"
         app:layout_constraintTop_toTopOf="@+id/tv_username" />
 
-    <ImageView
+    <cn.denua.v2ex.wiget.CircleImageView
         android:id="@+id/iv_like"
         android:layout_width="wrap_content"
         android:layout_height="18dp"
