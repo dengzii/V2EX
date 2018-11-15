@@ -10,15 +10,12 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
-import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -101,9 +98,7 @@ public class TopicView extends FrameLayout {
 
     private void goToUserDetail(){
 
-        Intent intent = new Intent(context, UserDetailActivity.class);
-        intent.putExtra("user", topic.getMember());
-        context.startActivity(intent);
+        UserDetailActivity.start(context, topic.getMember());
     }
 
     private void goToNodeDetail(){

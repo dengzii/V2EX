@@ -5,6 +5,7 @@
 package cn.denua.v2ex.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -22,17 +23,23 @@ import cn.denua.v2ex.model.Member;
  */
 public class UserDetailActivity extends BaseNetworkActivity {
 
-    Member member;
+
+    Member mMember;
+
+    public static void start(Context context, Member member){
+        Intent intent = new Intent(context, UserDetailActivity.class);
+        intent.putExtra("member", member);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setThemeNoActionBar();
         setContentView(R.layout.act_user_detail);
+        this.mMember = getIntent().getParcelableExtra("member");
+
+        setTitle(mMember.getUsername());
     }
 
-    @Override
-    public View onCreateView(String name, Context context, AttributeSet attrs) {
-        return super.onCreateView(name, context, attrs);
-    }
 }

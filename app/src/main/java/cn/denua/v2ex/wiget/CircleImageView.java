@@ -68,6 +68,7 @@ public class CircleImageView extends AppCompatImageView {
             canvas.drawBitmap(b, rectSrc, rectDest, mPaint);
         } else {
             super.onDraw(canvas);
+            mPaint.reset();
         }
     }
 
@@ -82,7 +83,7 @@ public class CircleImageView extends AppCompatImageView {
         canvas.drawARGB(0, 0, 0, 0);
         int x = bitmap.getWidth();
 
-        canvas.drawCircle(x / 2, x / 2, x * mRadius, mPaint);
+        canvas.drawCircle(x / 2, x / 2, x/2, mPaint);
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, mPaint);
         return output;

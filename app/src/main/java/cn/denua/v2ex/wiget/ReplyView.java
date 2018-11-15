@@ -59,13 +59,13 @@ public class ReplyView extends FrameLayout  {
     @BindView(R.id.iv_like)
     ImageView mLike;
 
-    private Reply reply;
-    private Context context;
+    private Reply mReply;
+    private Context mContext;
     private int mColorLink;
 
     public ReplyView(@NonNull Context context) {
         super(context);
-        this.context = context;
+        this.mContext = context;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.mColorLink = getResources().getColor(R.color.default_text_link, context.getTheme());
         }else{
@@ -83,7 +83,7 @@ public class ReplyView extends FrameLayout  {
     }
 
     public void setReply(Reply reply){
-        this.reply = reply;
+        this.mReply = reply;
         int like = reply.getLike();
 
         mUserName.setText(reply.getMember().getUsername());
@@ -96,8 +96,8 @@ public class ReplyView extends FrameLayout  {
         mContent.setText(getSpannableReplyContent(reply.getContent()));
         mContent.setMovementMethod(LinkMovementMethod.getInstance());
         mFloor.setText(String.format(getResources().getString(R.string.place_holder_floor), reply.getFloor()));
-        mUserName.setOnClickListener(this::goTOUserDetail);
-        mUserPic.setOnClickListener(this::goTOUserDetail);
+        mUserName.setOnClickListener(this::goToUserDetail);
+        mUserPic.setOnClickListener(this::goToUserDetail);
 
         ImageLoader.load(reply.getMember().getAvatar_large(), mUserPic, this);
     }
@@ -143,26 +143,24 @@ public class ReplyView extends FrameLayout  {
     }
 
     private void thankReply(int id){
-        Toast.makeText(context, "Thank you "+id, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "Thank you "+id, Toast.LENGTH_SHORT).show();
     }
 
-    private void goTOUserDetail(View view){
+    private void goToUserDetail(View view){
 
-        Intent intent = new Intent(context, UserDetailActivity.class);
-        intent.putExtra("username",reply.getMember().getUsername());
-        context.startActivity(intent);
+        UserDetailActivity.start(mContext, mReply.getMember());
     }
 
     private void initView(){
 
-        inflate(context, R.layout.view_reply, this);
+        inflate(mContext, R.layout.view_reply, this);
         ButterKnife.bind(this);
     }
 
-    public class ReplyAtMemberClickSpan extends ClickableSpan{
+    class ReplyAtMemberClickSpan extends ClickableSpan{
 
         private String username;
-        public ReplyAtMemberClickSpan(String username){
+        ReplyAtMemberClickSpan(String username){
             this.username = username;
         }
 
@@ -173,11 +171,11 @@ public class ReplyView extends FrameLayout  {
 
         @Override
         public void onClick(@NonNull View widget) {
-            Toast.makeText(context, this.username, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, this.username, Toast.LENGTH_SHORT).show();
         }
     }
 
-    public class LinkClickSpan extends ClickableSpan{
+    class LinkClickSpan extends ClickableSpan{
 
         private String mUri;
         LinkClickSpan(String uri){
@@ -185,11 +183,11 @@ public class ReplyView extends FrameLayout  {
         }
         @Override
         public void onClick(@NonNull View widget) {
-            Toast.makeText(context, "Link:"+mUri, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Link:"+mUri, Toast.LENGTH_SHORT).show();
         }
     }
 
-    public class ImageClickSpan extends ClickableSpan{
+    class ImageClickSpan extends ClickableSpan{
 
         private String mUri;
 
@@ -199,7 +197,7 @@ public class ReplyView extends FrameLayout  {
 
         @Override
         public void onClick(@NonNull View widget) {
-            Toast.makeText(context, "Image: "+mUri, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Image: "+mUri, Toast.LENGTH_SHORT).show();
         }
     }
 }
