@@ -12,7 +12,7 @@ V2EX 第三方 Android 客户端
 
 - Material Design style
 - smooth animation
-- multiple theme
+- diversity theme
 - friendly user interface
 - most important : **Open Source**
 
