@@ -1,6 +1,8 @@
 package cn.denua.v2ex.base;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -41,6 +43,10 @@ public class BaseActivity extends AppCompatActivity {
 //        BarUtils.addMarginTopEqualStatusBarHeight(viewGroup);
 
 //        addStatusBarPlaceHolder();
+    }
+
+    protected void initView(){
+        
     }
 
     protected void setTheme(){

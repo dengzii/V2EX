@@ -7,28 +7,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:fitsSystemWindows="true">
+        android:layout_height="290dp">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:layout_height="250dp"
+            android:theme="@style/ToolBarLight"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            android:fitsSystemWindows="true">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:titleTextColor="?attr_color_text_inverse"
                 app:layout_collapseMode="pin"/>
 
             <cn.denua.v2ex.wiget.CircleImageView
@@ -38,81 +36,28 @@
                 android:layout_marginStart="15dp"
                 android:layout_gravity="center_vertical"
                 android:tint="?attr_color_text_inverse"
-                android:src="@drawable/ic_addpeople_fill"
-                app:layout_collapseMode="parallax"/>
+                android:src="@drawable/ic_none"/>
+
         </android.support.design.widget.CollapsingToolbarLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_pager"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            app:tabIndicatorHeight="@dimen/tab_indicator_height"
+            app:tabBackground="?attr_color_primary"
+            app:tabTextColor="?attr_color_text_inverse"
+            app:tabSelectedTextColor="?attr_color_accent"
+            app:tabIndicatorColor="?attr_color_accent"/>
+
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintTop_toBottomOf="@+id/appbar_layout">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:text="@string/placeholder"
-                android:textSize="10pt" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:text="@string/placeholder"
-                android:textSize="10pt" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:text="@string/placeholder"
-                android:textSize="10pt" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:text="@string/placeholder"
-                android:textSize="10pt" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:text="@string/placeholder"
-                android:textSize="10pt" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:text="@string/placeholder"
-                android:textSize="10pt" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:text="@string/placeholder"
-                android:textSize="10pt" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder"
-                android:textSize="10pt" />
-        </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
-
-    <cn.denua.v2ex.wiget.CircleImageView
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:src="@drawable/ic_message"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        app:layout_anchor="@id/appbar_layout"
-        app:layout_anchorGravity="center_vertical|end"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:src="@drawable/ic_addpeople"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="30dp"
-        android:tint="?attr_color_text_inverse"
-        app:layout_anchor="@id/appbar_layout"
-        app:layout_anchorGravity="bottom|end"/>
 
 </android.support.design.widget.CoordinatorLayout>

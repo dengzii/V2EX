@@ -20,20 +20,11 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 //        fragmentManager.beginTransaction().commitAllowingStateLoss();
     }
 
-//    @Override
-//    public int getItemPosition(@NonNull Object object) {
-//        return fragmentList.indexOf(object);
-//    }
-
     @Override
     public int getCount() {
         return fragmentList.size();
     }
 
-//    @Override
-//    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-//        return view == object;
-//    }
 
     @Override
     public Fragment getItem(int position) {
@@ -46,15 +37,4 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         return titles.get(position);
     }
 
-    //    @NonNull
-//    @Override
-//    public Object instantiateItem(@NonNull ViewGroup container, int position) {
-//
-//        return fragmentList.get(position);
-//    }
-//
-//    @Override
-//    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-//        fragmentList.remove(position);
-//    }
 }

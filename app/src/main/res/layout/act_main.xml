@@ -33,6 +33,7 @@
                     android:id="@+id/view_pager_tab"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    app:tabIndicatorHeight="@dimen/tab_indicator_height"
                     app:tabBackground="?attr_color_primary"
                     app:tabTextColor="?attr_color_text_inverse"
                     app:tabSelectedTextColor="?attr_color_accent"/>
@@ -57,7 +58,7 @@
             android:layout_gravity="start"
             android:layout_width="260dp"
             android:layout_height="match_parent"
-            app:menu="@menu/nav_drawer"/>
+            app:menu="@menu/menu_nav_drawer"/>
 
     </LinearLayout>
 

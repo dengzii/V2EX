@@ -64,7 +64,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void initView(){
+    protected void initView(){
 
         mRecyclerViewAdapter = new ReplyRecyclerViewAdapter(this, replies);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);

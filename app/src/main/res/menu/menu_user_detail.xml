@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018 denua.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/it_following"
+        app:showAsAction="ifRoom"
+        android:title="@string/following"
+        android:icon="@drawable/ic_addpeople"/>
+    <item
+        android:id="@+id/it_block"
+        app:showAsAction="ifRoom"
+        android:title="@string/block"
+        android:icon="@drawable/ic_close"
+        />
+
+</menu>

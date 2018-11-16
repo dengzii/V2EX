@@ -101,12 +101,6 @@ public class HttpsUtil {
         return (X509TrustManager) trustManagers[0];
     }
 
-    /**
-     *
-     * @param password -
-     * @return -
-     * @throws GeneralSecurityException -
-     */
     private static KeyStore newEmptyKeyStore(char[] password) throws GeneralSecurityException {
         try {
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType()); // 这里添加自定义的密码，默认

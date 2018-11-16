@@ -4,8 +4,6 @@
 
 package cn.denua.v2ex.ui;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 
@@ -79,10 +78,10 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         }
     }
 
-    private void initView(){
+    protected void initView(){
 
         setSupportActionBar(toolbar);
-        toolbar.inflateMenu(R.menu.toolbar_main);
+        toolbar.inflateMenu(R.menu.menu_toolbar_main);
 
         tabLayout.setupWithViewPager(viewPager);
 
@@ -109,11 +108,15 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (!PermissionUtils.isGranted("android.permission.WRITE_EXTERNAL_STORAGE")){
+            PermissionUtils.launchAppDetailsSettings();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_main, menu);
+        getMenuInflater().inflate(R.menu.menu_toolbar_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

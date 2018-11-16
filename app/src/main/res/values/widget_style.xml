@@ -19,6 +19,12 @@
         <item name="android:windowMinWidthMinor">95%</item>
     </style>
 
+    <style name="ToolBarLight" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:colorForeground">?attr_color_text_inverse</item>
+        <item name="android:colorButtonNormal">?attr_color_text_inverse</item>
+        <item name="android:actionMenuTextColor">?attr_color_text_inverse</item>
+    </style>
+
     <style name="TextTitle">
         <item name="android:textSize">7pt</item>
         <item name="android:textStyle">bold</item>

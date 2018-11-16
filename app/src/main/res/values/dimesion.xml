@@ -5,4 +5,5 @@
 <resources>
 
     <dimen name="avatar_margin_start">15dp</dimen>
+    <dimen name="tab_indicator_height">3dp</dimen>
 </resources>

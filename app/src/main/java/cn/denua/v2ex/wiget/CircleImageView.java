@@ -66,9 +66,9 @@ public class CircleImageView extends AppCompatImageView {
             final Rect rectDest = new Rect(0,0,    getWidth(),   getHeight());
             mPaint.reset();
             canvas.drawBitmap(b, rectSrc, rectDest, mPaint);
+            mPaint.reset();
         } else {
             super.onDraw(canvas);
-            mPaint.reset();
         }
     }
 
