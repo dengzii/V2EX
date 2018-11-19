@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -16,6 +17,7 @@ import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 
@@ -50,6 +52,11 @@ public class UserDetailActivity extends BaseNetworkActivity {
     TabLayout mTabLayout;
     @BindView(R.id.vp_content)
     ViewPager mViewPager;
+    @BindView(R.id.tv_username)
+    TextView mUsernameTv;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbar;
+
 
     private Member mMember;
     private MemberPagerAdapter mPagerAdapter;
@@ -77,7 +84,6 @@ public class UserDetailActivity extends BaseNetworkActivity {
 
         mMemberTopicFragments = new ArrayList<>();
         mToolbar.setTitle(mMember.getUsername());
-        mToolbar.inflateMenu(R.menu.menu_user_detail);
         mTabLayout.setupWithViewPager(mViewPager);
 
         List<String> tabs = new ArrayList<String>(){{
@@ -86,10 +92,10 @@ public class UserDetailActivity extends BaseNetworkActivity {
             add("Other");
         }};
 
-
         TabLayout.Tab tab = mTabLayout.newTab();
         mTabLayout.addTab(tab);
 
+        mMemberTopicFragments.add(new MemberTopicFragment());
         mMemberTopicFragments.add(new MemberTopicFragment());
         mMemberTopicFragments.add(new MemberTopicFragment());
 
@@ -97,11 +103,12 @@ public class UserDetailActivity extends BaseNetworkActivity {
         mViewPager.setAdapter(mPagerAdapter);
 
         ImageLoader.load(mMember.getAvatar_large(), mIVUserPic, this);
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_user_detail, menu);
+//        getMenuInflater().inflate(R.menu.menu_user_detail, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
