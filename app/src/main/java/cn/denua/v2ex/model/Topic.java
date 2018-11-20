@@ -222,10 +222,14 @@ public class Topic implements Parcelable, Cloneable {
             copy = (Topic) super.clone();
             copy.setMember((Member) member.clone());
             copy.setNode((Node) node.clone());
-            copy.setReplyList(new ArrayList<>());
-            copy.setTags(new ArrayList<>());
-            replyList.addAll(copy.getReplyList());
-            tags.addAll(copy.getTags());
+            if (replyList != null){
+                copy.setReplyList(new ArrayList<>());
+                replyList.addAll(copy.getReplyList());
+            }
+            if (tags != null) {
+                copy.setTags(new ArrayList<>());
+                tags.addAll(copy.getTags());
+            }
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }

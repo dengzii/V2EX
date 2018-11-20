@@ -100,8 +100,10 @@ public class Reply implements Cloneable {
         Reply copy = null;
         try {
             copy = (Reply) super.clone();
-            copy.setAt(new ArrayList<>());
-            at.addAll(copy.getAt());
+            if ( at != null) {
+                copy.setAt(new ArrayList<>());
+                at.addAll(copy.getAt());
+            }
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }

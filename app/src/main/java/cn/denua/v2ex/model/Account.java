@@ -107,6 +107,10 @@ public class Account extends Member implements Serializable, Parcelable, Cloneab
         this.join = join;
     }
 
+    @Override
+    public Object clone() {
+        return super.clone();
+    }
 
     @Override
     public int describeContents() {
