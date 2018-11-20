@@ -3,6 +3,9 @@ package cn.denua.v2ex.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  * v2ex member model
  *
@@ -10,7 +13,7 @@ import android.os.Parcelable;
  * @date 2018/10/21
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class Member implements Parcelable {
+public class Member implements Parcelable, Cloneable {
 
     protected int id;
     protected String username;
@@ -33,10 +36,16 @@ public class Member implements Parcelable {
     protected String location;
     protected String btc;
 
+    protected int topicsCount = 0;
+    protected int repliesCount = 0;
+
+    protected List<Topic> createdTopics;
+    protected List<Reply> replies;
+    protected List<Topic> qna;
+
     public Member() {
 
     }
-
 
     private String fixScheme(String url){
             return url.startsWith("https:")
@@ -177,6 +186,62 @@ public class Member implements Parcelable {
         this.btc = btc;
     }
 
+    public int getTopicsCount() {
+        return topicsCount;
+    }
+
+    public void setTopicsCount(int topicsCount) {
+        this.topicsCount = topicsCount;
+    }
+
+    public int getRepliesCount() {
+        return repliesCount;
+    }
+
+    public void setRepliesCount(int repliesCount) {
+        this.repliesCount = repliesCount;
+    }
+
+    public List<Topic> getCreatedTopics() {
+        return createdTopics;
+    }
+
+    public void setCreatedTopics(List<Topic> createdTopics) {
+        this.createdTopics = createdTopics;
+    }
+
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
+    }
+
+    public List<Topic> getQna() {
+        return qna;
+    }
+
+    public void setQna(List<Topic> qna) {
+        this.qna = qna;
+    }
+
+    public Object clone(){
+
+        Member copy = null;
+        try {
+            copy = (Member)super.clone();
+            copy.setCreatedTopics(new ArrayList<>());
+            copy.setQna(new ArrayList<>());
+            copy.setReplies(new ArrayList<>());
+            createdTopics.addAll(copy.getCreatedTopics());
+            qna.addAll(copy.getQna());
+            replies.addAll(copy.getReplies());
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return copy;
+    }
 
     @Override
     public int describeContents() {
@@ -206,6 +271,10 @@ public class Member implements Parcelable {
     public Member(String username, String avatar_normal) {
         this.username = username;
         this.avatar_normal = avatar_normal;
+    }
+
+    public Member(String username){
+        this.username = username;
     }
 
     protected Member(Parcel in) {

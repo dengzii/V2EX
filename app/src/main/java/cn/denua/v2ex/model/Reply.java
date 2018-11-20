@@ -1,5 +1,6 @@
 package cn.denua.v2ex.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -8,7 +9,7 @@ import java.util.List;
  * @author denua
  * @date 2018/10/21
  */
-public class Reply {
+public class Reply implements Cloneable {
 
     private int id;
     private Member member;
@@ -91,5 +92,19 @@ public class Reply {
 
     public void setLike(int like) {
         this.like = like;
+    }
+
+    @Override
+    protected Object clone(){
+
+        Reply copy = null;
+        try {
+            copy = (Reply) super.clone();
+            copy.setAt(new ArrayList<>());
+            at.addAll(copy.getAt());
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return copy;
     }
 }

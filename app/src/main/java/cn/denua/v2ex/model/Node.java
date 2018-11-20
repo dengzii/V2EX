@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
  * @author denua
  * @date 2018/10/21
  */
-public class Node implements Parcelable {
+public class Node implements Parcelable, Cloneable {
 
     protected int id;
     protected String name;
@@ -135,6 +135,17 @@ public class Node implements Parcelable {
         this.avart_large = avart_large;
     }
 
+    public Object clone(){
+
+        Node copy = null;
+
+        try {
+            copy = (Node) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return copy;
+    }
 
     @Override
     public int describeContents() {

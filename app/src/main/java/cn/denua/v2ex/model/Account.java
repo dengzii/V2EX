@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
-public class Account extends Member implements Serializable, Parcelable {
+public class Account extends Member implements Serializable, Parcelable, Cloneable {
 
     private static final long serialVersionUID  = 1L;
 

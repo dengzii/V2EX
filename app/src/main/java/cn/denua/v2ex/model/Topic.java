@@ -9,12 +9,11 @@ import java.util.List;
 /*
  * v2ex topic
  * 包含一个话题的所有回复
- * 回复的用户，回复的内容，回复的详情
  *
  * @author denua
  * @date 2018/10/21
  */
-public class Topic implements Parcelable {
+public class Topic implements Parcelable, Cloneable {
 
     private int id;
 
@@ -26,11 +25,13 @@ public class Topic implements Parcelable {
     private int favors = 0;
     private int thanks = 0;
     private int replies = 0;
+    private int upVote = 0;
+    private int downVote = 0;
 
     private String title;
     private String content;
     private String content_rendered;
-    private String last_reply_by = "";
+    private String last_reply_by;
     private String url;
     private String ago;
 
@@ -137,8 +138,23 @@ public class Topic implements Parcelable {
         this.content_rendered = content_rendered;
     }
 
-    public String getAgo() {
+    public int getUpVote() {
+        return upVote;
+    }
 
+    public void setUpVote(int upVote) {
+        this.upVote = upVote;
+    }
+
+    public int getDownVote() {
+        return downVote;
+    }
+
+    public void setDownVote(int downVote) {
+        this.downVote = downVote;
+    }
+
+    public String getAgo() {
         return ago;
     }
 
@@ -181,18 +197,7 @@ public class Topic implements Parcelable {
     public Topic() {
     }
 
-    @Override
-    public String toString() {
-        return "Topic{" +
-                "id=" + id +
-                ", replies=" + replies +
-                ", title='" + title + '\'' +
-                ", last_reply_by='" + last_reply_by + '\'' +
-                ", ago='" + ago + '\'' +
-                ", last_reply_by=" + last_reply_by +
-                ", node=" + node.getTitle() +
-                '}';
-    }
+
 
     public List<Tag> getTags() {
         return tags;
@@ -210,9 +215,34 @@ public class Topic implements Parcelable {
         this.tags = tags;
     }
 
+    public Object clone(){
+
+        Topic copy = null;
+        try {
+            copy = (Topic) super.clone();
+            copy.setMember((Member) member.clone());
+            copy.setNode((Node) node.clone());
+            copy.setReplyList(new ArrayList<>());
+            copy.setTags(new ArrayList<>());
+            replyList.addAll(copy.getReplyList());
+            tags.addAll(copy.getTags());
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return copy;
+    }
+
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public String toString() {
+        return "Topic{" +
+                "id=" + id +
+                ", replies=" + replies +
+                ", title='" + title + '\'' +
+                ", last_reply_by='" + last_reply_by + '\'' +
+                ", ago='" + ago + '\'' +
+                ", last_reply_by=" + last_reply_by +
+                ", node=" + node.getTitle() +
+                '}';
     }
 
     @Override
