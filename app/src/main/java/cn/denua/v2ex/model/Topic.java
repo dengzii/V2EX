@@ -32,6 +32,7 @@ public class Topic implements Parcelable {
     private String content_rendered;
     private String last_reply_by = "";
     private String url;
+    private String ago;
 
     private Member member;
     private Node node;
@@ -136,6 +137,15 @@ public class Topic implements Parcelable {
         this.content_rendered = content_rendered;
     }
 
+    public String getAgo() {
+
+        return ago;
+    }
+
+    public void setAgo(String ago) {
+        this.ago = ago;
+    }
+
     public String getLast_reply_by() {
         return last_reply_by;
     }
@@ -171,6 +181,18 @@ public class Topic implements Parcelable {
     public Topic() {
     }
 
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "id=" + id +
+                ", replies=" + replies +
+                ", title='" + title + '\'' +
+                ", last_reply_by='" + last_reply_by + '\'' +
+                ", ago='" + ago + '\'' +
+                ", last_reply_by=" + last_reply_by +
+                ", node=" + node.getTitle() +
+                '}';
+    }
 
     public List<Tag> getTags() {
         return tags;

@@ -7,8 +7,12 @@ package cn.denua.v2ex.utils;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import cn.denua.v2ex.model.Topic;
 
 /*
  * HtmlUtil test
@@ -30,6 +34,11 @@ public class HtmlUtilTest {
 
     @Test
     public void attachRepliesAndDetail() {
+
+    }
+
+    @Test
+    public void getMemberTopics(){
 
     }
 

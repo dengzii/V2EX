@@ -32,7 +32,6 @@ public class HttpsUtil {
     public static SSLSocketFactory getSslSocketFactory(X509TrustManager trustManager){
 
         SSLSocketFactory sslSocketFactory = null;
-
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, new TrustManager[]{trustManager}, null);

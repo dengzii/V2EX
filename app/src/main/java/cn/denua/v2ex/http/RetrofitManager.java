@@ -55,8 +55,7 @@ public class RetrofitManager {
      */
     public static void init(@Nullable Context context){
 
-        X509TrustManager trustManager = HttpsUtil.getX509TrustManager();
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+        OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
                 .cookieJar(
                         context == null
                         ? new TransientCookieJar()
@@ -65,12 +64,14 @@ public class RetrofitManager {
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .addInterceptor(HeadersInterceptor.getInstance())
-                .sslSocketFactory(HttpsUtil.getSslSocketFactory(trustManager), trustManager)
-                .hostnameVerifier((hostname, session) -> true)
-//                .followRedirects(false)
-//                .followSslRedirects(false)
-                .build();
+                .hostnameVerifier((hostname, session) -> true);
 
+        if (context != null){
+            X509TrustManager trustManager = HttpsUtil.getX509TrustManager();
+            okHttpClientBuilder.sslSocketFactory(
+                    HttpsUtil.getSslSocketFactory(trustManager),
+                    trustManager);
+        }
         Gson gson = new GsonBuilder()
                 .serializeNulls()
                 .disableHtmlEscaping()
@@ -79,15 +80,16 @@ public class RetrofitManager {
                 .setLenient()
                 .create();
 
-        retrofit = new Retrofit.Builder()
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .client(okHttpClient)
-                .callFactory(okHttpClient)
+                .client(okHttpClientBuilder.build())
+                .callFactory(okHttpClientBuilder.build())
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(BitmapConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+        if (context!=null)
+            retrofitBuilder.addConverterFactory(BitmapConverterFactory.create());
+        retrofit = retrofitBuilder.build();
     }
 
     /**
