@@ -105,6 +105,33 @@ public class HtmlUtil {
         }
     }
 
+    public static void attachCreatedTopics(Member member, String html){
+
+        Document document = Jsoup.parse(html);
+        Elements elements = document.select("#Main > .box > .item");
+
+        member.setTopicsCount(Integer.parseInt(
+                document.selectFirst("#Main > .box > .header > .fr > strong").text()
+        ));
+        List<Topic> topics = new ArrayList<>();
+        for (Element element:elements){
+            Topic topic = new Topic();
+            int replies = matcherGroup1Int("href=\"/t/\\d+#reply(\\d+)",element.html());
+            topic.setId(matcherGroup1Int("href=\"/t/(\\d+)", element.html()));
+            topic.setTitle(element.selectFirst(".item_title").text());
+            topic.setReplies(replies);
+            topic.setNode(new Node(matcherGroup1("href=\"/go/(\\w+)\"", element.html()),
+                    element.selectFirst(".node").text()));
+            if (replies>0){
+                String ago = element.selectFirst(".topic_info").text().split(" • ")[2];
+                topic.setAgo(ago);
+                topic.setLast_reply_by(element.selectFirst("strong").lastElementSibling().text());
+            }
+            topics.add(topic);
+        }
+        member.setCreatedTopics(topics);
+    }
+
     public static void attachAccountInfo(Account account, String html){
 
         account.setFavorNodes(matcherGroup1Int("<span class=\"bigger\">(\\d+)</span>" +
@@ -126,30 +153,6 @@ public class HtmlUtil {
                 ".png\" height=\"16\"", html));
 
         account.setBalance(account.getBronze()+account.getSilver()*100+account.getGold()*10000);
-    }
-
-    public static List<Topic> getMemberTopic(String html){
-
-        Document document = Jsoup.parse(html);
-        Elements elements = document.select("#Main > .box > .item");
-
-        List<Topic> topics = new ArrayList<>();
-        for (Element element:elements){
-            Topic topic = new Topic();
-            int replies = matcherGroup1Int("href=\"/t/\\d+#reply(\\d+)",element.html());
-            topic.setId(matcherGroup1Int("href=\"/t/(\\d+)", element.html()));
-            topic.setTitle(element.selectFirst(".item_title").text());
-            topic.setReplies(replies);
-            topic.setNode(new Node(matcherGroup1("href=\"/go/(\\w+)\"", element.html()),
-                                    element.selectFirst(".node").text()));
-            if (replies>0){
-                String ago = element.selectFirst(".topic_info").text().split(" • ")[2];
-                topic.setAgo(ago);
-                topic.setLast_reply_by(element.selectFirst("strong").lastElementSibling().text());
-            }
-            topics.add(topic);
-        }
-        return topics;
     }
 
     public static String applyHtmlStyle(String html){

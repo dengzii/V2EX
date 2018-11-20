@@ -22,11 +22,11 @@ public interface MemberApi {
     Observable<JsonObject> getMember(@Query("id") int id);
 
     @GET("member/{username}/topics")
-    Observable<String> getMemberTopics(@Path("username") String username);
+    Observable<String> getMemberTopics(@Path("username") String username, @Query("p") int page);
 
     @GET("member/{username}/replies")
-    Observable<String> getMemberReplies(@Path("username") String username);
+    Observable<String> getMemberReplies(@Path("username") String username, @Query("p") int page);
 
     @GET("member/{username}/qna")
-    Observable<String> getMemberQna(@Path("username") String username);
+    Observable<String> getMemberQna(@Path("username") String username, @Query("p") int page);
 }

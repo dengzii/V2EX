@@ -70,12 +70,9 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
                 .subscribe(jsonArrayToTopicsObserver);
     }
 
-    public void getReply(Topic topicCopy, int page){
+    public void getReply(Topic topic, int page){
 
-//        Parcel parcel = Parcel.obtain();
-//        topic.writeToParcel(parcel, 0);
-//        Topic topicCopy = Topic.CREATOR.createFromParcel(parcel);
-
+        Topic topicCopy = (Topic) topic.clone();
         topicApi.getTopicDetail(topicCopy.getId(), page)
                 .compose(RxUtil.io2main())
                 .subscribe(new RxObserver<String>() {

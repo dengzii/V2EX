@@ -17,6 +17,8 @@ import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
+import cn.denua.v2ex.model.Member;
+import cn.denua.v2ex.model.Node;
 import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Tag;
 import cn.denua.v2ex.model.Topic;
@@ -30,9 +32,34 @@ public class TopicServiceTest {
     }
 
     @Test
-    public void getHot() {
+    public void cloneTest(){
 
-        RetrofitManager.init(null);
+        Member member = new Member("Tom");
+        Node node = new Node();
+        node.setName("Node");
+
+        Topic topic = new Topic();
+        topic.setTitle("Topic1");
+        topic.setMember(member);
+        topic.setNode(node);
+
+        Topic topic1 = (Topic) topic.clone();
+
+        System.out.println(topic1.getMember().getUsername());
+        System.out.println(topic.getMember().getUsername());
+        System.out.println(topic.getNode().getName());
+        System.out.println(topic1.getNode().getName());
+
+        member.setUsername("Jerry");
+        node.setName("NODE1");
+        System.out.println(topic1.getMember().getUsername());
+        System.out.println(topic.getMember().getUsername());
+        System.out.println(topic.getNode().getName());
+        System.out.println(topic1.getNode().getName());
+    }
+
+    @Test
+    public void getHot() {
 
         RetrofitManager.create(TopicApi.class)
                 .getHotTopic()

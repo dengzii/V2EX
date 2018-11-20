@@ -12,6 +12,7 @@ import java.util.List;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
+import cn.denua.v2ex.model.Member;
 import cn.denua.v2ex.model.Topic;
 
 import static org.junit.Assert.*;
@@ -33,25 +34,26 @@ public class MemberServiceTest {
     @Test
     public void getCreatedTopics() {
 
-        new MemberService(iResponsibleView, new ResponseListener<List<Topic>>() {
+        Member livid = new Member("Livid");
+        new MemberService(iResponsibleView, new ResponseListener<Member>() {
             @Override
             public void onFailed(String msg) {
                 System.err.println(msg);
             }
             @Override
-            public void onComplete(List<Topic> result) {
-                for (Topic topic:result){
+            public void onComplete(Member result) {
+                System.out.println(result.getTopicsCount());
+                for (Topic topic:result.getCreatedTopics()){
                     System.out.println(topic);
                 }
             }
-        }).getCreatedTopics("keelii");
+        }).getCreatedTopics(livid, 2);
     }
-
 
     private IResponsibleView iResponsibleView = new IResponsibleView() {
         @Override
         public void onStartRequest() {
-            System.out.println("MemberServiceTest.onStartRequest");;
+            System.out.println("MemberServiceTest.onStartRequest");
         }
 
         @Override
