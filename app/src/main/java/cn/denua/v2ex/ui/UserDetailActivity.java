@@ -52,10 +52,10 @@ public class UserDetailActivity extends BaseNetworkActivity {
     TabLayout mTabLayout;
     @BindView(R.id.vp_content)
     ViewPager mViewPager;
-    @BindView(R.id.tv_username)
-    TextView mUsernameTv;
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbar;
+    @BindView(R.id.tv_number_created)
+    TextView mNumberCreated;
 
 
     private Member mMember;
@@ -77,6 +77,12 @@ public class UserDetailActivity extends BaseNetworkActivity {
         this.mMember = getIntent().getParcelableExtra(EXTRA_MEMBER);
         ButterKnife.bind(this);
         initView();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 
     @Override

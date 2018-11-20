@@ -17,69 +17,48 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:paddingBottom="15dp"
+            android:layout_height="300dp"
             android:theme="@style/ToolBarLight"
             app:expandedTitleTextAppearance="@style/UserDetailCollapsingBarLayout"
             app:expandedTitleGravity="center_horizontal"
-            app:expandedTitleMarginTop="90dp"
+            app:expandedTitleMarginTop="160dp"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:minHeight="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="160dp"
                 android:background="?attr_color_primary_dark" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="30dp"
-                android:paddingBottom="15dp">
+                android:layout_marginTop="?attr/actionBarSize"
+                android:orientation="vertical">
 
                 <cn.denua.v2ex.wiget.CircleImageView
                     android:id="@+id/iv_user_pic"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_marginTop="60dp"
                     android:src="@drawable/ic_none"
                     android:tint="?attr_color_text_inverse" />
-
-                <TextView
-                    android:id="@+id/tv_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:textColor="?attr_color_text_inverse"
-                    android:textSize="@dimen/text_title" />
 
                 <GridLayout
                     android:layout_width="360dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="35dp"
                     android:columnCount="2">
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/tv_number_created"
                         android:layout_width="match_parent"
                         android:layout_columnSpan="2"
                         android:gravity="center"
                         android:text="@string/placeholder"
                         android:textColor="?attr_color_text_inverse" />
-
-                    <TextView
-                        android:layout_width="180dp"
-                        android:gravity="center"
-                        android:text="@string/placeholder" />
-
-                    <TextView
-                        android:layout_width="180dp"
-                        android:gravity="center"
-                        android:text="@string/placeholder" />
-
-
                 </GridLayout>
             </LinearLayout>
 
@@ -109,6 +88,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
 
 </android.support.design.widget.CoordinatorLayout>
