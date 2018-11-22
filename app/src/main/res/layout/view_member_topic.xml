@@ -15,54 +15,49 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <cn.denua.v2ex.wiget.CircleImageView
-        android:id="@+id/iv_user_pic"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/ic_none"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="@string/placeholder"
-        android:textColor="?attr_color_text_secondary"
-        android:textSize="5pt"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_node"
-        app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
-        app:layout_constraintTop_toTopOf="@+id/tv_node" />
-
-
     <TextView
         android:id="@+id/tv_reply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:gravity="center"
         android:text="@string/placeholder"
-        android:textAlignment="center"
-        android:textColor="?attr_color_text_secondary"
-        android:textSize="5pt"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_username"
-        app:layout_constraintStart_toEndOf="@+id/tv_username" />
+        android:textSize="6pt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/tv_latest_touched"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="10dp"
         android:text="@string/placeholder"
         android:textColor="?attr_color_text_secondary"
         android:textSize="5pt"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_reply"
-        app:layout_constraintStart_toEndOf="@+id/tv_reply" />
+        app:layout_constraintStart_toEndOf="@+id/tv_reply"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_last_reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="?attr_color_text_secondary"
+        android:text="@string/placeholder"
+        android:textSize="5pt"
+        app:layout_constraintStart_toEndOf="@+id/tv_latest_touched"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_up_vote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/placeholder"
+        android:textColor="?attr_color_text_secondary"
+        android:textSize="5pt"
+        app:layout_constraintStart_toEndOf="@+id/tv_last_reply"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_node"
@@ -80,29 +75,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
+
+    <TextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="50dp"
-        android:paddingEnd="0dp"
-        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="@string/placeholder"
+        android:textColor="?attr_color_text"
+        android:textSize="7pt"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_node">
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="@string/placeholder"
-            android:textColor="?attr_color_text"
-            android:textSize="7pt"
-            app:layout_constraintBottom_toTopOf="@+id/tv_username"
-            app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/tv_latest_touched" />
 
 </android.support.constraint.ConstraintLayout>

@@ -35,25 +35,38 @@ import cn.denua.v2ex.utils.ImageLoader;
  */
 public class TopicView extends FrameLayout {
 
-    @BindView(R.id.iv_user_pic)
-    ImageView ivUserPic;
+
     @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.tv_username)
-    TextView tvUsername;
-    @BindView(R.id.tv_replay)
+
+    @BindView(R.id.tv_reply)
     TextView tvReply;
     @BindView(R.id.tv_latest_touched)
     TextView tvLastTouched;
     @BindView(R.id.tv_node)
     TextView tvNode;
 
+    @Nullable
+    @BindView(R.id.iv_user_pic)
+    ImageView ivUserPic;
+    @Nullable
+    @BindView(R.id.tv_username)
+    TextView tvUsername;
+    @Nullable
+    @BindView(R.id.tv_last_reply)
+    TextView tvLastReply;
+    @Nullable
+    @BindView(R.id.tv_up_vote)
+    TextView tvUpVote;
+
     private Context context;
     private Topic topic;
+    private boolean isSimpleView;
 
     @SuppressLint("ClickableViewAccessibility")
-    public TopicView(Context context) {
+    public TopicView(Context context, boolean isSimpleView) {
         super(context);
+        this.isSimpleView = isSimpleView;
         this.context = App.getApplication();
         initView(context);
         setOnClickListener(v -> goToTopicDetail());
@@ -62,38 +75,39 @@ public class TopicView extends FrameLayout {
 
     public TopicView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
-        initView(context);
-    }
-
-    public TopicView(Context context, AttributeSet attrs, int defStyleAttrs, int defStyleAttrsRes){
-        super(context, attrs, defStyleAttrs, defStyleAttrsRes);
+        this.isSimpleView = false;
         this.context = context;
         initView(context);
     }
 
     private void initView(Context context ){
-        inflate(context, R.layout.view_topic, this);
+        inflate(context, isSimpleView
+                            ?R.layout.view_member_topic
+                            :R.layout.view_topic, this);
         ButterKnife.bind(this);
     }
 
-    public void  loadDataFromTopic(Topic topic){
-
-        String lastTouched = TimeUtils.getFitTimeSpanByNow(topic.getLast_touched()*1000, 4);
-        String userPicUrl = topic.getMember().getAvatar_large();
-        lastTouched = lastTouched.startsWith("-")?lastTouched.substring(1):lastTouched;
+    public void  loadDataFromTopic(Topic topic) {
 
         this.topic = topic;
+        if (isSimpleView) {
+            tvLastTouched.setText(topic.getAgo());
+            tvLastReply.setText(topic.getLast_reply_by());
+            tvUpVote.setText(topic.getUpVote()==0?"":String.valueOf(topic.getUpVote()));
+        } else {
+            String lastTouched = TimeUtils.getFitTimeSpanByNow(topic.getLast_touched() * 1000, 4);
+            String userPicUrl = topic.getMember().getAvatar_large();
+            lastTouched = lastTouched.startsWith("-") ? lastTouched.substring(1) : lastTouched;
+            ImageLoader.load(userPicUrl, ivUserPic, this);
+            tvUsername.setText(topic.getMember().getUsername());
+            tvLastTouched.setText(lastTouched);
+            tvUsername.setOnClickListener(v -> goToUserDetail());
+            ivUserPic.setOnClickListener(v -> goToUserDetail());
+        }
         tvTitle.setText(topic.getTitle());
-        tvUsername.setText(topic.getMember().getUsername());
         tvReply.setText(String.valueOf(topic.getReplies()));
-        tvLastTouched.setText(lastTouched);
         tvNode.setText(topic.getNode().getName());
-        ImageLoader.load(userPicUrl, ivUserPic, this);
-
-        tvNode.setOnClickListener(v->goToNodeDetail());
-        tvUsername.setOnClickListener(v->goToUserDetail());
-        ivUserPic.setOnClickListener(v -> goToUserDetail());
+        tvNode.setOnClickListener(v -> goToNodeDetail());
     }
 
     private void goToUserDetail(){
@@ -111,7 +125,7 @@ public class TopicView extends FrameLayout {
     private void goToTopicDetail(){
 
         Intent intent = new Intent(context, TopicActivity.class);
-        intent.putExtra("topic",topic);
+        intent.putExtra("topic", topic);
         context.startActivity(intent);
     }
 

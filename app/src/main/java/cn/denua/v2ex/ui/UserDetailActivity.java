@@ -101,9 +101,9 @@ public class UserDetailActivity extends BaseNetworkActivity {
         TabLayout.Tab tab = mTabLayout.newTab();
         mTabLayout.addTab(tab);
 
-        mMemberTopicFragments.add(new MemberTopicFragment());
-        mMemberTopicFragments.add(new MemberTopicFragment());
-        mMemberTopicFragments.add(new MemberTopicFragment());
+        mMemberTopicFragments.add(MemberTopicFragment.create(mMember));
+        mMemberTopicFragments.add(MemberTopicFragment.create(mMember));
+        mMemberTopicFragments.add(MemberTopicFragment.create(mMember));
 
         mPagerAdapter = new MemberPagerAdapter(tabs, getSupportFragmentManager(), mMemberTopicFragments);
         mViewPager.setAdapter(mPagerAdapter);

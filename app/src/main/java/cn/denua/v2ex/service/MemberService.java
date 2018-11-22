@@ -13,7 +13,6 @@ import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Member;
-import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
 import io.reactivex.disposables.Disposable;
