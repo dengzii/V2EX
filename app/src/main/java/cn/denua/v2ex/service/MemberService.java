@@ -4,8 +4,6 @@
 
 package cn.denua.v2ex.service;
 
-import java.util.List;
-
 import cn.denua.v2ex.api.MemberApi;
 import cn.denua.v2ex.base.BaseService;
 import cn.denua.v2ex.http.RetrofitManager;
@@ -13,7 +11,6 @@ import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Member;
-import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
 import io.reactivex.disposables.Disposable;
@@ -25,6 +22,8 @@ import io.reactivex.disposables.Disposable;
  * @date 2018/11/19 23
  */
 public class MemberService extends BaseService<IResponsibleView, Member> {
+
+    public static final String ERR_NEED_LOGIN = "主题列表只有在你登录之后才可查看";
 
     private static MemberApi mMemberApi = RetrofitManager.create(MemberApi.class);
 
@@ -44,6 +43,10 @@ public class MemberService extends BaseService<IResponsibleView, Member> {
                     }
                     @Override
                     public void _onNext(String s) {
+                        if (s.contains(ERR_NEED_LOGIN)){
+                            returnFailed(ERR_NEED_LOGIN);
+                            return;
+                        }
                         HtmlUtil.attachCreatedTopics(member1, s);
                         returnSuccess(member1);
                     }

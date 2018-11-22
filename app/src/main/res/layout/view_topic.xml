@@ -41,7 +41,7 @@
 
 
     <TextView
-        android:id="@+id/tv_replay"
+        android:id="@+id/tv_reply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -61,8 +61,8 @@
         android:text="@string/placeholder"
         android:textColor="?attr_color_text_secondary"
         android:textSize="5pt"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_replay"
-        app:layout_constraintStart_toEndOf="@+id/tv_replay" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_reply"
+        app:layout_constraintStart_toEndOf="@+id/tv_reply" />
 
     <TextView
         android:id="@+id/tv_node"

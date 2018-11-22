@@ -17,18 +17,22 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<TopicRecycler
 
     private List<Topic> topics;
     private Context context;
+    private boolean mIsSimpleView;
 
     public TopicRecyclerViewAdapter(Context context, List<Topic> topics){
-
+        this.mIsSimpleView = false;
         this.topics = topics;
         this.context = context;
     }
 
+    public void setIsSimpleView(boolean isSimpleView){
+        this.mIsSimpleView = isSimpleView;
+    }
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = new TopicView(context,false);
+        View view = new TopicView(context, mIsSimpleView);
 
         view.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
         return new MyViewHolder(view);

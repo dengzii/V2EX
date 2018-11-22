@@ -5,12 +5,17 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class RxObserver<T> implements Observer<T> {
 
+    public static final String ERR_EMPTY_RESPONSE = "空响应体";
+
     @Override
     public void onSubscribe(Disposable d) {
 
     }
 
     public void onNext(T t){
+        if (t == null){
+            onError(new NullPointerException(ERR_EMPTY_RESPONSE));
+        }
         try {
             _onNext(t);
         }catch (Exception e){

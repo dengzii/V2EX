@@ -35,82 +35,80 @@ import cn.denua.v2ex.utils.ImageLoader;
  */
 public class TopicView extends FrameLayout {
 
-    @BindView(R.id.iv_user_pic)
-    ImageView ivUserPic;
+
     @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.tv_username)
-    TextView tvUsername;
 
-    @BindView(R.id.tv_replay)
+    @BindView(R.id.tv_reply)
     TextView tvReply;
     @BindView(R.id.tv_latest_touched)
     TextView tvLastTouched;
     @BindView(R.id.tv_node)
-    TextView tvNode=null;
+    TextView tvNode;
+
+    @Nullable
+    @BindView(R.id.iv_user_pic)
+    ImageView ivUserPic;
+    @Nullable
+    @BindView(R.id.tv_username)
+    TextView tvUsername;
     @Nullable
     @BindView(R.id.tv_last_reply)
-    TextView tvLastReply=null;
+    TextView tvLastReply;
+    @Nullable
     @BindView(R.id.tv_up_vote)
-    TextView tvUpVote=null;
+    TextView tvUpVote;
 
     private Context context;
     private Topic topic;
-    private boolean mIsSimple;
+    private boolean isSimpleView;
 
     @SuppressLint("ClickableViewAccessibility")
-    public TopicView(Context context, boolean mIsSimple) {
+    public TopicView(Context context, boolean isSimpleView) {
         super(context);
-        this.mIsSimple = mIsSimple;
+        this.isSimpleView = isSimpleView;
         this.context = App.getApplication();
-        initView();
+        initView(context);
         setOnClickListener(v -> goToTopicDetail());
         tvTitle.setOnTouchListener((v,e)->{onTouchEvent(e);return false;});
     }
 
     public TopicView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.isSimpleView = false;
         this.context = context;
-        this.mIsSimple = false;
-        initView();
+        initView(context);
     }
 
-    private void initView(){
-        inflate(context, mIsSimple
-                ? R.layout.view_member_topic
-                : R.layout.view_topic, this);
+    private void initView(Context context ){
+        inflate(context, isSimpleView
+                            ?R.layout.view_member_topic
+                            :R.layout.view_topic, this);
         ButterKnife.bind(this);
     }
 
-    public void  loadDataFromTopic(Topic topic){
-
-        if (!mIsSimple){
-            String userPicUrl = topic.getMember().getAvatar_large();
-            ImageLoader.load(userPicUrl, ivUserPic, this);
-            tvUsername.setText(topic.getMember().getUsername());
-            tvUsername.setOnClickListener(v->goToUserDetail());
-            ivUserPic.setOnClickListener(v -> goToUserDetail());
-        }else{
-            tvLastReply.setText(topic.getLast_reply_by());
-            int upVote = topic.getUpVote();
-            tvUpVote.setText(upVote>0?String.valueOf(upVote):"");
-        }
-
-        String lastTouched = TimeUtils.getFitTimeSpanByNow(
-                topic.getLast_touched()*1000, 4);
-        lastTouched = lastTouched.startsWith("-")?lastTouched.substring(1):lastTouched;
+    public void  loadDataFromTopic(Topic topic) {
 
         this.topic = topic;
+        if (isSimpleView) {
+            tvLastTouched.setText(topic.getAgo());
+            tvLastReply.setText(topic.getLast_reply_by());
+            tvUpVote.setText(topic.getUpVote()==0?"":String.valueOf(topic.getUpVote()));
+        } else {
+            String lastTouched = TimeUtils.getFitTimeSpanByNow(topic.getLast_touched() * 1000, 4);
+            String userPicUrl = topic.getMember().getAvatar_large();
+            lastTouched = lastTouched.startsWith("-") ? lastTouched.substring(1) : lastTouched;
+            ImageLoader.load(userPicUrl, ivUserPic, this);
+            tvUsername.setText(topic.getMember().getUsername());
+            tvLastTouched.setText(lastTouched);
+            tvUsername.setOnClickListener(v -> goToUserDetail());
+            ivUserPic.setOnClickListener(v -> goToUserDetail());
+        }
         tvTitle.setText(topic.getTitle());
-        tvReply.setText(String.format(getResources().getString(R.string.place_holder_reply), topic.getReplies()));
-        tvLastTouched.setText(lastTouched);
+        tvReply.setText(String.valueOf(topic.getReplies()));
         tvNode.setText(topic.getNode().getName());
-
-        tvNode.setOnClickListener(v->goToNodeDetail());
-
+        tvNode.setOnClickListener(v -> goToNodeDetail());
     }
-
-
 
     private void goToUserDetail(){
 
@@ -127,7 +125,7 @@ public class TopicView extends FrameLayout {
     private void goToTopicDetail(){
 
         Intent intent = new Intent(context, TopicActivity.class);
-        intent.putExtra("topic",topic);
+        intent.putExtra("topic", topic);
         context.startActivity(intent);
     }
 
