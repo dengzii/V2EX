@@ -41,21 +41,29 @@ public class TopicView extends FrameLayout {
     TextView tvTitle;
     @BindView(R.id.tv_username)
     TextView tvUsername;
+
     @BindView(R.id.tv_replay)
     TextView tvReply;
     @BindView(R.id.tv_latest_touched)
     TextView tvLastTouched;
     @BindView(R.id.tv_node)
-    TextView tvNode;
+    TextView tvNode=null;
+    @Nullable
+    @BindView(R.id.tv_last_reply)
+    TextView tvLastReply=null;
+    @BindView(R.id.tv_up_vote)
+    TextView tvUpVote=null;
 
     private Context context;
     private Topic topic;
+    private boolean mIsSimple;
 
     @SuppressLint("ClickableViewAccessibility")
-    public TopicView(Context context) {
+    public TopicView(Context context, boolean mIsSimple) {
         super(context);
+        this.mIsSimple = mIsSimple;
         this.context = App.getApplication();
-        initView(context);
+        initView();
         setOnClickListener(v -> goToTopicDetail());
         tvTitle.setOnTouchListener((v,e)->{onTouchEvent(e);return false;});
     }
@@ -63,38 +71,46 @@ public class TopicView extends FrameLayout {
     public TopicView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        initView(context);
+        this.mIsSimple = false;
+        initView();
     }
 
-    public TopicView(Context context, AttributeSet attrs, int defStyleAttrs, int defStyleAttrsRes){
-        super(context, attrs, defStyleAttrs, defStyleAttrsRes);
-        this.context = context;
-        initView(context);
-    }
-
-    private void initView(Context context ){
-        inflate(context, R.layout.view_topic, this);
+    private void initView(){
+        inflate(context, mIsSimple
+                ? R.layout.view_member_topic
+                : R.layout.view_topic, this);
         ButterKnife.bind(this);
     }
 
     public void  loadDataFromTopic(Topic topic){
 
-        String lastTouched = TimeUtils.getFitTimeSpanByNow(topic.getLast_touched()*1000, 4);
-        String userPicUrl = topic.getMember().getAvatar_large();
+        if (!mIsSimple){
+            String userPicUrl = topic.getMember().getAvatar_large();
+            ImageLoader.load(userPicUrl, ivUserPic, this);
+            tvUsername.setText(topic.getMember().getUsername());
+            tvUsername.setOnClickListener(v->goToUserDetail());
+            ivUserPic.setOnClickListener(v -> goToUserDetail());
+        }else{
+            tvLastReply.setText(topic.getLast_reply_by());
+            int upVote = topic.getUpVote();
+            tvUpVote.setText(upVote>0?String.valueOf(upVote):"");
+        }
+
+        String lastTouched = TimeUtils.getFitTimeSpanByNow(
+                topic.getLast_touched()*1000, 4);
         lastTouched = lastTouched.startsWith("-")?lastTouched.substring(1):lastTouched;
 
         this.topic = topic;
         tvTitle.setText(topic.getTitle());
-        tvUsername.setText(topic.getMember().getUsername());
-        tvReply.setText(String.valueOf(topic.getReplies()));
+        tvReply.setText(String.format(getResources().getString(R.string.place_holder_reply), topic.getReplies()));
         tvLastTouched.setText(lastTouched);
         tvNode.setText(topic.getNode().getName());
-        ImageLoader.load(userPicUrl, ivUserPic, this);
 
         tvNode.setOnClickListener(v->goToNodeDetail());
-        tvUsername.setOnClickListener(v->goToUserDetail());
-        ivUserPic.setOnClickListener(v -> goToUserDetail());
+
     }
+
+
 
     private void goToUserDetail(){
 

@@ -28,7 +28,7 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<TopicRecycler
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = new TopicView(context);
+        View view = new TopicView(context,false);
 
         view.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
         return new MyViewHolder(view);
