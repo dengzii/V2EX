@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 
@@ -41,6 +42,8 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
     RecyclerView mRvTopics;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mRefreshLayout;
+    @BindView(R.id.tv_error)
+    TextView mTvError;
 
     private TopicRecyclerViewAdapter mRecyclerViewAdapter;
     private List<Topic> mTopics = new ArrayList<>();
@@ -105,7 +108,7 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
 
     @Override
     public void onComplete(Member result) {
-        ToastUtils.showShort("success");
+
         this.mTopics = result.getCreatedTopics();
         mRecyclerViewAdapter.setTopics(mTopics);
         mRecyclerViewAdapter.notifyDataSetChanged();
@@ -114,6 +117,12 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
 
     @Override
     public void onFailed(String msg) {
-        ToastUtils.showShort(msg);
+
+        if(msg.equals(MemberService.ERR_NEED_LOGIN)){
+            mTvError.setVisibility(View.VISIBLE);
+            mTvError.setText(MemberService.ERR_NEED_LOGIN);
+        }else{
+            ToastUtils.showShort(msg);
+        }
     }
 }

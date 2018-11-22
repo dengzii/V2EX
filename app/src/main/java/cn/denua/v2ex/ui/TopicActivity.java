@@ -44,7 +44,6 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
     private ReplyRecyclerViewAdapter mRecyclerViewAdapter;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +73,10 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         mRecycleView.setNestedScrollingEnabled(false);
 
         mTopicView.loadDataFromTopic(topic);
-        mWebView.loadData(HtmlUtil.applyHtmlStyle(topic.getContent_rendered()),
-                "text/html", "utf-8");
+        if (topic.getContent_rendered()!=null){
+            mWebView.loadData(HtmlUtil.applyHtmlStyle(topic.getContent_rendered()),
+                    "text/html", "utf-8");
+        }
         mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
 
         mWebView.setVerticalScrollBarEnabled(false);
@@ -88,8 +89,6 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         new TopicService<>(this, this).getReply(topic, 1);
     }
 
-
-
     @Override
     public void onCompleteRequest() {
         super.onCompleteRequest();
@@ -99,6 +98,10 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @Override
     public void onComplete(List<Topic> result) {
 
+        if (topic.getContent_rendered()==null){
+            mWebView.loadData(HtmlUtil.applyHtmlStyle(result.get(0).getContent_rendered()),
+                    "text/html", "utf-8");
+        }
         this.topic = result.get(0);
         this.replies = topic.getReplyList();
         mRecyclerViewAdapter.setReplies(this.replies);

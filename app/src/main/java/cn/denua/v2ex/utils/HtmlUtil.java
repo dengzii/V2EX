@@ -44,6 +44,13 @@ public class HtmlUtil {
             Element element = it.next();
             tags.add(new Tag(element.text()));
         }
+        // topic not from home page
+        if (topic.getContent_rendered()==null){
+            Element contentBox = document.selectFirst("#Main > .box");
+            String topicContent = contentBox.selectFirst(".cell").html();
+            topicContent += contentBox.select(".subtle").html();
+            topic.setContent_rendered(topicContent);
+        }
         topic.setClicks(matcherGroup1Int(" · (\\d+) 次点击", html));
         topic.setTags(tags);
 
@@ -122,6 +129,7 @@ public class HtmlUtil {
             topic.setReplies(replies);
             topic.setNode(new Node(matcherGroup1("href=\"/go/(\\w+)\"", element.html()),
                     element.selectFirst(".node").text()));
+            topic.setMember(member);
             if (replies>0){
                 String ago = element.selectFirst(".topic_info").text().split(" • ")[2];
                 topic.setAgo(ago);

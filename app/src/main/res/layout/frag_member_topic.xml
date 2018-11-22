@@ -17,10 +17,25 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="wrap_content"
             android:layout_height="1000dp">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_topics"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_error"
+                    android:text="@string/placeholder"
+                    android:gravity="center"
+                    android:textSize="7pt"
+                    android:textStyle="bold"
+                    android:textColor="?attr_color_accent"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_topics"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
+
         </android.support.v4.widget.NestedScrollView>
 
 </android.support.v4.widget.SwipeRefreshLayout>
