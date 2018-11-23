@@ -2,7 +2,7 @@
  * Copyright (c) 2018 denua.
  */
 
-package cn.denua.v2ex.wiget;
+package cn.denua.v2ex.widget;
 
 import android.content.Context;
 import android.graphics.Bitmap;

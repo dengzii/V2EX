@@ -2,7 +2,7 @@
  * Copyright (c) 2018 denua.
  */
 
-package cn.denua.v2ex.wiget;
+package cn.denua.v2ex.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -105,7 +105,8 @@ public class TopicView extends FrameLayout {
             ivUserPic.setOnClickListener(v -> goToUserDetail());
         }
         tvTitle.setText(topic.getTitle());
-        tvReply.setText(String.valueOf(topic.getReplies()));
+        tvReply.setText(String.format(getResources().getString(R.string.place_holder_reply),
+                topic.getReplies()));
         tvNode.setText(topic.getNode().getName());
         tvNode.setOnClickListener(v -> goToNodeDetail());
     }

@@ -47,9 +47,14 @@ public class HtmlUtil {
         // topic not from home page
         if (topic.getContent_rendered()==null){
             Element contentBox = document.selectFirst("#Main > .box");
-            String topicContent = contentBox.selectFirst(".cell").html();
-            topicContent += contentBox.select(".subtle").html();
-            topic.setContent_rendered(topicContent);
+            Element topicContent = contentBox.selectFirst(".cell");
+
+            topic.setContent_rendered("<br><br>");
+            if (topicContent != null){
+                Elements subtle = contentBox.select(".subtle");
+                topic.setContent_rendered(topicContent.html() +
+                        (subtle == null ? "" :subtle.html()));
+            }
         }
         topic.setClicks(matcherGroup1Int(" · (\\d+) 次点击", html));
         topic.setTags(tags);

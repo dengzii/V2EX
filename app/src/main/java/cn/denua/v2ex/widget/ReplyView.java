@@ -2,10 +2,9 @@
  * Copyright (c) 2018 denua.
  */
 
-package cn.denua.v2ex.wiget;
+package cn.denua.v2ex.widget;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;

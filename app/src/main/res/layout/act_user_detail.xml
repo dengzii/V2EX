@@ -12,7 +12,8 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="340dp"
+        app:layout_behavior="cn.denua.v2ex.widget.SmoothSnapBehavior">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
@@ -38,7 +39,7 @@
                 android:layout_marginTop="?attr/actionBarSize"
                 android:orientation="vertical">
 
-                <cn.denua.v2ex.wiget.CircleImageView
+                <cn.denua.v2ex.widget.CircleImageView
                     android:id="@+id/iv_user_pic"
                     android:layout_width="75dp"
                     android:layout_height="75dp"

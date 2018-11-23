@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <cn.denua.v2ex.wiget.TopicView
+            <cn.denua.v2ex.widget.TopicView
                 android:id="@+id/topicView"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"

@@ -8,8 +8,6 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    android:paddingStart="15dp"
-    android:paddingEnd="15dp"
     android:paddingTop="10dp"
     android:paddingBottom="0dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,12 +17,11 @@
         android:id="@+id/tv_reply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="@string/placeholder"
+        android:layout_marginStart="15dp"
         android:textSize="6pt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/tv_latest_touched"
@@ -69,18 +66,22 @@
         android:paddingTop="4dp"
         android:paddingEnd="6dp"
         android:paddingBottom="4dp"
+        android:layout_marginEnd="15dp"
         android:text="@string/placeholder"
         android:textColor="?attr_color_text_secondary"
         android:textSize="5pt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
         android:maxLines="2"
         android:text="@string/placeholder"
         android:textColor="?attr_color_text"
@@ -88,5 +89,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_latest_touched" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="?attr_color_text_lightish"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -13,9 +13,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.view.Menu;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,7 +30,6 @@ import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.fragment.MemberTopicFragment;
 import cn.denua.v2ex.model.Member;
 import cn.denua.v2ex.utils.ImageLoader;
-import cn.denua.v2ex.wiget.CircleImageView;
 
 /*
  * User detail page
@@ -91,6 +88,7 @@ public class UserDetailActivity extends BaseNetworkActivity {
         mMemberTopicFragments = new ArrayList<>();
         mToolbar.setTitle(mMember.getUsername());
         mTabLayout.setupWithViewPager(mViewPager);
+        mNumberCreated.setText(mMember.getNumber());
 
         List<String> tabs = new ArrayList<String>(){{
             add("Post");
@@ -109,7 +107,6 @@ public class UserDetailActivity extends BaseNetworkActivity {
         mViewPager.setAdapter(mPagerAdapter);
 
         ImageLoader.load(mMember.getAvatar_large(), mIVUserPic, this);
-
     }
 
     @Override

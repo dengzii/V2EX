@@ -24,6 +24,7 @@ import io.reactivex.disposables.Disposable;
 public class MemberService extends BaseService<IResponsibleView, Member> {
 
     public static final String ERR_NEED_LOGIN = "主题列表只有在你登录之后才可查看";
+    public static final String ERR_HAS_HIDDEN = "主题列表被隐藏";
 
     private static MemberApi mMemberApi = RetrofitManager.create(MemberApi.class);
 
@@ -43,8 +44,7 @@ public class MemberService extends BaseService<IResponsibleView, Member> {
                     }
                     @Override
                     public void _onNext(String s) {
-                        if (s.contains(ERR_NEED_LOGIN)){
-                            returnFailed(ERR_NEED_LOGIN);
+                        if (!verify(s)){
                             return;
                         }
                         HtmlUtil.attachCreatedTopics(member1, s);
@@ -55,5 +55,17 @@ public class MemberService extends BaseService<IResponsibleView, Member> {
                         returnFailed(msg);
                     }
                 });
+    }
+
+    private boolean verify(String html){
+
+        if (html.contains(ERR_NEED_LOGIN)){
+            returnFailed(ERR_NEED_LOGIN);
+            return false;
+        }else if (html.contains(ERR_HAS_HIDDEN)){
+            returnFailed(ERR_HAS_HIDDEN);
+            return false;
+        }
+        return true;
     }
 }

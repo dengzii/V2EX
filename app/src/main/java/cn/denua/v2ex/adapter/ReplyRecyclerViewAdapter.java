@@ -14,7 +14,7 @@ import android.widget.FrameLayout;
 import java.util.List;
 
 import cn.denua.v2ex.model.Reply;
-import cn.denua.v2ex.wiget.ReplyView;
+import cn.denua.v2ex.widget.ReplyView;
 
 /*
  * reply adapter

@@ -24,7 +24,7 @@ import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.service.TopicService;
 
-public class TopicFragment extends BaseNetworkFragment implements ResponseListener<List<Topic>>, SwipeRefreshLayout.OnRefreshListener {
+public class TopicFragment extends BaseNetworkFragment implements ResponseListener<List<Topic>> {
 
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -71,7 +71,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         recyclerView.setLayoutManager(layoutManager);
         adapter = new TopicRecyclerViewAdapter(getContext(), topics);
         recyclerView.setAdapter(adapter);
-        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
         swipeRefreshLayout.setRefreshing(true);
         onRefresh();
         return savedView;
@@ -83,7 +83,6 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
 
     }
 
-    @Override
     public void onRefresh() {
 
         topicService.getTopic(getContentType());

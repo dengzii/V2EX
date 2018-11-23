@@ -15,7 +15,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <cn.denua.v2ex.wiget.CircleImageView
+    <cn.denua.v2ex.widget.CircleImageView
         android:id="@+id/iv_user_pic"
         android:layout_width="40dp"
         android:layout_height="40dp"

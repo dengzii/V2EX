@@ -6,7 +6,7 @@
     android:layout_height="160dp"
     android:background="?attr_color_primary">
 
-    <cn.denua.v2ex.wiget.CircleImageView
+    <cn.denua.v2ex.widget.CircleImageView
         android:id="@+id/iv_user_pic"
         android:layout_width="60dp"
         android:layout_height="60dp"

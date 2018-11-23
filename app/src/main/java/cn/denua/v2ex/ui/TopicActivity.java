@@ -23,7 +23,7 @@ import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.service.TopicService;
 import cn.denua.v2ex.utils.HtmlUtil;
-import cn.denua.v2ex.wiget.TopicView;
+import cn.denua.v2ex.widget.TopicView;
 
 public class TopicActivity extends BaseNetworkActivity implements ResponseListener<List<Topic>> {
 

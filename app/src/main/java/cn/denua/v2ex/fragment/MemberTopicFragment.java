@@ -70,27 +70,34 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_member_topic, container, false);
-        ButterKnife.bind(this, view);
+        if (savedView !=null){
+            return savedView;
+        }
+        savedView = inflater.inflate(R.layout.frag_member_topic, container, false);
+        ButterKnife.bind(this, savedView);
 
         mRecyclerViewAdapter = new TopicRecyclerViewAdapter(getContext(), mTopics);
         mRecyclerViewAdapter.setIsSimpleView(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        layoutManager.setSmoothScrollbarEnabled(true);
         mRvTopics.setLayoutManager(layoutManager);
-        mRvTopics.setNestedScrollingEnabled(true);
+        mRvTopics.setNestedScrollingEnabled(false);
         mRvTopics.setAdapter(mRecyclerViewAdapter);
 
         mRefreshLayout.setOnRefreshListener(this::onRefresh);
-//        mRefreshLayout.setRefreshing(true);
-
-        return view;
+        return savedView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        mRefreshLayout.setRefreshing(true);
+        onRefresh();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
 
@@ -112,17 +119,20 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
         this.mTopics = result.getCreatedTopics();
         mRecyclerViewAdapter.setTopics(mTopics);
         mRecyclerViewAdapter.notifyDataSetChanged();
-
     }
 
     @Override
     public void onFailed(String msg) {
 
-        if(msg.equals(MemberService.ERR_NEED_LOGIN)){
-            mTvError.setVisibility(View.VISIBLE);
-            mTvError.setText(MemberService.ERR_NEED_LOGIN);
-        }else{
-            ToastUtils.showShort(msg);
+        switch (msg){
+            case MemberService.ERR_HAS_HIDDEN:
+            case MemberService.ERR_NEED_LOGIN:
+                mTvError.setVisibility(View.VISIBLE);
+                mTvError.setText(msg);
+                break;
+            default:
+                ToastUtils.showShort(msg);
+                break;
         }
     }
 }

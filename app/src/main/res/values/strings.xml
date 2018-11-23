@@ -48,7 +48,7 @@
     <string name="captcha_format_error">验证码格式错误</string>
 
     <string name="place_holder_floor"># %1$d</string>
-    <string name="place_holder_reply">回复 %1$d</string>
+    <string name="place_holder_reply">%1$d 回复</string>
 
 
 </resources>

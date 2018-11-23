@@ -38,7 +38,7 @@ import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.LoginService;
 import cn.denua.v2ex.Config;
-import cn.denua.v2ex.wiget.MessageDialog;
+import cn.denua.v2ex.widget.MessageDialog;
 
 @SuppressWarnings("RedundantCast")
 public class MainActivity extends BaseNetworkActivity implements NavigationView.OnNavigationItemSelectedListener, ResponseListener<Account> {

@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
 import java.util.List;
 
 import cn.denua.v2ex.model.Topic;
-import cn.denua.v2ex.wiget.TopicView;
+import cn.denua.v2ex.widget.TopicView;
 
 public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<TopicRecyclerViewAdapter.MyViewHolder> {
 
