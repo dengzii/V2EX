@@ -12,12 +12,14 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ import cn.denua.v2ex.utils.ImageLoader;
  * @author denua
  * @date 2018/11/04 20
  */
-public class UserDetailActivity extends BaseNetworkActivity {
+public class UserDetailActivity extends BaseNetworkActivity{
 
     private static final String EXTRA_MEMBER = "MEMBER";
 
@@ -57,7 +59,7 @@ public class UserDetailActivity extends BaseNetworkActivity {
 
     private Member mMember;
     private MemberPagerAdapter mPagerAdapter;
-    private List<Fragment> mMemberTopicFragments;
+    private List<Fragment> mMemberTopicFragments = new ArrayList<>();
 
     public static void start(Context context, Member member){
         Intent intent = new Intent(context, UserDetailActivity.class);
@@ -85,10 +87,10 @@ public class UserDetailActivity extends BaseNetworkActivity {
     @Override
     protected void initView() {
 
-        mMemberTopicFragments = new ArrayList<>();
         mToolbar.setTitle(mMember.getUsername());
+        mToolbar.inflateMenu(R.menu.menu_user_detail);
+        mNumberCreated.setText(mMember.getNumber() + mMember.getCreated());
         mTabLayout.setupWithViewPager(mViewPager);
-        mNumberCreated.setText(mMember.getNumber());
 
         List<String> tabs = new ArrayList<String>(){{
             add("Post");
@@ -111,22 +113,19 @@ public class UserDetailActivity extends BaseNetworkActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_user_detail, menu);
+        getMenuInflater().inflate(R.menu.menu_user_detail, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    private void onRefresh(){
-
-        mPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onCompleteRequest() {
+
         ToastUtils.showShort("onCompleteRequest");
     }
 
     @Override
     public void onStartRequest() {
+
         ToastUtils.showShort("onStartRequest");
     }
 }

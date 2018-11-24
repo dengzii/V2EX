@@ -92,17 +92,25 @@ public class TopicView extends FrameLayout {
         this.topic = topic;
         if (isSimpleView) {
             tvLastTouched.setText(topic.getAgo());
-            tvLastReply.setText(topic.getLast_reply_by());
-            tvUpVote.setText(topic.getUpVote()==0?"":String.valueOf(topic.getUpVote()));
+            if (tvLastReply != null) {
+                tvLastReply.setText(topic.getLast_reply_by());
+            }
+            if (tvUpVote != null) {
+                tvUpVote.setText(topic.getUpVote()==0?"":String.valueOf(topic.getUpVote()));
+            }
         } else {
             String lastTouched = TimeUtils.getFitTimeSpanByNow(topic.getLast_touched() * 1000, 4);
             String userPicUrl = topic.getMember().getAvatar_large();
             lastTouched = lastTouched.startsWith("-") ? lastTouched.substring(1) : lastTouched;
             ImageLoader.load(userPicUrl, ivUserPic, this);
-            tvUsername.setText(topic.getMember().getUsername());
+            if (tvUsername != null) {
+                tvUsername.setText(topic.getMember().getUsername());
+            }
             tvLastTouched.setText(lastTouched);
             tvUsername.setOnClickListener(v -> goToUserDetail());
-            ivUserPic.setOnClickListener(v -> goToUserDetail());
+            if (ivUserPic != null) {
+                ivUserPic.setOnClickListener(v -> goToUserDetail());
+            }
         }
         tvTitle.setText(topic.getTitle());
         tvReply.setText(String.format(getResources().getString(R.string.place_holder_reply),

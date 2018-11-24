@@ -16,9 +16,9 @@ import cn.denua.v2ex.interfaces.ResponseListener;
 public class BaseService<V extends IResponsibleView, T> {
 
     protected V view;
-    protected ResponseListener<T> responseListener;
+    private ResponseListener<T> responseListener;
 
-    public BaseService(){}
+    protected BaseService(){}
 
     public BaseService(V iResponsibleView){
         this.view = iResponsibleView;
@@ -29,7 +29,7 @@ public class BaseService<V extends IResponsibleView, T> {
         this.responseListener = responseListener;
     }
 
-    public void attachView(V v){
+    protected void attachView(V v){
         this.view = v;
     }
 

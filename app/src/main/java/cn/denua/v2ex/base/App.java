@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.Utils;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
+import cn.denua.v2ex.Config;
 import cn.denua.v2ex.http.RetrofitManager;
 
 
@@ -18,6 +19,7 @@ public class App extends Application {
         super.onCreate();
         app = this;
 
+        Config.init(this);
         Logger.addLogAdapter(new AndroidLogAdapter());
         RetrofitManager.init(this);
         Utils.init(this);

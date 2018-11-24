@@ -85,14 +85,15 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
         mRvTopics.setAdapter(mRecyclerViewAdapter);
 
         mRefreshLayout.setOnRefreshListener(this::onRefresh);
+        mRefreshLayout.setRefreshing(true);
+        onRefresh();
         return savedView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mRefreshLayout.setRefreshing(true);
-        onRefresh();
+
     }
 
     @Override

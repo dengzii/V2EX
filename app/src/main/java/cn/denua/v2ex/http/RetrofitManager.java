@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.X509TrustManager;
@@ -33,11 +35,15 @@ public class RetrofitManager {
     private static final long WRITE_TIMEOUT = 5000L;
     private static final long CONNECT_TIMEOUT = 5000L;
 
-    private static final String BASE_URL = "https://www.v2ex.com/";
+    private static final String         BASE_URL = "https://www.v2ex.com/";
+    private static final List<String>   VERIFIED_HOST = new ArrayList<String>(){{
+        add("www.v2ex.com");
+        add("cdn.v2ex.com");
+        add("*.v2ex.com");
+    }};
 
     private static Retrofit retrofit;
     private static CookiesManager cookiesManager;
-    private static TransientCookieJar transientCookieJar;
 
     private RetrofitManager(){}
 
@@ -48,11 +54,6 @@ public class RetrofitManager {
         return retrofit;
     }
 
-    /**
-     * 初始化 retrofit
-     *
-     * @param context 当前APP上下文
-     */
     public static void init(@Nullable Context context){
 
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
@@ -64,7 +65,7 @@ public class RetrofitManager {
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .addInterceptor(HeadersInterceptor.getInstance())
-                .hostnameVerifier((hostname, session) -> true);
+                .hostnameVerifier((hostname, session) -> VERIFIED_HOST.contains(hostname));
 
         if (context != null){
             X509TrustManager trustManager = HttpsUtil.getX509TrustManager();
@@ -83,22 +84,17 @@ public class RetrofitManager {
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClientBuilder.build())
-                .callFactory(okHttpClientBuilder.build())
-                .addConverterFactory(ScalarsConverterFactory.create())
+                .callFactory(okHttpClientBuilder.build());
+        if (context!=null){
+            retrofitBuilder.addConverterFactory(BitmapConverterFactory.create());
+        }
+        retrofitBuilder.addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
-        if (context!=null)
-            retrofitBuilder.addConverterFactory(BitmapConverterFactory.create());
+
         retrofit = retrofitBuilder.build();
     }
 
-    /**
-     *
-     *
-     * @param tClass api
-     * @param <T> the call api
-     * @return call instance
-     */
     public static <T> T create(Class<T> tClass){
         if (retrofit == null){
             throw new IllegalStateException("Retrofit need be init, call RetrofitManager.init(Context) first.");

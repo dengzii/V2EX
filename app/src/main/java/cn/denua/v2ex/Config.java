@@ -6,9 +6,11 @@ package cn.denua.v2ex;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,51 +26,55 @@ import cn.denua.v2ex.model.Account;
  */
 public class Config {
 
-
-    public static final String FILE_CONFIG_PREF = "pref_config";
-    public static final String DIR_USER_PERSISTENT = "data";
-    public static final String FILE_USER_PERSISTENT = "user_status";
-
-    public static final HashMap<String, String> BASE_URL = new HashMap<>();
-    public static final HashMap<String, String> CONFIG = new HashMap<>();
+    private static HashMap<ConfigRefEnum, String> CONFIG = new HashMap<>();
 
     public static Account account = new Account();
     public static boolean IsLogin = false;
-
-    public static List<String> HOME_TAB_TITLES = new ArrayList<>();
-
-    public static boolean REPLY_AGO_FULL;
-    public static boolean REPLY_POSTER_HIGHLIGHT;
-    public static boolean REPLY_HIDE_ZERO;
-    public static boolean REPLY_THANKS_LONG_CLICK;
-    public static boolean REPLY_OPRATE_SLIDING_MODE;
-
     public static int sCurrentTheme = R.style.MainTheme;
 
-    static {
+    public static List<String> HOME_TAB_TITLES = new ArrayList<String>(){{
+        add("热 门");
+        add("最 新");
+        add("热 门");
+    }};
 
-        HOME_TAB_TITLES.add("热 门");
-        HOME_TAB_TITLES.add("最 新");
-        HOME_TAB_TITLES.add("热 门");
+    public static void init(Context context){
 
-        CONFIG.put("username", null);
-        CONFIG.put("last_touched", null);
+        CONFIG.put(ConfigRefEnum.KEY_USER_NAME,
+                (String) ConfigRefEnum.KEY_USER_NAME.getDefaultValue());
 
-        BASE_URL.put("www.sov2ex.com","https://www.sov2ex.com/");
+    }
+
+    public static <T extends Serializable> T getConfig(ConfigRefEnum key, @Nullable T defaultValue){
+
+        CONFIG.get(key);
+
+        return defaultValue;
+    }
+
+    public static <T extends Serializable> void setConfig(ConfigRefEnum key, @Nullable T value){
+
+        CONFIG.put(key, "");
     }
 
     public static void persistentAccount(){
 
-        SharedPreferences.Editor editor= App.getApplication().getSharedPreferences(FILE_CONFIG_PREF, Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor= App.getApplication().getSharedPreferences(
+                ConfigRefEnum.KEY_FILE_CONFIG_PREF.getKey(), Context.MODE_PRIVATE).edit();
         String gsonAccount = new Gson().toJson(account);
-        editor.putString("saved_status", gsonAccount);
+        editor.putString(ConfigRefEnum.KEY_ACCOUNT.getKey(), gsonAccount);
         editor.apply();
     }
 
     public static boolean restoreAccount() {
-
-        SharedPreferences editor = App.getApplication().getSharedPreferences(FILE_CONFIG_PREF, Context.MODE_PRIVATE);
-        account = new Gson().fromJson(editor.getString("saved_status",null), Account.class);
+        try {
+            SharedPreferences editor = App.getApplication().getSharedPreferences(
+                    ConfigRefEnum.KEY_FILE_CONFIG_PREF.getKey(), Context.MODE_PRIVATE);
+            account = new Gson().fromJson(editor.getString(
+                    ConfigRefEnum.KEY_ACCOUNT.getKey(),null), Account.class);
+        }catch (Exception e){
+            return false;
+        }
         return account != null;
     }
 }

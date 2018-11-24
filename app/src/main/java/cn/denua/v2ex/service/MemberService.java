@@ -32,16 +32,45 @@ public class MemberService extends BaseService<IResponsibleView, Member> {
         super(iResponsibleView, responseListener);
     }
 
+    public void getMemberDetail(Member member){
+
+        Member memberCopy = (Member) member.clone();
+        mMemberApi.getMemberPage(memberCopy.getUsername())
+                .compose(RxUtil.io2main())
+                .subscribe(new RxObserver<String>() {
+                    @Override
+                    public void _onNext(String s) {
+
+                    }
+                    @Override
+                    public void _onError(String msg) {
+
+                    }
+                });
+    }
+
+    public void getMemberDetail(String username){
+
+        mMemberApi.getMemberPage(username)
+                .compose(RxUtil.io2main())
+                .subscribe(new RxObserver<String>() {
+                    @Override
+                    public void _onNext(String s) {
+
+                    }
+                    @Override
+                    public void _onError(String msg) {
+
+                    }
+                });
+    }
+
     public void getCreatedTopics(Member member, int page){
 
         final Member member1 = (Member) member.clone();
         mMemberApi.getMemberTopics(member1.getUsername(), page)
                 .compose(RxUtil.io2main())
                 .subscribe(new RxObserver<String>(){
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        onStartRequest();
-                    }
                     @Override
                     public void _onNext(String s) {
                         if (!verify(s)){
