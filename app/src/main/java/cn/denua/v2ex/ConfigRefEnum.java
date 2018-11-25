@@ -27,6 +27,7 @@ public enum ConfigRefEnum implements Serializable {
     CONFIG_HOME_TAB_LIST        ("home_tab",        Config.HOME_TAB_TITLES),
     CONFIG_DETAILED_INFO        ("detailed",        false),
     CONFIG_MEMBER_TAB           ("member_tab",      null),
+
     ;
 
     private String key;
