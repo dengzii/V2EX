@@ -3,6 +3,8 @@ package cn.denua.v2ex.api;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.util.HashMap;
+
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -29,9 +31,23 @@ public interface TopicApi {
     @GET("api/topics/latest.json")
     Observable<JsonArray> getLatestTopic();
 
+    @GET("/changes")
+    Observable<String> getLatestTopic2();
+
+    @GET("/api/topics/show.json")
+    Observable<JsonArray> getTopic(@Query("id")int id);
+
+    @GET("/api/replies/show.json")
+    Observable<JsonObject> showReplies(@Query("topic_id") int id, @Query("p") int page);
+
     @POST("/down/topic")
-    Observable<String> downVote(@Path("id") int topicId, @Field("t") String v);
+    Observable<String> downVote(@Path("id") int id, @Field("t") String v);
 
     @POST("/up/topic")
-    Observable<String> upVote(@Path("id") int topicId, @Field("t") String v);
+    Observable<String> upVote(@Path("id") int id, @Field("t") String v);
+
+
+
+    @POST("/api/topics/create.json")
+    Observable<JsonObject> createTopic(@FieldMap HashMap<String, String> fields);
 }

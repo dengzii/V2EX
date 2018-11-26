@@ -1,5 +1,7 @@
 package cn.denua.v2ex.utils;
 
+import android.content.Context;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
@@ -42,13 +44,13 @@ public class HttpsUtil {
         return sslSocketFactory;
     }
 
-    public static X509TrustManager getX509TrustManager(){
+    public static X509TrustManager getX509TrustManager(Context context){
 
         X509TrustManager x509TrustManager = null;
         InputStream inputStream = null;
 
         try {
-            inputStream = App.getApplication().getAssets().open("v2ex.com.cer");
+            inputStream = context.getAssets().open("v2ex.com.cer");
             x509TrustManager = trustManagerForCertificates(inputStream);
         } catch (IOException | GeneralSecurityException e) {
             e.printStackTrace();
