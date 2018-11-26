@@ -7,5 +7,6 @@
     <dimen name="avatar_margin_start">15dp</dimen>
     <dimen name="tab_indicator_height">3dp</dimen>
 
+    <dimen name="text_center_error">8pt</dimen>
     <dimen name="text_title">9pt</dimen>
 </resources>

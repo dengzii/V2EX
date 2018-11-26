@@ -17,21 +17,33 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.blankj.utilcode.constant.TimeConstants;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.orhanobut.logger.Logger;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.denua.v2ex.Config;
+import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.adapter.MemberPagerAdapter;
 import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.fragment.MemberTopicFragment;
+import cn.denua.v2ex.interfaces.IResponsibleView;
+import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Member;
+import cn.denua.v2ex.service.MemberService;
 import cn.denua.v2ex.utils.ImageLoader;
+import cn.denua.v2ex.utils.StringUtil;
 
 /*
  * User detail page
@@ -39,7 +51,7 @@ import cn.denua.v2ex.utils.ImageLoader;
  * @author denua
  * @date 2018/11/04 20
  */
-public class UserDetailActivity extends BaseNetworkActivity{
+public class UserDetailActivity extends BaseNetworkActivity implements ResponseListener<Member> {
 
     private static final String EXTRA_MEMBER = "MEMBER";
 
@@ -82,6 +94,12 @@ public class UserDetailActivity extends BaseNetworkActivity{
     protected void onStart() {
         super.onStart();
 
+        if (mMember.getCreated() == 0) {
+            new MemberService (this, this)
+                .getMemberDetail(mMember.getUsername());
+        }else {
+            mNumberCreated.setText(StringUtil.timestampToStr(mMember.getCreated()));
+        }
     }
 
     @Override
@@ -89,7 +107,7 @@ public class UserDetailActivity extends BaseNetworkActivity{
 
         mToolbar.setTitle(mMember.getUsername());
         mToolbar.inflateMenu(R.menu.menu_user_detail);
-        mNumberCreated.setText(mMember.getNumber() + mMember.getCreated());
+
         mTabLayout.setupWithViewPager(mViewPager);
 
         List<String> tabs = new ArrayList<String>(){{
@@ -124,9 +142,26 @@ public class UserDetailActivity extends BaseNetworkActivity{
     }
 
     @Override
+    public int getContextStatus() {
+        return IResponsibleView.VIEW_STATUS_ACTIVATED;
+    }
+
+    @Override
     public void onStartRequest() {
 
         ToastUtils.showShort("onStartRequest");
+    }
+
+    @Override
+    public void onComplete(Member result) {
+
+        Logger.e("Result", result);
+        this.mNumberCreated.setText(StringUtil.timestampToStr(result.getCreated()));
+    }
+
+    @Override
+    public void onFailed(String msg) {
+        ToastUtils.showShort(msg);
     }
 }
 

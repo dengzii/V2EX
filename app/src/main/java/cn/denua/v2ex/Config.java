@@ -41,8 +41,13 @@ public class Config {
     public static void init(Context context){
 
         CONFIG.put(ConfigRefEnum.KEY_USER_NAME, null);
-        CONFIG.put(ConfigRefEnum.CONFIG_REPLY_FROM_API, false);
-        CONFIG.put(ConfigRefEnum.CONFIG_REPLY_LINE_HEIGHT, 1.3f);
+        CONFIG.put(ConfigRefEnum.CONFIG_REPLY_FROM_API,
+                   ConfigRefEnum.CONFIG_REPLY_FROM_API.getDefaultValue());
+        CONFIG.put(ConfigRefEnum.CONFIG_REPLY_LINE_HEIGHT,
+                   ConfigRefEnum.CONFIG_REPLY_LINE_HEIGHT.getDefaultValue());
+        CONFIG.put(ConfigRefEnum.CONFIG_PROFILE_DATE_FORMAT,
+                   ConfigRefEnum.CONFIG_PROFILE_DATE_FORMAT.getDefaultValue());
+        CONFIG.put(ConfigRefEnum.CONFIG_LOCAL, ConfigRefEnum.CONFIG_LOCAL.getDefaultValue());
     }
 
     @SuppressWarnings("unchecked")

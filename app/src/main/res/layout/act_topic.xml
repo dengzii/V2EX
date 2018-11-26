@@ -24,26 +24,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/tv_error"
+                android:visibility="gone"
+                android:textColor="?attr_color_accent"
+                android:gravity="center"
+                android:textSize="@dimen/text_center_error"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
             <WebView
                 android:id="@+id/webView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/accent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/webView" />
+                android:layout_height="wrap_content" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_reply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="15dp"/>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

@@ -26,6 +26,7 @@ import cn.denua.v2ex.ui.NodeActivity;
 import cn.denua.v2ex.ui.TopicActivity;
 import cn.denua.v2ex.ui.UserDetailActivity;
 import cn.denua.v2ex.utils.ImageLoader;
+import cn.denua.v2ex.utils.StringUtil;
 
 /*
  * Topic 话题列表的 item, 自定义 view
@@ -80,11 +81,15 @@ public class TopicView extends FrameLayout {
         initView(context);
     }
 
-    private void initView(Context context ){
+    private void initView(Context context){
         inflate(context, isSimpleView
                             ?R.layout.view_member_topic
                             :R.layout.view_topic, this);
         ButterKnife.bind(this);
+    }
+
+    public void setLastTouched(String lastTouched){
+        tvLastTouched.setText(lastTouched);
     }
 
     public void  loadDataFromTopic(Topic topic) {
@@ -99,14 +104,14 @@ public class TopicView extends FrameLayout {
                 tvUpVote.setText(topic.getUpVote()==0?"":String.valueOf(topic.getUpVote()));
             }
         } else {
-            String lastTouched = TimeUtils.getFitTimeSpanByNow(topic.getLast_touched() * 1000, 4);
+
             String userPicUrl = topic.getMember().getAvatar_large();
-            lastTouched = lastTouched.startsWith("-") ? lastTouched.substring(1) : lastTouched;
             ImageLoader.load(userPicUrl, ivUserPic, this);
             if (tvUsername != null) {
                 tvUsername.setText(topic.getMember().getUsername());
             }
-            tvLastTouched.setText(lastTouched);
+            tvLastTouched.setText(topic.getCreated() == 0?" "
+                    :StringUtil.timestampToStr(topic.getCreated()));
             tvUsername.setOnClickListener(v -> goToUserDetail());
             if (ivUserPic != null) {
                 ivUserPic.setOnClickListener(v -> goToUserDetail());

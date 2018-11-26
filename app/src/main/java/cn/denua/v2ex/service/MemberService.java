@@ -4,6 +4,9 @@
 
 package cn.denua.v2ex.service;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import cn.denua.v2ex.api.MemberApi;
 import cn.denua.v2ex.base.BaseService;
 import cn.denua.v2ex.http.RetrofitManager;
@@ -51,16 +54,17 @@ public class MemberService extends BaseService<IResponsibleView, Member> {
 
     public void getMemberDetail(String username){
 
-        mMemberApi.getMemberPage(username)
+        mMemberApi.getMember(username)
                 .compose(RxUtil.io2main())
-                .subscribe(new RxObserver<String>() {
+                .subscribe(new RxObserver<JsonObject>() {
                     @Override
-                    public void _onNext(String s) {
-
+                    public void _onNext(JsonObject jsonObject) {
+                        Member member = new Gson().fromJson(jsonObject, Member.class);
+                        returnSuccess(member);
                     }
                     @Override
                     public void _onError(String msg) {
-
+                        returnFailed(msg);
                     }
                 });
     }

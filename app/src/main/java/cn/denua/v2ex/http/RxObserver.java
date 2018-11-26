@@ -5,8 +5,6 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class RxObserver<T> implements Observer<T> {
 
-    public static final String ERR_EMPTY_RESPONSE = "空响应体";
-
     @Override
     public void onSubscribe(Disposable d) {
 
@@ -14,7 +12,11 @@ public abstract class RxObserver<T> implements Observer<T> {
 
     public void onNext(T t){
         if (t == null){
-            onError(new NullPointerException(ERR_EMPTY_RESPONSE));
+            _onError(ErrorEnum.ERR_EMPTY_RESPONSE.getReadable());
+        }
+        if (t instanceof String
+                && ((String) t).contains(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern())){
+            _onError(ErrorEnum.ERR_PAGE_NEED_LOGIN.getReadable());
         }
         try {
             _onNext(t);

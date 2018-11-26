@@ -61,6 +61,7 @@ public class HtmlUtil {
 
         String nodeName = matcherGroup1("<a href=\"/go/([^\"])+\">[^<]+</a>", html);
         String nodeTitle = matcherGroup1("<a href=\"/go/[^\"]+\">([^<]+)</a>", html);
+        topic.setAgo(matcherGroup1("</a> · ([^·]+) · \\d+ 次点击</small>", html));
         topic.setNode(new Node(nodeName, nodeTitle));
         topic.setFavors(matcherGroup1Int("∙  (\\d+) 人收藏 ", html));
         topic.setThanks(matcherGroup1Int("∙  (\\d+) 人感谢", html));

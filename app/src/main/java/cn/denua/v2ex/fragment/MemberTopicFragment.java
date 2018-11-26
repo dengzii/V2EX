@@ -20,6 +20,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
@@ -120,6 +121,9 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
         this.mTopics = result.getCreatedTopics();
         mRecyclerViewAdapter.setTopics(mTopics);
         mRecyclerViewAdapter.notifyDataSetChanged();
+//        mTvTopicCount.setText(
+//                String.format(getResources().getString(R.string.place_holder_topic_count),
+//                        mTopics.size()));
     }
 
     @Override

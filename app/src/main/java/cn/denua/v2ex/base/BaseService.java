@@ -4,6 +4,8 @@
 
 package cn.denua.v2ex.base;
 
+import java.util.logging.Logger;
+
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 
@@ -57,6 +59,9 @@ public class BaseService<V extends IResponsibleView, T> {
     protected void returnSuccess(T result){
         if (view.getContextStatus() == IResponsibleView.VIEW_STATUS_ACTIVATED) {
             responseListener.onComplete(result);
+        }else{
+            com.orhanobut.logger.Logger.e(getClass().getName(),
+                    "IResponseView doesn't ready.");
         }
         view.onCompleteRequest();
     }

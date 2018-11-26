@@ -7,7 +7,9 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +40,10 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
     @BindView(R.id.rv_reply)
     RecyclerView mRecycleView;
+    @BindView(R.id.tv_error)
+    TextView mTvError;
 
-    private Topic topic;
+    private Topic mTopic;
     private List<Reply> replies = new ArrayList<>();
 
     private ReplyRecyclerViewAdapter mRecyclerViewAdapter;
@@ -51,7 +55,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         ButterKnife.bind(this);
 
         setTitle(R.string.topic);
-        this.topic = getIntent().getParcelableExtra("topic");
+        this.mTopic = getIntent().getParcelableExtra("topic");
         initView();
     }
 
@@ -72,9 +76,9 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         mRecycleView.setAdapter(mRecyclerViewAdapter);
         mRecycleView.setNestedScrollingEnabled(false);
 
-        mTopicView.loadDataFromTopic(topic);
-        if (topic.getContent_rendered()!=null){
-            mWebView.loadData(HtmlUtil.applyHtmlStyle(topic.getContent_rendered()),
+        mTopicView.loadDataFromTopic(mTopic);
+        if (mTopic.getContent_rendered()!=null){
+            mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered()),
                     "text/html", "utf-8");
         }
         mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
@@ -86,7 +90,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
     private void onRefresh(){
 
-        new TopicService<>(this, this).getReply(topic, 1);
+        new TopicService<>(this, this).getReply(mTopic, 1);
     }
 
     @Override
@@ -98,12 +102,15 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @Override
     public void onComplete(List<Topic> result) {
 
-        if (topic.getContent_rendered()==null){
+        if (mTopic.getContent_rendered()==null){
             mWebView.loadData(HtmlUtil.applyHtmlStyle(result.get(0).getContent_rendered()),
                     "text/html", "utf-8");
+            mTopicView.setLastTouched(result.get(0).getAgo());
         }
-        this.topic = result.get(0);
-        this.replies = topic.getReplyList();
+
+        this.mTopic = result.get(0);
+        this.replies = mTopic.getReplyList();
+
         mRecyclerViewAdapter.setReplies(this.replies);
         mRecyclerViewAdapter.notifyDataSetChanged();
     }
@@ -117,6 +124,10 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @Override
     public void onFailed(String msg) {
 
+        mTvError.setText(msg);
+        mWebView.setVisibility(View.GONE);
+        mTvError.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setRefreshing(false);
+
     }
 }

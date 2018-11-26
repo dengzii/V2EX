@@ -5,6 +5,8 @@
 package cn.denua.v2ex;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /*
  * config reference
@@ -19,29 +21,34 @@ public enum ConfigRefEnum implements Serializable {
     KEY_USER_NAME           ("key_username",            null),
 
     CONFIG_LAST_TOUCHED         ("last_touched",    0L),
-    CONFIG_THEME_INT            ("theme",           R.style.MainTheme),
+    CONFIG_THEME                ("theme",           R.style.MainTheme),
     CONFIG_AUTO_NIGHT_THEME     ("auto_night",      false),
     CONFIG_AUTO_NIGHT_DARK      ("auto_night_dark", false),
-    CONFIG_AUTO_NIGHT_TIME      ("night_time",      18.30f),
-    CONFIG_AUTO_CHECK_BOOL      ("auto_check",      false),
-    CONFIG_HOME_TAB_LIST        ("home_tab",        Config.HOME_TAB_TITLES),
+    CONFIG_AUTO_NIGHT           ("night_time",      18.30f),
+    CONFIG_AUTO_CHECK           ("auto_check",      false),
+    CONFIG_HOME_TAB             ("home_tab",        Config.HOME_TAB_TITLES),
     CONFIG_DETAILED_INFO        ("detailed",        false),
     CONFIG_MEMBER_TAB           ("member_tab",      null),
+    CONFIG_LOCAL                ("local",           Locale.CHINA),
 
+    CONFIG_PROFILE_DATE_FORMAT  ("profile_date_format", "yyyy/MM/dd HH:mm"),
     CONFIG_REPLY_LINE_HEIGHT    ("reply_line_height",   1.3f),
 
     CONFIG_REPLY_FROM_API       ("get_reply_from_api",  false),
     ;
 
     private String key;
-    private Object defaultValue;
+    private Serializable defaultValue;
 
-    ConfigRefEnum(String account, Serializable o) { }
+    ConfigRefEnum(String k, Serializable v) {
+        this.key = k;
+        this.defaultValue = v;
+    }
 
     public String getKey(){
         return this.key;
     }
-    public Object getDefaultValue(){
+    public Serializable getDefaultValue(){
         return this.defaultValue;
     }
 }
