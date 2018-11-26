@@ -65,8 +65,9 @@ public class HtmlUtil {
         topic.setFavors(matcherGroup1Int("∙  (\\d+) 人收藏 ", html));
         topic.setThanks(matcherGroup1Int("∙  (\\d+) 人感谢", html));
         topic.setCsrfToken(matcherGroup1("var csrfToken = \"([^\"]+)", html));
-        topic.setReplies(matcherGroup1Int("<span class=\"gray\">(\\d+) 回复 &nbsp;<strong", html));
-
+        if (topic.getReplies() == 0){
+            topic.setReplies(matcherGroup1Int("<span class=\"gray\">(\\d+) 回复", html));
+        }
         attachReplies(topic, html);
     }
 
@@ -107,7 +108,6 @@ public class HtmlUtil {
             }
 
             reply.setContent(element.html());
-
             replies.add(reply);
         }
         if (topic.getReplyList()!= null) {

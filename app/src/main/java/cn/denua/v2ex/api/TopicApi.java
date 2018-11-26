@@ -38,7 +38,7 @@ public interface TopicApi {
     Observable<JsonArray> getTopic(@Query("id")int id);
 
     @GET("/api/replies/show.json")
-    Observable<JsonObject> showReplies(@Query("topic_id") int id, @Query("p") int page);
+    Observable<JsonArray> getReplies(@Query("topic_id") int id, @Query("p") int page);
 
     @POST("/down/topic")
     Observable<String> downVote(@Path("id") int id, @Field("t") String v);

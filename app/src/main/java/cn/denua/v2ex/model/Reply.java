@@ -20,6 +20,13 @@ public class Reply implements Cloneable {
     private int like;
     private int floor;
 
+    private long topic_id;
+    private long created;
+    private long last_modified;
+    private String content_rendered;
+    private long member_id;
+
+
     private List<Reply> at;
 
     public boolean isPoster() {
@@ -92,6 +99,46 @@ public class Reply implements Cloneable {
 
     public void setLike(int like) {
         this.like = like;
+    }
+
+    public long getTopic_id() {
+        return topic_id;
+    }
+
+    public void setTopic_id(long topic_id) {
+        this.topic_id = topic_id;
+    }
+
+    public long getCreated() {
+        return created;
+    }
+
+    public void setCreated(long created) {
+        this.created = created;
+    }
+
+    public long getLast_modified() {
+        return last_modified;
+    }
+
+    public void setLast_modified(long last_modified) {
+        this.last_modified = last_modified;
+    }
+
+    public String getContent_rendered() {
+        return content_rendered;
+    }
+
+    public void setContent_rendered(String content_rendered) {
+        this.content_rendered = content_rendered;
+    }
+
+    public long getMember_id() {
+        return member_id;
+    }
+
+    public void setMember_id(long member_id) {
+        this.member_id = member_id;
     }
 
     @Override

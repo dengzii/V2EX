@@ -3,6 +3,7 @@ package cn.denua.v2ex.service;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,6 +15,7 @@ import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
+import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
@@ -95,7 +97,36 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
                     }
                 });
     }
-    
+
+    public void getReplyFromApi(Topic topic, int page){
+
+        Topic topicCopy = (Topic) topic.clone();
+        topicApi.getReplies(topicCopy.getId(), page)
+                .compose(RxUtil.io2main())
+                .subscribe(new RxObserver<JsonArray>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        onStartRequest();
+                    }
+                    @Override
+                    public void _onNext(JsonArray jsonElements) {
+                        List<Reply> replies = new ArrayList<>(jsonElements.size());
+                        for (JsonElement element : jsonElements) {
+                            Reply reply = new Gson().fromJson(element, Reply.class);
+                            replies.add(reply);
+                        }
+                        topicCopy.setReplyList(replies);
+                        returnSuccess(new ArrayList<Topic>(1){{
+                            add(topicCopy);
+                        }});
+                    }
+                    @Override
+                    public void _onError(String msg) {
+                        returnFailed(msg);
+                    }
+                });
+    }
+
     private RxObserver<JsonArray> jsonArrayToTopicsObserver = new RxObserver<JsonArray>() {
 
         @Override

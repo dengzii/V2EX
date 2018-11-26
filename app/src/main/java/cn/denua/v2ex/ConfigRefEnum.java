@@ -27,12 +27,16 @@ public enum ConfigRefEnum implements Serializable {
     CONFIG_HOME_TAB_LIST        ("home_tab",        Config.HOME_TAB_TITLES),
     CONFIG_DETAILED_INFO        ("detailed",        false),
     CONFIG_MEMBER_TAB           ("member_tab",      null),
+
+    CONFIG_REPLY_LINE_HEIGHT    ("reply_line_height",   1.3f),
+
+    CONFIG_REPLY_FROM_API       ("get_reply_from_api",  false),
     ;
 
     private String key;
     private Object defaultValue;
 
-    ConfigRefEnum(String account, Object o) { }
+    ConfigRefEnum(String account, Serializable o) { }
 
     public String getKey(){
         return this.key;

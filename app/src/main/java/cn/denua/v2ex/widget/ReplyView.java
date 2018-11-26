@@ -26,6 +26,8 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.denua.v2ex.Config;
+import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.ui.UserDetailActivity;
@@ -98,6 +100,8 @@ public class ReplyView extends FrameLayout  {
         mUserName.setOnClickListener(this::goToUserDetail);
         mUserPic.setOnClickListener(this::goToUserDetail);
 
+        mContent.setLineSpacing(0, Config.getConfig(ConfigRefEnum.CONFIG_REPLY_LINE_HEIGHT));
+
         ImageLoader.load(reply.getMember().getAvatar_large(), mUserPic, this);
     }
 
@@ -118,7 +122,6 @@ public class ReplyView extends FrameLayout  {
         while (matcher.find()){
             if (split.length != 0){
                 spanUtils.append(split[index++])
-//                        .setLineHeight(30)
                         .setForegroundColor(Color.BLACK);
             }
             if (matcher.group(1)!=null){
@@ -145,6 +148,7 @@ public class ReplyView extends FrameLayout  {
         Toast.makeText(mContext, "Thank you "+id, Toast.LENGTH_SHORT).show();
     }
 
+    @SuppressWarnings("unused")
     private void goToUserDetail(View view){
 
         UserDetailActivity.start(mContext, mReply.getMember());
@@ -156,7 +160,7 @@ public class ReplyView extends FrameLayout  {
         ButterKnife.bind(this);
     }
 
-    class ReplyAtMemberClickSpan extends ClickableSpan{
+    private class ReplyAtMemberClickSpan extends ClickableSpan{
 
         private String username;
         ReplyAtMemberClickSpan(String username){
@@ -174,7 +178,7 @@ public class ReplyView extends FrameLayout  {
         }
     }
 
-    class LinkClickSpan extends ClickableSpan{
+    private class LinkClickSpan extends ClickableSpan{
 
         private String mUri;
         LinkClickSpan(String uri){

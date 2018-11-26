@@ -26,13 +26,13 @@ import cn.denua.v2ex.model.Account;
  */
 public class Config {
 
-    private static HashMap<ConfigRefEnum, String> CONFIG = new HashMap<>();
+    private static HashMap<ConfigRefEnum, Serializable> CONFIG = new HashMap<>();
 
     public static Account account = new Account();
     public static boolean IsLogin = false;
     public static int sCurrentTheme = R.style.MainTheme;
 
-    public static List<String> HOME_TAB_TITLES = new ArrayList<String>(){{
+    public static ArrayList<String> HOME_TAB_TITLES = new ArrayList<String>(3){{
         add("热 门");
         add("最 新");
         add("热 门");
@@ -40,21 +40,25 @@ public class Config {
 
     public static void init(Context context){
 
-        CONFIG.put(ConfigRefEnum.KEY_USER_NAME,
-                (String) ConfigRefEnum.KEY_USER_NAME.getDefaultValue());
-
+        CONFIG.put(ConfigRefEnum.KEY_USER_NAME, null);
+        CONFIG.put(ConfigRefEnum.CONFIG_REPLY_FROM_API, false);
+        CONFIG.put(ConfigRefEnum.CONFIG_REPLY_LINE_HEIGHT, 1.3f);
     }
 
+    @SuppressWarnings("unchecked")
     public static <T extends Serializable> T getConfig(ConfigRefEnum key, @Nullable T defaultValue){
+        T result = (T) CONFIG.get(key);
+        return result==null?defaultValue:result;
+    }
 
-        CONFIG.get(key);
-
-        return defaultValue;
+    @SuppressWarnings("unchecked")
+    public static <T extends Serializable> T getConfig(ConfigRefEnum key){
+        return (T) CONFIG.get(key);
     }
 
     public static <T extends Serializable> void setConfig(ConfigRefEnum key, @Nullable T value){
 
-        CONFIG.put(key, "");
+        CONFIG.put(key, value);
     }
 
     public static void persistentAccount(){
