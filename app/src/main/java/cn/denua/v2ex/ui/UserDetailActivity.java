@@ -138,7 +138,6 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
     @Override
     public void onCompleteRequest() {
 
-        ToastUtils.showShort("onCompleteRequest");
     }
 
     @Override
@@ -149,13 +148,11 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
     @Override
     public void onStartRequest() {
 
-        ToastUtils.showShort("onStartRequest");
     }
 
     @Override
     public void onComplete(Member result) {
 
-        Logger.e("Result", result);
         this.mNumberCreated.setText(StringUtil.timestampToStr(result.getCreated()));
     }
 
