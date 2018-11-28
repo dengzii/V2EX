@@ -4,6 +4,8 @@
 
 package cn.denua.v2ex.fragment;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -20,12 +23,12 @@ import com.blankj.utilcode.util.ToastUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.adapter.TopicRecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseNetworkFragment;
+import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Member;
 import cn.denua.v2ex.model.Topic;
@@ -110,6 +113,18 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
     }
 
     @Override
+    public void onStartRequest() {
+        super.onStartRequest();
+    }
+
+    @Override
+    public int getContextStatus() {
+        return isDetached()
+                ? IResponsibleView.VIEW_STATUS_DESTROYED
+                : IResponsibleView.VIEW_STATUS_ACTIVATED;
+    }
+
+    @Override
     public void onCompleteRequest() {
         super.onCompleteRequest();
         mRefreshLayout.setRefreshing(false);
@@ -120,12 +135,11 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
 
         this.mTopics = result.getCreatedTopics();
         mRecyclerViewAdapter.setTopics(mTopics);
-        mRecyclerViewAdapter.notifyDataSetChanged();
-//        mTvTopicCount.setText(
-//                String.format(getResources().getString(R.string.place_holder_topic_count),
-//                        mTopics.size()));
-    }
 
+
+        mRecyclerViewAdapter.setHeaderView(getTopicListHeaderView(mTopics.size()));
+        mRecyclerViewAdapter.notifyDataSetChanged();
+    }
     @Override
     public void onFailed(String msg) {
 
@@ -139,5 +153,19 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
                 ToastUtils.showShort(msg);
                 break;
         }
+    }
+    private View getTopicListHeaderView(int topicCount){
+
+        TextView textView = new TextView(getActivity());
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMarginStart(15);
+        textView.setLayoutParams(layoutParams);
+        textView.setText(String.format(
+                getResources().getString(R.string.place_holder_topic_count), topicCount));
+        textView.setTextSize(20);
+        textView.setTextColor(Color.BLACK);
+        textView.setTypeface(Typeface.DEFAULT_BOLD);
+        return textView;
     }
 }

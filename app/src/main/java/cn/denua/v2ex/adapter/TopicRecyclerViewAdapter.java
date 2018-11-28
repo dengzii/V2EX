@@ -59,7 +59,11 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         if (viewType == HEADER && mHeaderView != null){
-            return new OtherViewHolder(mHeaderView);
+            FrameLayout frameLayout = new FrameLayout(context);
+            frameLayout.setLayoutParams(new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, 100, Gravity.CENTER_VERTICAL));
+            frameLayout.addView(mHeaderView);
+            return new OtherViewHolder(frameLayout);
         }
         if (viewType == FOOT){
             FrameLayout frameLayout = new FrameLayout(context);
