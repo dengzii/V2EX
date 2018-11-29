@@ -41,8 +41,7 @@ public class HtmlUtil {
         List<Tag> tags = new ArrayList<>();
 
         for ( ; it.hasNext(); ) {
-            Element element = it.next();
-            tags.add(new Tag(element.text()));
+            tags.add(new Tag(it.next().text()));
         }
         // topic not from home page
         if (topic.getContent_rendered()==null){
@@ -80,9 +79,10 @@ public class HtmlUtil {
         }
 
         Document document = Jsoup.parse(html);
-        Iterator<Element> elementIterator = document.select("#Main > .box > .cell[id]").iterator();
+        Elements elements = document.select("#Main > .box > .cell[id]");
+        Iterator<Element> elementIterator = elements.iterator();
 
-        List<Reply> replies = new ArrayList<>();
+        List<Reply> replies = new ArrayList<>(elements.size());
         String poster = topic.getMember().getUsername();
 
         for (int f=0; elementIterator.hasNext(); f++) {

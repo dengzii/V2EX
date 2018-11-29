@@ -24,7 +24,9 @@ public abstract class RxObserver<T> implements Observer<T> {
 
     @Override
     public void onSubscribe(Disposable d) {
-        mBaseService.onStartRequest();
+        if (mBaseService!=null){
+            mBaseService.onStartRequest();
+        }
     }
 
     public void onNext(T t){

@@ -26,11 +26,14 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<ReplyRecycler
 
     private List<Reply> replies;
     private Context context;
+    private FrameLayout.LayoutParams mLayoutParams;
 
     public ReplyRecyclerViewAdapter(Context context, List<Reply> replies){
 
         this.context = context;
         this.replies = replies;
+        this.mLayoutParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
     }
 
     @NonNull
@@ -38,8 +41,7 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<ReplyRecycler
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         ReplyView replyView = new ReplyView(parent.getContext());
-        replyView.setLayoutParams(new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        replyView.setLayoutParams(mLayoutParams);
         return new MyViewHolder(replyView);
     }
 

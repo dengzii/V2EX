@@ -25,21 +25,18 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     private final int HEADER = 1;
     private final int FOOT = 2;
 
-    private int status = 0;
-    private View mHeaderView;
-    private View mFoot;
+    private FrameLayout mHeaderFrameLayout;
+    private FrameLayout mFooterFrameLayout;
 
     private FrameLayout.LayoutParams mWrapContentParams;
-    private FrameLayout.LayoutParams mHeight200Params;
 
     public TopicRecyclerViewAdapter(Context context, List<Topic> topics){
         this.mIsSimpleView = false;
         this.mTopics = topics;
         this.context = context;
-        this.mWrapContentParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
-        this.mHeight200Params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                300, Gravity.CENTER);
+
+        this.mWrapContentParams = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     public void setIsSimpleView(boolean isSimpleView){
@@ -47,39 +44,33 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     public void setHeaderView(View headerView){
-        this.mHeaderView = headerView;
+        mHeaderFrameLayout = new FrameLayout(context);
+        mHeaderFrameLayout.setLayoutParams(new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, 100, Gravity.CENTER_VERTICAL));
+        mHeaderFrameLayout.addView(headerView);
     }
 
-    public void setFootStatus(int status){
-        this.status = status;
+    public void setFooterView(View footerView){
+
+        mFooterFrameLayout = new FrameLayout(context);
+        mFooterFrameLayout.setLayoutParams(new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, 150, Gravity.CENTER));
+        mFooterFrameLayout.addView(footerView);
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        if (viewType == HEADER && mHeaderView != null){
-            FrameLayout frameLayout = new FrameLayout(context);
-            frameLayout.setLayoutParams(new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, 100, Gravity.CENTER_VERTICAL));
-            frameLayout.addView(mHeaderView);
-            return new OtherViewHolder(frameLayout);
+        if (viewType == HEADER && mHeaderFrameLayout != null){
+            return new OtherViewHolder(mHeaderFrameLayout);
         }
-        if (viewType == FOOT){
-            FrameLayout frameLayout = new FrameLayout(context);
-            frameLayout.setLayoutParams(mHeight200Params);
-            ProgressBar progressBar = new ProgressBar(context);
-            progressBar.setLayoutParams(mWrapContentParams);
-            frameLayout.addView(progressBar);
-            return new OtherViewHolder(frameLayout);
+        if (viewType == FOOT && mFooterFrameLayout != null){
+            return new OtherViewHolder(mFooterFrameLayout);
         }
         View view = new TopicView(context, mIsSimpleView);
         view.setLayoutParams(mWrapContentParams);
         return new ItemViewHolder(view);
-    }
-
-    public void setStatus(int status){
-        this.status = status;
     }
 
     public void setTopics(List<Topic> topics) {
@@ -106,7 +97,6 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         }
         Topic topic = mTopics.get(position);
         if (topic == null){
-            ((ItemViewHolder)holder).topicView.setLastItem();
             return;
         }
         ((ItemViewHolder)holder).topicView.loadDataFromTopic(topic);

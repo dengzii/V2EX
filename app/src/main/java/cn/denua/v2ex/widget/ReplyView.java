@@ -7,6 +7,8 @@ package cn.denua.v2ex.widget;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
@@ -96,7 +98,8 @@ public class ReplyView extends FrameLayout  {
 
         mContent.setText(getSpannableReplyContent(reply.getContent()));
         mContent.setMovementMethod(LinkMovementMethod.getInstance());
-        mFloor.setText(String.format(getResources().getString(R.string.place_holder_floor), reply.getFloor()));
+        mFloor.setText(String.format(getResources().getString(R.string.place_holder_floor),
+                reply.getFloor()));
         mUserName.setOnClickListener(this::goToUserDetail);
         mUserPic.setOnClickListener(this::goToUserDetail);
 

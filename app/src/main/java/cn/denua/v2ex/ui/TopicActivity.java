@@ -7,11 +7,14 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,11 +75,15 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     protected void initView(){
 
         mRecyclerViewAdapter = new ReplyRecyclerViewAdapter(this, replies);
+        mRecyclerViewAdapter.setHasStableIds(true);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecycleView.setLayoutManager(layoutManager);
-        mRecycleView.setAdapter(mRecyclerViewAdapter);
         mRecycleView.setNestedScrollingEnabled(false);
+        mRecycleView.setItemAnimator(null);
+        mRecycleView.addOnItemTouchListener(new RecyclerViewItemClickListener());
+        mRecycleView.setAdapter(mRecyclerViewAdapter);
 
         mTopicView.loadDataFromTopic(mTopic);
         if (mTopic.getContent_rendered()!=null){
@@ -115,6 +122,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
         mRecyclerViewAdapter.setReplies(this.replies);
         mRecyclerViewAdapter.notifyDataSetChanged();
+
         if (mWebView.getVisibility() != View.VISIBLE){
             mWebView.setVisibility(View.VISIBLE);
             mRecycleView.setVisibility(View.VISIBLE);
@@ -135,5 +143,24 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         mTvError.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setRefreshing(false);
 
+    }
+
+    private class RecyclerViewItemClickListener implements RecyclerView.OnItemTouchListener{
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
     }
 }

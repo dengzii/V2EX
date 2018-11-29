@@ -14,7 +14,6 @@ import java.util.List;
 
 import cn.denua.v2ex.api.TopicApi;
 import cn.denua.v2ex.http.RetrofitManager;
-import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Member;
@@ -87,7 +86,7 @@ public class TopicServiceTest {
         Topic topic = new Topic();
         topic.setId(505378);
 
-        new TopicService<>(new IResponsibleView() {
+        new TopicService(new IResponsibleView() {
             @Override
             public void onStartRequest() { }
 

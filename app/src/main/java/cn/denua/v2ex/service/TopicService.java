@@ -16,7 +16,10 @@ import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /*
  * 话题相关请求
@@ -73,11 +76,7 @@ public class TopicService extends BaseService<List<Topic>> {
         Topic topicCopy = (Topic) topic.clone();
         topicApi.getTopicDetail(topicCopy.getId(), page)
                 .compose(RxUtil.io2main())
-                .subscribe(new RxObserver<String>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        onStartRequest();
-                    }
+                .subscribe(new RxObserver<String>(this) {
                     @Override
                     public void _onNext(String s) {
                         if (page == 1){
@@ -85,11 +84,7 @@ public class TopicService extends BaseService<List<Topic>> {
                         }else {
                             HtmlUtil.attachReplies(topicCopy, s);
                         }
-                        returnSuccess(new ArrayList<Topic>(){{add(topicCopy);}});
-                    }
-                    @Override
-                    public void _onError(String msg) {
-                        returnFailed(msg);
+                        returnSuccess(new ArrayList<Topic>(1){{add(topicCopy);}});
                     }
                 });
     }
@@ -99,11 +94,7 @@ public class TopicService extends BaseService<List<Topic>> {
         Topic topicCopy = (Topic) topic.clone();
         topicApi.getReplies(topicCopy.getId(), page)
                 .compose(RxUtil.io2main())
-                .subscribe(new RxObserver<JsonArray>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        onStartRequest();
-                    }
+                .subscribe(new RxObserver<JsonArray>(this) {
                     @Override
                     public void _onNext(JsonArray jsonElements) {
                         List<Reply> replies = new ArrayList<>(jsonElements.size());
@@ -112,13 +103,7 @@ public class TopicService extends BaseService<List<Topic>> {
                             replies.add(reply);
                         }
                         topicCopy.setReplyList(replies);
-                        returnSuccess(new ArrayList<Topic>(1){{
-                            add(topicCopy);
-                        }});
-                    }
-                    @Override
-                    public void _onError(String msg) {
-                        returnFailed(msg);
+                        returnSuccess(new ArrayList<Topic>(1){{ add(topicCopy); }});
                     }
                 });
     }

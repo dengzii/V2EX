@@ -15,8 +15,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.TimeUtils;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
@@ -35,7 +33,6 @@ import cn.denua.v2ex.utils.StringUtil;
  * @date 2018/10/31 12
  */
 public class TopicView extends FrameLayout {
-
 
     @BindView(R.id.tv_title)
     TextView tvTitle;

@@ -35,10 +35,12 @@
 
             <WebView
                 android:id="@+id/webView"
+                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <android.support.v7.widget.RecyclerView
+                android:visibility="invisible"
                 android:id="@+id/rv_reply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
