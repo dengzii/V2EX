@@ -17,7 +17,7 @@ import okhttp3.HttpUrl;
  * Transient cookie manager
  * Holding cookies until object destroy
  *
- * @user denua
+ * @author denua
  * @date 2018/10/18
  */
 public class TransientCookieJar implements CookieJar {

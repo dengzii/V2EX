@@ -13,6 +13,11 @@ import okio.BufferedSink;
 import okio.GzipSink;
 import okio.Okio;
 
+/*
+ * 给所有请求添加一个 host header
+ *
+ * @author denua
+ */
 public class HeadersInterceptor implements Interceptor{
 
     private static final HeadersInterceptor interceptor = new HeadersInterceptor();

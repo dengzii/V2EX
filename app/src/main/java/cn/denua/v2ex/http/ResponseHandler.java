@@ -27,14 +27,22 @@ public abstract class ResponseHandler<T> implements Callback<T> {
     @Override
     public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
         t.printStackTrace();
-        handler.post(()->handle(false, null, call, t.getLocalizedMessage() + "\t" + t.getMessage()));
+        handler.post(()->handle(false, null, call,
+                t.getLocalizedMessage() + "\t" + t.getMessage()));
     }
 
+    /**
+     * convert to main thread
+     *
+     * @param call original call
+     * @param response  response
+     */
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
 
         if (!response.isSuccessful() ){
-            handler.post(()->handle(false, null, call, "Request doesn't success, " + response.code() + "-" + response.message()));
+            handler.post(()->handle(false, null, call,
+                    "Request doesn't success, " + response.code() + "-" + response.message()));
         }
 
         handler.post(()->handle(true, response.body(), call, null));

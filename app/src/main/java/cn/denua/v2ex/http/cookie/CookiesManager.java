@@ -15,6 +15,8 @@ import okhttp3.HttpUrl;
  * the cookies will save to Cookies_Prefs.xml
  * this class implemented interface CookieJar, CookieJar is lib OkHttps' custom handle cookies
  * interface, when request, OkHttpClient will return all cookies to the class which implements CookieJar.
+ *
+ * @author denua
  */
 public class CookiesManager implements CookieJar {
 

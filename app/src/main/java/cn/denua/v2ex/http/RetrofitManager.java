@@ -96,6 +96,13 @@ public class RetrofitManager {
         retrofit = retrofitBuilder.build();
     }
 
+    /**
+     * 创建 api
+     *
+     * @param tClass api 对应接口
+     * @param <T> 类型
+     * @return api
+     */
     public static <T> T create(Class<T> tClass){
         if (retrofit == null){
             throw new IllegalStateException("Retrofit need be init, call RetrofitManager.init(Context) first.");
