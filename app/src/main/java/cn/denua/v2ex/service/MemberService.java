@@ -8,15 +8,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import cn.denua.v2ex.api.MemberApi;
-import cn.denua.v2ex.base.BaseService;
 import cn.denua.v2ex.http.RetrofitManager;
-import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Member;
 import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
-import io.reactivex.disposables.Disposable;
 
 /*
  * 用户相关请求
@@ -24,7 +21,7 @@ import io.reactivex.disposables.Disposable;
  * @author denua
  * @date 2018/11/19 23
  */
-public class MemberService extends BaseService<IResponsibleView, Member> {
+public class MemberService extends BaseService<Member> {
 
     public static final String ERR_NEED_LOGIN = "主题列表只有在你登录之后才可查看";
     public static final String ERR_HAS_HIDDEN = "主题列表被隐藏";
@@ -40,13 +37,9 @@ public class MemberService extends BaseService<IResponsibleView, Member> {
         Member memberCopy = (Member) member.clone();
         mMemberApi.getMemberPage(memberCopy.getUsername())
                 .compose(RxUtil.io2main())
-                .subscribe(new RxObserver<String>() {
+                .subscribe(new RxObserver<String>(this) {
                     @Override
                     public void _onNext(String s) {
-
-                    }
-                    @Override
-                    public void _onError(String msg) {
 
                     }
                 });
@@ -56,15 +49,11 @@ public class MemberService extends BaseService<IResponsibleView, Member> {
 
         mMemberApi.getMember(username)
                 .compose(RxUtil.io2main())
-                .subscribe(new RxObserver<JsonObject>() {
+                .subscribe(new RxObserver<JsonObject>(this) {
                     @Override
                     public void _onNext(JsonObject jsonObject) {
                         Member member = new Gson().fromJson(jsonObject, Member.class);
                         returnSuccess(member);
-                    }
-                    @Override
-                    public void _onError(String msg) {
-                        returnFailed(msg);
                     }
                 });
     }
@@ -74,7 +63,7 @@ public class MemberService extends BaseService<IResponsibleView, Member> {
         final Member member1 = (Member) member.clone();
         mMemberApi.getMemberTopics(member1.getUsername(), page)
                 .compose(RxUtil.io2main())
-                .subscribe(new RxObserver<String>(){
+                .subscribe(new RxObserver<String>(this){
                     @Override
                     public void _onNext(String s) {
                         if (!verify(s)){
@@ -82,10 +71,6 @@ public class MemberService extends BaseService<IResponsibleView, Member> {
                         }
                         HtmlUtil.attachCreatedTopics(member1, s);
                         returnSuccess(member1);
-                    }
-                    @Override
-                    public void _onError(String msg) {
-                        returnFailed(msg);
                     }
                 });
     }

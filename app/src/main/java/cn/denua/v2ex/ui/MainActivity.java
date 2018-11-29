@@ -74,7 +74,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         initView();
 
         if (Config.restoreAccount()){
-            new LoginService<>(this).getInfo(this);
+            new LoginService(this).getInfo(this);
         }
     }
 

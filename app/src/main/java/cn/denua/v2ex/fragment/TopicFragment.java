@@ -52,7 +52,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         if ( getArguments() != null){
             this.setContentType(getArguments().getString("contentType"));
         }
-        topicService = new TopicService<>(this, this);
+        topicService = new TopicService(this, this);
     }
 
     @Nullable

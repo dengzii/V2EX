@@ -2,40 +2,39 @@
  * Copyright (c) 2018 denua.
  */
 
-package cn.denua.v2ex.base;
-
-import java.util.logging.Logger;
+package cn.denua.v2ex.service;
 
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 
 /*
- * 所有网络请求服务的父类
+ * 所有网络请求服务的基类
+ * 类中关联了
  *
  * @author denua
  * @date 2018/10/30 14
  */
-public class BaseService<V extends IResponsibleView, T> {
+public class BaseService<T> {
 
-    protected V view;
+    protected IResponsibleView view;
     private ResponseListener<T> responseListener;
 
     protected BaseService(){}
 
-    public BaseService(V iResponsibleView){
+    public BaseService(IResponsibleView iResponsibleView){
         this.view = iResponsibleView;
     }
 
-    public BaseService(V iResponsibleView, ResponseListener<T> responseListener){
+    public BaseService(IResponsibleView iResponsibleView, ResponseListener<T> responseListener){
         this(iResponsibleView);
         this.responseListener = responseListener;
     }
 
-    protected void attachView(V v){
+    protected void attachView(IResponsibleView v){
         this.view = v;
     }
 
-    public void detachView(V v){
+    public void detachView(IResponsibleView v){
 
         this.view = null;
     }
@@ -44,11 +43,11 @@ public class BaseService<V extends IResponsibleView, T> {
         return view != null;
     }
 
-    protected V getView(){
+    protected IResponsibleView getView(){
         return view;
     }
 
-    protected void returnFailed(String msg){
+    public void returnFailed(String msg){
 
         if (view.getContextStatus() == IResponsibleView.VIEW_STATUS_ACTIVATED){
             responseListener.onFailed(msg);
@@ -56,7 +55,7 @@ public class BaseService<V extends IResponsibleView, T> {
         view.onCompleteRequest();
     }
 
-    protected void returnSuccess(T result){
+    public void returnSuccess(T result){
         if (view.getContextStatus() == IResponsibleView.VIEW_STATUS_ACTIVATED) {
             responseListener.onComplete(result);
         }else{
@@ -70,11 +69,15 @@ public class BaseService<V extends IResponsibleView, T> {
         this.responseListener = responseListener;
     }
 
-    protected void onStartRequest(){
+    protected ResponseListener<T> getResponseListener(){
+        return responseListener;
+    }
+
+    public void onStartRequest(){
         view.onStartRequest();
     }
 
-    protected void onCompleteRequest(){
+    public void onCompleteRequest(){
         view.onCompleteRequest();
     }
 }

@@ -12,10 +12,8 @@ import java.util.regex.Pattern;
 
 import cn.denua.v2ex.api.LoginApi;
 import cn.denua.v2ex.api.MemberApi;
-import cn.denua.v2ex.base.BaseService;
 import cn.denua.v2ex.http.ResponseHandler;
 import cn.denua.v2ex.http.RetrofitManager;
-import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.NextResponseListener;
 import cn.denua.v2ex.interfaces.ResponseListener;
@@ -30,7 +28,7 @@ import retrofit2.Call;
  * @author denua
  * @date 2018/10/20
  */
-public class LoginService<V extends IResponsibleView> extends BaseService<V, Account> {
+public class LoginService extends BaseService<Account> {
 
     public static final String STATUS_NEED_LOGIN = "未登录";
     public static final String STATUS_IP_BANED = "IP在一天内被禁止登录";
@@ -43,12 +41,12 @@ public class LoginService<V extends IResponsibleView> extends BaseService<V, Acc
     private String[] fieldNames;
     private NextResponseListener<Bitmap, Account> callBack;
 
-    public LoginService(V iResponsibleView, NextResponseListener<Bitmap, Account> loginListener){
+    public LoginService(IResponsibleView iResponsibleView, NextResponseListener<Bitmap, Account> loginListener){
         super(iResponsibleView, loginListener);
         callBack = loginListener;
         loginApi = RetrofitManager.create(LoginApi.class);
     }
-    public LoginService(V iResponsibleView){
+    public LoginService(IResponsibleView iResponsibleView){
         super(iResponsibleView);
         loginApi = RetrofitManager.create(LoginApi.class);
     }

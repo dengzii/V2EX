@@ -2,10 +2,10 @@
  * Copyright (c) 2018 denua.
  */
 
-package cn.denua.v2ex.http;
+package cn.denua.v2ex.service;
 
 /*
- *
+ * 返回错误与错误说明枚举
  *
  * @author denua
  * @date 2018/11/26 14

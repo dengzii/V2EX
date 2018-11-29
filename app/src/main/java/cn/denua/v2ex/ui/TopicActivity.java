@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -90,7 +92,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
     private void onRefresh(){
 
-        new TopicService<>(this, this).getReply(mTopic, 1);
+        new TopicService(this, this).getReply(mTopic, 1);
     }
 
     @Override
@@ -113,6 +115,10 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
         mRecyclerViewAdapter.setReplies(this.replies);
         mRecyclerViewAdapter.notifyDataSetChanged();
+        if (mWebView.getVisibility() != View.VISIBLE){
+            mWebView.setVisibility(View.VISIBLE);
+            mRecycleView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -53,7 +53,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
 
         setTitle(R.string.login);
         progressDialog.setTitle(getResources().getString(R.string.logging_in));
-        loginService = new LoginService<>(this,this);
+        loginService = new LoginService(this,this);
         loginService.preLogin();
         ivCaptcha.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);

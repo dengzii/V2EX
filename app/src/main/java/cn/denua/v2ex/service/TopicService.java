@@ -9,9 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import cn.denua.v2ex.api.TopicApi;
-import cn.denua.v2ex.base.BaseService;
 import cn.denua.v2ex.http.RetrofitManager;
-import cn.denua.v2ex.http.RxObserver;
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Reply;
@@ -26,11 +24,11 @@ import io.reactivex.disposables.Disposable;
  * @author denua
  * @date 2018/10/25
  */
-public class TopicService<V extends IResponsibleView> extends BaseService<V, List<Topic>> {
+public class TopicService extends BaseService<List<Topic>> {
 
     private static TopicApi topicApi = RetrofitManager.create(TopicApi.class);
 
-    public TopicService(V v, ResponseListener<List<Topic>> topicListener){
+    public TopicService(IResponsibleView v, ResponseListener<List<Topic>> topicListener){
         this.view = v;
         attachView(v);
         setResponseListener(topicListener);
@@ -53,7 +51,6 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
                 break;
             default:
                 break;
-
         }
     }
 
@@ -126,30 +123,14 @@ public class TopicService<V extends IResponsibleView> extends BaseService<V, Lis
                 });
     }
 
-    private RxObserver<JsonArray> jsonArrayToTopicsObserver = new RxObserver<JsonArray>() {
+    private RxObserver<JsonArray> jsonArrayToTopicsObserver =
+            new RxObserver<JsonArray>(this) {
+                @Override
+                public void _onNext(JsonArray jsonElements) {
 
-        @Override
-        public void onSubscribe(Disposable d) {
-            super.onSubscribe(d);
-            onStartRequest();
-        }
-
-        @Override
-        public void _onNext(JsonArray jsonElements) {
-
-            handleJsonArray(jsonElements);
-        }
-        @Override
-        public void _onError(String msg) {
-            returnFailed(msg);
-        }
-
-        @Override
-        public void onComplete() {
-            super.onComplete();
-            onCompleteRequest();
-        }
-    };
+                    handleJsonArray(jsonElements);
+                }
+            };
 
     private void handleJsonArray(JsonArray jsonArray){
 
