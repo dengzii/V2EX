@@ -99,7 +99,7 @@ public class ReplyView extends FrameLayout  {
         mContent.setText(getSpannableReplyContent(reply.getContent()));
         mContent.setMovementMethod(LinkMovementMethod.getInstance());
         mFloor.setText(String.format(getResources().getString(R.string.place_holder_floor),
-                reply.getFloor()));
+                reply.getFloor()+1));
         mUserName.setOnClickListener(this::goToUserDetail);
         mUserPic.setOnClickListener(this::goToUserDetail);
 

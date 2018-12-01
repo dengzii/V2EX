@@ -4,6 +4,8 @@
 
 package cn.denua.v2ex.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -20,6 +22,13 @@ import cn.denua.v2ex.model.Node;
 public class NodeActivity extends BaseNetworkActivity {
 
     private Node node;
+
+    public static void start(Context context, Node node){
+
+        Intent intent = new Intent(context, NodeActivity.class);
+        intent.putExtra("node", node);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

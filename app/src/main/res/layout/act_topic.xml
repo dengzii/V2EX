@@ -2,50 +2,13 @@
 <android.support.v4.widget.SwipeRefreshLayout
     android:id="@+id/refresh_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scrollView"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_reply"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarAlwaysDrawHorizontalTrack="true">
+        android:layout_marginTop="15dp"/>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <cn.denua.v2ex.widget.TopicView
-                android:id="@+id/topicView"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_error"
-                android:visibility="gone"
-                android:textColor="?attr_color_accent"
-                android:gravity="center"
-                android:textSize="@dimen/text_center_error"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
-
-            <WebView
-                android:id="@+id/webView"
-                android:visibility="invisible"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <android.support.v7.widget.RecyclerView
-                android:visibility="invisible"
-                android:id="@+id/rv_reply"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"/>
-
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

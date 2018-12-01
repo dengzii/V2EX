@@ -72,7 +72,6 @@ public class TopicService extends BaseService<List<Topic>> {
     }
 
     public void getReply(Topic topic, int page){
-
         Topic topicCopy = (Topic) topic.clone();
         topicApi.getTopicDetail(topicCopy.getId(), page)
                 .compose(RxUtil.io2main())

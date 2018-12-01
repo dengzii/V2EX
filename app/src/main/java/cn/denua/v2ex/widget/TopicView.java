@@ -128,16 +128,12 @@ public class TopicView extends FrameLayout {
 
     private void goToNodeDetail(){
 
-        Intent intent = new Intent(context, NodeActivity.class);
-        intent.putExtra("node", topic.getNode());
-        context.startActivity(intent);
+        NodeActivity.start(context, topic.getNode());
     }
 
     private void goToTopicDetail(){
 
-        Intent intent = new Intent(context, TopicActivity.class);
-        intent.putExtra("topic", topic);
-        context.startActivity(intent);
+        TopicActivity.start(context, topic);
     }
 
     public void setLastItem() {

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -29,23 +30,32 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     private final int HEADER = 1;
     private final int ITEM = 0;
     private final int FOOTER = 2;
-    private List<Reply> replies;
+    private List<Reply> mReplies;
     private Context context;
     private FrameLayout.LayoutParams mLayoutParams;
 
     private ViewGroup mHeaderViewGroup;
+    private ViewGroup mFooterViewGroup;
+    private int mItemCount = 0;
 
-    public ReplyRecyclerViewAdapter(Context context, List<Reply> replies){
+    public ReplyRecyclerViewAdapter(Context context){
 
         this.context = context;
-        this.replies = replies;
+        this.mReplies = new ArrayList<>();
         this.mLayoutParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
     }
 
     public void setHeaderView(ViewGroup view){
 
-        this.mHeaderViewGroup = view;
+        mItemCount += 1;
+        mHeaderViewGroup = view;
+    }
+
+    public void setFooterView(ViewGroup view){
+
+        mItemCount += 1;
+        mFooterViewGroup = view;
     }
 
     @NonNull
@@ -54,6 +64,8 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
         if (viewType == HEADER){
             return new OtherViewHolder(mHeaderViewGroup);
+        }else if (viewType == FOOTER){
+            return new OtherViewHolder(mFooterViewGroup);
         }
         ReplyView replyView = new ReplyView(parent.getContext());
         replyView.setLayoutParams(mLayoutParams);
@@ -65,26 +77,31 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
         if (position == 0 && mHeaderViewGroup != null){
             return HEADER;
-        }else{
-            return ITEM;
         }
+        if (position == getItemCount() && mFooterViewGroup != null){
+            return FOOTER;
+        }
+        return ITEM;
     }
 
     public void setReplies(List<Reply> replies){
-        this.replies = replies;
+
+        mItemCount += replies.size();
+        mReplies = replies;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof MyViewHolder){
-            ((MyViewHolder)holder).replyView.setReply(replies.get(position));
+            int p = ((mHeaderViewGroup!=null) ? position-1 : position);
+            ((MyViewHolder)holder).replyView.setReply(mReplies.get(p));
         }
     }
 
     @Override
     public int getItemCount() {
-        return replies.size();
+        return mItemCount;
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder{

@@ -1,17 +1,17 @@
 package cn.denua.v2ex.ui;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -34,24 +34,27 @@ import cn.denua.v2ex.widget.TopicView;
 
 public class TopicActivity extends BaseNetworkActivity implements ResponseListener<List<Topic>> {
 
-    @BindView(R.id.webView)
-    WebView mWebView;
-    @BindView(R.id.topicView)
-    TopicView mTopicView;
+    private WebView mWebView;
+    private TopicView mTopicView;
+    private TextView mTvError;
+    private LinearLayout mLlHeader;
+
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.scrollView)
-    NestedScrollView mScrollView;
-
     @BindView(R.id.rv_reply)
-    RecyclerView mRecycleView;
-    @BindView(R.id.tv_error)
-    TextView mTvError;
+    RecyclerView mRecyclerView;
 
     private Topic mTopic;
-    private List<Reply> replies = new ArrayList<>();
+    private List<Reply> mReplies = new ArrayList<>();
 
     private ReplyRecyclerViewAdapter mRecyclerViewAdapter;
+
+    public static void start(Context context, Topic topic){
+
+        Intent intent = new Intent(context, TopicActivity.class);
+        intent.putExtra("topic", topic);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,30 +74,49 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         onRefresh();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     protected void initView(){
 
-        mRecyclerViewAdapter = new ReplyRecyclerViewAdapter(this, replies);
-        mRecyclerViewAdapter.setHasStableIds(true);
+        mRecyclerViewAdapter = new ReplyRecyclerViewAdapter(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecycleView.setLayoutManager(layoutManager);
-        mRecycleView.setNestedScrollingEnabled(false);
-        mRecycleView.setItemAnimator(null);
-        mRecycleView.addOnItemTouchListener(new RecyclerViewItemClickListener());
-        mRecycleView.setAdapter(mRecyclerViewAdapter);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+        mRecyclerView.setItemViewCacheSize(20);
+        mRecyclerView.setDrawingCacheEnabled(true);
+        mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        initHeaderView();
 
+        mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
+    }
+
+    private void initHeaderView(){
+
+        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mLlHeader = new LinearLayout(this);
+        mLlHeader.setGravity(Gravity.CENTER_HORIZONTAL);
+        mLlHeader.setOrientation(LinearLayout.VERTICAL);
+        mLlHeader.setLayoutParams(linearLayoutParams);
+        
+        mTopicView = new TopicView(this, false);
+        mTopicView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200));
         mTopicView.loadDataFromTopic(mTopic);
+
+        mWebView = new WebView(this);
+        mWebView.setNetworkAvailable(true);
+        mWebView.setVerticalScrollBarEnabled(false);
+        mWebView.setHorizontalScrollBarEnabled(false);
+        mWebView.setNetworkAvailable(true);
+
         if (mTopic.getContent_rendered()!=null){
             mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered()),
                     "text/html", "utf-8");
         }
-        mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
-
-        mWebView.setVerticalScrollBarEnabled(false);
-        mWebView.setHorizontalScrollBarEnabled(false);
-        mWebView.setNetworkAvailable(true);
+        mLlHeader.addView(mTopicView);
+        mLlHeader.addView(mWebView);
+        mRecyclerViewAdapter.setHeaderView(mLlHeader);
     }
 
     private void onRefresh(){
@@ -111,22 +133,38 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @Override
     public void onComplete(List<Topic> result) {
 
-        if (mTopic.getContent_rendered()==null){
-            mWebView.loadData(HtmlUtil.applyHtmlStyle(result.get(0).getContent_rendered()),
-                    "text/html", "utf-8");
-            mTopicView.setLastTouched(result.get(0).getAgo());
-        }
-
+        Logger.e("onComplete");
         this.mTopic = result.get(0);
-        this.replies = mTopic.getReplyList();
+        this.mReplies = result.get(0).getReplyList();
+        setRecyclerViewData(mReplies, mTopic);
+    }
 
-        mRecyclerViewAdapter.setReplies(this.replies);
+    @Override
+    public void onFailed(String msg) {
+
+        mTvError = new TextView(this);
+        mTvError.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, 300));
+        mTvError.setTextSize(50);
+        mTvError.setGravity(Gravity.CENTER);
+        mTvError.setText(msg);
+
+        mLlHeader.addView(mTvError);
+        mRecyclerViewAdapter.setHeaderView(mLlHeader);
         mRecyclerViewAdapter.notifyDataSetChanged();
+    }
 
-        if (mWebView.getVisibility() != View.VISIBLE){
-            mWebView.setVisibility(View.VISIBLE);
-            mRecycleView.setVisibility(View.VISIBLE);
+    private void setRecyclerViewData(List<Reply> replies, Topic topic){
+
+        if (mTopic.getContent_rendered() == null) {
+            mWebView.loadData(HtmlUtil.applyHtmlStyle(topic.getContent_rendered()),
+                    "text/html", "utf-8");
+            mTopicView.setLastTouched(topic.getAgo());
         }
+        mTopicView.loadDataFromTopic(mTopic);
+
+        mRecyclerViewAdapter.setReplies(replies);
+        mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -135,32 +173,5 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         return IResponsibleView.VIEW_STATUS_ACTIVATED;
     }
 
-    @Override
-    public void onFailed(String msg) {
 
-        mTvError.setText(msg);
-        mWebView.setVisibility(View.GONE);
-        mTvError.setVisibility(View.VISIBLE);
-        mSwipeRefreshLayout.setRefreshing(false);
-
-    }
-
-    private class RecyclerViewItemClickListener implements RecyclerView.OnItemTouchListener{
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-        }
-    }
 }
