@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.denua.v2ex.Config;
+import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.App;
 import cn.denua.v2ex.model.Topic;
@@ -61,6 +63,16 @@ public class TopicView extends FrameLayout {
     private Topic topic;
     private boolean isSimpleView;
 
+    private static boolean mIsChineseNodeLabel;
+    private static boolean mIsShowCreateDate;
+    private static String mDateFormat;
+
+    static   {
+        mIsChineseNodeLabel = Config.getConfig(ConfigRefEnum.CONFIG_CHINESE_NODE_NAME);
+        mDateFormat = Config.getConfig(ConfigRefEnum.CONFIG_PROFILE_DATE_FORMAT);
+        mIsShowCreateDate = Config.getConfig(ConfigRefEnum.CONFIG_TOPIC_CREATE_DATE);
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     public TopicView(Context context, boolean isSimpleView) {
         super(context);
@@ -79,6 +91,7 @@ public class TopicView extends FrameLayout {
     }
 
     private void initView(Context context){
+
         inflate(context, isSimpleView
                             ?R.layout.view_member_topic
                             :R.layout.view_topic, this);
@@ -117,7 +130,9 @@ public class TopicView extends FrameLayout {
         tvTitle.setText(topic.getTitle());
         tvReply.setText(String.format(getResources().getString(R.string.place_holder_reply),
                 topic.getReplies()));
-        tvNode.setText(topic.getNode().getName());
+        tvNode.setText(mIsChineseNodeLabel
+                ?topic.getNode().getTitle()
+                :topic.getNode().getName());
         tvNode.setOnClickListener(v -> goToNodeDetail());
     }
 

@@ -6,6 +6,7 @@ package cn.denua.v2ex.widget;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 
 import cn.denua.v2ex.R;
@@ -37,12 +38,19 @@ public class MessageDialog extends android.support.v7.app.AlertDialog {
                 negativeCallBack);
     }
 
+    public void init(int titleRes, int messageRes, OnClickListener onClickListener){
+        init(getContext().getResources().getString(titleRes),
+                getContext().getResources().getString(messageRes),
+                onClickListener);
+    }
+
     public void init(String title, String message, OnClickListener onClickListener){
 
         setTitle(title);
         setMessage(message);
-        setButton(AlertDialog.BUTTON_POSITIVE,
-                getContext().getResources().getText(R.string.confirm),
-                onClickListener);
+        setButton(AlertDialog.BUTTON_POSITIVE, getContext().getResources().getText(R.string.confirm),
+                onClickListener != null
+                        ? onClickListener
+                        : (OnClickListener) (dialog, which) -> dismiss());
     }
 }

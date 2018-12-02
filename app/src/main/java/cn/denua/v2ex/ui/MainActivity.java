@@ -4,6 +4,7 @@
 
 package cn.denua.v2ex.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -101,7 +102,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         miLogin = navigationView.getMenu().findItem(R.id.it_login_out);
 
-        ivUserPic.setImageResource(R.drawable.ic_launcher_foreground);
+        ivUserPic.setImageResource(R.drawable.ic_offline);
         tvUserName.setText(getResources().getText(R.string.not_login));
     }
 
@@ -110,7 +111,12 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         super.onResume();
 
         if (!PermissionUtils.isGranted("android.permission.WRITE_EXTERNAL_STORAGE")){
-            PermissionUtils.launchAppDetailsSettings();
+            MessageDialog messageDialog = new MessageDialog(this);
+            messageDialog.init(
+                    R.string.alert,
+                    R.string.need_storage_permission,
+                    (dialog, which) -> PermissionUtils.launchAppDetailsSettings());
+            messageDialog.showDialog();
         }
     }
 

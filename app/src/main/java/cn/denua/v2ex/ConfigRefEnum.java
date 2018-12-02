@@ -28,12 +28,14 @@ public enum ConfigRefEnum implements Serializable {
     CONFIG_AUTO_CHECK           ("auto_check",      false),
     CONFIG_HOME_TAB             ("home_tab",        Config.HOME_TAB_TITLES),
     CONFIG_DETAILED_INFO        ("detailed",        false),
+
     CONFIG_MEMBER_TAB           ("member_tab",      null),
     CONFIG_LOCAL                ("local",           Locale.CHINA),
 
+    CONFIG_TOPIC_CREATE_DATE    ("topic_use_create",    true),
+    CONFIG_CHINESE_NODE_NAME    ("chinese_node_name",   true),
     CONFIG_PROFILE_DATE_FORMAT  ("profile_date_format", "yyyy/MM/dd HH:mm"),
     CONFIG_REPLY_LINE_HEIGHT    ("reply_line_height",   1.3f),
-
     CONFIG_REPLY_FROM_API       ("get_reply_from_api",  false),
     ;
 

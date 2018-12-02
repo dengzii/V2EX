@@ -20,6 +20,35 @@ import cn.denua.v2ex.model.Topic;
 
 public class HtmlUtil {
 
+    private static final Pattern
+            PATTERN_FAVOR_NODES         = Pattern.compile("<span class=\"bigger\">(\\d+)</span><div class=\"sep3\"></div><span class=\"fade\">节点收藏</span>"),
+            PATTERN_FAVOR_TOPIC         = Pattern.compile("<span class=\"bigger\">(\\d+)</span><div class=\"sep3\"></div><span class=\"fade\">主题收藏</span>"),
+            PATTERN_FOLLOWING           = Pattern.compile("<span class=\"bigger\">(\\d+)</span><div class=\"sep3\"></div><span class=\"fade\">特别关注</span>"),
+            PATTERN_NOTIFICATIONS       = Pattern.compile("([\\d]+) 条未读提醒"),
+            PATTERN_JOIN                = Pattern.compile("已在 ([\\d :+-]+) 完成验证"),
+            PATTERN_NUMBER              = Pattern.compile("V2EX 第 (\\d+) 号会员"),
+            PATTERN_GOLD                = Pattern.compile("(\\d+) <img src=\"/static/img/gold@2x.png\" height=\"16\""),
+            PATTERN_SILVER              = Pattern.compile("(\\d+) <img src=\"/static/img/silver@2x.png\" height=\"16\""),
+            PATTERN_BRONZE              = Pattern.compile("(\\d+) <img src=\"/static/img/bronze@2x.png\" height=\"16\""),
+
+            PATTERN_TOPIC_NODE_NAME     = Pattern.compile("<a href=\"/go/(\\w+)\">[^<]+</a>"),
+            PATTERN_TOPIC_NODE_TITLE    = Pattern.compile("<a href=\"/go/\\w+\">([^<]+)</a>"),
+            PATTERN_TOPIC_FAVORS        = Pattern.compile("∙ {2}(\\d+) 人收藏 "),
+            PATTERN_TOPIC_THANKS        = Pattern.compile("∙ {2}(\\d+) 人感谢"),
+            PATTERN_TOPIC_CSRF          = Pattern.compile("var csrfToken = \"([^\"]+)"),
+            PATTERN_TOPIC_REPLY_COUNT   = Pattern.compile("<span class=\"gray\">(\\d+) 回复"),
+            PATTERN_TOPIC_ID            = Pattern.compile("href=\"/t/(\\d+)"),
+            PATTERN_TOPIC_AGO           = Pattern.compile("<span class=\"ago\">([^\"]+前)"),
+            PATTERN_TOPIC_CLICK         = Pattern.compile(" · (\\d+) 次点击"),
+
+            PATTERN_REPLY_ID            = Pattern.compile("id=\"r_(\\d+)\""),
+            PATTERN_REPLY_USERNAME      = Pattern.compile("href=\"/member/([^\"]+)\""),
+            PATTERN_REPLY_AVATAR        = Pattern.compile("<img src=\"([^\"]+)\" class=\"avatar\""),
+            PATTERN_REPLY_AGO           = Pattern.compile("<span class=\"ago\">([^\"]+前)"),
+            PATTERN_REPLY_VIA           = Pattern.compile("(via [^<]+)"),
+            PATTERN_REPLY_LIKE          = Pattern.compile("<span class=\"small fade\">♥ (\\d+)</span>"),
+            PATTERN_REPLY_COUNT_MEMBER_DETAIL = Pattern.compile("href=\"/t/\\d+#reply(\\d+)");
+
     public static String[] getLoginFieldName(String html){
 
         String[] result = new String[4];
@@ -55,18 +84,20 @@ public class HtmlUtil {
                         (subtle == null ? "" :subtle.html()));
             }
         }
-        topic.setClicks(matcherGroup1Int(" · (\\d+) 次点击", html));
+        topic.setClicks(matcherGroup1Int(PATTERN_TOPIC_CLICK, html));
         topic.setTags(tags);
 
-        String nodeName = matcherGroup1("<a href=\"/go/([^\"])+\">[^<]+</a>", html);
-        String nodeTitle = matcherGroup1("<a href=\"/go/[^\"]+\">([^<]+)</a>", html);
-        topic.setAgo(matcherGroup1("</a> · ([^·]+) · \\d+ 次点击</small>", html));
-        topic.setNode(new Node(nodeName, nodeTitle));
-        topic.setFavors(matcherGroup1Int("∙  (\\d+) 人收藏 ", html));
-        topic.setThanks(matcherGroup1Int("∙  (\\d+) 人感谢", html));
-        topic.setCsrfToken(matcherGroup1("var csrfToken = \"([^\"]+)", html));
+        if (topic.getNode() == null){
+            String nodeName = matcherGroup1(PATTERN_TOPIC_NODE_NAME, html);
+            String nodeTitle = matcherGroup1(PATTERN_TOPIC_NODE_TITLE, html);
+            topic.setNode(new Node(nodeName, nodeTitle));
+        }
+        topic.setAgo(matcherGroup1(PATTERN_TOPIC_AGO, html));
+        topic.setFavors(matcherGroup1Int(PATTERN_TOPIC_FAVORS, html));
+        topic.setThanks(matcherGroup1Int(PATTERN_TOPIC_THANKS, html));
+        topic.setCsrfToken(matcherGroup1(PATTERN_TOPIC_CSRF, html));
         if (topic.getReplies() == 0){
-            topic.setReplies(matcherGroup1Int("<span class=\"gray\">(\\d+) 回复", html));
+            topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT, html));
         }
         attachReplies(topic, html);
     }
@@ -90,16 +121,16 @@ public class HtmlUtil {
 
             Reply reply = new Reply();
             String cell = e.toString();
-            int id = matcherGroup1Int("id=\"r_(\\d+)\"", cell);
-            String username = matcherGroup1("href=\"/member/([^\"]+)\"", cell);
-            String avatarNormal = matcherGroup1("<img src=\"([^\"]+)\" class=\"avatar\"", cell);
+            int id = matcherGroup1Int(PATTERN_REPLY_ID, cell);
+            String username = matcherGroup1(PATTERN_REPLY_USERNAME, cell);
+            String avatarNormal = matcherGroup1(PATTERN_REPLY_AVATAR, cell);
 
             reply.setId(id);
             reply.setMember(new Member(username, avatarNormal));
             reply.setPoster(username.equals(poster));
-            reply.setAgo(matcherGroup1("<span class=\"ago\">([^\"]+前)", cell));
-            reply.setVia(matcherGroup1("(via [^<]+)", cell));
-            reply.setLike(matcherGroup1Int("<span class=\"small fade\">♥ (\\d+)</span>", cell));
+            reply.setAgo(matcherGroup1(PATTERN_REPLY_AGO, cell));
+            reply.setVia(matcherGroup1(PATTERN_REPLY_VIA, cell));
+            reply.setLike(matcherGroup1Int(PATTERN_REPLY_LIKE, cell));
             reply.setFloor(f);
 
             Element element = e.selectFirst(".reply_content");
@@ -129,11 +160,11 @@ public class HtmlUtil {
         List<Topic> topics = new ArrayList<>();
         for (Element element:elements){
             Topic topic = new Topic();
-            int replies = matcherGroup1Int("href=\"/t/\\d+#reply(\\d+)",element.html());
-            topic.setId(matcherGroup1Int("href=\"/t/(\\d+)", element.html()));
+            int replies = matcherGroup1Int(PATTERN_REPLY_COUNT_MEMBER_DETAIL,element.html());
+            topic.setId(matcherGroup1Int(PATTERN_TOPIC_ID, element.html()));
             topic.setTitle(element.selectFirst(".item_title").text());
             topic.setReplies(replies);
-            topic.setNode(new Node(matcherGroup1("href=\"/go/(\\w+)\"", element.html()),
+            topic.setNode(new Node(matcherGroup1(PATTERN_TOPIC_NODE_NAME, element.html()),
                     element.selectFirst(".node").text()));
             topic.setMember(member);
             if (replies>0){
@@ -148,23 +179,17 @@ public class HtmlUtil {
 
     public static void attachAccountInfo(Account account, String html){
 
-        account.setFavorNodes(matcherGroup1Int("<span class=\"bigger\">(\\d+)</span>" +
-                "<div class=\"sep3\"></div><span class=\"fade\">节点收藏</span>", html));
-        account.setFavorTopics(matcherGroup1Int("<span class=\"bigger\">(\\d+)</span>" +
-                "<div class=\"sep3\"></div><span class=\"fade\">主题收藏</span>", html));
-        account.setFollowing(matcherGroup1Int("<span class=\"bigger\">(\\d+)</span>" +
-                "<div class=\"sep3\"></div><span class=\"fade\">特别关注</span>", html));
+        account.setFavorNodes(matcherGroup1Int(PATTERN_FAVOR_NODES, html));
+        account.setFavorTopics(matcherGroup1Int(PATTERN_FAVOR_TOPIC, html));
+        account.setFollowing(matcherGroup1Int(PATTERN_FOLLOWING, html));
 
-        account.setNotifications(matcherGroup1Int("([\\d]+) 条未读提醒", html));
-        account.setJoin(matcherGroup1("已在 ([\\d :+-]+) 完成验证", html));
-        account.setNumber(matcherGroup1("V2EX 第 (\\d+) 号会员", html));
+        account.setNotifications(matcherGroup1Int(PATTERN_NOTIFICATIONS, html));
+        account.setJoin(matcherGroup1(PATTERN_JOIN, html));
+        account.setNumber(matcherGroup1(PATTERN_NUMBER, html));
 
-        account.setGold(matcherGroup1Int("(\\d+) <img src=\"/static/img/gold@2x.png\"" +
-                " height=\"16\" ", html));
-        account.setSilver(matcherGroup1Int("(\\d+) <img src=\"/static/img/silver@2x." +
-                "png\" height=\"16\"" ,  html));
-        account.setBronze(matcherGroup1Int("(\\d+) <img src=\"/static/img/bronze@2x" +
-                ".png\" height=\"16\"", html));
+        account.setGold(matcherGroup1Int(PATTERN_GOLD, html));
+        account.setSilver(matcherGroup1Int(PATTERN_SILVER ,  html));
+        account.setBronze(matcherGroup1Int(PATTERN_BRONZE, html));
 
         account.setBalance(account.getBronze()+account.getSilver()*100+account.getGold()*10000);
     }
@@ -180,17 +205,16 @@ public class HtmlUtil {
         return document.toString();
     }
 
-    private static String matcherGroup1(String regex, String html){
+    private static String matcherGroup1(Pattern pattern, String str){
 
-        Matcher matcher = Pattern.compile(regex).matcher(html);
+        Matcher matcher = pattern.matcher(str);
         if (matcher.find()){
             return matcher.group(1);
         }
         return "";
     }
-
-    private static int matcherGroup1Int(String regex, String html){
-        String res = matcherGroup1(regex, html);
-        return res.equals("") ? 0: Integer.valueOf(res);
+    private static int matcherGroup1Int(Pattern pattern, String str){
+        String res = matcherGroup1(pattern, str);
+        return res.equals("") ? 0 : Integer.valueOf(res);
     }
 }

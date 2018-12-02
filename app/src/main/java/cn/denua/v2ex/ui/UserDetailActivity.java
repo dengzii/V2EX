@@ -76,6 +76,7 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
     public static void start(Context context, Member member){
         Intent intent = new Intent(context, UserDetailActivity.class);
         intent.putExtra(EXTRA_MEMBER, member);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 

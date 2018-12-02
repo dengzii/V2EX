@@ -29,7 +29,7 @@ public class ImageLoader {
         Glide.with(context)
                 .load(url)
                 .into(imageView)
-                .onLoadFailed(context.getDrawable(R.drawable.ic_launcher_foreground));
+                .onLoadFailed(context.getDrawable(R.drawable.ic_offline));
     }
 
     public static void load(String url, ImageView imageView, View view){

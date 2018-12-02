@@ -41,13 +41,12 @@ public class Config {
     public static void init(Context context){
 
         CONFIG.put(ConfigRefEnum.KEY_USER_NAME, null);
-        CONFIG.put(ConfigRefEnum.CONFIG_REPLY_FROM_API,
-                   ConfigRefEnum.CONFIG_REPLY_FROM_API.getDefaultValue());
-        CONFIG.put(ConfigRefEnum.CONFIG_REPLY_LINE_HEIGHT,
-                   ConfigRefEnum.CONFIG_REPLY_LINE_HEIGHT.getDefaultValue());
-        CONFIG.put(ConfigRefEnum.CONFIG_PROFILE_DATE_FORMAT,
-                   ConfigRefEnum.CONFIG_PROFILE_DATE_FORMAT.getDefaultValue());
-        CONFIG.put(ConfigRefEnum.CONFIG_LOCAL, ConfigRefEnum.CONFIG_LOCAL.getDefaultValue());
+        CONFIG.put(ConfigRefEnum.CONFIG_LOCAL, null);
+        CONFIG.put(ConfigRefEnum.CONFIG_REPLY_FROM_API, null);
+        CONFIG.put(ConfigRefEnum.CONFIG_REPLY_LINE_HEIGHT, null);
+        CONFIG.put(ConfigRefEnum.CONFIG_PROFILE_DATE_FORMAT, null);
+        CONFIG.put(ConfigRefEnum.CONFIG_CHINESE_NODE_NAME, null);
+        CONFIG.put(ConfigRefEnum.CONFIG_TOPIC_CREATE_DATE, null);
     }
 
     @SuppressWarnings("unchecked")
@@ -58,7 +57,11 @@ public class Config {
 
     @SuppressWarnings("unchecked")
     public static <T extends Serializable> T getConfig(ConfigRefEnum key){
-        return (T) CONFIG.get(key);
+        T result = (T) CONFIG.get(key);
+        if (result == null){
+            result = (T) key.getDefaultValue();
+        }
+        return result;
     }
 
     public static <T extends Serializable> void setConfig(ConfigRefEnum key, @Nullable T value){

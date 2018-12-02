@@ -14,8 +14,6 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +29,8 @@ import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.service.TopicService;
 import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.widget.TopicView;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class TopicActivity extends BaseNetworkActivity implements ResponseListener<List<Topic>> {
 
@@ -52,6 +52,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     public static void start(Context context, Topic topic){
 
         Intent intent = new Intent(context, TopicActivity.class);
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("topic", topic);
         context.startActivity(intent);
     }
@@ -133,7 +134,6 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @Override
     public void onComplete(List<Topic> result) {
 
-        Logger.e("onComplete");
         this.mTopic = result.get(0);
         this.mReplies = result.get(0).getReplyList();
         setRecyclerViewData(mReplies, mTopic);
@@ -144,14 +144,13 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
         mTvError = new TextView(this);
         mTvError.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 300));
-        mTvError.setTextSize(50);
+                ViewGroup.LayoutParams.MATCH_PARENT, 600));
+        mTvError.setTextSize(25);
+        mTvError.setTextColor(getColorAccent());
         mTvError.setGravity(Gravity.CENTER);
         mTvError.setText(msg);
 
         mLlHeader.addView(mTvError);
-        mRecyclerViewAdapter.setHeaderView(mLlHeader);
-        mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     private void setRecyclerViewData(List<Reply> replies, Topic topic){
