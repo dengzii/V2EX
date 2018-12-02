@@ -69,7 +69,7 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         }
         ReplyView replyView = new ReplyView(parent.getContext());
         replyView.setLayoutParams(mLayoutParams);
-        return new MyViewHolder(replyView);
+        return new ItemViewHolder(replyView);
     }
 
     @Override
@@ -93,9 +93,10 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        if (holder instanceof MyViewHolder){
+        if (holder instanceof ItemViewHolder){
             int p = ((mHeaderViewGroup!=null) ? position-1 : position);
-            ((MyViewHolder)holder).replyView.setReply(mReplies.get(p));
+            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            itemViewHolder.replyView.setReply(mReplies.get(p));
         }
     }
 
@@ -104,11 +105,11 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         return mItemCount;
     }
 
-    static class MyViewHolder extends RecyclerView.ViewHolder{
+    static class ItemViewHolder extends RecyclerView.ViewHolder{
 
         ReplyView replyView;
 
-        public MyViewHolder(View itemView) {
+        public ItemViewHolder(View itemView) {
             super(itemView);
             this.replyView = (ReplyView) itemView;
         }

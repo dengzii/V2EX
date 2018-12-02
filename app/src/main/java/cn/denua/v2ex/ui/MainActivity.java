@@ -200,7 +200,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                         (dialog1, which) -> logout());
             dialog.setNegativeCallBack((dialog12, which) -> dialog12.dismiss());
             dialog.showDialog();
-        }else{
+        } else{
             startActivityForResult(new Intent(this, LoginActivity.class),
                     LOGIN_REQUEST_CODE);
         }

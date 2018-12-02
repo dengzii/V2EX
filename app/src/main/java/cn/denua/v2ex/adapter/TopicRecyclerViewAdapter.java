@@ -68,9 +68,9 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         if (viewType == FOOT && mFooterFrameLayout != null){
             return new OtherViewHolder(mFooterFrameLayout);
         }
-        View view = new TopicView(context, mIsSimpleView);
-        view.setLayoutParams(mWrapContentParams);
-        return new ItemViewHolder(view);
+        TopicView topicView = new TopicView(context, mIsSimpleView);
+        topicView.setLayoutParams(mWrapContentParams);
+        return new ItemViewHolder(topicView);
     }
 
     public void setTopics(List<Topic> topics) {
@@ -99,7 +99,8 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         if (topic == null){
             return;
         }
-        ((ItemViewHolder)holder).topicView.loadDataFromTopic(topic);
+        ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+        itemViewHolder.topicView.loadDataFromTopic(topic);
     }
 
     @Override
