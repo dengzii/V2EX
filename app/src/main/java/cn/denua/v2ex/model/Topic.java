@@ -42,6 +42,12 @@ public class Topic implements Parcelable, Cloneable {
 
     private String csrfToken;
 
+    public Topic(){}
+
+    public Topic(int id){
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
@@ -193,11 +199,6 @@ public class Topic implements Parcelable, Cloneable {
     public void setCsrfToken(String csrfToken) {
         this.csrfToken = csrfToken;
     }
-
-    public Topic() {
-    }
-
-
 
     public List<Tag> getTags() {
         return tags;

@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,7 +36,6 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
     private WebView mWebView;
     private TopicView mTopicView;
-    private TextView mTvError;
     private LinearLayout mLlHeader;
 
     @BindView(R.id.refresh_layout)
@@ -45,9 +44,11 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     RecyclerView mRecyclerView;
 
     private Topic mTopic;
-    private List<Reply> mReplies = new ArrayList<>();
-
     private ReplyRecyclerViewAdapter mRecyclerViewAdapter;
+    private TopicService mTopicService;
+
+    private int mPageCount;
+    private int mCurrentPage = 1;
 
     public static void start(Context context, Topic topic){
 
@@ -64,14 +65,20 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         ButterKnife.bind(this);
 
         setTitle(R.string.topic);
-        this.mTopic = getIntent().getParcelableExtra("topic");
+        mTopic = getIntent().getParcelableExtra("topic");
+        mTopicService = new TopicService(this, this);
+        mPageCount = mTopic.getReplies()/100 + 1;
         initView();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mSwipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         onRefresh();
     }
 
@@ -88,7 +95,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         mRecyclerView.setDrawingCacheEnabled(true);
         mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         initHeaderView();
-
+        mRecyclerViewAdapter.setFooterView(false);
         mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
     }
 
@@ -110,6 +117,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         mWebView.setVerticalScrollBarEnabled(false);
         mWebView.setHorizontalScrollBarEnabled(false);
         mWebView.setNetworkAvailable(true);
+        mWebView.setFocusable(false);
 
         if (mTopic.getContent_rendered()!=null){
             mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered()),
@@ -122,7 +130,17 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
     private void onRefresh(){
 
-        new TopicService(this, this).getReply(mTopic, 1);
+        if (mCurrentPage == 0) {
+            mTopicService.getReply(mTopic, mCurrentPage++);
+        }else{
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void onStartRequest() {
+        super.onStartRequest();
+        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
@@ -135,14 +153,13 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     public void onComplete(List<Topic> result) {
 
         this.mTopic = result.get(0);
-        this.mReplies = result.get(0).getReplyList();
-        setRecyclerViewData(mReplies, mTopic);
+        addItemView(result.get(0).getReplyList(), mTopic);
     }
 
     @Override
     public void onFailed(String msg) {
 
-        mTvError = new TextView(this);
+        TextView mTvError = new TextView(this);
         mTvError.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 600));
         mTvError.setTextSize(25);
@@ -153,7 +170,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         mLlHeader.addView(mTvError);
     }
 
-    private void setRecyclerViewData(List<Reply> replies, Topic topic){
+    private void addItemView(List<Reply> replies, Topic topic){
 
         if (mTopic.getContent_rendered() == null) {
             mWebView.loadData(HtmlUtil.applyHtmlStyle(topic.getContent_rendered()),
@@ -161,9 +178,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
             mTopicView.setLastTouched(topic.getAgo());
         }
         mTopicView.loadDataFromTopic(mTopic);
-
-        mRecyclerViewAdapter.setReplies(replies);
-        mRecyclerViewAdapter.notifyDataSetChanged();
+        mRecyclerViewAdapter.addReplies(replies);
     }
 
     @Override

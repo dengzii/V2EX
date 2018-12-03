@@ -17,6 +17,7 @@ import cn.denua.v2ex.model.Node;
 import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Tag;
 import cn.denua.v2ex.model.Topic;
+import cn.denua.v2ex.service.V2exException;
 
 public class HtmlUtil {
 
@@ -118,8 +119,19 @@ public class HtmlUtil {
 
         for (int f=0; elementIterator.hasNext(); f++) {
             Element e = elementIterator.next();
-
             Reply reply = new Reply();
+
+            Element element = e.selectFirst(".reply_content");
+            if (element != null){
+                for (Element img:element.select("img")){
+                    img.attr("width","100%");
+                    img.attr("height","auto");
+                }
+                reply.setContent(element.html());
+            }else{
+                throw new V2exException("This post seems to have been blocked\nEmpty reply content");
+            }
+
             String cell = e.toString();
             int id = matcherGroup1Int(PATTERN_REPLY_ID, cell);
             String username = matcherGroup1(PATTERN_REPLY_USERNAME, cell);
@@ -133,13 +145,6 @@ public class HtmlUtil {
             reply.setLike(matcherGroup1Int(PATTERN_REPLY_LIKE, cell));
             reply.setFloor(f);
 
-            Element element = e.selectFirst(".reply_content");
-            for (Element img:element.select("img")){
-                img.attr("width","100%");
-                img.attr("height","auto");
-            }
-
-            reply.setContent(element.html());
             replies.add(reply);
         }
         if (topic.getReplyList()!= null) {
@@ -196,6 +201,9 @@ public class HtmlUtil {
 
     public static String applyHtmlStyle(String html){
 
+        if (html == null || html.equals("")){
+            return "";
+        }
         Document document = Jsoup.parse(html);
         for (Element img:document.select("img")){
             img.attr("width","100%");

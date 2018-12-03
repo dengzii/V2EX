@@ -77,11 +77,11 @@ public class TopicView extends FrameLayout {
     public TopicView(Context context, boolean isSimpleView) {
         super(context);
         this.isSimpleView = isSimpleView;
-        this.context = App.getApplication();
+        this.context = context;
         initView(context);
-        setOnClickListener(v -> goToTopicDetail());
         tvTitle.setOnTouchListener((v,e)->{onTouchEvent(e);return false;});
     }
+
 
     public TopicView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -144,11 +144,6 @@ public class TopicView extends FrameLayout {
     private void goToNodeDetail(){
 
         NodeActivity.start(context, topic.getNode());
-    }
-
-    private void goToTopicDetail(){
-
-        TopicActivity.start(context, topic);
     }
 
     public void setLastItem() {
