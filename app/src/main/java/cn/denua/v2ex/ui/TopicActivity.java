@@ -15,11 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.adapter.PullRefreshReplyAdapter;
 import cn.denua.v2ex.adapter.ReplyRecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.interfaces.IResponsibleView;
@@ -45,10 +48,11 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
     private Topic mTopic;
     private ReplyRecyclerViewAdapter mRecyclerViewAdapter;
+    private PullRefreshReplyAdapter mPullRecyclerAdapter;
     private TopicService mTopicService;
 
     private int mPageCount;
-    private int mCurrentPage = 1;
+    private int mCurrentPage = 0;
 
     public static void start(Context context, Topic topic){
 
@@ -79,6 +83,8 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @Override
     protected void onResume() {
         super.onResume();
+
+        mSwipeRefreshLayout.setRefreshing(true);
         onRefresh();
     }
 
@@ -90,12 +96,19 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setNestedScrollingEnabled(false);
-        mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerView.setItemViewCacheSize(20);
         mRecyclerView.setDrawingCacheEnabled(true);
         mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+        if (mPageCount > 1){
+            mPullRecyclerAdapter = new PullRefreshReplyAdapter(mRecyclerViewAdapter);
+            mPullRecyclerAdapter.setOnPullUpListener(this::loadNextPage);
+            mRecyclerView.setAdapter(mPullRecyclerAdapter);
+        }else{
+            mRecyclerView.setAdapter(mRecyclerViewAdapter);
+        }
+
         initHeaderView();
-        mRecyclerViewAdapter.setFooterView(false);
         mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
     }
 
@@ -126,21 +139,25 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         mLlHeader.addView(mTopicView);
         mLlHeader.addView(mWebView);
         mRecyclerViewAdapter.setHeaderView(mLlHeader);
+        mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     private void onRefresh(){
 
         if (mCurrentPage == 0) {
-            mTopicService.getReply(mTopic, mCurrentPage++);
+            mTopicService.getReply(mTopic, ++mCurrentPage);
         }else{
             mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
+    private void loadNextPage(){
+        mTopicService.getReply(mTopic, ++mCurrentPage);
+    }
+
     @Override
     public void onStartRequest() {
         super.onStartRequest();
-        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
@@ -152,8 +169,25 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @Override
     public void onComplete(List<Topic> result) {
 
-        this.mTopic = result.get(0);
-        addItemView(result.get(0).getReplyList(), mTopic);
+        if (mCurrentPage == 1){
+            this.mTopic = result.get(0);
+            if (mTopic.getContent_rendered() == null) {
+                mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered()),
+                        "text/html", "utf-8");
+                mTopicView.setLastTouched(mTopic.getAgo());
+            }
+            mTopicView.loadDataFromTopic(mTopic);
+        }
+
+        mRecyclerViewAdapter.addReplies(result.get(0).getReplyList());
+        if (mPullRecyclerAdapter != null){
+            if (mPageCount == mCurrentPage) {
+                mPullRecyclerAdapter.setStatus(PullRefreshReplyAdapter.FooterStatus.COMPLETE);
+            }else {
+                mPullRecyclerAdapter.setStatus(PullRefreshReplyAdapter.FooterStatus.LOADING);
+            }
+            mPullRecyclerAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -168,17 +202,6 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         mTvError.setText(msg);
 
         mLlHeader.addView(mTvError);
-    }
-
-    private void addItemView(List<Reply> replies, Topic topic){
-
-        if (mTopic.getContent_rendered() == null) {
-            mWebView.loadData(HtmlUtil.applyHtmlStyle(topic.getContent_rendered()),
-                    "text/html", "utf-8");
-            mTopicView.setLastTouched(topic.getAgo());
-        }
-        mTopicView.loadDataFromTopic(mTopic);
-        mRecyclerViewAdapter.addReplies(replies);
     }
 
     @Override

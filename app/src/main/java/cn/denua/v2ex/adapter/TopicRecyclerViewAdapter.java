@@ -8,11 +8,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import java.util.List;
 
 import cn.denua.v2ex.model.Topic;
+import cn.denua.v2ex.ui.TopicActivity;
 import cn.denua.v2ex.widget.TopicView;
 import retrofit2.http.HEAD;
 
@@ -101,6 +103,7 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         }
         ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
         itemViewHolder.topicView.loadDataFromTopic(topic);
+        itemViewHolder.topicView.setOnClickListener(v-> TopicActivity.start(context, topic));
     }
 
     @Override

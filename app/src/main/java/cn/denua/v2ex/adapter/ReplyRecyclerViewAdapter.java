@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import cn.denua.v2ex.model.Reply;
+import cn.denua.v2ex.ui.TopicActivity;
 import cn.denua.v2ex.widget.ReplyView;
 
 /*
@@ -28,14 +30,12 @@ import cn.denua.v2ex.widget.ReplyView;
 public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int HEADER = 1;
-    private final int ITEM = 0;
-    private final int FOOTER = 2;
+    final int FOOTER = 2;
     private List<Reply> mReplies;
     private Context context;
     private FrameLayout.LayoutParams mLayoutParams;
 
     private ViewGroup mHeaderViewGroup;
-    private ViewGroup mFooterViewGroup;
     private int mItemCount = 0;
 
     public ReplyRecyclerViewAdapter(Context context){
@@ -46,16 +46,14 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     public void setHeaderView(ViewGroup view){
 
         mItemCount += 1;
         mHeaderViewGroup = view;
-    }
-
-    public void setFooterView(ViewGroup view){
-
-        mItemCount += 1;
-        mFooterViewGroup = view;
     }
 
     @NonNull
@@ -63,9 +61,7 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         if (viewType == HEADER){
-            return new OtherViewHolder(mHeaderViewGroup);
-        }else if (viewType == FOOTER){
-            return new OtherViewHolder(mFooterViewGroup);
+            return new HeaderViewHolder(mHeaderViewGroup);
         }
         ReplyView replyView = new ReplyView(parent.getContext());
         replyView.setLayoutParams(mLayoutParams);
@@ -78,16 +74,21 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         if (position == 0 && mHeaderViewGroup != null){
             return HEADER;
         }
-        if (position == getItemCount() && mFooterViewGroup != null){
+        if (position == getItemCount()){
             return FOOTER;
         }
-        return ITEM;
+        return 0;
     }
 
-    public void setReplies(List<Reply> replies){
+    public void addReplies(List<Reply> replies){
 
+        if (replies.size() == mReplies.size() &&
+                (mReplies.size() != 0 && replies.get(0).getId() == mReplies.get(0).getId())){
+            return;
+        }
+        mReplies.addAll(replies);
         mItemCount += replies.size();
-        mReplies = replies;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -96,7 +97,9 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         if (holder instanceof ItemViewHolder){
             int p = ((mHeaderViewGroup!=null) ? position-1 : position);
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.replyView.setReply(mReplies.get(p));
+            Reply reply = mReplies.get(p);
+            reply.setFloor(position-1);
+            itemViewHolder.replyView.setReply(reply);
         }
     }
 
@@ -108,18 +111,16 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     static class ItemViewHolder extends RecyclerView.ViewHolder{
 
         ReplyView replyView;
-
-        public ItemViewHolder(View itemView) {
+        ItemViewHolder(View itemView) {
             super(itemView);
             this.replyView = (ReplyView) itemView;
         }
     }
 
-    static class OtherViewHolder extends RecyclerView.ViewHolder{
+    static class HeaderViewHolder extends RecyclerView.ViewHolder{
 
         ViewGroup viewGroup;
-
-        public OtherViewHolder(View itemView) {
+        HeaderViewHolder(View itemView) {
             super(itemView);
             this.viewGroup = (ViewGroup) itemView;
         }
