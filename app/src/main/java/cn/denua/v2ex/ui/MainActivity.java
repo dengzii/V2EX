@@ -157,6 +157,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             case R.id.it_check:
                 break;
             case R.id.it_node:
+                startActivity(new Intent(this, AllNodeActivity.class));
                 break;
             case R.id.it_following:
                 break;

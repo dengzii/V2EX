@@ -59,8 +59,8 @@ public class BaseService<T> {
         if (view.getContextStatus() == IResponsibleView.VIEW_STATUS_ACTIVATED) {
             responseListener.onComplete(result);
         }else{
-            com.orhanobut.logger.Logger.e(getClass().getName(),
-                    "IResponseView doesn't ready.");
+            com.orhanobut.logger.Logger.e(getClass().getName()
+                    + "IResponseView doesn't ready.");
         }
         view.onCompleteRequest();
     }

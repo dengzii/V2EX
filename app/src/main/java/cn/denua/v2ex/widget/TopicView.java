@@ -6,7 +6,6 @@ package cn.denua.v2ex.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -20,10 +19,8 @@ import butterknife.ButterKnife;
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
-import cn.denua.v2ex.base.App;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.ui.NodeActivity;
-import cn.denua.v2ex.ui.TopicActivity;
 import cn.denua.v2ex.ui.UserDetailActivity;
 import cn.denua.v2ex.utils.ImageLoader;
 import cn.denua.v2ex.utils.StringUtil;
@@ -144,17 +141,5 @@ public class TopicView extends FrameLayout {
     private void goToNodeDetail(){
 
         NodeActivity.start(context, topic.getNode());
-    }
-
-    public void setLastItem() {
-
-        this.tvNode.setVisibility(INVISIBLE);
-        TextView textView = new TextView(context);
-        textView.setText(R.string.no_more);
-        textView.setPadding(0,0,0, 80);
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        textView.setGravity(Gravity.CENTER);
-        textView.setLayoutParams(layoutParams);
-        addView(textView);
     }
 }

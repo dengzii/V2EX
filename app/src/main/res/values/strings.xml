@@ -34,6 +34,8 @@
     <string name="placeholder">XXX</string>
     <string name="zero">0</string>
 
+    <string name="all_node">所有节点</string>
+
     <string name="block">屏蔽</string>
     <string name="up_vote">赞</string>
     <string name="down_vote">踩</string>

@@ -34,6 +34,9 @@
         <activity android:name=".ui.TopicActivity" />
         <activity android:name=".ui.LoginActivity"/>
         <activity android:name=".ui.NodeActivity"/>
+        <activity
+            android:name=".ui.AllNodeActivity"
+            android:label="@string/all_node"/>
         <activity android:name=".ui.SettingsActivity"/>
 
         <activity

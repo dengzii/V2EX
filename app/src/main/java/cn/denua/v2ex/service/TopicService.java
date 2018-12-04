@@ -30,6 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 public class TopicService extends BaseService<List<Topic>> {
 
     private static TopicApi topicApi = RetrofitManager.create(TopicApi.class);
+    private Gson mGson = new Gson();
 
     public TopicService(IResponsibleView v, ResponseListener<List<Topic>> topicListener){
         this.view = v;
@@ -120,9 +121,10 @@ public class TopicService extends BaseService<List<Topic>> {
 
         List<Topic> topics = new ArrayList<>();
         Iterator<JsonElement> iterator = jsonArray.iterator();
+
         for (JsonElement element; iterator.hasNext(); ){
             element = iterator.next();
-            topics.add(new Gson().fromJson(element, Topic.class));
+            topics.add(mGson.fromJson(element, Topic.class));
         }
         returnSuccess(topics);
     }
