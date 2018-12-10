@@ -45,7 +45,7 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
     @BindView(R.id.rv_topics)
     RecyclerView mRvTopics;
     @BindView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout mRefreshLayout;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.tv_error)
     TextView mTvError;
 
@@ -88,8 +88,8 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
         mRvTopics.setNestedScrollingEnabled(false);
         mRvTopics.setAdapter(mRecyclerViewAdapter);
 
-        mRefreshLayout.setOnRefreshListener(this::onRefresh);
-        mRefreshLayout.setRefreshing(true);
+        mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
+        mSwipeRefreshLayout.setRefreshing(true);
         onRefresh();
         return savedView;
     }
@@ -107,9 +107,12 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
     }
 
     public void onRefresh(){
-
-        new MemberService(this, this)
-                .getCreatedTopics(mMember, mCurrentPage);
+        if (mTopics.size() == 0){
+            new MemberService(this, this)
+                    .getCreatedTopics(mMember, mCurrentPage);
+        }else{
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -127,15 +130,14 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
     @Override
     public void onCompleteRequest() {
         super.onCompleteRequest();
-        mRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onComplete(Member result) {
 
         this.mTopics = result.getCreatedTopics();
-        mRecyclerViewAdapter.setTopics(mTopics);
-
+        mRecyclerViewAdapter.addTopics(mTopics);
 
         mRecyclerViewAdapter.setHeaderView(getTopicListHeaderView(mTopics.size()));
         mRecyclerViewAdapter.notifyDataSetChanged();

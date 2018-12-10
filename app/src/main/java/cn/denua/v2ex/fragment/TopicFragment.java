@@ -92,7 +92,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     public void onComplete(List<Topic> result) {
 
         this.topics = result;
-        adapter.setTopics(topics);
+        adapter.addTopics(topics);
         adapter.notifyDataSetChanged();
     }
 
