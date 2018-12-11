@@ -17,5 +17,8 @@ public class ConfigTest {
     @Test
     public void test(){
 
+        for (ConfigRefEnum configRefEnum:ConfigRefEnum.values()){
+            System.out.println(configRefEnum.getKey() + ": " + configRefEnum.getDefaultValue());
+        }
     }
 }

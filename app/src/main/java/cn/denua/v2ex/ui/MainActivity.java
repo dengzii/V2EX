@@ -30,7 +30,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.adapter.MainPagerAdapter;
 import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.fragment.TopicFragment;
@@ -86,9 +88,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         tabLayout.setupWithViewPager(viewPager);
 
-        for (String s:Config.HOME_TAB_TITLES){
+        for (TabEnum s:Config.HOME_TAB_TITLES){
             tabLayout.addTab(tabLayout.newTab());
-            topicFragments.add(TopicFragment.newInstance(s));
+            topicFragments.add(TopicFragment.newInstance(s.getTitle()));
         }
 
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(Gravity.START));
@@ -169,7 +171,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 changeUserStatus();
                 break;
             case R.id.it_change_theme:
-                Config.sCurrentTheme = R.style.GreenTheme;
+                Config.setConfig(ConfigRefEnum.CONFIG_THEME, R.style.GreenTheme);
                 recreate();
                 break;
             default:break;

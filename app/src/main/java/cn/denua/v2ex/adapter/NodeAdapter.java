@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import cn.denua.v2ex.R;
 import cn.denua.v2ex.model.Node;
 
 /*
@@ -30,6 +31,9 @@ public class NodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = new TextView(parent.getContext());
+        TextView textView= new TextView(parent.getContext());
+        textView.setPadding(10,10,10,10);
+        textView.setBackgroundResource(R.drawable.shape_round_corners_5dp);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         return new NodeViewHolder(view);
     }
@@ -51,7 +55,7 @@ public class NodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static class NodeViewHolder extends RecyclerView.ViewHolder{
 
         TextView viewGroup;
-        public NodeViewHolder(View itemView) {
+        NodeViewHolder(View itemView) {
             super(itemView);
             this.viewGroup = (TextView) itemView;
         }

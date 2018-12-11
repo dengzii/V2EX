@@ -7,11 +7,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.List;
 
 import cn.denua.v2ex.Config;
+import cn.denua.v2ex.TabEnum;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragmentList;
-    private List<String> titles;
+    private List<TabEnum> titles;
 
     public MainPagerAdapter(FragmentManager fragmentManager, List<Fragment> fragmentList){
         super(fragmentManager);
@@ -34,7 +35,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return titles.get(position);
+        return titles.get(position).getTitle();
     }
 
 }

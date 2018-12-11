@@ -30,23 +30,18 @@ public class Config {
 
     public static Account account = new Account();
     public static boolean IsLogin = false;
-    public static int sCurrentTheme = R.style.MainTheme;
 
-    public static ArrayList<String> HOME_TAB_TITLES = new ArrayList<String>(3){{
-        add("热 门");
-        add("最 新");
-        add("热 门");
+    public static ArrayList<TabEnum> HOME_TAB_TITLES = new ArrayList<TabEnum>(3){{
+        add(TabEnum.HOT);
+        add(TabEnum.CHANGES);
+        add(TabEnum.HOT);
     }};
 
     public static void init(Context context){
 
-        CONFIG.put(ConfigRefEnum.KEY_USER_NAME, null);
-        CONFIG.put(ConfigRefEnum.CONFIG_LOCAL, null);
-        CONFIG.put(ConfigRefEnum.CONFIG_REPLY_FROM_API, null);
-        CONFIG.put(ConfigRefEnum.CONFIG_REPLY_LINE_HEIGHT, null);
-        CONFIG.put(ConfigRefEnum.CONFIG_PROFILE_DATE_FORMAT, null);
-        CONFIG.put(ConfigRefEnum.CONFIG_CHINESE_NODE_NAME, null);
-        CONFIG.put(ConfigRefEnum.CONFIG_TOPIC_CREATE_DATE, null);
+        for (ConfigRefEnum configRefEnum: ConfigRefEnum.values()){
+            CONFIG.put(configRefEnum, configRefEnum.getDefaultValue());
+        }
     }
 
     @SuppressWarnings("unchecked")

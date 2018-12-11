@@ -55,7 +55,7 @@ public class AllNodeActivity extends BaseNetworkActivity implements ResponseList
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.setSmoothScrollbarEnabled(false);
 
-        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setLayoutManager(new LabelLaoutManager());
         mNodeAdapter = new NodeAdapter(new ArrayList<>());
         mRecyclerView.setAdapter(mNodeAdapter);
         mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
