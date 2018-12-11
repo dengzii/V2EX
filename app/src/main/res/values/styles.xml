@@ -64,6 +64,90 @@
         <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
     </style>
 
+    <style name="TealTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/teal_primary</item>
+        <item name="colorAccent">@color/teal_accent</item>
+        <item name="colorPrimaryDark">@color/teal_primary_dark</item>
+        <item name="colorError">@color/teal_accent</item>
+
+        <item name="android:textColor">@color/teal_primary_text</item>
+        <item name="android:textColorSecondary">@color/teal_secondary_text</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorForeground">@color/teal_primary_text</item>
+
+        <item name="attr_color_background">@color/white</item>
+        <item name="attr_color_primary">@color/teal_primary</item>
+        <item name="attr_color_primary_light">@color/teal_primary_light</item>
+        <item name="attr_color_primary_dark">@color/teal_primary_dark</item>
+        <item name="attr_color_accent">@color/teal_accent</item>
+        <item name="attr_color_text_secondary">@color/teal_secondary_text</item>
+        <item name="attr_color_text">@color/teal_primary_text</item>
+        <item name="attr_color_icons">@color/teal_secondary_text</item>
+        <item name="attr_color_divider">@color/teal_divider</item>
+
+        <item name="attr_color_text_lightish">@color/teal_text_lightish</item>
+        <item name="attr_color_text_secondary_inverse">@color/teal_primary_dark</item>
+        <item name="attr_color_text_inverse">@color/teal_primary_light</item>
+
+        <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
+    </style>
+
+    <style name="IndigoTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/indigo_primary</item>
+        <item name="colorAccent">@color/indigo_accent</item>
+        <item name="colorPrimaryDark">@color/indigo_primary_dark</item>
+        <item name="colorError">@color/indigo_accent</item>
+
+        <item name="android:textColor">@color/indigo_primary_text</item>
+        <item name="android:textColorSecondary">@color/indigo_secondary_text</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorForeground">@color/indigo_primary_text</item>
+
+        <item name="attr_color_background">@color/white</item>
+        <item name="attr_color_primary">@color/indigo_primary</item>
+        <item name="attr_color_primary_light">@color/indigo_primary_light</item>
+        <item name="attr_color_primary_dark">@color/indigo_primary_dark</item>
+        <item name="attr_color_accent">@color/indigo_accent</item>
+        <item name="attr_color_text_secondary">@color/indigo_secondary_text</item>
+        <item name="attr_color_text">@color/indigo_primary_text</item>
+        <item name="attr_color_icons">@color/indigo_secondary_text</item>
+        <item name="attr_color_divider">@color/indigo_divider</item>
+
+        <item name="attr_color_text_lightish">@color/indigo_text_lightish</item>
+        <item name="attr_color_text_secondary_inverse">@color/indigo_primary_dark</item>
+        <item name="attr_color_text_inverse">@color/indigo_primary_light</item>
+
+        <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
+    </style>
+
+    <style name="OrangeTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/orange_primary</item>
+        <item name="colorAccent">@color/orange_accent</item>
+        <item name="colorPrimaryDark">@color/orange_primary_dark</item>
+        <item name="colorError">@color/orange_accent</item>
+
+        <item name="android:textColor">@color/orange_primary_text</item>
+        <item name="android:textColorSecondary">@color/orange_secondary_text</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorForeground">@color/orange_primary_text</item>
+
+        <item name="attr_color_background">@color/white</item>
+        <item name="attr_color_primary">@color/orange_primary</item>
+        <item name="attr_color_primary_light">@color/orange_primary_light</item>
+        <item name="attr_color_primary_dark">@color/orange_primary_dark</item>
+        <item name="attr_color_accent">@color/orange_accent</item>
+        <item name="attr_color_text_secondary">@color/orange_secondary_text</item>
+        <item name="attr_color_text">@color/orange_primary_text</item>
+        <item name="attr_color_icons">@color/orange_secondary_text</item>
+        <item name="attr_color_divider">@color/orange_divider</item>
+
+        <item name="attr_color_text_lightish">@color/orange_text_lightish</item>
+        <item name="attr_color_text_secondary_inverse">@color/orange_primary_dark</item>
+        <item name="attr_color_text_inverse">@color/orange_primary_light</item>
+
+        <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
+    </style>
+    
     <style name="MainTheme.NoActionbar">
         <item name="windowActionBar">false</item>
         <item name="android:windowActionBar">false</item>
@@ -72,6 +156,27 @@
     </style>
 
     <style name="GreenTheme.NoActionbar">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="TealTheme.NoActionbar">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="IndigoTheme.NoActionbar">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="OrangeTheme.NoActionbar">
         <item name="windowActionBar">false</item>
         <item name="android:windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

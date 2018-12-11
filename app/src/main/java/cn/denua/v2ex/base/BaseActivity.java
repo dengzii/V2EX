@@ -74,6 +74,15 @@ public class BaseActivity extends AppCompatActivity {
             case R.style.GreenTheme:
                 setTheme(R.style.GreenTheme_NoActionbar);
                 break;
+            case R.style.TealTheme:
+                setTheme(R.style.TealTheme_NoActionbar);
+                break;
+            case R.style.IndigoTheme:
+                setTheme(R.style.IndigoTheme_NoActionbar);
+                break;
+            case R.style.OrangeTheme:
+                setTheme(R.style.OrangeTheme_NoActionbar);
+                break;
             default:
                 break;
         }

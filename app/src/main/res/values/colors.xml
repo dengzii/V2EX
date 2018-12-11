@@ -18,6 +18,7 @@
     <color name="label_accent">#bbbbbb</color>
     <color name="default_text_link">#52b1ff</color>
 
+    <!--BlueGrey-->
     <color name="blue_grey_primary_dark">#455A64</color>
     <color name="blue_grey_primary_light">#CFD8DC</color>
     <color name="blue_grey_primary">#607D8B</color>
@@ -28,6 +29,7 @@
     <color name="blue_grey_icons">#757575</color>
     <color name="blue_grey_text_lightish">#e2e2e2</color>
 
+    <!--Teal-->
     <color name="teal_primary">#009688</color>
     <color name="teal_primary_dark">#00796B</color>
     <color name="teal_primary_light">#B2DFDB</color>
@@ -38,6 +40,7 @@
     <color name="teal_divider">#BDBDBD</color>
     <color name="teal_text_lightish">#e2e2e2</color>
 
+    <!--Green-->
     <color name="green_primary">#4CAF50</color>
     <color name="green_primary_dark">#388E3C</color>
     <color name="green_primary_light">#C8E6C9</color>
@@ -47,5 +50,27 @@
     <color name="green_icons">#FFFFFF</color>
     <color name="green_divider">#BDBDBD</color>
     <color name="green_text_lightish">#e2e2e2</color>
+
+    <!--Indigo-->
+    <color name="indigo_primary">#3F51B5</color>
+    <color name="indigo_primary_dark">#303F9F</color>
+    <color name="indigo_primary_light">#C5CAE9</color>
+    <color name="indigo_accent">#FF4081</color>
+    <color name="indigo_primary_text">#212121</color>
+    <color name="indigo_secondary_text">#757575</color>
+    <color name="indigo_icons">#FFFFFF</color>
+    <color name="indigo_divider">#BDBDBD</color>
+    <color name="indigo_text_lightish">#e2e2e2</color>
+
+    <!--Orange-->
+    <color name="orange_primary">#FF5722</color>
+    <color name="orange_primary_dark">#E64A19</color>
+    <color name="orange_primary_light">#FFCCBC</color>
+    <color name="orange_accent">#03A9F4</color>
+    <color name="orange_primary_text">#212121</color>
+    <color name="orange_secondary_text">#757575</color>
+    <color name="orange_icons">#FFFFFF</color>
+    <color name="orange_divider">#BDBDBD</color>
+    <color name="orange_text_lightish">#e2e2e2</color>
 
 </resources>

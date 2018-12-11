@@ -4,7 +4,6 @@
 
 package cn.denua.v2ex.ui;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,7 +29,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.adapter.MainPagerAdapter;
@@ -41,6 +39,7 @@ import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.LoginService;
 import cn.denua.v2ex.Config;
+import cn.denua.v2ex.widget.DialogUtil;
 import cn.denua.v2ex.widget.MessageDialog;
 
 @SuppressWarnings("RedundantCast")
@@ -171,8 +170,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 changeUserStatus();
                 break;
             case R.id.it_change_theme:
-                Config.setConfig(ConfigRefEnum.CONFIG_THEME, R.style.GreenTheme);
-                recreate();
+                DialogUtil.showThemeDialog(this);
                 break;
             default:break;
         }
