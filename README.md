@@ -5,8 +5,8 @@ V2EX 第三方 Android 客户端
 
 ## Screenshot
 
-![home](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/home.png)
-![nav](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/nav.png)
+![home](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/home1.jpg)
+![nav](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/topic1.jpg)
 
 ## Summary
 
