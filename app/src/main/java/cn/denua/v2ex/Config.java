@@ -34,7 +34,9 @@ public class Config {
     public static ArrayList<TabEnum> HOME_TAB_TITLES = new ArrayList<TabEnum>(3){{
         add(TabEnum.HOT);
         add(TabEnum.CHANGES);
-        add(TabEnum.HOT);
+        add(TabEnum.LATEST);
+        add(TabEnum.ALL);
+        add(TabEnum.FOLLOWING);
     }};
 
     public static void init(Context context){

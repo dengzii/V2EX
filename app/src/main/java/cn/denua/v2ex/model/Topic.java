@@ -34,6 +34,8 @@ public class Topic implements Parcelable, Cloneable {
     private String last_reply_by;
     private String url;
     private String ago;
+    private String nodeName;
+    private String nodeTitle;
 
     private Member member;
     private Node node;
@@ -214,6 +216,22 @@ public class Topic implements Parcelable, Cloneable {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public String getNodeName() {
+        return nodeName;
+    }
+
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
+    }
+
+    public String getNodeTitle() {
+        return nodeTitle;
+    }
+
+    public void setNodeTitle(String nodeTitle) {
+        this.nodeTitle = nodeTitle;
     }
 
     public Object clone(){

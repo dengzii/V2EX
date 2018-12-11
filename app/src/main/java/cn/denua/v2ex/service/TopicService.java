@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.api.TopicApi;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.IResponsibleView;
@@ -38,20 +39,21 @@ public class TopicService extends BaseService<List<Topic>> {
         setResponseListener(topicListener);
     }
 
-    public void getTopic(String type){
+    public void getTopic(TabEnum type){
 
         switch (type){
-            case "热 门":
+            case HOT:
                 getHot();
                 break;
-            case "最 新":
+            case LATEST:
                 getLatest();
                 break;
-            case "关 注":
+            case CHANGES:
+                getChanges();
                 break;
-            case "全 部":
+            case ALL:
                 break;
-            case "None":
+            case FOLLOWING:
                 break;
             default:
                 break;
@@ -70,6 +72,19 @@ public class TopicService extends BaseService<List<Topic>> {
         topicApi.getLatestTopic()
                 .compose(RxUtil.io2main())
                 .subscribe(jsonArrayToTopicsObserver);
+    }
+
+    private void getChanges(){
+
+        topicApi.getLatestTopic2()
+                .compose(RxUtil.io2main())
+                .subscribe(new RxObserver<String>(this) {
+                    @Override
+                    public void _onNext(String s) {
+                        List<Topic> topics = HtmlUtil.getTopics(s);
+                        returnSuccess(topics);
+                    }
+                });
     }
 
     public void getReply(Topic topic, int page){

@@ -170,12 +170,12 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     public void onComplete(List<Topic> result) {
 
         if (mCurrentPage == 1){
-            this.mTopic = result.get(0);
             if (mTopic.getContent_rendered() == null) {
-                mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered()),
+                mWebView.loadData(HtmlUtil.applyHtmlStyle(result.get(0).getContent_rendered()),
                         "text/html", "utf-8");
                 mTopicView.setLastTouched(mTopic.getAgo());
             }
+            this.mTopic = result.get(0);
             mTopicView.loadDataFromTopic(mTopic);
         }
 

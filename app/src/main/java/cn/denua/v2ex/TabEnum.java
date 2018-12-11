@@ -14,8 +14,13 @@ import java.io.Serializable;
  */
 public enum TabEnum implements Serializable {
 
-    HOT("热 门"), NEWEST("最 新"), CHANGES("最近更新");
-    String title;
+    HOT     ("热 门"),
+    LATEST  ("最 新"),
+    CHANGES ("最近更新"),
+    ALL     ("全 部"),
+    FOLLOWING("关 注");
+
+    private String title;
 
     TabEnum(String title){
         this.title = title;

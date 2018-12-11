@@ -32,15 +32,20 @@ public class HtmlUtil {
             PATTERN_SILVER              = Pattern.compile("(\\d+) <img src=\"/static/img/silver@2x.png\" height=\"16\""),
             PATTERN_BRONZE              = Pattern.compile("(\\d+) <img src=\"/static/img/bronze@2x.png\" height=\"16\""),
 
-            PATTERN_TOPIC_NODE_NAME     = Pattern.compile("<a href=\"/go/(\\w+)\">[^<]+</a>"),
-            PATTERN_TOPIC_NODE_TITLE    = Pattern.compile("<a href=\"/go/\\w+\">([^<]+)</a>"),
+            PATTERN_TOPIC_NODE_NAME     = Pattern.compile("node\" href=\"/go/(\\w+)\">[^<]+</a>"),
+            PATTERN_TOPIC_NODE_TITLE    = Pattern.compile("node\" href=\"/go/\\w+\">([^<]+)</a>"),
             PATTERN_TOPIC_FAVORS        = Pattern.compile("∙ {2}(\\d+) 人收藏 "),
             PATTERN_TOPIC_THANKS        = Pattern.compile("∙ {2}(\\d+) 人感谢"),
             PATTERN_TOPIC_CSRF          = Pattern.compile("var csrfToken = \"([^\"]+)"),
             PATTERN_TOPIC_REPLY_COUNT   = Pattern.compile("<span class=\"gray\">(\\d+) 回复"),
+            PATTERN_TOPIC_REPLY_COUNT_  = Pattern.compile("/t/\\d+#reply(\\d+)"),
             PATTERN_TOPIC_ID            = Pattern.compile("href=\"/t/(\\d+)"),
+            PATTERN_TOPIC_USER_AVATAR   = Pattern.compile("<a href=\"/member/\\w+\"><img src=\"([^\"]+)"),
+            PATTERN_TOPIC_USERNAME      = Pattern.compile("href=\"/member/(\\w+)\"><img src="),
             PATTERN_TOPIC_AGO           = Pattern.compile("<span class=\"ago\">([^\"]+前)"),
+            PATTERN_TOPIC_AGO_          = Pattern.compile("•[^•]+•([^•]+)•"),
             PATTERN_TOPIC_CLICK         = Pattern.compile(" · (\\d+) 次点击"),
+            PATTERN_TOPIC_UP_VOTE       = Pattern.compile("votes\"><li class=\"fa fa-chevron-up\"></li> (\\d+)"),
 
             PATTERN_REPLY_ID            = Pattern.compile("id=\"r_(\\d+)\""),
             PATTERN_REPLY_USERNAME      = Pattern.compile("href=\"/member/([^\"]+)\""),
@@ -62,6 +67,37 @@ public class HtmlUtil {
         }
         result[3] = document.selectFirst("input[name=once]").val();
         return result;
+    }
+
+    /**
+     * 从HTML中获取所有话题
+     *
+     * @return topics
+     */
+    public static List<Topic> getTopics(String html){
+
+        Document document = Jsoup.parse(html);
+        Elements elements = document.select("#Main > .box > .cell");
+        List<Topic> topics = new ArrayList<>(101);
+        for (Element element:elements){
+            Topic topic = new Topic();
+            String s = element.toString().replaceAll("&nbsp;", " ");
+            topic.setId(matcherGroup1Int(PATTERN_TOPIC_ID, s));
+            topic.setTitle(element.selectFirst(".item_title").text());
+            topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT_, s));
+            topic.setAgo(matcherGroup1(PATTERN_TOPIC_AGO_, s));
+
+            Member member = new Member();
+            member.setUsername(matcherGroup1(PATTERN_TOPIC_USERNAME, s));
+            member.setAvatar_normal(matcherGroup1(PATTERN_TOPIC_USER_AVATAR, s));
+            topic.setNode(new Node(matcherGroup1(PATTERN_TOPIC_NODE_NAME, s),
+                    matcherGroup1(PATTERN_TOPIC_NODE_TITLE, s)));
+            topic.setUpVote(matcherGroup1Int(PATTERN_TOPIC_UP_VOTE, s));
+            topic.setMember(member);
+            System.out.println(topic.getAgo());
+            topics.add(topic);
+        }
+        return topics;
     }
 
     public static void attachRepliesAndDetail(Topic topic, String html){

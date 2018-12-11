@@ -122,9 +122,9 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
 
     @Override
     public int getContextStatus() {
-        return isDetached()
-                ? IResponsibleView.VIEW_STATUS_DESTROYED
-                : IResponsibleView.VIEW_STATUS_ACTIVATED;
+        return getContext()==null
+                ? this.VIEW_STATUS_DESTROYED
+                : this.VIEW_STATUS_ACTIVATED;
     }
 
     @Override
@@ -138,7 +138,6 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
 
         this.mTopics = result.getCreatedTopics();
         mRecyclerViewAdapter.addTopics(mTopics);
-
         mRecyclerViewAdapter.setHeaderView(getTopicListHeaderView(mTopics.size()));
         mRecyclerViewAdapter.notifyDataSetChanged();
     }
@@ -158,7 +157,7 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
     }
     private View getTopicListHeaderView(int topicCount){
 
-        TextView textView = new TextView(getActivity());
+        TextView textView = new TextView(getContext());
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMarginStart(15);

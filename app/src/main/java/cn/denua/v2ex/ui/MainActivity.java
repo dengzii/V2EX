@@ -90,7 +90,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         for (TabEnum s:Config.HOME_TAB_TITLES){
             tabLayout.addTab(tabLayout.newTab());
-            topicFragments.add(TopicFragment.newInstance(s.getTitle()));
+            topicFragments.add(TopicFragment.create(s));
         }
 
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(Gravity.START));

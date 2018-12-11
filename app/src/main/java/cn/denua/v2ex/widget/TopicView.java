@@ -117,8 +117,11 @@ public class TopicView extends FrameLayout {
             if (tvUsername != null) {
                 tvUsername.setText(topic.getMember().getUsername());
             }
-            tvLastTouched.setText(topic.getCreated() == 0?" "
-                    :StringUtil.timestampToStr(topic.getCreated()));
+            if (topic.getCreated() == 0 && topic.getAgo() != null){
+                tvLastTouched.setText(topic.getAgo());
+            }else{
+                tvLastTouched.setText(StringUtil.timestampToStr(topic.getCreated()));
+            }
             tvUsername.setOnClickListener(v -> goToUserDetail());
             if (ivUserPic != null) {
                 ivUserPic.setOnClickListener(v -> goToUserDetail());

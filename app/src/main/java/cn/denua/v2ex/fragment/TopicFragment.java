@@ -18,6 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.adapter.TopicRecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseNetworkFragment;
 import cn.denua.v2ex.interfaces.ResponseListener;
@@ -35,12 +36,13 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     private List<Topic> topics = new ArrayList<>();
 
     private TopicService topicService;
+    private TabEnum mTabType;
 
-    public static TopicFragment newInstance(String contentType){
+    public static TopicFragment create(TabEnum contentType){
 
         TopicFragment topicFragment = new TopicFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("contentType", contentType);
+        bundle.putSerializable("contentType", contentType);
         topicFragment.setArguments(bundle);
 
         return topicFragment;
@@ -50,7 +52,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if ( getArguments() != null){
-            this.setContentType(getArguments().getString("contentType"));
+            this.mTabType = (TabEnum) getArguments().getSerializable("contentType");
         }
         topicService = new TopicService(this, this);
     }
@@ -85,7 +87,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
 
     public void onRefresh() {
 
-        topicService.getTopic(getContentType());
+        topicService.getTopic(mTabType);
     }
 
     @Override
