@@ -39,7 +39,7 @@ public class TopicService extends BaseService<List<Topic>> {
         setResponseListener(topicListener);
     }
 
-    public void getTopic(TabEnum type){
+    public void getTopic(TabEnum type, int page){
 
         switch (type){
             case HOT:
@@ -50,6 +50,11 @@ public class TopicService extends BaseService<List<Topic>> {
                 break;
             case CHANGES:
                 getChanges();
+                break;
+            case CUSTOM:
+                break;
+            case NODE:
+                getTopicsByNode(type.getTitle(), page);
                 break;
             case ALL:
                 break;
@@ -77,6 +82,19 @@ public class TopicService extends BaseService<List<Topic>> {
     private void getChanges(){
 
         topicApi.getLatestTopic2()
+                .compose(RxUtil.io2main())
+                .subscribe(new RxObserver<String>(this) {
+                    @Override
+                    public void _onNext(String s) {
+                        List<Topic> topics = HtmlUtil.getTopics(s);
+                        returnSuccess(topics);
+                    }
+                });
+    }
+
+    private void getTopicsByNode(String node, int page){
+
+        topicApi.getTopicsByNode(node, page)
                 .compose(RxUtil.io2main())
                 .subscribe(new RxObserver<String>(this) {
                     @Override

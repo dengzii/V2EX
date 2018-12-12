@@ -43,7 +43,7 @@ public class HtmlUtil {
             PATTERN_TOPIC_USER_AVATAR   = Pattern.compile("<a href=\"/member/\\w+\"><img src=\"([^\"]+)"),
             PATTERN_TOPIC_USERNAME      = Pattern.compile("href=\"/member/(\\w+)\"><img src="),
             PATTERN_TOPIC_AGO           = Pattern.compile("<span class=\"ago\">([^\"]+前)"),
-            PATTERN_TOPIC_AGO_          = Pattern.compile("•[^•]+•([^•]+)•"),
+            PATTERN_TOPIC_AGO_          = Pattern.compile("•?[^•]+?• {2}([^<•]+) {2}•"),
             PATTERN_TOPIC_CLICK         = Pattern.compile(" · (\\d+) 次点击"),
             PATTERN_TOPIC_UP_VOTE       = Pattern.compile("votes\"><li class=\"fa fa-chevron-up\"></li> (\\d+)"),
 
@@ -77,11 +77,25 @@ public class HtmlUtil {
     public static List<Topic> getTopics(String html){
 
         Document document = Jsoup.parse(html);
-        Elements elements = document.select("#Main > .box > .cell");
+        Elements elements;
+        Node node = null;
+
+        if (html.contains("TopicsNode")){
+            elements = document.select("#TopicsNode >  .cell");
+            node = new Node("","");
+        }else {
+            elements = document.select("#Main > .box > .cell");
+        }
+
         List<Topic> topics = new ArrayList<>(101);
         for (Element element:elements){
+            if (topics.size() >= 100){
+                break;
+            }
+
             Topic topic = new Topic();
             String s = element.toString().replaceAll("&nbsp;", " ");
+            System.out.println(s);
             topic.setId(matcherGroup1Int(PATTERN_TOPIC_ID, s));
             topic.setTitle(element.selectFirst(".item_title").text());
             topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT_, s));
@@ -253,7 +267,7 @@ public class HtmlUtil {
 
         Matcher matcher = pattern.matcher(str);
         if (matcher.find()){
-            return matcher.group(1);
+            return matcher.group(1).trim();
         }
         return "";
     }

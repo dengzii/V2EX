@@ -37,6 +37,9 @@ public class Config {
         add(TabEnum.LATEST);
         add(TabEnum.ALL);
         add(TabEnum.FOLLOWING);
+        TabEnum tabEnum = TabEnum.NODE;
+        tabEnum.setTitle("sandbox");
+        add(tabEnum);
     }};
 
     public static void init(Context context){

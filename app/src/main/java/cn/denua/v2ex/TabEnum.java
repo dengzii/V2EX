@@ -18,7 +18,11 @@ public enum TabEnum implements Serializable {
     LATEST  ("最 新"),
     CHANGES ("最近更新"),
     ALL     ("全 部"),
-    FOLLOWING("关 注");
+    FOLLOWING("关 注"),
+
+    NODE    ("node"),
+    CUSTOM  ("custom"),
+    OTHER   ("other");
 
     private String title;
 
@@ -27,5 +31,9 @@ public enum TabEnum implements Serializable {
     }
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title){
+        this.title = title;
     }
 }

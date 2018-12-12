@@ -87,7 +87,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
 
     public void onRefresh() {
 
-        topicService.getTopic(mTabType);
+        topicService.getTopic(mTabType, 1);
     }
 
     @Override

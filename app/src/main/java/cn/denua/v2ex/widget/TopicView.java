@@ -119,7 +119,7 @@ public class TopicView extends FrameLayout {
             }
             if (topic.getCreated() == 0 && topic.getAgo() != null){
                 tvLastTouched.setText(topic.getAgo());
-            }else{
+            }else if (topic.getCreated() != 0){
                 tvLastTouched.setText(StringUtil.timestampToStr(topic.getCreated()));
             }
             tvUsername.setOnClickListener(v -> goToUserDetail());
@@ -130,9 +130,14 @@ public class TopicView extends FrameLayout {
         tvTitle.setText(topic.getTitle());
         tvReply.setText(String.format(getResources().getString(R.string.place_holder_reply),
                 topic.getReplies()));
-        tvNode.setText(mIsChineseNodeLabel
-                ?topic.getNode().getTitle()
-                :topic.getNode().getName());
+        if (topic.getNode().getTitle().equals("")){
+            tvNode.setVisibility(INVISIBLE);
+        }else {
+            tvNode.setText(mIsChineseNodeLabel
+                    ?topic.getNode().getTitle()
+                    :topic.getNode().getName());
+        }
+
         tvNode.setOnClickListener(v -> goToNodeDetail());
     }
 

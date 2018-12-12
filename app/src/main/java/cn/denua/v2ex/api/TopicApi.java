@@ -25,14 +25,17 @@ public interface TopicApi {
     @GET("t/{id}")
     Observable<String> getTopicDetail(@Path("id") int id, @Query("p") int page);
 
+    @GET("/changes")
+    Observable<String> getLatestTopic2();
+
+    @GET("/go/{node}")
+    Observable<String> getTopicsByNode(@Path("node") String node, @Query("p") int page);
+
     @GET("api/topics/hot.json")
     Observable<JsonArray> getHotTopic();
 
     @GET("api/topics/latest.json")
     Observable<JsonArray> getLatestTopic();
-
-    @GET("/changes")
-    Observable<String> getLatestTopic2();
 
     @GET("/api/topics/show.json")
     Observable<JsonArray> getTopic(@Query("id")int id);
@@ -40,13 +43,12 @@ public interface TopicApi {
     @GET("/api/replies/show.json")
     Observable<JsonArray> getReplies(@Query("topic_id") int id, @Query("p") int page);
 
+
     @POST("/down/topic")
     Observable<String> downVote(@Path("id") int id, @Field("t") String v);
 
     @POST("/up/topic")
     Observable<String> upVote(@Path("id") int id, @Field("t") String v);
-
-
 
     @POST("/api/topics/create.json")
     Observable<JsonObject> createTopic(@FieldMap HashMap<String, String> fields);
