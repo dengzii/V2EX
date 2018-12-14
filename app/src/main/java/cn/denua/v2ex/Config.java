@@ -89,4 +89,43 @@ public class Config {
         }
         return account != null;
     }
+
+    public  enum ThemeEnum{
+
+        MAIN_THEME  ("BlueGrey", R.style.MainTheme),
+        GREEN_THEME ("Green",   R.style.GreenTheme),
+        TEAL_THEME  ("Teal",    R.style.TealTheme),
+        ORANGE_THEME("Orange",  R.style.OrangeTheme),
+        INDIGO_THEME("Indigo",  R.style.IndigoTheme);
+
+        private String name;
+        private int res;
+        ThemeEnum(String s, int i) {
+            this.name = s;
+            this.res = i;
+        }
+        public static int indexOf(int res){
+            switch (res){
+                case R.style.MainTheme:
+                    return 0;
+                case R.style.GreenTheme:
+                    return 1;
+                case R.style.TealTheme:
+                    return 2;
+                case R.style.OrangeTheme:
+                    return 3;
+                case R.style.IndigoTheme:
+                    return 4;
+                    default:
+                        return -1;
+            }
+        }
+        public String getName() {
+            return name;
+        }
+        public int getRes() {
+            return res;
+        }
+    }
 }
+

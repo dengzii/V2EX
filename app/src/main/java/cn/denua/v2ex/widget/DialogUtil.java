@@ -23,26 +23,15 @@ public class DialogUtil {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(owner);
         builder.setTitle(R.string.theme);
-        builder.setSingleChoiceItems(new String[]{"BlueGrey", "Green", "Teal", "Indigo", "Orange"}, -1, (dialog, which) -> {
+        Config.ThemeEnum[] themeEnum = Config.ThemeEnum.values();
+        String[] themes = new String[themeEnum.length];
+        for (int i = 0; i < themes.length; i++) {
+            themes[i] = themeEnum[i].getName();
+        }
+        int currentTheme = Config.getConfig(ConfigRefEnum.CONFIG_THEME);
+        builder.setSingleChoiceItems(themes, Config.ThemeEnum.indexOf(currentTheme), (dialog, which) -> {
             dialog.dismiss();
-            switch (which){
-                case 0:
-                    Config.setConfig(ConfigRefEnum.CONFIG_THEME, R.style.MainTheme);
-                    break;
-                case 1:
-                    Config.setConfig(ConfigRefEnum.CONFIG_THEME, R.style.GreenTheme);
-                    break;
-                case 2:
-                    Config.setConfig(ConfigRefEnum.CONFIG_THEME, R.style.TealTheme);
-                    break;
-                case 3:
-                    Config.setConfig(ConfigRefEnum.CONFIG_THEME, R.style.IndigoTheme);
-                    break;
-                case 4:
-                    Config.setConfig(ConfigRefEnum.CONFIG_THEME, R.style.OrangeTheme);
-                    break;
-                    default:break;
-            }
+            Config.setConfig(ConfigRefEnum.CONFIG_THEME, themeEnum[which].getRes());
             owner.recreate();
         });
 

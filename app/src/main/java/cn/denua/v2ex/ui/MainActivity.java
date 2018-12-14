@@ -171,6 +171,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 break;
             case R.id.it_change_theme:
                 DialogUtil.showThemeDialog(this);
+                drawerLayout.closeDrawer(Gravity.START);
                 break;
             default:break;
         }
