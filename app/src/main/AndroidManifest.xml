@@ -2,48 +2,58 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.denua.v2ex">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".base.App"
-        android:label="@string/app_name"
+        android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/MainTheme"
-        android:fullBackupContent="true"
-        android:allowBackup="true">
-
+        android:theme="@style/MainTheme">
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.2"/>
+            android:value="2.2" />
 
-        <activity android:name=".ui.MainActivity"
+        <activity
+            android:name=".ui.MainActivity"
             android:theme="@style/MainTheme.NoActionbar">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.WelcomeActivity"/>
-        <activity android:name=".ui.TopicActivity" />
-        <activity android:name=".ui.LoginActivity"/>
-        <activity android:name=".ui.NodeActivity"/>
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:theme="@style/MainTheme.NoActionbar" />
+        <activity
+            android:name=".ui.TopicActivity"
+            android:label="@string/topic" />
+        <activity
+            android:name=".ui.LoginActivity"
+            android:label="@string/login" />
+        <activity
+            android:name=".ui.NodeActivity"
+            android:label="@string/node" />
         <activity
             android:name=".ui.AllNodeActivity"
-            android:label="@string/all_node"/>
-        <activity android:name=".ui.SettingsActivity"/>
-
+            android:label="@string/all_node" />
         <activity
-            android:theme="@style/MainTheme"
-            android:name=".ui.UserDetailActivity">
-        </activity>
-
+            android:name=".ui.SettingsActivity"
+            android:label="@string/settings" />
+        <activity
+            android:name=".ui.UserDetailActivity"
+            android:theme="@style/MainTheme"></activity>
+        <activity
+            android:name=".ui.SettingsActivity2"
+            android:label="@string/title_activity_settings2"></activity>
     </application>
 
 </manifest>
