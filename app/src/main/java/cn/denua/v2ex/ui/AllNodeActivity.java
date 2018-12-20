@@ -75,6 +75,7 @@ public class AllNodeActivity extends BaseNetworkActivity implements ResponseList
 
     @Override
     public int getContextStatus() {
+        super.getContextStatus();
         return IResponsibleView.VIEW_STATUS_ACTIVATED;
     }
 

@@ -143,6 +143,7 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
 
     @Override
     public int getContextStatus() {
+        super.getContextStatus();
         return IResponsibleView.VIEW_STATUS_ACTIVATED;
     }
 

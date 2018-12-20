@@ -206,7 +206,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
     @Override
     public int getContextStatus() {
-
+        super.getContextStatus();
         return IResponsibleView.VIEW_STATUS_ACTIVATED;
     }
 
