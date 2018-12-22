@@ -30,7 +30,7 @@
 
     <string name="confirm">确 定</string>
     <string name="cancel">取 消</string>
-    <string name="author">denua</string>
+    <string name="author">作 者</string>
     <string name="placeholder">XXX</string>
     <string name="zero">0</string>
 
@@ -53,8 +53,19 @@
     <string name="place_holder_topic_count">%1$d 话题</string>
     <string name="place_holder_created_on">创建于%1$s</string>
 
+    <!--AppReferences-->
+
     <string name="need_storage_permission">需要存储权限</string>
     <string name="title_activity_settings2">Settings</string>
+    <string name="auto_night_theme">自动夜晚主题</string>
+    <string name="summary_auto_night_theme">自动设置为夜晚在指定时间或在黑暗的环境</string>
+    <string name="contact">联系方式</string>
+    <string name="about">关 于</string>
+    <string name="author_and_contact">denua@foxmail.com</string>
+    <string name="share">分 享</string>
+    <string name="share_to">如果您觉得这个App不错, 将此App分享给朋友</string>
+    <string name="version">版 本</string>
+    <string name="version_no">Alpha</string>
 
     <!-- Strings related to Settings -->
 

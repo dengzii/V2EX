@@ -95,7 +95,6 @@ public class HtmlUtil {
 
             Topic topic = new Topic();
             String s = element.toString().replaceAll("&nbsp;", " ");
-            System.out.println(s);
             topic.setId(matcherGroup1Int(PATTERN_TOPIC_ID, s));
             topic.setTitle(element.selectFirst(".item_title").text());
             topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT_, s));
@@ -108,7 +107,6 @@ public class HtmlUtil {
                     matcherGroup1(PATTERN_TOPIC_NODE_TITLE, s)));
             topic.setUpVote(matcherGroup1Int(PATTERN_TOPIC_UP_VOTE, s));
             topic.setMember(member);
-            System.out.println(topic.getAgo());
             topics.add(topic);
         }
         return topics;
