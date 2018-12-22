@@ -11,17 +11,17 @@ import android.support.annotation.Nullable;
 import cn.denua.v2ex.R;
 
 /*
+ *
+ *
  * @author denua
  * @email denua@foxmail.com
- * @date 2018/12/22 16
+ * @date 2018/12/22 23
  */
 public class AboutPreferenceFragment extends PreferenceFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         addPreferencesFromResource(R.xml.pref_about);
     }
-
 }

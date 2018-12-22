@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018 denua.
+  -->
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:title="@string/theme"
+        android:dialogTitle="@string/theme"
+        android:entryValues="@array/list_theme"
+        android:entries="@array/list_theme"/>
+
+    <PreferenceCategory
+        android:title="@string/general">
+
+        <SwitchPreference
+            android:key="@string/key_auto_check"
+            android:defaultValue="false"
+            android:summary="@string/summary_auto_check"
+            android:title="@string/auto_check" />
+        <SwitchPreference
+            android:key="@string/key_check_message_background"
+            android:defaultValue="false"
+            android:title="@string/check_message_background"
+            android:summary="@string/summary_check_background"/>
+        <SwitchPreference
+            android:key="@string/key_auto_night_theme"
+            android:title="@string/auto_night_theme"
+            android:defaultValue="true"
+            android:summary="@string/summary_auto_night_theme"/>
+        <ListPreference
+            android:key="@string/key_auto_night_time"
+            android:title="@string/auto_night_time"
+            android:summary="@string/auto_night_time_default"
+            android:dependency="@string/key_auto_night_theme"
+            android:entryValues="@array/list_auto_night_time"
+            android:entries="@array/list_auto_night_time_entries"/>
+        <ListPreference
+            android:key="@string/key_date_format"
+            android:title="@string/date_format"
+            android:dialogTitle="@string/date_format"
+            android:entries="@array/list_date_format_entries"
+            android:entryValues="@array/list_date_format"
+            android:summary="@string/summary_date_format"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/advanced">
+        <MultiSelectListPreference
+            android:key="@string/key_home_tabs"
+            android:title="@string/key_home_tabs"
+            android:entryValues="@array/list_home_tabs"
+            android:entries="@array/list_home_tabs_entries"
+            android:dialogTitle="@string/key_home_tabs"/>
+        <SwitchPreference
+            android:key="@string/key_detailed_user_info"
+            android:title="@string/key_detailed_user_info" />
+        <Preference
+            android:key="@string/key_local"
+            android:title="@string/key_local"
+            android:defaultValue="china"
+            android:summary="china"/>
+        <SwitchPreference
+            android:key="@string/key_topic_created_instead_touched"
+            android:title="@string/key_topic_created_instead_touched"/>
+        <SwitchPreference
+            android:key="@string/key_node_name_instead_title"
+            android:title="@string/key_node_name_instead_title"/>
+        <SwitchPreference
+            android:key="@string/key_get_reply_from_api"
+            android:title="@string/key_get_reply_from_api"/>
+        <Preference
+            android:key="@string/key_reply_line_height"
+            android:title="@string/key_reply_line_height"
+            android:defaultValue="1.3"
+            android:summary="18.30"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/about"
+        android:persistent="false">
+
+        <Preference
+            android:key="@string/key_reward"
+            android:title="@string/reward"
+            android:summary="@string/summary_reward"/>
+        <Preference
+            android:title="@string/contact"
+            android:summary="@string/author_and_contact"/>
+        <Preference
+            android:key="@string/key_share"
+            android:title="@string/share"
+            android:summary="@string/share_to"/>
+        <Preference
+            android:title="@string/version"
+            android:summary="@string/version_no"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

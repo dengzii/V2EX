@@ -5,25 +5,19 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/app_name">
-        <SwitchPreference
-            android:title="@string/auto_night_theme"
-            android:checked="true"
-            android:summary="@string/summary_auto_night_theme"/>
-
-    </PreferenceCategory>
-
     <PreferenceCategory
         android:title="@string/about">
 
         <Preference
+            android:title="@string/reward"
+            android:summary="@string/summary_reward"/>
+        <Preference
             android:title="@string/contact"
             android:summary="@string/author_and_contact"/>
-
         <Preference
+            android:key="share"
             android:title="@string/share"
             android:summary="@string/share_to"/>
-
         <Preference
             android:title="@string/version"
             android:summary="@string/version_no"/>

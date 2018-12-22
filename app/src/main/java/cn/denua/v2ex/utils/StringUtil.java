@@ -25,7 +25,7 @@ public class StringUtil {
 
     public static String timestampToStr(long timestamp){
 
-        String format = Config.getConfig(ConfigRefEnum.CONFIG_PROFILE_DATE_FORMAT);
+        String format = Config.getConfig(ConfigRefEnum.CONFIG_DATE_FORMAT);
         Locale locale = Config.getConfig(ConfigRefEnum.CONFIG_LOCAL);
         DateFormat dateFormat = new SimpleDateFormat(format, locale);
 

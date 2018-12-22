@@ -65,9 +65,9 @@ public class TopicView extends FrameLayout {
     private static String mDateFormat;
 
     static   {
-        mIsChineseNodeLabel = Config.getConfig(ConfigRefEnum.CONFIG_CHINESE_NODE_NAME);
-        mDateFormat = Config.getConfig(ConfigRefEnum.CONFIG_PROFILE_DATE_FORMAT);
-        mIsShowCreateDate = Config.getConfig(ConfigRefEnum.CONFIG_TOPIC_CREATE_DATE);
+        mIsChineseNodeLabel = Config.getConfig(ConfigRefEnum.CONFIG_NODE_NAME_INSTEAD_TITLE);
+        mDateFormat = Config.getConfig(ConfigRefEnum.CONFIG_DATE_FORMAT);
+        mIsShowCreateDate = Config.getConfig(ConfigRefEnum.CONFIG_TOPIC_CREATE_INSTEAD_TOUCHED);
     }
 
     @SuppressLint("ClickableViewAccessibility")

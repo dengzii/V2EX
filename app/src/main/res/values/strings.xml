@@ -54,11 +54,23 @@
     <string name="place_holder_created_on">创建于%1$s</string>
 
     <!--AppReferences-->
-
     <string name="need_storage_permission">需要存储权限</string>
     <string name="title_activity_settings2">Settings</string>
+    <string name="auto_check">自动签到</string>
+    <string name="summary_auto_check">每次开启app时自动签到</string>
     <string name="auto_night_theme">自动夜晚主题</string>
+    <string name="auto_night_time">自动夜间主题时间</string>
+    <string name="auto_night_time_default">21:00–7:00</string>
     <string name="summary_auto_night_theme">自动设置为夜晚在指定时间或在黑暗的环境</string>
+    <string name="check_message_background">后台接受新消息</string>
+    <string name="summary_check_background">十分钟检查一次是否有新消息,这将加大服务器压力,谨慎开启</string>
+    <string name="date_format">时间格式</string>
+    <string name="summary_date_format">yyyy/mm/dd hh:MM</string>
+
+    <string name="general">通 用</string>
+    <string name="advanced">高 级</string>
+    <string name="reward">打 赏</string>
+    <string name="summary_reward">多少不重要,这将鼓励我继续更新</string>
     <string name="contact">联系方式</string>
     <string name="about">关 于</string>
     <string name="author_and_contact">denua@foxmail.com</string>

@@ -20,23 +20,24 @@ public enum ConfigRefEnum implements Serializable {
     KEY_FILE_CONFIG_PREF    ("key_shared_pref_name",    null),
     KEY_USER_NAME           ("key_username",            null),
 
-    CONFIG_LAST_TOUCHED         ("last_touched",    0L),
-    CONFIG_THEME                ("theme",           R.style.MainTheme),
-    CONFIG_AUTO_NIGHT_THEME     ("auto_night",      false),
-    CONFIG_AUTO_NIGHT_DARK      ("auto_night_dark", false),
-    CONFIG_AUTO_NIGHT           ("night_time",      18.30f),
-    CONFIG_AUTO_CHECK           ("auto_check",      false),
-    CONFIG_HOME_TAB             ("home_tab",        Config.HOME_TAB_TITLES),
-    CONFIG_DETAILED_INFO        ("detailed",        false),
+    CONFIG_LAST_TOUCHED         ("last_touched",        0L),
+    CONFIG_THEME                ("theme",               R.style.MainTheme),
+    CONFIG_AUTO_NIGHT_THEME     ("auto_night_theme",    true),
+    CONFIG_AUTO_NIGHT_TIME      ("auto_night_time",     18.30f),
+    CONFIG_AUTO_CHECK           ("auto_check",          false),
 
-    CONFIG_MEMBER_TAB           ("member_tab",      null),
-    CONFIG_LOCAL                ("local",           Locale.CHINA),
+    CONFIG_CHECK_MESSAGE_BACKGROUND ("check_message_background", false),
 
-    CONFIG_TOPIC_CREATE_DATE    ("topic_use_create",    true),
-    CONFIG_CHINESE_NODE_NAME    ("chinese_node_name",   true),
-    CONFIG_PROFILE_DATE_FORMAT  ("profile_date_format", "yyyy/MM/dd HH:mm"),
-    CONFIG_REPLY_LINE_HEIGHT    ("reply_line_height",   1.3f),
-    CONFIG_REPLY_FROM_API       ("get_reply_from_api",  false),
+    CONFIG_HOME_TAB             ("home_tabs",            Config.HOME_TAB_TITLES),
+    CONFIG_MEMBER_TAB           ("member_tab",          null),
+    CONFIG_LOCAL                ("local",               Locale.CHINA),
+
+    CONFIG_DETAILED_USER_INFO               ("detailed_user_info",            false),
+    CONFIG_TOPIC_CREATE_INSTEAD_TOUCHED     ("topic_created_instead_touched",    true),
+    CONFIG_NODE_NAME_INSTEAD_TITLE          ("node_name_instead_title",   true),
+    CONFIG_DATE_FORMAT                      ("date_format", "yyyy/MM/dd HH:mm"),
+    CONFIG_REPLY_LINE_HEIGHT                ("reply_line_height",   1.3f),
+    CONFIG_REPLY_FROM_API                   ("get_reply_from_api",  false),
     ;
 
     private String key;

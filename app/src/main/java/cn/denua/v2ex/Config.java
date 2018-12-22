@@ -28,6 +28,7 @@ public class Config {
 
     private static HashMap<ConfigRefEnum, Serializable> CONFIG = new HashMap<>();
 
+    public static final String PREFERENCES_NAME = "preferences_settings";
     public static Account account = new Account();
     public static boolean IsLogin = false;
 
@@ -90,7 +91,7 @@ public class Config {
         return account != null;
     }
 
-    public  enum ThemeEnum{
+    public enum ThemeEnum{
 
         MAIN_THEME  ("BlueGrey", R.style.MainTheme),
         GREEN_THEME ("Green",   R.style.GreenTheme),

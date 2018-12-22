@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018 denua.
+  -->
+
+<resources>
+
+    <string name="key_auto_night_theme">auto_night_theme</string>
+    <string name="key_auto_night_time">auto_night_time</string>
+    <string name="key_auto_check">auto_check</string>
+    <string name="key_check_message_background">check_message_background</string>
+    <string name="key_date_format">date_format</string>
+
+    <string name="key_theme">key_theme</string>
+    <string name="key_home_tabs">home_tabs</string>
+
+    <string name="key_detailed_user_info">detailed_user_info</string>
+    <string name="key_local">local</string>
+    <string name="key_topic_created_instead_touched">topic_created_instead_touched</string>
+    <string name="key_node_name_instead_title">node_name_instead_title</string>
+    <string name="key_get_reply_from_api">get_reply_from_api</string>
+    <string name="key_reply_line_height">reply_line_height</string>
+
+    <string name="key_reward">key_reward</string>
+    <string name="key_share">key_share</string>
+
+    <string-array name="list_theme">
+        <item>BlueGrey</item>
+        <item>Green</item>
+        <item>Indigo</item>
+        <item>Teal</item>
+        <item>Orange</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="list_home_tabs">
+        <item>热 门</item>
+        <item>最 新</item>
+        <item>最近更新</item>
+        <item>全 部</item>
+        <item>关 注</item>
+    </string-array>
+    <string-array name="list_home_tabs_entries">
+        <item>HOT</item>
+        <item>LATEST</item>
+        <item>CHANGES</item>
+        <item>ALL</item>
+        <item>FOLLOWING</item>
+    </string-array>
+
+    <string-array name="list_date_format">
+        <item>yyyy/mm/dd hh:MM</item>
+        <item>yyyy/mm/dd hh:MM</item>
+    </string-array>
+    <string-array name="list_date_format_entries">
+        <item>yyyy/mm/dd hh:MM</item>
+        <item>yyyy/mm/dd hh:MM</item>
+    </string-array>
+
+    <string-array name="list_auto_night_time">
+        <item>21:00–7:00</item>
+        <item>21:30–7:00</item>
+        <item>22:00–7:00</item>
+    </string-array>
+    <string-array name="list_auto_night_time_entries">
+        <item>21:00–7:00</item>
+        <item>21:30–7:00</item>
+        <item>22:00–7:00</item>
+    </string-array>
+
+</resources>
