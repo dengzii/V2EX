@@ -24,8 +24,10 @@
             android:icon="@drawable/ic_setup"
             android:title="@string/settings"/>
         <item android:id="@+id/it_login_out"
+            android:visible="false"
+            android:enabled="false"
             android:icon="@drawable/ic_login"
-            android:title="@string/login"/>
+            android:title="@string/logout"/>
         <item android:id="@+id/it_change_theme"
             android:menuCategory="alternative"
             android:title="@string/theme"/>

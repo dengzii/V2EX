@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.adapter.MainPagerAdapter;
@@ -104,7 +106,17 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         miLogin = navigationView.getMenu().findItem(R.id.it_login_out);
 
         ivUserPic.setImageResource(R.drawable.ic_offline);
-        tvUserName.setText(getResources().getText(R.string.not_login));
+        tvUserName.setText(getResources().getText(R.string.click_to_login));
+        ivUserPic.setOnClickListener(v -> {
+            if (!Config.IsLogin){
+                changeUserStatus();
+            }
+        });
+        tvUserName.setOnClickListener(v -> {
+            if (!Config.IsLogin){
+                changeUserStatus();
+            }
+        });
     }
 
     @Override
@@ -221,19 +233,18 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         if (Config.IsLogin){
             miLogin.setIcon(R.drawable.ic_logout);
+            miLogin.setEnabled(true);
+            miLogin.setVisible(true);
             Glide.with(this).load(Config.account.getAvatar_large()).into(ivUserPic);
             tvUserName.setText(Config.account.getUsername());
-            miLogin.setTitle(R.string.logout);
             tvBalance.setText(String.valueOf(Config.account.getBalance()));
         }else{
-            tvUserName.setText(R.string.not_login);
-            miLogin.setTitle(R.string.login);
+            miLogin.setVisible(false);
+            miLogin.setEnabled(false);
             tvBalance.setText(R.string.zero);
-            miLogin.setIcon(R.drawable.ic_login);
             ivUserPic.setImageResource(R.drawable.ic_launcher_foreground);
         }
-    }
-    @Override
+    }    @Override
     public void onFailed(String msg) {
         Config.IsLogin = false;
         ToastUtils.showShort(msg);

@@ -7,6 +7,7 @@
     <string name="login">登 录</string>
     <string name="logout">登 出</string>
     <string name="not_login">未登录</string>
+    <string name="click_to_login">点击登录</string>
     <string name="login_success">登录成功</string>
 
     <string name="topic">话 题</string>
