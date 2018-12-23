@@ -90,6 +90,7 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
 
         mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
         mSwipeRefreshLayout.setRefreshing(true);
+        setSwipeRefreshTheme(mSwipeRefreshLayout);
         onRefresh();
         return savedView;
     }

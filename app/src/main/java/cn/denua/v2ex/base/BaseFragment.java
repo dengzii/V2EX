@@ -2,7 +2,14 @@ package cn.denua.v2ex.base;
 
 
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.ColorUtils;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.TypedValue;
 import android.view.View;
+
+import com.blankj.utilcode.util.ResourceUtils;
+
+import cn.denua.v2ex.R;
 
 public class BaseFragment extends Fragment {
 
@@ -13,6 +20,19 @@ public class BaseFragment extends Fragment {
 
     public BaseFragment(){}
 
+    protected void setSwipeRefreshTheme(SwipeRefreshLayout swipeRefreshLayout){
+        if (!(getActivity() instanceof BaseActivity)){
+            return;
+        }
+        TypedValue colorAccent = new TypedValue();
+        TypedValue colorPrimaryDark = new TypedValue();
+        getActivity().getTheme().resolveAttribute(R.attr.attr_color_accent,colorAccent,
+                true);
+        getActivity().getTheme().resolveAttribute(R.attr.attr_color_primary_dark,
+                colorPrimaryDark, true);
+        swipeRefreshLayout.setColorSchemeResources(colorAccent.resourceId,
+                colorPrimaryDark.resourceId);
+    }
 
     public String getContentType() {
         return contentType;

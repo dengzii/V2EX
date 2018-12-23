@@ -75,6 +75,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
         swipeRefreshLayout.setRefreshing(true);
+        setSwipeRefreshTheme(swipeRefreshLayout);
         onRefresh();
         return savedView;
     }

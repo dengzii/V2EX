@@ -109,6 +109,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         }
 
         initHeaderView();
+        setSwipeRefreshTheme(mSwipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
     }
 

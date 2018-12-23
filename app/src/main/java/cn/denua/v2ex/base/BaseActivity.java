@@ -3,6 +3,7 @@ package cn.denua.v2ex.base;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.ViewGroup;
@@ -48,8 +49,20 @@ public class BaseActivity extends AppCompatActivity {
         
     }
 
+    protected void setSwipeRefreshTheme(SwipeRefreshLayout swipeRefreshLayout){
+
+        TypedValue colorAccent = new TypedValue();
+        TypedValue colorPrimaryDark = new TypedValue();
+        getTheme().resolveAttribute(R.attr.attr_color_accent,colorAccent,
+                true);
+        getTheme().resolveAttribute(R.attr.attr_color_primary_dark,
+                colorPrimaryDark, true);
+        swipeRefreshLayout.setColorSchemeResources(colorAccent.resourceId,
+                colorPrimaryDark.resourceId);
+    }
     protected void setTheme(){
-        setTheme(Config.getConfig(ConfigRefEnum.CONFIG_THEME));
+        int theme = Config.ThemeEnum.getThemeResByName(Config.getConfig(ConfigRefEnum.CONFIG_THEME));
+        setTheme(theme);
     }
 
     protected int getColorAttr(int attr){
@@ -67,7 +80,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void setThemeNoActionBar(){
-        switch ((int)Config.getConfig(ConfigRefEnum.CONFIG_THEME)){
+        switch (Config.ThemeEnum.getThemeResByName(Config.getConfig(ConfigRefEnum.CONFIG_THEME))){
             case R.style.MainTheme:
                 setTheme(R.style.MainTheme_NoActionbar);
                 break;
