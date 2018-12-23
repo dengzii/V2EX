@@ -31,4 +31,13 @@ public class StringUtil {
 
         return TimeUtils.getString(timestamp, dateFormat, timestamp, TimeConstants.SEC);
     }
+
+    public static String getDateNow(String format){
+
+        Locale locale = Config.getConfig(ConfigRefEnum.CONFIG_LOCAL);
+        DateFormat dateFormat = new SimpleDateFormat(format, locale);
+
+        return TimeUtils.getString(System.currentTimeMillis(), dateFormat,
+                System.currentTimeMillis(), TimeConstants.SEC);
+    }
 }

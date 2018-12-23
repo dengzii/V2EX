@@ -7,10 +7,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
+        android:key="@string/key_theme"
         android:title="@string/theme"
         android:dialogTitle="@string/theme"
         android:entryValues="@array/list_theme"
-        android:entries="@array/list_theme"/>
+        android:entries="@array/list_theme_entries"/>
 
     <PreferenceCategory
         android:title="@string/general">
@@ -50,38 +51,47 @@
         android:title="@string/advanced">
         <MultiSelectListPreference
             android:key="@string/key_home_tabs"
-            android:title="@string/key_home_tabs"
+            android:title="@string/home_tab"
+            android:summary="@string/summary_home_tab"
             android:entryValues="@array/list_home_tabs"
             android:entries="@array/list_home_tabs_entries"
             android:dialogTitle="@string/key_home_tabs"/>
         <SwitchPreference
             android:key="@string/key_detailed_user_info"
-            android:title="@string/key_detailed_user_info" />
+            android:title="@string/show_detailed_user_info"
+            android:summary="@string/summary_show_detailed_user_info"/>
         <Preference
             android:key="@string/key_local"
-            android:title="@string/key_local"
+            android:title="@string/location"
             android:defaultValue="china"
-            android:summary="china"/>
+            android:summary="@string/summary_location"/>
         <SwitchPreference
             android:key="@string/key_topic_created_instead_touched"
-            android:title="@string/key_topic_created_instead_touched"/>
+            android:title="@string/topic_created_instead_touched"
+            android:defaultValue="false"
+            android:summary="@string/summary_topic_created_instead_touched"/>
         <SwitchPreference
             android:key="@string/key_node_name_instead_title"
-            android:title="@string/key_node_name_instead_title"/>
+            android:title="@string/node_name_instead_title"
+            android:defaultValue="false"
+            android:summary="@string/summary_node_name_instead_title"/>
         <SwitchPreference
             android:key="@string/key_get_reply_from_api"
-            android:title="@string/key_get_reply_from_api"/>
+            android:title="@string/use_official_api"
+            android:summary="@string/summary_use_official_api"
+            android:defaultValue="true"/>
         <Preference
             android:key="@string/key_reply_line_height"
-            android:title="@string/key_reply_line_height"
-            android:defaultValue="1.3"
-            android:summary="18.30"/>
+            android:title="@string/reply_line_height"
+            android:defaultValue="18.30"
+            android:summary="@string/summary_replay_line_height"/>
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/about"
         android:persistent="false">
-
+        <Preference
+            android:title=""/>
         <Preference
             android:key="@string/key_reward"
             android:title="@string/reward"

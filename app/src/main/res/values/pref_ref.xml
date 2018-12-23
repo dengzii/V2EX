@@ -32,29 +32,39 @@
         <item>Orange</item>
         <item>Dark</item>
     </string-array>
+    <string-array name="list_theme_entries">
+        <item>BlueGrey</item>
+        <item>Green</item>
+        <item>Indigo</item>
+        <item>Teal</item>
+        <item>Orange</item>
+        <item>Dark</item>
+    </string-array>
 
     <string-array name="list_home_tabs">
-        <item>热 门</item>
-        <item>最 新</item>
-        <item>最近更新</item>
-        <item>全 部</item>
-        <item>关 注</item>
-    </string-array>
-    <string-array name="list_home_tabs_entries">
         <item>HOT</item>
         <item>LATEST</item>
         <item>CHANGES</item>
         <item>ALL</item>
         <item>FOLLOWING</item>
     </string-array>
+    <string-array name="list_home_tabs_entries">
+        <item>热 门</item>
+        <item>最 新</item>
+        <item>最近更新</item>
+        <item>全 部</item>
+        <item>关 注</item>
+    </string-array>
 
     <string-array name="list_date_format">
-        <item>yyyy/mm/dd hh:MM</item>
-        <item>yyyy/mm/dd hh:MM</item>
+        <item>yyyy-MM-dd HH:mm</item>
+        <item>MM-dd HH:mm</item>
+        <item>HH:mm MM-dd</item>
     </string-array>
     <string-array name="list_date_format_entries">
-        <item>yyyy/mm/dd hh:MM</item>
-        <item>yyyy/mm/dd hh:MM</item>
+        <item>yyyy-MM-dd HH:mm</item>
+        <item>MM-dd HH:mm</item>
+        <item>HH:mm MM-dd</item>
     </string-array>
 
     <string-array name="list_auto_night_time">

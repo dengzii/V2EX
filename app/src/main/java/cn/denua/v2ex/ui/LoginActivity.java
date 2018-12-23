@@ -131,7 +131,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
         Config.account = result;
         Config.IsLogin = true;
         setResult(RESULT_SUCCESS);
-        Config.persistentAccount();
+        Config.persistentAccount(this);
         finish();
     }
 }

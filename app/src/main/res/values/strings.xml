@@ -57,6 +57,8 @@
     <!--AppReferences-->
     <string name="need_storage_permission">需要存储权限</string>
     <string name="title_activity_settings2">Settings</string>
+
+    <string name="general">通 用</string>
     <string name="auto_check">自动签到</string>
     <string name="summary_auto_check">每次开启app时自动签到</string>
     <string name="auto_night_theme">自动夜晚主题</string>
@@ -68,12 +70,26 @@
     <string name="date_format">时间格式</string>
     <string name="summary_date_format">yyyy/mm/dd hh:MM</string>
 
-    <string name="general">通 用</string>
     <string name="advanced">高 级</string>
+    <string name="home_tab">主页标签</string>
+    <string name="summary_home_tab">自定义主页 Tab 以及顺序</string>
+    <string name="topic_created_instead_touched">使用话题创建时间</string>
+    <string name="summary_topic_created_instead_touched">显示话题的创建时间代替最后更新时间,仅部分类型话题可用</string>
+    <string name="show_detailed_user_info">详细用户信息</string>
+    <string name="summary_show_detailed_user_info">在用户详情页显示更多的用户信息</string>
+    <string name="location">位 置</string>
+    <string name="summary_location">通过位置设定语言及时区</string>
+    <string name="node_name_instead_title">使用节点名称</string>
+    <string name="summary_node_name_instead_title">显示节点的中文名代替英文名</string>
+    <string name="use_official_api">使用官方API请求数据</string>
+    <string name="summary_use_official_api">官方API有请求频率限制</string>
+    <string name="reply_line_height">回复正文行高</string>
+    <string name="summary_replay_line_height">话题回复的行高</string>
+
+    <string name="about">关 于</string>
     <string name="reward">打 赏</string>
     <string name="summary_reward">多少不重要,这将鼓励我继续更新</string>
     <string name="contact">联系方式</string>
-    <string name="about">关 于</string>
     <string name="author_and_contact">denua@foxmail.com</string>
     <string name="share">分 享</string>
     <string name="share_to">如果您觉得这个App不错, 将此App分享给朋友</string>

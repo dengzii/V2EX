@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.ThemeEnum;
 
 import static cn.denua.v2ex.utils.StatusBarUtil.getStatusBarHeight;
 
@@ -61,7 +62,7 @@ public class BaseActivity extends AppCompatActivity {
                 colorPrimaryDark.resourceId);
     }
     protected void setTheme(){
-        int theme = Config.ThemeEnum.getThemeResByName(Config.getConfig(ConfigRefEnum.CONFIG_THEME));
+        int theme = ThemeEnum.getThemeResByName(Config.getConfig(ConfigRefEnum.CONFIG_THEME));
         setTheme(theme);
     }
 
@@ -80,7 +81,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void setThemeNoActionBar(){
-        switch (Config.ThemeEnum.getThemeResByName(Config.getConfig(ConfigRefEnum.CONFIG_THEME))){
+        switch (ThemeEnum.getThemeResByName(Config.getConfig(ConfigRefEnum.CONFIG_THEME))){
             case R.style.MainTheme:
                 setTheme(R.style.MainTheme_NoActionbar);
                 break;

@@ -16,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +29,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.adapter.MainPagerAdapter;
@@ -41,7 +39,7 @@ import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.LoginService;
 import cn.denua.v2ex.Config;
-import cn.denua.v2ex.widget.DialogUtil;
+import cn.denua.v2ex.utils.DialogUtil;
 import cn.denua.v2ex.widget.MessageDialog;
 
 @SuppressWarnings("RedundantCast")
@@ -68,6 +66,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     private List<Fragment> topicFragments = new ArrayList<>();
     private MenuItem miLogin;
 
+    private boolean mNeedRecreate = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +77,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         ButterKnife.bind(this);
         initView();
 
-        if (Config.restoreAccount()){
+        if (Config.restoreAccount(this)){
             new LoginService(this).getInfo(this);
         }
     }
@@ -123,6 +123,10 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     protected void onResume() {
         super.onResume();
 
+        if (mNeedRecreate){
+            recreate();
+            mNeedRecreate = false;
+        }
         if (!PermissionUtils.isGranted("android.permission.WRITE_EXTERNAL_STORAGE")){
             MessageDialog messageDialog = new MessageDialog(this);
             messageDialog.init(
@@ -166,6 +170,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         switch (item.getItemId()){
             case R.id.it_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
+                mNeedRecreate = true;
+                drawerLayout.closeDrawer(Gravity.START);
                 break;
             case R.id.it_check:
                 break;
@@ -180,10 +186,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 break;
             case R.id.it_login_out:
                 changeUserStatus();
-                break;
-            case R.id.it_change_theme:
-                DialogUtil.showThemeDialog(this);
-                drawerLayout.closeDrawer(Gravity.START);
                 break;
             default:break;
         }
@@ -224,7 +226,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         Config.IsLogin = false;
         Config.account = new Account();
-        Config.persistentAccount();
+        Config.persistentAccount(this);
         RetrofitManager.clearCookies();
         setUserStatus();
     }
@@ -239,16 +241,20 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             tvUserName.setText(Config.account.getUsername());
             tvBalance.setText(String.valueOf(Config.account.getBalance()));
         }else{
+            tvUserName.setText(R.string.click_to_login);
             miLogin.setVisible(false);
             miLogin.setEnabled(false);
             tvBalance.setText(R.string.zero);
             ivUserPic.setImageResource(R.drawable.ic_launcher_foreground);
         }
-    }    @Override
+    }
+
+    @Override
     public void onFailed(String msg) {
         Config.IsLogin = false;
         ToastUtils.showShort(msg);
     }
+
     @Override
     public void onComplete(Account result) {
         Config.account = result;

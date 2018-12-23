@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import cn.denua.v2ex.Config;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.BaseActivity;
 import cn.denua.v2ex.fragment.GeneralPreferenceFragment;
@@ -28,6 +29,7 @@ public class SettingsActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        Config.loadConfig(this);
         super.onDestroy();
     }
 }
