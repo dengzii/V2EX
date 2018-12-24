@@ -109,8 +109,6 @@ public class HtmlUtil {
                 topic.setMember(member);
                 topics.add(topic);
             }catch (Exception e){
-                System.out.println(topics.get(0).getId());
-                System.out.println(topics.get(0).getTitle());
                 System.out.println(element.html());
                 e.printStackTrace();
             }

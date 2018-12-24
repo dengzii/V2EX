@@ -8,15 +8,12 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.SwitchPreference;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.Switch;
 
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
-import cn.denua.v2ex.ThemeEnum;
 import cn.denua.v2ex.utils.StringUtil;
 
 /*
@@ -47,7 +44,6 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
         dateFormatPreference.setEntries(dateEntries);
         dateFormatPreference.setSummary(StringUtil.getDateNow(Config.getConfig(
                 ConfigRefEnum.CONFIG_DATE_FORMAT)));
-
     }
 
     @Override
@@ -56,19 +52,9 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
 
         Preference preference = findPreference(getString(R.string.key_theme));
         preference.setOnPreferenceChangeListener((preference1, newValue) -> {
-            ThemeEnum themeEnum = ThemeEnum.getByName(newValue.toString());
-            Config.setConfig(ConfigRefEnum.CONFIG_THEME, themeEnum.getName());
+            Config.setConfig(ConfigRefEnum.CONFIG_THEME, String.valueOf(newValue));
             getActivity().recreate();
             return true;
         });
-
-        Preference autoNightTime = findPreference(getString(R.string.key_auto_night_time));
-        SwitchPreference autoNight = (SwitchPreference) findPreference(getString(R.string.key_auto_night_theme));
-        autoNight.setOnPreferenceChangeListener(
-                (preference12, newValue) -> {
-                    autoNightTime.setEnabled(autoNight.isChecked());
-                    return true;
-                });
-
     }
 }

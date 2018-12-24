@@ -17,10 +17,13 @@ public class ConfigTest {
     @Test
     public void test(){
 
-        System.out.println(ConfigRefEnum.getByDescriptor("local"));
-        for (ConfigRefEnum configRefEnum:ConfigRefEnum.values()){
-            System.out.println(configRefEnum.getKey() + ": " + configRefEnum.getDefaultValue());
-        }
+        System.out.println(TabEnum.findByDescriptor("DD").getTitle());
+
+//        System.out.println(ConfigRefEnum.getByDescriptor("local"));
+
+//        for (ConfigRefEnum configRefEnum:ConfigRefEnum.values()){
+//            System.out.println(configRefEnum.getKey() + ": " + configRefEnum.getDefaultValue());
+//        }
 
     }
 }

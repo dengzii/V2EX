@@ -22,7 +22,7 @@ public enum ConfigRefEnum implements Serializable {
     KEY_USER_NAME               ("key_username",        null),
 
     CONFIG_LAST_TOUCHED         ("last_touched",        0L),
-    CONFIG_THEME                ("key_theme",           ThemeEnum.MAIN_THEME.getName()),
+    CONFIG_THEME                ("key_theme",           "MainTheme"),
     CONFIG_AUTO_NIGHT_THEME     ("auto_night_theme",    true),
     CONFIG_AUTO_NIGHT_TIME      ("auto_night_time",     18.30f),
     CONFIG_AUTO_CHECK           ("auto_check",          false),

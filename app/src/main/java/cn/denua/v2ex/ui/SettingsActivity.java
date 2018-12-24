@@ -29,7 +29,7 @@ public class SettingsActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        Config.loadConfig(this);
+        Config.init(this);
         super.onDestroy();
     }
 }

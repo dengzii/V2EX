@@ -6,6 +6,8 @@ package cn.denua.v2ex;
 
 import java.io.Serializable;
 
+import cn.denua.v2ex.helper.EnumFindHelper;
+
 /*
  * topic tab
  *
@@ -19,6 +21,7 @@ public enum TabEnum implements Serializable {
     CHANGES ("最近更新"),
     ALL     ("全 部"),
     FOLLOWING("关 注"),
+    MESSAGE ("消 息"),
 
     NODE    ("node"),
     CUSTOM  ("custom"),
@@ -26,9 +29,23 @@ public enum TabEnum implements Serializable {
 
     private String title;
 
+    static final EnumFindHelper<TabEnum, String> sFindHelper =
+            new EnumFindHelper<>(TabEnum.class, TabEnum::getTitle);
+
     TabEnum(String title){
         this.title = title;
     }
+
+    public static TabEnum findByDescriptor(String descriptor){
+        TabEnum node = NODE;
+        node.setTitle(descriptor);
+        return sFindHelper.find(descriptor, node);
+    }
+
+    public static boolean contains(String name){
+        return sFindHelper.contains(name);
+    }
+
     public String getTitle() {
         return title;
     }

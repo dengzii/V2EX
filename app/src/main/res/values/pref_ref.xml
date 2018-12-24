@@ -25,15 +25,15 @@
     <string name="key_share">key_share</string>
 
     <string-array name="list_theme">
-        <item>BlueGrey</item>
-        <item>Green</item>
-        <item>Indigo</item>
-        <item>Teal</item>
-        <item>Orange</item>
-        <item>Dark</item>
+        <item>MainTheme</item>
+        <item>GreenTheme</item>
+        <item>IndigoTheme</item>
+        <item>TealTheme</item>
+        <item>OrangeTheme</item>
+        <item>DarkTheme</item>
     </string-array>
     <string-array name="list_theme_entries">
-        <item>BlueGrey</item>
+        <item>Main</item>
         <item>Green</item>
         <item>Indigo</item>
         <item>Teal</item>
