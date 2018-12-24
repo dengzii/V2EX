@@ -89,10 +89,9 @@ public class Config {
         Map<String, ?> pref = preferences.getAll();
         for (ConfigRefEnum refEnum:ConfigRefEnum.values()){
             String key = refEnum.getKey();
-            if (pref.get(key)!=null){
-                CONFIG.put(refEnum, (Serializable) pref.get(key));
-            }
-            CONFIG.put(refEnum,  refEnum.getDefaultValue());
+            CONFIG.put(refEnum, pref.get(key) != null
+                    ? (Serializable) pref.get(key)
+                    : refEnum.getDefaultValue());
         }
 
         Set<String> homeTabs = preferences.getStringSet(ConfigRefEnum.CONFIG_HOME_TAB.getKey(),

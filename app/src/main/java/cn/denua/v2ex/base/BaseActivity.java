@@ -65,7 +65,6 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected int getCurrentThemeId(){
-        System.out.println((String) Config.getConfig(ConfigRefEnum.CONFIG_THEME));
         return getResources().getIdentifier(Config.getConfig(ConfigRefEnum.CONFIG_THEME),
                 "style", getPackageName());
     }
