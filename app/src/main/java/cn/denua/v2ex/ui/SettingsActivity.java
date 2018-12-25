@@ -33,5 +33,6 @@ public class SettingsActivity extends BaseActivity {
         super.onBackPressed();
         Config.init(this);
         startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }
