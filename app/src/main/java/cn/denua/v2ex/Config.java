@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -35,13 +36,20 @@ public class Config {
     public static boolean IsLogin = false;
 
     private static ArrayList<TabEnum> HOME_TAB_TITLES = new ArrayList<>();
-    static ArrayList<TabEnum> HOME_TAB_DEFAULT = new ArrayList<TabEnum>(){{
+
+    static final ArrayList<TabEnum> HOME_TAB_DEFAULT = new ArrayList<TabEnum>(){{
         add(TabEnum.ALL);
         add(TabEnum.HOT);
         add(TabEnum.CHANGES);
     }};
+    public static final ArrayList<Locale> LOCAL_LIST = new ArrayList<Locale>(){{
+        add(Locale.CHINA);
+        add(Locale.US);
+        add(Locale.JAPAN);
+    }};
 
     public static void init(Context context){
+
         loadConfig(context);
     }
 
@@ -97,7 +105,6 @@ public class Config {
                     ? (Serializable) pref.get(key)
                     : refEnum.getDefaultValue());
         }
-
         HOME_TAB_TITLES.clear();
         Set<String> homeTabs = preferences.getStringSet(ConfigRefEnum.CONFIG_HOME_TAB.getKey(),
                     new TreeSet<String>(){{add(TabEnum.ALL.getTitle());}});

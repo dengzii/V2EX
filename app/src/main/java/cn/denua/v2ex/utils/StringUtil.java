@@ -26,7 +26,7 @@ public class StringUtil {
     public static String timestampToStr(long timestamp){
 
         String format = Config.getConfig(ConfigRefEnum.CONFIG_DATE_FORMAT);
-        Locale locale = Config.getConfig(ConfigRefEnum.CONFIG_LOCAL);
+        Locale locale = Locale.getDefault();//Config.getConfig(ConfigRefEnum.CONFIG_LOCAL);
         DateFormat dateFormat = new SimpleDateFormat(format, locale);
 
         return TimeUtils.getString(timestamp, dateFormat, timestamp, TimeConstants.SEC);
@@ -34,7 +34,7 @@ public class StringUtil {
 
     public static String getDateNow(String format){
 
-        Locale locale = Config.getConfig(ConfigRefEnum.CONFIG_LOCAL);
+        Locale locale = Locale.getDefault();
         DateFormat dateFormat = new SimpleDateFormat(format, locale);
 
         return TimeUtils.getString(System.currentTimeMillis(), dateFormat,

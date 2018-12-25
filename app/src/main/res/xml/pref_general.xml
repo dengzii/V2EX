@@ -45,6 +45,10 @@
             android:entries="@array/list_date_format_entries"
             android:entryValues="@array/list_date_format"
             android:summary="@string/summary_date_format"/>
+        <Preference
+            android:persistent="false"
+            android:key="@string/clear_cache"
+            android:title="@string/clear_cache" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -60,10 +64,9 @@
             android:key="@string/key_detailed_user_info"
             android:title="@string/show_detailed_user_info"
             android:summary="@string/summary_show_detailed_user_info"/>
-        <Preference
+        <ListPreference
             android:key="@string/key_local"
             android:title="@string/location"
-            android:defaultValue="china"
             android:summary="@string/summary_location"/>
         <SwitchPreference
             android:key="@string/key_topic_created_instead_touched"

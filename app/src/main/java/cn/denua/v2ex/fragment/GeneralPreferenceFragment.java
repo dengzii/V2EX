@@ -11,6 +11,8 @@ import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import java.util.Locale;
+
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
@@ -29,9 +31,9 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
         getPreferenceManager().setSharedPreferencesName(Config.PREFERENCES_SETTINGS);
         addPreferencesFromResource(R.xml.pref_general);
 
-        ListPreference listPreference = (ListPreference) findPreference(
+        ListPreference themePreference = (ListPreference) findPreference(
                 getString(R.string.key_theme));
-        listPreference.setSummary(Config.getConfig(ConfigRefEnum.CONFIG_THEME));
+        themePreference.setSummary(Config.getConfig(ConfigRefEnum.CONFIG_THEME));
 
         ListPreference dateFormatPreference = (ListPreference)findPreference(
                 getString(R.string.key_date_format));
@@ -44,7 +46,25 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
         dateFormatPreference.setEntries(dateEntries);
         dateFormatPreference.setSummary(StringUtil.getDateNow(Config.getConfig(
                 ConfigRefEnum.CONFIG_DATE_FORMAT)));
+
+        ListPreference localePreference = (ListPreference) findPreference(getString(R.string.key_local));
+        String[] localesEntryValue = new String[Config.LOCAL_LIST.size()];
+        String[] localesEntries= new String[Config.LOCAL_LIST.size()];
+        int index = 0;
+        for (Locale locale:Config.LOCAL_LIST){
+            localesEntryValue[index] = locale.toString();
+            localesEntries[index++] = locale.getDisplayCountry();
+        }
+        localePreference.setDefaultValue(localesEntryValue[0]);
+        localePreference.setEntryValues(localesEntryValue);
+        localePreference.setEntries(localesEntries);
+
+        Preference clearCachePreference = findPreference(getString(R.string.clear_cache));
+        clearCachePreference.setOnPreferenceClickListener(this::clearCache);
+        clearCachePreference.setSummary("缓存大小 12 MB");
     }
+
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -56,5 +76,10 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
             getActivity().recreate();
             return true;
         });
+    }
+
+    private boolean clearCache(Preference preference) {
+
+        return false;
     }
 }

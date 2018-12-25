@@ -120,7 +120,8 @@ public class TopicView extends FrameLayout {
             if (topic.getCreated() == 0 && topic.getAgo() != null){
                 tvLastTouched.setText(topic.getAgo());
             }else if (topic.getCreated() != 0){
-                tvLastTouched.setText(StringUtil.timestampToStr(topic.getCreated()));
+                tvLastTouched.setText(StringUtil.timestampToStr(
+                        mIsShowCreateDate ? topic.getCreated() : topic.getLast_touched()));
             }
             tvUsername.setOnClickListener(v -> goToUserDetail());
             if (ivUserPic != null) {
@@ -134,8 +135,8 @@ public class TopicView extends FrameLayout {
             tvNode.setVisibility(INVISIBLE);
         }else {
             tvNode.setText(mIsChineseNodeLabel
-                    ?topic.getNode().getTitle()
-                    :topic.getNode().getName());
+                    ? topic.getNode().getName()
+                    : topic.getNode().getTitle());
         }
 
         tvNode.setOnClickListener(v -> goToNodeDetail());

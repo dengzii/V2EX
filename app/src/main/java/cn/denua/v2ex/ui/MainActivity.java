@@ -88,7 +88,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         ArrayList<TabEnum> tabEnums = Config.getConfig(ConfigRefEnum.CONFIG_HOME_TAB);
         for (TabEnum s:tabEnums){
-            System.out.println(s);
             tabLayout.addTab(tabLayout.newTab());
             topicFragments.add(TopicFragment.create(s));
         }

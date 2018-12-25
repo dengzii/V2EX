@@ -6,6 +6,8 @@ package cn.denua.v2ex;
 
 import org.junit.Test;
 
+import java.util.Locale;
+
 /*
  * config test
  *
@@ -19,6 +21,9 @@ public class ConfigTest {
 
         System.out.println(TabEnum.findByDescriptor("DD").getTitle());
 
+        Locale local = Config.getConfig(ConfigRefEnum.CONFIG_LOCAL);
+
+        System.out.println(local);
 //        System.out.println(ConfigRefEnum.getByDescriptor("local"));
 
 //        for (ConfigRefEnum configRefEnum:ConfigRefEnum.values()){
