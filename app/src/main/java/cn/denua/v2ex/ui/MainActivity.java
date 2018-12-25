@@ -23,12 +23,14 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.adapter.MainPagerAdapter;
@@ -66,20 +68,15 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     private List<Fragment> topicFragments = new ArrayList<>();
     private MenuItem miLogin;
 
-    private boolean mNeedRecreate = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setThemeNoActionBar();
         setContentView(R.layout.act_main);
 
         ButterKnife.bind(this);
         initView();
-
-        if (Config.restoreAccount(this)){
-            new LoginService(this).getInfo(this);
-        }
     }
 
     protected void initView(){
@@ -89,7 +86,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         tabLayout.setupWithViewPager(viewPager);
 
-        for (TabEnum s:Config.HOME_TAB_TITLES){
+        ArrayList<TabEnum> tabEnums = Config.getConfig(ConfigRefEnum.CONFIG_HOME_TAB);
+        for (TabEnum s:tabEnums){
+            System.out.println(s);
             tabLayout.addTab(tabLayout.newTab());
             topicFragments.add(TopicFragment.create(s));
         }
@@ -120,13 +119,18 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (Config.restoreAccount(this)){
+            new LoginService(this).getInfo(this);
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
-        if (mNeedRecreate){
-            recreate();
-            mNeedRecreate = false;
-        }
         if (!PermissionUtils.isGranted("android.permission.WRITE_EXTERNAL_STORAGE")){
             MessageDialog messageDialog = new MessageDialog(this);
             messageDialog.init(
@@ -170,8 +174,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         switch (item.getItemId()){
             case R.id.it_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
-                mNeedRecreate = true;
-                drawerLayout.closeDrawer(Gravity.START);
+                finish();
                 break;
             case R.id.it_check:
                 break;

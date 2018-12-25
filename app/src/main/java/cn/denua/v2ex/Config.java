@@ -34,10 +34,14 @@ public class Config {
     public static Account account = new Account();
     public static boolean IsLogin = false;
 
-    public static ArrayList<TabEnum> HOME_TAB_TITLES = new ArrayList<>();
+    private static ArrayList<TabEnum> HOME_TAB_TITLES = new ArrayList<>();
+    static ArrayList<TabEnum> HOME_TAB_DEFAULT = new ArrayList<TabEnum>(){{
+        add(TabEnum.ALL);
+        add(TabEnum.HOT);
+        add(TabEnum.CHANGES);
+    }};
 
     public static void init(Context context){
-        HOME_TAB_TITLES.clear();
         loadConfig(context);
     }
 
@@ -94,6 +98,7 @@ public class Config {
                     : refEnum.getDefaultValue());
         }
 
+        HOME_TAB_TITLES.clear();
         Set<String> homeTabs = preferences.getStringSet(ConfigRefEnum.CONFIG_HOME_TAB.getKey(),
                     new TreeSet<String>(){{add(TabEnum.ALL.getTitle());}});
         for (String tab:homeTabs){
@@ -102,6 +107,7 @@ public class Config {
                     : TabEnum.findByDescriptor(tab);
             HOME_TAB_TITLES.add(tabEnum);
         }
+        CONFIG.put(ConfigRefEnum.CONFIG_HOME_TAB, HOME_TAB_TITLES);
     }
 }
 

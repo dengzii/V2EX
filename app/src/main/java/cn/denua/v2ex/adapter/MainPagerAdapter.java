@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.List;
 
 import cn.denua.v2ex.Config;
+import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.TabEnum;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
@@ -17,7 +18,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     public MainPagerAdapter(FragmentManager fragmentManager, List<Fragment> fragmentList){
         super(fragmentManager);
         this.fragmentList = fragmentList;
-        this.titles = Config.HOME_TAB_TITLES;
+        this.titles = Config.getConfig(ConfigRefEnum.CONFIG_HOME_TAB);
 //        fragmentManager.beginTransaction().commitAllowingStateLoss();
     }
 

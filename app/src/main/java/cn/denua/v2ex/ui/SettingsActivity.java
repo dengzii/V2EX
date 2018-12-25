@@ -5,6 +5,7 @@
 package cn.denua.v2ex.ui;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -28,8 +29,9 @@ public class SettingsActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onBackPressed() {
+        super.onBackPressed();
         Config.init(this);
-        super.onDestroy();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
