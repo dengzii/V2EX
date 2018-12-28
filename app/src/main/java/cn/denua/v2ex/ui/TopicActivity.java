@@ -57,7 +57,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     public static void start(Context context, Topic topic){
 
         Intent intent = new Intent(context, TopicActivity.class);
-        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("topic", topic);
         context.startActivity(intent);
     }

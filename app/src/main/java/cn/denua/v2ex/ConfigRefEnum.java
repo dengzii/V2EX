@@ -42,6 +42,7 @@ public enum ConfigRefEnum implements Serializable {
 
     DEFAULT("default", null);
 
+    public static final long serialVersionUID = 110L;
     private String key;
     private Serializable defaultValue;
 

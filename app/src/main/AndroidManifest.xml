@@ -35,13 +35,15 @@
             android:theme="@style/MainTheme.NoActionbar" />
         <activity
             android:name=".ui.TopicActivity"
-            android:label="@string/topic" />
+            android:label="@string/topic"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".ui.LoginActivity"
             android:label="@string/login" />
         <activity
             android:name=".ui.NodeActivity"
-            android:label="@string/node" />
+            android:label="@string/node"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".ui.AllNodeActivity"
             android:label="@string/all_node" />
@@ -50,10 +52,7 @@
             android:label="@string/settings" />
         <activity
             android:name=".ui.UserDetailActivity"
-            android:theme="@style/MainTheme"></activity>
-        <activity
-            android:name=".ui.SettingsActivity2"
-            android:label="@string/title_activity_settings2"></activity>
+            android:launchMode="singleTop"/>
     </application>
 
 </manifest>

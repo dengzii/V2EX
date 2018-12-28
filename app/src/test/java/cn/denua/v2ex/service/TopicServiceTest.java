@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 import cn.denua.v2ex.api.TopicApi;
@@ -21,6 +22,11 @@ import cn.denua.v2ex.model.Node;
 import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Tag;
 import cn.denua.v2ex.model.Topic;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class TopicServiceTest {
 
