@@ -88,19 +88,21 @@ public class HtmlUtil {
         }
 
         List<Topic> topics = new ArrayList<>(101);
+        Topic topic;
+        Member member;
         for (Element element:elements){
             if (topics.size() >= 100){
                 break;
             }
             try {
-                Topic topic = new Topic();
+                topic = new Topic();
                 String s = element.toString().replaceAll("&nbsp;", " ");
                 topic.setId(matcherGroup1Int(PATTERN_TOPIC_ID, s));
                 topic.setTitle(element.selectFirst(".item_title").text());//fixme null point exception
                 topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT_, s));
                 topic.setAgo(matcherGroup1(PATTERN_TOPIC_AGO_, s));
 
-                Member member = new Member();
+                member = new Member();
                 member.setUsername(matcherGroup1(PATTERN_TOPIC_USERNAME, s));
                 member.setAvatar_normal(matcherGroup1(PATTERN_TOPIC_USER_AVATAR, s));
                 topic.setNode(new Node(matcherGroup1(PATTERN_TOPIC_NODE_NAME, s),

@@ -4,6 +4,8 @@
 
 package cn.denua.v2ex.service;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
@@ -105,6 +107,11 @@ public class TopicServiceTest {
             @Override
             public int getContextStatus() {
                 return IResponsibleView.VIEW_STATUS_ACTIVATED;
+            }
+
+            @Override
+            public Context getContext() {
+                return null;
             }
         }, new ResponseListener<List<Topic>>() {
             @Override

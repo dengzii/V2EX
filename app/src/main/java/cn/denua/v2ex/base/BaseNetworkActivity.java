@@ -5,6 +5,7 @@
 package cn.denua.v2ex.base;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.annotation.CallSuper;
 
 import cn.denua.v2ex.interfaces.IResponsibleView;
@@ -36,5 +37,10 @@ public class BaseNetworkActivity extends BaseActivity implements IResponsibleVie
     @CallSuper
     public int getContextStatus() {
         return 0;
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }

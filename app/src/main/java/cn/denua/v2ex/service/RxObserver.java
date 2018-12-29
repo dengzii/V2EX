@@ -30,6 +30,8 @@ public abstract class RxObserver<T> implements Observer<T> {
     }
 
     public void onNext(T t){
+        if ( mBaseService != null && mBaseService.isCanceled())  return;
+
         if (t == null){
             _onError(ErrorEnum.ERR_EMPTY_RESPONSE.getReadable());
         }
@@ -42,6 +44,9 @@ public abstract class RxObserver<T> implements Observer<T> {
         }catch (V2exException e){
             e.printStackTrace();
             _onError(e.getMsg());
+        }catch (NullPointerException e) {
+            e.printStackTrace();
+            _onError(e.getMessage());
         } catch (Exception e){
             System.err.println("===== Exception ======");
             e.printStackTrace();

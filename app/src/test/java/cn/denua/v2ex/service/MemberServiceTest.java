@@ -4,6 +4,8 @@
 
 package cn.denua.v2ex.service;
 
+import android.content.Context;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -69,6 +71,11 @@ public class MemberServiceTest {
         @Override
         public int getContextStatus() {
             return IResponsibleView.VIEW_STATUS_ACTIVATED;
+        }
+
+        @Override
+        public Context getContext() {
+            return null;
         }
     };
 }

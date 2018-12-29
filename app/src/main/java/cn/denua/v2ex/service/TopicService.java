@@ -20,6 +20,7 @@ import cn.denua.v2ex.utils.RxUtil;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /*
@@ -32,6 +33,13 @@ public class TopicService extends BaseService<List<Topic>> {
 
     private static TopicApi topicApi = RetrofitManager.create(TopicApi.class);
     private Gson mGson = new Gson();
+
+    private RxObserver<List<Topic>> mObserver = new RxObserver<List<Topic>>(this) {
+        @Override
+        public void _onNext(List<Topic> topics) {
+            returnSuccess(topics);
+        }
+    };
 
     public TopicService(IResponsibleView v, ResponseListener<List<Topic>> topicListener){
         this.view = v;
@@ -68,28 +76,34 @@ public class TopicService extends BaseService<List<Topic>> {
     private void getHot(){
 
         topicApi.getHotTopic()
-                .compose(RxUtil.io2main())
-                .subscribe(jsonArrayToTopicsObserver);
+                .compose(RxUtil.io2io())
+                .map(this::resolveJsonArray)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mObserver);
     }
 
     private void getLatest(){
 
         topicApi.getLatestTopic()
-                .compose(RxUtil.io2main())
-                .subscribe(jsonArrayToTopicsObserver);
+                .compose(RxUtil.io2io())
+                .map(this::resolveJsonArray)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mObserver);
     }
 
     private void getChanges(){
 
         topicApi.getLatestTopic2()
-                .compose(RxUtil.io2main())
-                .subscribe(new RxObserver<String>(this) {
-                    @Override
-                    public void _onNext(String s) {
-                        List<Topic> topics = HtmlUtil.getTopics(s);
-                        returnSuccess(topics);
+                .compose(RxUtil.io2io())
+                .map(s -> {
+                    if (s.matches(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern())){
+                        cancel();
+                        returnFailed(ErrorEnum.ERR_PAGE_NEED_LOGIN.getReadable());
                     }
-                });
+                    return HtmlUtil.getTopics(s);
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mObserver);
     }
 
     private void getTopicsByNode(String node, int page){
@@ -106,20 +120,20 @@ public class TopicService extends BaseService<List<Topic>> {
     }
 
     public void getReply(Topic topic, int page){
+
         Topic topicCopy = (Topic) topic.clone();
         topicApi.getTopicDetail(topicCopy.getId(), page)
-                .compose(RxUtil.io2main())
-                .subscribe(new RxObserver<String>(this) {
-                    @Override
-                    public void _onNext(String s) {
-                        if (page == 1){
-                            HtmlUtil.attachRepliesAndDetail(topicCopy, s);
-                        }else {
-                            HtmlUtil.attachReplies(topicCopy, s);
-                        }
-                        returnSuccess(new ArrayList<Topic>(1){{add(topicCopy);}});
+                .compose(RxUtil.io2io())
+                .map((Function<String, List<Topic>>) s -> {
+                    if (page == 1){
+                        HtmlUtil.attachRepliesAndDetail(topicCopy, s);
+                    }else {
+                        HtmlUtil.attachReplies(topicCopy, s);
                     }
-                });
+                    return new ArrayList<Topic>(){{add(topicCopy);}};
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mObserver);
     }
 
     public void getReplyFromApi(Topic topic, int page){
@@ -141,24 +155,14 @@ public class TopicService extends BaseService<List<Topic>> {
                 });
     }
 
-    private RxObserver<JsonArray> jsonArrayToTopicsObserver =
-            new RxObserver<JsonArray>(this) {
-                @Override
-                public void _onNext(JsonArray jsonElements) {
-
-                    handleJsonArray(jsonElements);
-                }
-            };
-
-    private void handleJsonArray(JsonArray jsonArray){
-
+    private List<Topic> resolveJsonArray(JsonArray jsonElements){
         List<Topic> topics = new ArrayList<>();
-        Iterator<JsonElement> iterator = jsonArray.iterator();
+        Iterator<JsonElement> iterator = jsonElements.iterator();
 
         for (JsonElement element; iterator.hasNext(); ){
             element = iterator.next();
             topics.add(mGson.fromJson(element, Topic.class));
         }
-        returnSuccess(topics);
+        return topics;
     }
 }

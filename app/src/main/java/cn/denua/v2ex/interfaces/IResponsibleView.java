@@ -5,6 +5,8 @@
 package cn.denua.v2ex.interfaces;
 
 
+import android.content.Context;
+
 /*
  * 网络请求的 view 实现此结构
  *
@@ -21,4 +23,5 @@ public interface IResponsibleView {
     void onProcessData(int progress);
     void onCompleteRequest();
     int getContextStatus();
+    Context getContext();
 }

@@ -6,10 +6,9 @@ package cn.denua.v2ex.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -95,13 +94,22 @@ public class TopicView extends FrameLayout {
         ButterKnife.bind(this);
     }
 
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        super.onWindowVisibilityChanged(visibility);
+        bindViewWithData();
+    }
+
     public void setLastTouched(String lastTouched){
         tvLastTouched.setText(lastTouched);
     }
 
     public void  loadDataFromTopic(Topic topic) {
-
         this.topic = topic;
+    }
+
+    private void bindViewWithData(){
+
         if (isSimpleView) {
             tvLastTouched.setText(topic.getAgo());
             if (tvLastReply != null) {

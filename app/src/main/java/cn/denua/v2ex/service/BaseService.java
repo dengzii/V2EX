@@ -17,6 +17,7 @@ import cn.denua.v2ex.interfaces.ResponseListener;
 public class BaseService<T> {
 
     protected IResponsibleView view;
+    protected boolean isCanceled = false;
     private ResponseListener<T> responseListener;
 
     protected BaseService(){}
@@ -48,7 +49,9 @@ public class BaseService<T> {
     }
 
     public void returnFailed(String msg){
-
+        if (isCanceled){
+            return;
+        }
         if (view.getContextStatus() == IResponsibleView.VIEW_STATUS_ACTIVATED){
             responseListener.onFailed(msg);
         }
@@ -56,6 +59,9 @@ public class BaseService<T> {
     }
 
     public void returnSuccess(T result){
+        if (isCanceled){
+            return;
+        }
         if (view.getContextStatus() == IResponsibleView.VIEW_STATUS_ACTIVATED) {
             responseListener.onComplete(result);
         }else{
@@ -63,6 +69,14 @@ public class BaseService<T> {
                     + "IResponseView doesn't ready.");
         }
         view.onCompleteRequest();
+    }
+
+    public boolean isCanceled() {
+        return isCanceled;
+    }
+
+    public void cancel(){
+        this.isCanceled = true;
     }
 
     protected void setResponseListener(ResponseListener<T> responseListener) {
@@ -79,5 +93,6 @@ public class BaseService<T> {
 
     public void onCompleteRequest(){
         view.onCompleteRequest();
+        cancel();
     }
 }

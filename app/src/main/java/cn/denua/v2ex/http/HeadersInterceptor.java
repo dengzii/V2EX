@@ -1,6 +1,9 @@
 package cn.denua.v2ex.http;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 
@@ -34,6 +37,7 @@ public class HeadersInterceptor implements Interceptor{
     public Response intercept(@NonNull Chain chain) throws IOException {
 
         Request originRequest = chain.request();
+        Log.d(getClass().getName(), originRequest.url().toString());
         Request updateRequest = originRequest.newBuilder()
                 .addHeader("host", originRequest.url().host())
                 .build();

@@ -71,6 +71,9 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(RecyclerView.DRAWING_CACHE_QUALITY_LOW);
         adapter = new TopicRecyclerViewAdapter(getContext(), topics);
         recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
