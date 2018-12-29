@@ -21,7 +21,13 @@ public class RxUtil {
                 .observeOn(Schedulers.io());
     }
 
-   public static <T> ObservableTransformer<JsonObject, T> JsonApiPreProcess(){
+    public static <T> ObservableTransformer<T, T> io2computation(){
+
+        return upstream -> upstream.subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
+    }
+
+    public static <T> ObservableTransformer<JsonObject, T> JsonApiPreProcess(){
        return upstream -> upstream.flatMap(jsonObject ->  null
            // todo
        );

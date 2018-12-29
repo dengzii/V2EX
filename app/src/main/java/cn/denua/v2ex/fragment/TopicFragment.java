@@ -97,7 +97,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
 
     @Override
     public void onComplete(List<Topic> result) {
-
+        swipeRefreshLayout.setRefreshing(false);
         this.topics = result;
         adapter.addTopics(topics);
         adapter.notifyDataSetChanged();
@@ -106,7 +106,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     @Override
     public void onCompleteRequest() {
         super.onCompleteRequest();
-        swipeRefreshLayout.setRefreshing(false);
+
     }
 
     @Override

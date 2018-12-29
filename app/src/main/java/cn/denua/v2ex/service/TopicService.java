@@ -17,6 +17,7 @@ import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -76,25 +77,21 @@ public class TopicService extends BaseService<List<Topic>> {
     private void getHot(){
 
         topicApi.getHotTopic()
-                .compose(RxUtil.io2io())
-                .map(this::resolveJsonArray)
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(jsonArrayResolver())
                 .subscribe(mObserver);
     }
 
-    private void getLatest(){
+    private void getLatest() {
 
         topicApi.getLatestTopic()
-                .compose(RxUtil.io2io())
-                .map(this::resolveJsonArray)
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(jsonArrayResolver())
                 .subscribe(mObserver);
     }
 
     private void getChanges(){
 
         topicApi.getLatestTopic2()
-                .compose(RxUtil.io2io())
+                .compose(RxUtil.io2computation())
                 .map(s -> {
                     if (s.matches(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern())){
                         cancel();
@@ -123,7 +120,7 @@ public class TopicService extends BaseService<List<Topic>> {
 
         Topic topicCopy = (Topic) topic.clone();
         topicApi.getTopicDetail(topicCopy.getId(), page)
-                .compose(RxUtil.io2io())
+                .compose(RxUtil.io2computation())
                 .map((Function<String, List<Topic>>) s -> {
                     if (page == 1){
                         HtmlUtil.attachRepliesAndDetail(topicCopy, s);
@@ -155,14 +152,20 @@ public class TopicService extends BaseService<List<Topic>> {
                 });
     }
 
-    private List<Topic> resolveJsonArray(JsonArray jsonElements){
-        List<Topic> topics = new ArrayList<>();
-        Iterator<JsonElement> iterator = jsonElements.iterator();
+    private ObservableTransformer<JsonArray, List<Topic>> jsonArrayResolver(){
 
-        for (JsonElement element; iterator.hasNext(); ){
-            element = iterator.next();
-            topics.add(mGson.fromJson(element, Topic.class));
-        }
-        return topics;
+        return upstream -> upstream
+                .compose(RxUtil.io2computation())
+                .map(jsonElements -> {
+                        List<Topic> topics = new ArrayList<>();
+                        Iterator<JsonElement> iterator = jsonElements.iterator();
+
+                        for (JsonElement element; iterator.hasNext(); ){
+                            element = iterator.next();
+                            topics.add(mGson.fromJson(element, Topic.class));
+                        }
+                        return topics;
+                })
+                .subscribeOn(AndroidSchedulers.mainThread());
     }
 }
