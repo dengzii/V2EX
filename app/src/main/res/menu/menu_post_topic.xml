@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="it_confirm"
+        android:id="@+id/it_confirm"
         android:title="@string/confirm"
         android:icon="@drawable/ic_success"
         android:iconTint="?attr_color_text_inverse"

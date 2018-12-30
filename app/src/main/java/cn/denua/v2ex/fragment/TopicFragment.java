@@ -80,14 +80,9 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
 
         setSwipeRefreshTheme(swipeRefreshLayout);
 
-        return savedView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         swipeRefreshLayout.setRefreshing(true);
         onRefresh();
+        return savedView;
     }
 
     public void onRefresh() {

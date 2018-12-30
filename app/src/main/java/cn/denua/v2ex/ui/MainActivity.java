@@ -193,6 +193,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 break;
             default:break;
         }
+        drawerLayout.closeDrawer(Gravity.START);
         return false;
     }
 
@@ -212,7 +213,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private void changeUserStatus(){
 
-        drawerLayout.closeDrawer(Gravity.START);
         if (Config.IsLogin){
             MessageDialog dialog = new MessageDialog(this);
             dialog.init(getResources().getString(R.string.alert),
