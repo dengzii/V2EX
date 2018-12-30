@@ -15,6 +15,7 @@ public enum ErrorEnum {
     ERR_PAGE_NEED_LOGIN("你要查看的页面需要先登录", "需要先登录才能浏览"),
     ERR_EMPTY_RESPONSE("空响应体", "服务器返回了一个空"),
 
+    ERROR_PARSE_HTML("", "解析 HTML 时发生错误"),
     ERR_EMPTY_REPLY("","");
 
     private String pattern;

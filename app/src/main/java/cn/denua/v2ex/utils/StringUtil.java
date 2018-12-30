@@ -32,7 +32,7 @@ public class StringUtil {
         return TimeUtils.getString(timestamp, dateFormat, timestamp, TimeConstants.SEC);
     }
 
-    public static String getDateNow(String format){
+    public static synchronized String getDateNow(String format){
 
         Locale locale = Locale.getDefault();
         DateFormat dateFormat = new SimpleDateFormat(format, locale);

@@ -52,7 +52,10 @@
             android:label="@string/settings" />
         <activity
             android:name=".ui.UserDetailActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.PostTopicActivity"
+            android:label="@string/post"/>
     </application>
 
 </manifest>

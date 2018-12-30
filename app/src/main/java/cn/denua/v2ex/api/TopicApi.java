@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import java.util.HashMap;
 
 import io.reactivex.Observable;
-import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.GET;
@@ -31,6 +30,9 @@ public interface TopicApi {
     @GET("/go/{node}")
     Observable<String> getTopicsByNode(@Path("node") String node, @Query("p") int page);
 
+    @GET("/new/{node}")
+    Observable<String> getPostTopicPage(@Path("node") String node);
+
     @GET("api/topics/hot.json")
     Observable<JsonArray> getHotTopic();
 
@@ -52,4 +54,11 @@ public interface TopicApi {
 
     @POST("/api/topics/create.json")
     Observable<JsonObject> createTopic(@FieldMap HashMap<String, String> fields);
+
+    @POST("/new/{node}")
+    Observable<String> createTopic(@Path("node") String node,
+                                   @Query("title") String title,
+                                   @Query("content") String content,
+                                   @Query("once") int once,
+                                   @Query("syntax") int syntax);
 }

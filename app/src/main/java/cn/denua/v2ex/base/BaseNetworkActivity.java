@@ -36,7 +36,9 @@ public class BaseNetworkActivity extends BaseActivity implements IResponsibleVie
     @Override
     @CallSuper
     public int getContextStatus() {
-        return 0;
+        return isInForeground()
+                ? VIEW_STATUS_ACTIVATED
+                : VIEW_STATUS_ACTIVATED;
     }
 
     @Override

@@ -47,6 +47,7 @@
         <item>CHANGES</item>
         <item>ALL</item>
         <item>FOLLOWING</item>
+        <item>sandbox</item>
     </string-array>
     <string-array name="list_home_tabs_entries">
         <item>热 门</item>
@@ -54,6 +55,7 @@
         <item>最近更新</item>
         <item>全 部</item>
         <item>关 注</item>
+        <item>沙 盒</item>
     </string-array>
 
     <string-array name="list_date_format">

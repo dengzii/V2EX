@@ -24,6 +24,8 @@
     <string name="search">搜 索</string>
     <string name="balance">余额</string>
 
+    <string name="title">标 题</string>
+    <string name="content">内 容</string>
     <string name="favor">收 藏</string>
     <string name="like">喜 欢</string>
     <string name="reply">回复</string>

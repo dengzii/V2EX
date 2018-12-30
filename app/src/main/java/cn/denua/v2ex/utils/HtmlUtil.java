@@ -69,6 +69,9 @@ public class HtmlUtil {
         return result;
     }
 
+    public static int getOnceFromPostTopicPage(String html){
+        return matcherGroup1Int(Pattern.compile("value=\"(\\d+)\" name=\"once\""), html);
+    }
     /**
      * 从HTML中获取所有话题
      *

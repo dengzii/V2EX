@@ -239,8 +239,12 @@ public class Topic implements Parcelable, Cloneable {
         Topic copy = null;
         try {
             copy = (Topic) super.clone();
-            copy.setMember((Member) member.clone());
-            copy.setNode((Node) node.clone());
+            if (copy.getMember() != null){
+                copy.setMember((Member) member.clone());
+            }
+            if (node != null){
+                copy.setNode((Node) node.clone());
+            }
             if (replyList != null){
                 copy.setReplyList(new ArrayList<>());
                 replyList.addAll(copy.getReplyList());

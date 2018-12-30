@@ -48,6 +48,10 @@ public class BaseService<T> {
         return view;
     }
 
+    protected void returnFailed(ErrorEnum errorEnum){
+        returnFailed(errorEnum.getReadable());
+    }
+
     public void returnFailed(String msg){
         if (isCanceled){
             return;

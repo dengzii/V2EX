@@ -23,6 +23,8 @@ import static cn.denua.v2ex.utils.StatusBarUtil.getStatusBarHeight;
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
+    private boolean mInForeground = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,18 @@ public class BaseActivity extends AppCompatActivity {
 //        addStatusBarPlaceHolder();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.mInForeground = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.mInForeground = false;
+    }
+
     protected void initView(){
         
     }
@@ -63,6 +77,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void setTheme(){
         setTheme(getCurrentThemeId());
     }
+
 
     protected int getCurrentThemeId(){
         return getResources().getIdentifier(Config.getConfig(ConfigRefEnum.CONFIG_THEME),
@@ -103,6 +118,10 @@ public class BaseActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    protected boolean  isInForeground(){
+        return this.mInForeground;
     }
 
     protected void addStatusBarPlaceHolder(){

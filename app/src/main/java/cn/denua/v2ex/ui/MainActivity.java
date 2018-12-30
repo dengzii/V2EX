@@ -183,6 +183,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             case R.id.it_following:
                 break;
             case R.id.it_post:
+                if (Config.IsLogin)
+                    startActivity(new Intent(this, PostTopicActivity.class));
                 break;
             case R.id.it_message:
                 break;

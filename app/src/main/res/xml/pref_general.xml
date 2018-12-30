@@ -94,8 +94,6 @@
         android:title="@string/about"
         android:persistent="false">
         <Preference
-            android:title=""/>
-        <Preference
             android:key="@string/key_reward"
             android:title="@string/reward"
             android:summary="@string/summary_reward"/>

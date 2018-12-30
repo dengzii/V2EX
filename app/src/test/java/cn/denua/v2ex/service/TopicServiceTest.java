@@ -94,26 +94,7 @@ public class TopicServiceTest {
         Topic topic = new Topic();
         topic.setId(505378);
 
-        new TopicService(new IResponsibleView() {
-            @Override
-            public void onStartRequest() { }
-
-            @Override
-            public void onProcessData(int progress) { }
-
-            @Override
-            public void onCompleteRequest() { }
-
-            @Override
-            public int getContextStatus() {
-                return IResponsibleView.VIEW_STATUS_ACTIVATED;
-            }
-
-            @Override
-            public Context getContext() {
-                return null;
-            }
-        }, new ResponseListener<List<Topic>>() {
+        new TopicService(iResponsibleView, new ResponseListener<List<Topic>>() {
             @Override
             public void onComplete(List<Topic> result) {
                 Topic topic1 = result.get(0);
@@ -146,6 +127,33 @@ public class TopicServiceTest {
         })
         .getReply(topic, 1);
     }
+
+    private IResponsibleView iResponsibleView = new IResponsibleView() {
+        @Override
+        public void onStartRequest() {
+            System.out.println("TopicServiceTest.onStartRequest");
+        }
+
+        @Override
+        public void onProcessData(int progress) {
+
+        }
+
+        @Override
+        public void onCompleteRequest() {
+            System.out.println("TopicServiceTest.onCompleteRequest");
+        }
+
+        @Override
+        public int getContextStatus() {
+            return VIEW_STATUS_ACTIVATED;
+        }
+
+        @Override
+        public Context getContext() {
+            return null;
+        }
+    };
     static class Log{
         static void d(String t, String s){
             System.out.println((t == null? "" : (t+"\t")) +s);

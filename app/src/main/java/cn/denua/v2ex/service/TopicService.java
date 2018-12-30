@@ -1,5 +1,7 @@
 package cn.denua.v2ex.service;
 
+import android.text.Html;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -17,7 +19,9 @@ import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
+import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
+import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -74,18 +78,36 @@ public class TopicService extends BaseService<List<Topic>> {
         }
     }
 
+    public void postTopic(String title, String content, String node){
+
+        int syntax = 1;
+        topicApi.getPostTopicPage(node)
+                .compose(RxUtil.io2io())
+                .flatMap((Function<String, ObservableSource<String>>) s -> {
+                    int once = HtmlUtil.getOnceFromPostTopicPage(s);
+                    if (once < 1){
+                        returnFailed(ErrorEnum.ERROR_PARSE_HTML);
+                        return null;
+                    }
+                    return topicApi.createTopic(node, title, content, once, syntax);
+                })
+                .map((Function<String, List<Topic>>) s -> {
+                    Topic topic = new Topic();
+                    HtmlUtil.attachRepliesAndDetail(topic, s);
+                    return new ArrayList<Topic>(1){{add(topic);}};
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mObserver);
+    }
+
     private void getHot(){
 
-        topicApi.getHotTopic()
-                .compose(jsonArrayResolver())
-                .subscribe(mObserver);
+        topicApi.getHotTopic().compose(jsonArrayResolver()).subscribe(mObserver);
     }
 
     private void getLatest() {
 
-        topicApi.getLatestTopic()
-                .compose(jsonArrayResolver())
-                .subscribe(mObserver);
+        topicApi.getLatestTopic().compose(jsonArrayResolver()).subscribe(mObserver);
     }
 
     private void getChanges(){
@@ -95,7 +117,7 @@ public class TopicService extends BaseService<List<Topic>> {
                 .map(s -> {
                     if (s.matches(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern())){
                         cancel();
-                        returnFailed(ErrorEnum.ERR_PAGE_NEED_LOGIN.getReadable());
+                        returnFailed(ErrorEnum.ERR_PAGE_NEED_LOGIN);
                     }
                     return HtmlUtil.getTopics(s);
                 })
