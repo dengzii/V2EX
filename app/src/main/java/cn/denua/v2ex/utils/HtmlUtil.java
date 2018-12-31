@@ -72,6 +72,10 @@ public class HtmlUtil {
     public static int getOnceFromPostTopicPage(String html){
         return matcherGroup1Int(Pattern.compile("value=\"(\\d+)\" name=\"once\""), html);
     }
+
+    public static int getOnceFromSignInPage(String html){
+        return matcherGroup1Int(Pattern.compile("/mission/daily/redeem\\?once=(\\d+)"), html);
+    }
     /**
      * 从HTML中获取所有话题
      *
@@ -270,7 +274,7 @@ public class HtmlUtil {
         return document.toString();
     }
 
-    private static String matcherGroup1(Pattern pattern, String str){
+    public static String matcherGroup1(Pattern pattern, String str){
 
         Matcher matcher = pattern.matcher(str);
         if (matcher.find()){
@@ -278,7 +282,7 @@ public class HtmlUtil {
         }
         return "";
     }
-    private static int matcherGroup1Int(Pattern pattern, String str){
+    public static int matcherGroup1Int(Pattern pattern, String str){
         String res = matcherGroup1(pattern, str);
         return res.equals("") ? 0 : Integer.valueOf(res);
     }

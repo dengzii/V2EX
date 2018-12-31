@@ -188,6 +188,6 @@ public class TopicService extends BaseService<List<Topic>> {
                         }
                         return topics;
                 })
-                .subscribeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

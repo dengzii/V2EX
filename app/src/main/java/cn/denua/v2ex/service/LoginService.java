@@ -5,12 +5,13 @@ import android.graphics.Bitmap;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.lang.reflect.AnnotatedElement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cn.denua.v2ex.api.LoginApi;
+import cn.denua.v2ex.api.UserApi;
 import cn.denua.v2ex.api.MemberApi;
 import cn.denua.v2ex.http.ResponseHandler;
 import cn.denua.v2ex.http.RetrofitManager;
@@ -20,6 +21,11 @@ import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import retrofit2.Call;
 
 /*
@@ -36,19 +42,52 @@ public class LoginService extends BaseService<Account> {
     public static final String STATUS_WRONG_FIELDS = "登录字段错误";
     public static final String STATUS_EMPTY_RESPONSE_BODY = "响应体为空";
 
-
-    private LoginApi loginApi;
+    private static UserApi mUserApi = RetrofitManager.create(UserApi.class);
     private String[] fieldNames;
     private NextResponseListener<Bitmap, Account> callBack;
 
     public LoginService(IResponsibleView iResponsibleView, NextResponseListener<Bitmap, Account> loginListener){
         super(iResponsibleView, loginListener);
         callBack = loginListener;
-        loginApi = RetrofitManager.create(LoginApi.class);
     }
     public LoginService(IResponsibleView iResponsibleView){
         super(iResponsibleView);
-        loginApi = RetrofitManager.create(LoginApi.class);
+    }
+
+    /**
+     * 签到
+     *
+     * @param responseListener 结果监听
+     */
+    public static void signIn(ResponseListener<Integer> responseListener){
+
+        mUserApi.preSignIn()
+                .compose(RxUtil.io2computation())
+                .flatMap((Function<String, ObservableSource<String>>) s -> {
+                    int once = HtmlUtil.getOnceFromSignInPage(s);
+                    if (once < 1) {
+                        responseListener.onFailed(ErrorEnum.ERROR_PARSE_HTML.getReadable());
+                        return null;
+                    }
+                    return mUserApi.signIn(once);
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RxObserver<String>() {
+                    @Override
+                    public void _onNext(String s) {
+                        int sx = HtmlUtil.matcherGroup1Int(Pattern.compile("已连续登录 (\\d+) 天"), s);
+                        if (sx > 0) {
+                            responseListener.onComplete(sx);
+                        }else {
+                            _onError("签到失败");
+                        }
+                    }
+                    @Override
+                    public void _onError(String msg) {
+                        super._onError(msg);
+                        responseListener.onFailed(msg);
+                    }
+                });
     }
 
     /**
@@ -57,7 +96,7 @@ public class LoginService extends BaseService<Account> {
      */
     public void preLogin(){
 
-        loginApi.getLoginPage().enqueue(new ResponseHandler<String>() {
+        mUserApi.getLoginPage().enqueue(new ResponseHandler<String>() {
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
 
@@ -79,7 +118,7 @@ public class LoginService extends BaseService<Account> {
 
     private void getCaptcha(String once){
 
-        loginApi.getCaptcha(once).enqueue(new ResponseHandler<Bitmap>() {
+        mUserApi.getCaptcha(once).enqueue(new ResponseHandler<Bitmap>() {
             @Override
             public void handle(boolean success, Bitmap result, Call<Bitmap> call, String msg) {
                 if (success){
@@ -107,7 +146,7 @@ public class LoginService extends BaseService<Account> {
         form.put("once", fieldNames[3]);
         form.put("next", "/");
 
-        loginApi.postLogin(form).enqueue(new ResponseHandler<String>() {
+        mUserApi.postLogin(form).enqueue(new ResponseHandler<String>() {
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
                 if (!success || (null==result)){
@@ -134,7 +173,7 @@ public class LoginService extends BaseService<Account> {
      */
     public void getInfo(ResponseListener<Account> responseListener){
 
-        loginApi.getInfo().enqueue(new ResponseHandler<String>() {
+        mUserApi.getInfo().enqueue(new ResponseHandler<String>() {
             @Override
             public void handle(boolean success, String result, Call<String> call, String msg) {
                 if (!success){

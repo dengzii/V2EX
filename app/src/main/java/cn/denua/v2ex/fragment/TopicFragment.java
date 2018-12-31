@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +93,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
 
     @Override
     public void onComplete(List<Topic> result) {
+        Logger.d(mTabType.getTitle());
         swipeRefreshLayout.setRefreshing(false);
         this.topics = result;
         adapter.addTopics(topics);

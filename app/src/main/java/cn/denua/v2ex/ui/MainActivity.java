@@ -176,6 +176,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 finish();
                 break;
             case R.id.it_check:
+                signIn();
                 break;
             case R.id.it_node:
                 startActivity(new Intent(this, AllNodeActivity.class));
@@ -208,6 +209,24 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 break;
             default:
                 break;
+        }
+    }
+
+    private void signIn(){
+
+        if (Config.IsLogin){
+            LoginService.signIn(new ResponseListener<Integer>() {
+                @Override
+                public void onComplete(Integer result) {
+                    ToastUtils.showShort("签到成功, 连续签到天数 " + result.toString());
+                }
+                @Override
+                public void onFailed(String msg) {
+                    ToastUtils.showShort(msg);
+                }
+            });
+        }else{
+            ToastUtils.showShort("需要登录");
         }
     }
 

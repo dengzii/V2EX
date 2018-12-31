@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -18,7 +19,7 @@ import retrofit2.http.Query;
  * @author denua
  * @date 2018/10/20
  */
-public interface LoginApi{
+public interface UserApi {
 
     @GET("signin")
     Call<String> getLoginPage();
@@ -33,4 +34,9 @@ public interface LoginApi{
 
     @GET("settings")
     Call<String> getInfo();
+
+    @GET("/mission/daily")
+    Observable<String> preSignIn();
+    @GET("/mission/daily/redeem")
+    Observable<String> signIn(@Query("once") int once);
 }
