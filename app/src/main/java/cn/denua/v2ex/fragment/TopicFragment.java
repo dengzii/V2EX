@@ -93,7 +93,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
 
     @Override
     public void onComplete(List<Topic> result) {
-        Logger.d(mTabType.getTitle());
+
         swipeRefreshLayout.setRefreshing(false);
         this.topics = result;
         adapter.addTopics(topics);

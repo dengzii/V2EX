@@ -61,13 +61,6 @@ public class TopicView extends FrameLayout {
 
     private static boolean mIsChineseNodeLabel;
     private static boolean mIsShowCreateDate;
-    private static String mDateFormat;
-
-    static   {
-        mIsChineseNodeLabel = Config.getConfig(ConfigRefEnum.CONFIG_NODE_NAME_INSTEAD_TITLE);
-        mDateFormat = Config.getConfig(ConfigRefEnum.CONFIG_DATE_FORMAT);
-        mIsShowCreateDate = Config.getConfig(ConfigRefEnum.CONFIG_TOPIC_CREATE_INSTEAD_TOUCHED);
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     public TopicView(Context context, boolean isSimpleView) {
@@ -88,6 +81,8 @@ public class TopicView extends FrameLayout {
 
     private void initView(Context context){
 
+        mIsChineseNodeLabel = Config.getConfig(ConfigRefEnum.CONFIG_NODE_NAME_INSTEAD_TITLE);
+        mIsShowCreateDate = Config.getConfig(ConfigRefEnum.CONFIG_TOPIC_CREATE_INSTEAD_TOUCHED);
         inflate(context, isSimpleView
                             ?R.layout.view_member_topic
                             :R.layout.view_topic, this);
@@ -142,7 +137,7 @@ public class TopicView extends FrameLayout {
         if (topic.getNode().getTitle().equals("")){
             tvNode.setVisibility(INVISIBLE);
         }else {
-            tvNode.setText(mIsChineseNodeLabel
+            tvNode.setText(!mIsChineseNodeLabel
                     ? topic.getNode().getName()
                     : topic.getNode().getTitle());
         }

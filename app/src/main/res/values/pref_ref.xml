@@ -59,11 +59,15 @@
     </string-array>
 
     <string-array name="list_date_format">
+        <item>yyyy年MM月dd日 HH时mm分</item>
+        <item>MM月dd日 HH时mm分</item>
         <item>yyyy-MM-dd HH:mm</item>
         <item>MM-dd HH:mm</item>
         <item>HH:mm MM-dd</item>
     </string-array>
     <string-array name="list_date_format_entries">
+        <item>yyyy年MM月dd日 HH时mm分</item>
+        <item>MM月dd日 HH时mm分</item>
         <item>yyyy-MM-dd HH:mm</item>
         <item>MM-dd HH:mm</item>
         <item>HH:mm MM-dd</item>

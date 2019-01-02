@@ -3,11 +3,6 @@
  */
 
 package cn.denua.v2ex.utils;
-
-import com.blankj.utilcode.constant.TimeConstants;
-import com.blankj.utilcode.util.TimeUtils;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -25,19 +20,15 @@ public class StringUtil {
 
     public static String timestampToStr(long timestamp){
 
-        String format = Config.getConfig(ConfigRefEnum.CONFIG_DATE_FORMAT);
-        Locale locale = Locale.getDefault();//Config.getConfig(ConfigRefEnum.CONFIG_LOCAL);
-        DateFormat dateFormat = new SimpleDateFormat(format, locale);
-
-        return TimeUtils.getString(timestamp, dateFormat, timestamp, TimeConstants.SEC);
+        if (timestamp < 9999999999L){
+            timestamp = timestamp * 1000L;
+        }
+        return new SimpleDateFormat(Config.getConfig(
+                ConfigRefEnum.CONFIG_DATE_FORMAT), Locale.getDefault()).format(timestamp);
     }
 
     public static synchronized String getDateNow(String format){
 
-        Locale locale = Locale.getDefault();
-        DateFormat dateFormat = new SimpleDateFormat(format, locale);
-
-        return TimeUtils.getString(System.currentTimeMillis(), dateFormat,
-                System.currentTimeMillis(), TimeConstants.SEC);
+        return new SimpleDateFormat(format, Locale.getDefault()).format(System.currentTimeMillis());
     }
 }
