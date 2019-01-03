@@ -20,9 +20,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.denua.v2ex.Config;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.interfaces.ResponseListener;
+import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.service.TopicService;
 import cn.denua.v2ex.utils.DialogUtil;
@@ -80,7 +82,7 @@ public class PostTopicActivity extends BaseNetworkActivity implements ResponseLi
 
     @Override
     public void onComplete(List<Topic> result) {
-        TopicActivity.start(this, result.get(0));
+        TopicActivity.start(this, result.get(0).getId());
     }
 
     @Override

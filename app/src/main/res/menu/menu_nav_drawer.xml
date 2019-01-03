@@ -5,7 +5,8 @@
         android:icon="@drawable/ic_coordinates"
         android:checkable="true"
         android:title="@string/checked"/>
-    <group>
+    <group
+        android:orderInCategory="0">
         <item android:id="@+id/it_message"
             android:icon="@drawable/ic_message"
             android:title="@string/message"/>

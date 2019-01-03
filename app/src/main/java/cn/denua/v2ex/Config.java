@@ -32,7 +32,7 @@ public class Config {
     public static final String PREFERENCES_SETTINGS = "preferences_settings";
     public static final String PREFERENCEAS_USET_STATUS = "pref_status";
 
-    public static Account account = new Account();
+    public static Account sAccount = new Account();
     public static boolean IsLogin = false;
 
     private static ArrayList<TabEnum> HOME_TAB_TITLES = new ArrayList<>();
@@ -77,7 +77,7 @@ public class Config {
 
         SharedPreferences.Editor editor= context.getSharedPreferences(
                 ConfigRefEnum.KEY_FILE_CONFIG_PREF.getKey(), Context.MODE_PRIVATE).edit();
-        String gsonAccount = new Gson().toJson(account);
+        String gsonAccount = new Gson().toJson(sAccount);
         editor.putString(ConfigRefEnum.KEY_ACCOUNT.getKey(), gsonAccount);
         editor.apply();
     }
@@ -86,12 +86,12 @@ public class Config {
         try {
             SharedPreferences editor = context.getSharedPreferences(
                     ConfigRefEnum.KEY_FILE_CONFIG_PREF.getKey(), Context.MODE_PRIVATE);
-            account = new Gson().fromJson(editor.getString(
+            sAccount = new Gson().fromJson(editor.getString(
                     ConfigRefEnum.KEY_ACCOUNT.getKey(),null), Account.class);
         }catch (Exception e){
             return false;
         }
-        return account != null;
+        return sAccount != null;
     }
 
     private static void loadConfig(Context context){

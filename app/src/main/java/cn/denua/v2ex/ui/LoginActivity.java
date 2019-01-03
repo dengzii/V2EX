@@ -17,7 +17,7 @@ import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.interfaces.NextResponseListener;
 import cn.denua.v2ex.model.Account;
-import cn.denua.v2ex.service.LoginService;
+import cn.denua.v2ex.service.UserService;
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.widget.ProgressDialog;
 
@@ -41,7 +41,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
     ImageView ivCaptcha;
     @BindView(R.id.progress_captcha)
     ProgressBar progressBar;
-    private LoginService loginService;
+    private UserService loginService;
 
     private ProgressDialog progressDialog = new ProgressDialog();
 
@@ -53,7 +53,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
 
         setTitle(R.string.login);
         progressDialog.setTitle(getResources().getString(R.string.logging_in));
-        loginService = new LoginService(this,this);
+        loginService = new UserService(this,this);
         loginService.preLogin();
         ivCaptcha.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
@@ -109,7 +109,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
         if (progressDialog !=null && progressDialog.isAdded()){
             progressDialog.dismiss();
         }
-        if (msg.equals(LoginService.STATUS_WRONG_FIELDS)) {
+        if (msg.equals(UserService.STATUS_WRONG_FIELDS)) {
             loginService.preLogin();
         }
         progressBar.setVisibility(View.GONE);
@@ -128,7 +128,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
 
         progressDialog.dismiss();
 
-        Config.account = result;
+        Config.sAccount = result;
         Config.IsLogin = true;
         setResult(RESULT_SUCCESS);
         Config.persistentAccount(this);

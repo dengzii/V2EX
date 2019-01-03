@@ -282,6 +282,14 @@ public class HtmlUtil {
         }
         return "";
     }
+
+    /**
+     * 查找整数结果
+     *
+     * @param pattern 匹配
+     * @param str 字符串
+     * @return 0 则未匹配
+     */
     public static int matcherGroup1Int(Pattern pattern, String str){
         String res = matcherGroup1(pattern, str);
         return res.equals("") ? 0 : Integer.valueOf(res);

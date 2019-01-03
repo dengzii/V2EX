@@ -46,6 +46,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @BindView(R.id.rv_reply)
     RecyclerView mRecyclerView;
 
+    private int mTopicId;
     private Topic mTopic;
     private ReplyRecyclerViewAdapter mRecyclerViewAdapter;
     private PullRefreshReplyAdapter mPullRecyclerAdapter;
@@ -54,6 +55,14 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     private int mPageCount;
     private int mCurrentPage = 0;
 
+
+    public static void start(Context context, int topicId){
+
+        Intent intent = new Intent(context, TopicActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("topicId", topicId);
+        context.startActivity(intent);
+    }
     public static void start(Context context, Topic topic){
 
         Intent intent = new Intent(context, TopicActivity.class);
@@ -70,8 +79,11 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
         setTitle(R.string.topic);
         mTopic = getIntent().getParcelableExtra("topic");
+        if (mTopic == null){
+            this.mTopicId = getIntent().getIntExtra("topicId",-1);
+        }
         mTopicService = new TopicService(this, this);
-        mPageCount = mTopic.getReplies()/100 + 1;
+        mPageCount = mTopic.getReplies() / 100 + 1;
         initView();
     }
 

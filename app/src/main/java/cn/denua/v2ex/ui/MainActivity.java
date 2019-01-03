@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +38,8 @@ import cn.denua.v2ex.fragment.TopicFragment;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
-import cn.denua.v2ex.service.LoginService;
+import cn.denua.v2ex.service.UserService;
 import cn.denua.v2ex.Config;
-import cn.denua.v2ex.utils.DialogUtil;
 import cn.denua.v2ex.widget.MessageDialog;
 
 @SuppressWarnings("RedundantCast")
@@ -67,6 +65,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private List<Fragment> topicFragments = new ArrayList<>();
     private MenuItem miLogin;
+    private MenuItem miSignIn;
+
+    private UserService mUserService = new UserService(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         tvBalance = (TextView) navigationView.getHeaderView(0).findViewById(R.id.balance);
 
         miLogin = navigationView.getMenu().findItem(R.id.it_login_out);
+        miSignIn = navigationView.getMenu().findItem(R.id.it_check);
 
         ivUserPic.setImageResource(R.drawable.ic_offline);
         tvUserName.setText(getResources().getText(R.string.click_to_login));
@@ -122,7 +124,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         super.onStart();
 
         if (Config.restoreAccount(this)){
-            new LoginService(this).getInfo(this);
+            mUserService.getInfo(this);
         }
     }
 
@@ -215,10 +217,11 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     private void signIn(){
 
         if (Config.IsLogin){
-            LoginService.signIn(new ResponseListener<Integer>() {
+            UserService.signIn(false, new ResponseListener<Integer>() {
                 @Override
                 public void onComplete(Integer result) {
                     ToastUtils.showShort("签到成功, 连续签到天数 " + result.toString());
+                    updateSignInMenu(result, false);
                 }
                 @Override
                 public void onFailed(String msg) {
@@ -248,7 +251,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     private void logout(){
 
         Config.IsLogin = false;
-        Config.account = new Account();
+        Config.sAccount = new Account();
         Config.persistentAccount(this);
         RetrofitManager.clearCookies();
         setUserStatus();
@@ -260,9 +263,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             miLogin.setIcon(R.drawable.ic_logout);
             miLogin.setEnabled(true);
             miLogin.setVisible(true);
-            Glide.with(this).load(Config.account.getAvatar_large()).into(ivUserPic);
-            tvUserName.setText(Config.account.getUsername());
-            tvBalance.setText(String.valueOf(Config.account.getBalance()));
+            Glide.with(this).load(Config.sAccount.getAvatar_large()).into(ivUserPic);
+            tvUserName.setText(Config.sAccount.getUsername());
+            tvBalance.setText(String.valueOf(Config.sAccount.getBalance()));
         }else{
             tvUserName.setText(R.string.click_to_login);
             miLogin.setVisible(false);
@@ -270,19 +273,42 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             tvBalance.setText(R.string.zero);
             ivUserPic.setImageResource(R.drawable.ic_launcher_foreground);
         }
+        invalidateOptionsMenu();
     }
 
     @Override
     public void onFailed(String msg) {
+
         Config.IsLogin = false;
         ToastUtils.showShort(msg);
     }
 
     @Override
     public void onComplete(Account result) {
-        Config.account = result;
+        Config.sAccount = result;
         Config.IsLogin = true;
         setUserStatus();
+        UserService.signIn(true, new ResponseListener<Integer>() {
+            @Override
+            public void onComplete(Integer result) {
+                ToastUtils.showShort(result);
+                if (result <= -1){
+                    updateSignInMenu(result * -1, false);
+                }else if (result > 0){
+                    updateSignInMenu(result, true);
+                }
+            }
+            @Override
+            public void onFailed(String msg) {
+                ToastUtils.showShort(msg);
+            }
+        });
+    }
+
+    private void updateSignInMenu(int days, boolean enabled){
+
+        miSignIn.setTitle("已连续签到 " + days + " 天");
+        miSignIn.setEnabled(enabled);
     }
 
 }
