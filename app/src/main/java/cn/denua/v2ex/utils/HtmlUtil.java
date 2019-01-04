@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,8 +33,8 @@ public class HtmlUtil {
             PATTERN_SILVER              = Pattern.compile("(\\d+) <img src=\"/static/img/silver@2x.png\" height=\"16\""),
             PATTERN_BRONZE              = Pattern.compile("(\\d+) <img src=\"/static/img/bronze@2x.png\" height=\"16\""),
 
-            PATTERN_TOPIC_NODE_NAME     = Pattern.compile("node\" href=\"/go/(\\w+)\">[^<]+</a>"),
-            PATTERN_TOPIC_NODE_TITLE    = Pattern.compile("node\" href=\"/go/\\w+\">([^<]+)</a>"),
+            PATTERN_TOPIC_NODE_NAME     = Pattern.compile("href=\"/go/(\\w+)\">[^<]+</a>"),
+            PATTERN_TOPIC_NODE_TITLE    = Pattern.compile("href=\"/go/\\w+\">([^<]+)</a>"),
             PATTERN_TOPIC_FAVORS        = Pattern.compile("∙ {2}(\\d+) 人收藏 "),
             PATTERN_TOPIC_THANKS        = Pattern.compile("∙ {2}(\\d+) 人感谢"),
             PATTERN_TOPIC_CSRF          = Pattern.compile("var csrfToken = \"([^\"]+)"),
@@ -128,18 +129,29 @@ public class HtmlUtil {
     public static void attachRepliesAndDetail(Topic topic, String html){
 
         Document document = Jsoup.parse(html);
-        Iterator<Element> it = document.select("#Main > .box > .cell > .fr > .tag").iterator();
-        List<Tag> tags = new ArrayList<>();
 
+        Iterator<Element> it = document.select("#Main > .box > .cell > .fr > .tag").iterator();
+        Element header = document.selectFirst("#Main > .box > .header");
+        String headerHtml = header.html();
+
+        List<Tag> tags = new ArrayList<>();
         for ( ; it.hasNext(); ) {
             tags.add(new Tag(it.next().text()));
         }
+
+        if (topic.getTitle() == null){
+            topic.setTitle(header.select("h1").text());
+            String username = matcherGroup1(PATTERN_TOPIC_USERNAME, headerHtml);
+            String avatar = matcherGroup1(PATTERN_TOPIC_USER_AVATAR, headerHtml);
+            topic.setMember(new Member(username, avatar));
+        }
+
         // topic not from home page
         if (topic.getContent_rendered()==null){
             Element contentBox = document.selectFirst("#Main > .box");
             Element topicContent = contentBox.selectFirst(".cell");
 
-            topic.setContent_rendered("<br><br>");
+            topic.setContent_rendered("<br><br><hr>");
             if (topicContent != null){
                 Elements subtle = contentBox.select(".subtle");
                 topic.setContent_rendered(topicContent.html() +
@@ -150,11 +162,12 @@ public class HtmlUtil {
         topic.setTags(tags);
 
         if (topic.getNode() == null){
-            String nodeName = matcherGroup1(PATTERN_TOPIC_NODE_NAME, html);
-            String nodeTitle = matcherGroup1(PATTERN_TOPIC_NODE_TITLE, html);
+            String nodeName = matcherGroup1(PATTERN_TOPIC_NODE_NAME, headerHtml);
+            String nodeTitle = matcherGroup1(PATTERN_TOPIC_NODE_TITLE, headerHtml);
             topic.setNode(new Node(nodeName, nodeTitle));
         }
-        topic.setAgo(matcherGroup1(PATTERN_TOPIC_AGO, html));
+        topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT, html));
+        topic.setAgo(matcherGroup1(PATTERN_TOPIC_AGO_, html));
         topic.setFavors(matcherGroup1Int(PATTERN_TOPIC_FAVORS, html));
         topic.setThanks(matcherGroup1Int(PATTERN_TOPIC_THANKS, html));
         topic.setCsrfToken(matcherGroup1(PATTERN_TOPIC_CSRF, html));
@@ -270,7 +283,7 @@ public class HtmlUtil {
             img.attr("width","100%");
             img.attr("height","auto");
         }
-
+        document.charset(Charset.forName("utf-8"));
         return document.toString();
     }
 

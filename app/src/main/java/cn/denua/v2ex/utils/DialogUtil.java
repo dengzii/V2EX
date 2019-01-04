@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.widget.MessageDialog;
 
 /*
  * @author denua
@@ -33,6 +34,25 @@ public class DialogUtil {
             dialog.dismiss();
         });
         builder.setPositiveButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
+        builder.create().show();
+    }
+
+    public static void showMessage(Context context,
+                                   String title,
+                                   String msg,
+                                   DialogListener<Boolean> dialogListener){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setMessage(msg);
+        builder.setPositiveButton("确 定", (dialog, which) -> {
+            dialogListener.onResult(true);
+            dialog.dismiss();
+        });
+        builder.setNegativeButton("取 消", (dialog, which) -> {
+            dialogListener.onResult(false);
+            dialog.dismiss();
+        });
         builder.create().show();
     }
 

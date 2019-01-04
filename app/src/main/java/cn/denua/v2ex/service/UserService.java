@@ -22,7 +22,9 @@ import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import retrofit2.Call;
 
@@ -82,11 +84,7 @@ public class UserService extends BaseService<Account> {
                 .subscribe(new RxObserver<Integer>() {
                     @Override
                     public void _onNext(Integer s) {
-                        if (isCheck){
-                            responseListener.onComplete(s);
-                            return;
-                        }
-                        if (s > 0) {
+                        if (isCheck || s > 0){
                             responseListener.onComplete(s);
                         }else {
                             _onError("签到失败");
@@ -181,44 +179,35 @@ public class UserService extends BaseService<Account> {
      *
      * @param responseListener 请求结果回调接口
      */
-    public void getInfo(ResponseListener<Account> responseListener){
+    public static void getInfo(ResponseListener<Account> responseListener){
 
-        mUserApi.getInfo().enqueue(new ResponseHandler<String>() {
-            @Override
-            public void handle(boolean success, String result, Call<String> call, String msg) {
-                if (!success){
-                    responseListener.onFailed(msg);
-                    return;
-                }
-                if (result == null){
-                    responseListener.onFailed(STATUS_EMPTY_RESPONSE_BODY);
-                    return;
-                }
-                if (result.matches("[\\S\\s]+你要查看的页面需要先登录[\\S\\s]+")){
-                    responseListener.onFailed(STATUS_NEED_LOGIN);
-                    return;
-                }
-                Matcher matcher = Pattern.compile("href=\"/member/([^\"]+)\"").matcher(result);
-                if (matcher.find()){
-                    RetrofitManager.create(MemberApi.class)
-                            .getMember(matcher.group(1))
-                            .compose(RxUtil.io2main())
-                            .subscribe(new RxObserver<JsonObject>() {
-                                @Override
-                                public void _onNext(JsonObject jsonObject) {
-                                    Account account = new Gson().fromJson(jsonObject, Account.class);
-                                    HtmlUtil.attachAccountInfo(account, result);
-                                    responseListener.onComplete(account);
-                                }
-                                @Override
-                                public void _onError(String msg) {
-                                    responseListener.onFailed(msg);
-                                }
+        mUserApi.getInfo()
+                .compose(RxUtil.io2computation())
+                .flatMap((Function<String, ObservableSource<Account>>) s -> {
+                    if (s.matches(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern())){
+                        responseListener.onFailed(STATUS_NEED_LOGIN);
+                        return Observable.empty();
+                    }
+                    String username = HtmlUtil.matcherGroup1(
+                            Pattern.compile("href=\"/member/([^\"]+)\""), s);
+                    if (username.trim().isEmpty()){
+                        responseListener.onFailed(ErrorEnum.ERROR_PARSE_HTML.getReadable());
+                        return Observable.empty();
+                    }
+                    return RetrofitManager.create(MemberApi.class)
+                            .getMember(username)
+                            .map(jsonObject -> {
+                                Account account = new Gson().fromJson(jsonObject, Account.class);
+                                HtmlUtil.attachAccountInfo(account, s);
+                                return account;
                             });
-                    return;
-                }
-                responseListener.onFailed(STATUS_GET_INFO_FAILED);
-            }
-        });
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RxObserver<Account>() {
+                    @Override
+                    public void _onNext(Account account) {
+                        responseListener.onComplete(account);
+                    }
+                });
     }
 }

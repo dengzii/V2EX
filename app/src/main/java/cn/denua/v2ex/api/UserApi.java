@@ -10,6 +10,7 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -33,7 +34,7 @@ public interface UserApi {
     Call<String> postLogin(@FieldMap Map<String, String> form);
 
     @GET("settings")
-    Call<String> getInfo();
+    Observable<String> getInfo();
 
     @GET("/mission/daily")
     Observable<String> preSignIn();

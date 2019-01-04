@@ -37,6 +37,7 @@ public class TopicService extends BaseService<List<Topic>> {
         @Override
         public void _onNext(List<Topic> topics) {
             returnSuccess(topics);
+            reset();
         }
     };
 
@@ -130,6 +131,19 @@ public class TopicService extends BaseService<List<Topic>> {
                         returnSuccess(topics);
                     }
                 });
+    }
+
+    public void getTopicAndReply(int topicId){
+
+        Topic topic = new Topic(topicId);
+        topicApi.getTopicDetail(topicId, 1)
+                .compose(RxUtil.io2computation())
+                .map((Function<String, List<Topic>>) s -> {
+                    HtmlUtil.attachRepliesAndDetail(topic, s);
+                    return new ArrayList<Topic>(){{add(topic);}};
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mObserver);
     }
 
     public void getReply(Topic topic, int page){

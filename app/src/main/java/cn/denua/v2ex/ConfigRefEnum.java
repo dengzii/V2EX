@@ -21,6 +21,8 @@ public enum ConfigRefEnum implements Serializable {
     KEY_FILE_CONFIG_PREF        ("user_status",         null),
     KEY_USER_NAME               ("key_username",        null),
 
+    CONFIG_PREFERENCE_SETTING_FILE  ("preferences_settings", "preferences_settings"),
+
     CONFIG_LAST_TOUCHED         ("last_touched",        0L),
     CONFIG_THEME                ("key_theme",           "MainTheme"),
     CONFIG_AUTO_NIGHT_THEME     ("auto_night_theme",    true),

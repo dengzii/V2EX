@@ -29,11 +29,14 @@ public class Config {
 
     private static HashMap<ConfigRefEnum, Serializable> CONFIG = new HashMap<>();
 
-    public static final String PREFERENCES_SETTINGS = "preferences_settings";
-    public static final String PREFERENCEAS_USET_STATUS = "pref_status";
-
     public static Account sAccount = new Account();
     public static boolean IsLogin = false;
+    /**
+     * 负数表示今日已签到 <br>
+     * 0 表示未连续签到 <br>
+     * 正数表示今日未签到 <br>
+     */
+    public static int sSignIn = 0;
 
     private static ArrayList<TabEnum> HOME_TAB_TITLES = new ArrayList<>();
 
@@ -48,6 +51,10 @@ public class Config {
         add(Locale.JAPAN);
     }};
 
+    /**
+     * 初始化配置, 从 SharedPreferences 文件中读取配置
+     * @param context the context
+     */
     public static void init(Context context){
 
         loadConfig(context);
@@ -73,6 +80,11 @@ public class Config {
         CONFIG.put(key, value);
     }
 
+    /**
+     * 将用户信息 (Account) 以 json 的形式持久化
+     *
+     * @param context the context
+     */
     public static void persistentAccount(Context context){
 
         SharedPreferences.Editor editor= context.getSharedPreferences(
@@ -82,6 +94,12 @@ public class Config {
         editor.apply();
     }
 
+    /**
+     * 从指定 SharedPreferences 文件中读取以 json 形式保存的用户信息
+     *
+     * @param context the context
+     * @return 是否恢复账号信息成功
+     */
     public static boolean restoreAccount(Context context) {
         try {
             SharedPreferences editor = context.getSharedPreferences(
@@ -89,6 +107,7 @@ public class Config {
             sAccount = new Gson().fromJson(editor.getString(
                     ConfigRefEnum.KEY_ACCOUNT.getKey(),null), Account.class);
         }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
         return sAccount != null;
@@ -96,7 +115,8 @@ public class Config {
 
     private static void loadConfig(Context context){
 
-        SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_SETTINGS,
+        SharedPreferences preferences = context.getSharedPreferences(
+                Config.getConfig(ConfigRefEnum.CONFIG_PREFERENCE_SETTING_FILE),
                 Context.MODE_PRIVATE);
         Map<String, ?> pref = preferences.getAll();
         for (ConfigRefEnum refEnum:ConfigRefEnum.values()){

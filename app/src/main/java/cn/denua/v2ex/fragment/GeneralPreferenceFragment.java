@@ -28,7 +28,8 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getPreferenceManager().setSharedPreferencesName(Config.PREFERENCES_SETTINGS);
+        getPreferenceManager().setSharedPreferencesName(
+                Config.getConfig(ConfigRefEnum.CONFIG_PREFERENCE_SETTING_FILE));
         addPreferencesFromResource(R.xml.pref_general);
 
         ListPreference themePreference = (ListPreference) findPreference(

@@ -46,8 +46,8 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @BindView(R.id.rv_reply)
     RecyclerView mRecyclerView;
 
-    private int mTopicId;
-    private Topic mTopic;
+    private int mTopicId = -1;
+    private Topic mTopic = null;
     private ReplyRecyclerViewAdapter mRecyclerViewAdapter;
     private PullRefreshReplyAdapter mPullRecyclerAdapter;
     private TopicService mTopicService;
@@ -81,9 +81,11 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         mTopic = getIntent().getParcelableExtra("topic");
         if (mTopic == null){
             this.mTopicId = getIntent().getIntExtra("topicId",-1);
+        }else {
+            mPageCount = mTopic.getReplies() / 100 + 1;
         }
         mTopicService = new TopicService(this, this);
-        mPageCount = mTopic.getReplies() / 100 + 1;
+
         initView();
     }
 
@@ -125,6 +127,9 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
     }
 
+    /**
+     * 初始化话题相关信息的 view
+     */
     private void initHeaderView(){
 
         LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
@@ -136,7 +141,7 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         
         mTopicView = new TopicView(this, false);
         mTopicView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200));
-        mTopicView.loadDataFromTopic(mTopic);
+
 
         mWebView = new WebView(this);
         mWebView.setNetworkAvailable(true);
@@ -145,10 +150,14 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
         mWebView.setNetworkAvailable(true);
         mWebView.setFocusable(false);
 
-        if (mTopic.getContent_rendered()!=null){
-            mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered()),
-                    "text/html", "utf-8");
+        if (mTopic != null){
+            mTopicView.loadDataFromTopic(mTopic);
+            if (mTopic.getContent_rendered()!=null){
+                mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered()),
+                        "text/html", "utf-8");
+            }
         }
+
         mLlHeader.addView(mTopicView);
         mLlHeader.addView(mWebView);
         mRecyclerViewAdapter.setHeaderView(mLlHeader);
@@ -157,6 +166,11 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
     private void onRefresh(){
 
+        if (mTopic == null && mTopicId > 0 && mCurrentPage == 0){
+            mCurrentPage++;
+            mTopicService.getTopicAndReply(mTopicId);
+            return;
+        }
         if (mCurrentPage == 0) {
             mTopicService.getReply(mTopic, ++mCurrentPage);
         }else{
@@ -182,6 +196,12 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @Override
     public void onComplete(List<Topic> result) {
 
+        if (mTopic == null){
+            mTopic = result.get(0);
+            mPageCount = mTopic.getReplies() / 100 + 1;
+            mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered()),
+                    "text/html", "utf-8");
+        }
         if (mCurrentPage == 1){
             if (mTopic.getContent_rendered() == null) {
                 mWebView.loadData(HtmlUtil.applyHtmlStyle(result.get(0).getContent_rendered()),

@@ -4,6 +4,8 @@
 
 package cn.denua.v2ex.service;
 
+import java.util.logging.Logger;
+
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 
@@ -64,6 +66,7 @@ public class BaseService<T> {
 
     public void returnSuccess(T result){
         if (isCanceled){
+            com.orhanobut.logger.Logger.e(getClass().getName(), "the request has been completed and canceled.");
             return;
         }
         if (view.getContextStatus() == IResponsibleView.VIEW_STATUS_ACTIVATED) {
@@ -81,6 +84,10 @@ public class BaseService<T> {
 
     public void cancel(){
         this.isCanceled = true;
+    }
+
+    public void reset(){
+        this.isCanceled = false;
     }
 
     protected void setResponseListener(ResponseListener<T> responseListener) {

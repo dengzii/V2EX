@@ -40,10 +40,11 @@ import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.UserService;
 import cn.denua.v2ex.Config;
+import cn.denua.v2ex.utils.DialogUtil;
 import cn.denua.v2ex.widget.MessageDialog;
 
 @SuppressWarnings("RedundantCast")
-public class MainActivity extends BaseNetworkActivity implements NavigationView.OnNavigationItemSelectedListener, ResponseListener<Account> {
+public class MainActivity extends BaseNetworkActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = "MainActivity";
     private final int LOGIN_REQUEST_CODE = 100;
@@ -78,6 +79,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         ButterKnife.bind(this);
         initView();
+
+        setUserStatus();
     }
 
     protected void initView(){
@@ -122,10 +125,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     @Override
     protected void onStart() {
         super.onStart();
-
-        if (Config.restoreAccount(this)){
-            mUserService.getInfo(this);
-        }
     }
 
     @Override
@@ -139,6 +138,12 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                     R.string.need_storage_permission,
                     (dialog, which) -> PermissionUtils.launchAppDetailsSettings());
             messageDialog.showDialog();
+        }
+        if (Config.sSignIn < 0){
+            updateSignInMenu(Config.sSignIn * -1, false);
+        }
+        if (Config.sSignIn > 0){
+            updateSignInMenu(Config.sSignIn, true);
         }
     }
 
@@ -162,7 +167,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.search:
-                Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
+                DialogUtil.showInputDialog(this, "查看话题", "输入话题ID", "", value ->
+                        TopicActivity.start(MainActivity.this, Integer.valueOf(value)));
                 break;
             default:
                 break;
@@ -216,36 +222,37 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private void signIn(){
 
-        if (Config.IsLogin){
-            UserService.signIn(false, new ResponseListener<Integer>() {
-                @Override
-                public void onComplete(Integer result) {
-                    ToastUtils.showShort("签到成功, 连续签到天数 " + result.toString());
-                    updateSignInMenu(result, false);
-                }
-                @Override
-                public void onFailed(String msg) {
-                    ToastUtils.showShort(msg);
-                }
-            });
-        }else{
+        if (!Config.IsLogin){
             ToastUtils.showShort("需要登录");
+            return;
         }
+        UserService.signIn(false, new ResponseListener<Integer>() {
+            @Override
+            public void onComplete(Integer result) {
+                ToastUtils.showShort("签到成功, 连续签到天数 " + result.toString());
+                Config.sSignIn = result;
+                updateSignInMenu(result, false);
+            }
+            @Override
+            public void onFailed(String msg) {
+                ToastUtils.showShort(msg);
+            }
+        });
     }
 
     private void changeUserStatus(){
 
-        if (Config.IsLogin){
-            MessageDialog dialog = new MessageDialog(this);
-            dialog.init(getResources().getString(R.string.alert),
-                        getResources().getString(R.string.are_you_sure_logout),
-                        (dialog1, which) -> logout());
-            dialog.setNegativeCallBack((dialog12, which) -> dialog12.dismiss());
-            dialog.showDialog();
-        } else{
+        if (!Config.IsLogin){
             startActivityForResult(new Intent(this, LoginActivity.class),
                     LOGIN_REQUEST_CODE);
+            return;
         }
+        DialogUtil.showMessage(this,
+                getString(R.string.alert), getString(R.string.are_you_sure_logout), value -> {
+                    if (value){
+                        logout();
+                    }
+                });
     }
 
     private void logout(){
@@ -273,36 +280,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             tvBalance.setText(R.string.zero);
             ivUserPic.setImageResource(R.drawable.ic_launcher_foreground);
         }
-        invalidateOptionsMenu();
-    }
-
-    @Override
-    public void onFailed(String msg) {
-
-        Config.IsLogin = false;
-        ToastUtils.showShort(msg);
-    }
-
-    @Override
-    public void onComplete(Account result) {
-        Config.sAccount = result;
-        Config.IsLogin = true;
-        setUserStatus();
-        UserService.signIn(true, new ResponseListener<Integer>() {
-            @Override
-            public void onComplete(Integer result) {
-                ToastUtils.showShort(result);
-                if (result <= -1){
-                    updateSignInMenu(result * -1, false);
-                }else if (result > 0){
-                    updateSignInMenu(result, true);
-                }
-            }
-            @Override
-            public void onFailed(String msg) {
-                ToastUtils.showShort(msg);
-            }
-        });
     }
 
     private void updateSignInMenu(int days, boolean enabled){
