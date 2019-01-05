@@ -21,6 +21,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /*
  * 话题相关请求
@@ -36,8 +37,10 @@ public class TopicService extends BaseService<List<Topic>> {
     private RxObserver<List<Topic>> mObserver = new RxObserver<List<Topic>>(this) {
         @Override
         public void _onNext(List<Topic> topics) {
-            returnSuccess(topics);
-            reset();
+            if (topics != null){
+                returnSuccess(topics);
+                reset();
+            }
         }
     };
 
@@ -152,6 +155,11 @@ public class TopicService extends BaseService<List<Topic>> {
         topicApi.getTopicDetail(topicCopy.getId(), page)
                 .compose(RxUtil.io2computation())
                 .map((Function<String, List<Topic>>) s -> {
+                    if (s.contains(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern())){
+                        cancel();
+                        returnFailed(ErrorEnum.ERR_PAGE_NEED_LOGIN);
+                        return null;
+                    }
                     if (page == 1){
                         HtmlUtil.attachRepliesAndDetail(topicCopy, s);
                     }else {
@@ -161,6 +169,37 @@ public class TopicService extends BaseService<List<Topic>> {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mObserver);
+    }
+
+    public static void getTopicAndReply(IResponsibleView responsibleView,
+                                        int topicId,
+                                        ResponseListener<Topic> listener){
+        topicApi.getTopicDetail(topicId, 1)
+                .compose(RxUtil.io2computation())
+                .map((Function<String, Topic>) s -> {
+                    if (s.contains(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern())){
+                        listener.onFailed(ErrorEnum.ERR_PAGE_NEED_LOGIN.getReadable());
+                    }
+                    return null;
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(listener::onComplete)
+                .dispose();
+    }
+
+    public static void getReply(IResponsibleView responsibleView,
+                                int topicId,
+                                int page,
+                                ResponseListener<List<Reply>> listener){
+
+        topicApi.getTopicDetail(topicId, page)
+                .subscribeOn(Schedulers.computation())
+                .map(HtmlUtil::getReplies)
+                .doOnError(throwable -> listener.onFailed(throwable.getMessage()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(listener::onComplete)
+                .dispose();
+
     }
 
     public void getReplyFromApi(Topic topic, int page){

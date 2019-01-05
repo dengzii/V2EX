@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -53,8 +54,27 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     private TopicService mTopicService;
 
     private int mPageCount;
-    private int mCurrentPage = 0;
+    private int mCurrentPage = 1;
+    private boolean mIsInit = true;
 
+    private ResponseListener<List<Reply>> mRepliesListener = new ResponseListener<List<Reply>>() {
+        @Override
+        public void onComplete(List<Reply> result) {
+            mRecyclerViewAdapter.addReplies(result);
+            if (mPullRecyclerAdapter != null){
+                if (mPageCount == mCurrentPage) {
+                    mPullRecyclerAdapter.setStatus(PullRefreshReplyAdapter.FooterStatus.COMPLETE);
+                }else {
+                    mPullRecyclerAdapter.setStatus(PullRefreshReplyAdapter.FooterStatus.LOADING);
+                }
+                mPullRecyclerAdapter.notifyDataSetChanged();
+            }
+        }
+        @Override
+        public void onFailed(String msg) {
+            ToastUtils.showShort(msg);
+        }
+    };
 
     public static void start(Context context, int topicId){
 
@@ -166,20 +186,17 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
 
     private void onRefresh(){
 
-        if (mTopic == null && mTopicId > 0 && mCurrentPage == 0){
-            mCurrentPage++;
+        if (mTopic == null &&  mIsInit){
             mTopicService.getTopicAndReply(mTopicId);
             return;
         }
-        if (mCurrentPage == 0) {
-            mTopicService.getReply(mTopic, ++mCurrentPage);
-        }else{
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
+        mTopicService.getReply(mTopic, 0);
     }
 
     private void loadNextPage(){
-        mTopicService.getReply(mTopic, ++mCurrentPage);
+
+        TopicService.getReply(this, mTopic.getId(), ++mCurrentPage, mRepliesListener);
+//        mTopicService.getReply(mTopic, ++mCurrentPage);
     }
 
     @Override
@@ -196,20 +213,16 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @Override
     public void onComplete(List<Topic> result) {
 
-        if (mTopic == null){
+        if (mIsInit){
             mTopic = result.get(0);
-            mPageCount = mTopic.getReplies() / 100 + 1;
-            mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered()),
-                    "text/html", "utf-8");
-        }
-        if (mCurrentPage == 1){
-            if (mTopic.getContent_rendered() == null) {
-                mWebView.loadData(HtmlUtil.applyHtmlStyle(result.get(0).getContent_rendered()),
-                        "text/html", "utf-8");
-                mTopicView.setLastTouched(mTopic.getAgo());
+            if (mTopicId > 0){
+                mWebView.loadData(HtmlUtil.applyHtmlStyle(
+                        mTopic.getContent_rendered()), "text/html", "utf-8");
             }
-            this.mTopic = result.get(0);
+            mPageCount = mTopic.getReplies() / 100 + 1;
             mTopicView.loadDataFromTopic(mTopic);
+            mTopicView.setLastTouched(mTopic.getAgo());
+            mIsInit = false;
         }
 
         mRecyclerViewAdapter.addReplies(result.get(0).getReplyList());
@@ -226,6 +239,8 @@ public class TopicActivity extends BaseNetworkActivity implements ResponseListen
     @Override
     public void onFailed(String msg) {
 
+        mSwipeRefreshLayout.setRefreshing(false);
+        ToastUtils.showShort(msg);
         TextView mTvError = new TextView(this);
         mTvError.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 600));

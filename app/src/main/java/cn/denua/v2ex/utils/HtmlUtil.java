@@ -132,7 +132,9 @@ public class HtmlUtil {
 
         Iterator<Element> it = document.select("#Main > .box > .cell > .fr > .tag").iterator();
         Element header = document.selectFirst("#Main > .box > .header");
+
         String headerHtml = header.html();
+        String middleHtml = document.selectFirst("#Main > .box > .cell").html();
 
         List<Tag> tags = new ArrayList<>();
         for ( ; it.hasNext(); ) {
@@ -158,7 +160,7 @@ public class HtmlUtil {
                         (subtle == null ? "" :subtle.html()));
             }
         }
-        topic.setClicks(matcherGroup1Int(PATTERN_TOPIC_CLICK, html));
+//        topic.setClicks(matcherGroup1Int(PATTERN_TOPIC_CLICK, topicBottomHtml));
         topic.setTags(tags);
 
         if (topic.getNode() == null){
@@ -166,15 +168,53 @@ public class HtmlUtil {
             String nodeTitle = matcherGroup1(PATTERN_TOPIC_NODE_TITLE, headerHtml);
             topic.setNode(new Node(nodeName, nodeTitle));
         }
-        topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT, html));
-        topic.setAgo(matcherGroup1(PATTERN_TOPIC_AGO_, html));
-        topic.setFavors(matcherGroup1Int(PATTERN_TOPIC_FAVORS, html));
+        topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT, middleHtml));
+        topic.setAgo(matcherGroup1(PATTERN_TOPIC_AGO_, headerHtml));
+//        topic.setFavors(matcherGroup1Int(PATTERN_TOPIC_FAVORS, topicBottomHtml));
         topic.setThanks(matcherGroup1Int(PATTERN_TOPIC_THANKS, html));
-        topic.setCsrfToken(matcherGroup1(PATTERN_TOPIC_CSRF, html));
-        if (topic.getReplies() == 0){
-            topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT, html));
-        }
+//        topic.setCsrfToken(matcherGroup1(PATTERN_TOPIC_CSRF, html));
+
         attachReplies(topic, html);
+    }
+
+    public static List<Reply> getReplies(String html){
+
+        Document document = Jsoup.parse(html);
+        Elements elements = document.select("#Main > .box > .cell[id]");
+        Iterator<Element> elementIterator = elements.iterator();
+
+        List<Reply> replies = new ArrayList<>(elements.size());
+        for (int f=0; elementIterator.hasNext(); f++) {
+            Element e = elementIterator.next();
+            Reply reply = new Reply();
+
+            Element element = e.selectFirst(".reply_content");
+            if (element != null){
+                for (Element img:element.select("img")){
+                    img.attr("width","100%");
+                    img.attr("height","auto");
+                }
+                reply.setContent(element.html());
+            }else{
+                throw new V2exException("This post seems to have been blocked\nEmpty reply content");
+            }
+
+            String cell = e.toString();
+            int id = matcherGroup1Int(PATTERN_REPLY_ID, cell);
+            String username = matcherGroup1(PATTERN_REPLY_USERNAME, cell);
+            String avatarNormal = matcherGroup1(PATTERN_REPLY_AVATAR, cell);
+
+            reply.setId(id);
+            reply.setMember(new Member(username, avatarNormal));
+//            reply.setPoster(username.equals(poster));
+            reply.setAgo(matcherGroup1(PATTERN_REPLY_AGO, cell));
+            reply.setVia(matcherGroup1(PATTERN_REPLY_VIA, cell));
+            reply.setLike(matcherGroup1Int(PATTERN_REPLY_LIKE, cell));
+            reply.setFloor(f);
+
+            replies.add(reply);
+        }
+        return replies;
     }
 
     public static void attachReplies(Topic topic, String html){

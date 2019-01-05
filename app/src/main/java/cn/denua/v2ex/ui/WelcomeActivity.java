@@ -17,6 +17,7 @@ public class WelcomeActivity extends BaseActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setThemeNoActionBar();
 
         if (!Config.restoreAccount(this)) {
             UserService.getInfo(new ResponseListener<Account>() {

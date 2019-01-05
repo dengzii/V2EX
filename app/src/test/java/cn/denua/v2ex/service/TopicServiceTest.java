@@ -9,10 +9,10 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 import cn.denua.v2ex.api.TopicApi;
@@ -24,6 +24,17 @@ import cn.denua.v2ex.model.Node;
 import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Tag;
 import cn.denua.v2ex.model.Topic;
+import cn.denua.v2ex.utils.HtmlUtil;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -37,7 +48,86 @@ public class TopicServiceTest {
 
         RetrofitManager.init(null);
     }
+    @After
+    public void sleep(){
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @Test
+    public void test(){
+
+        Observable.create((ObservableOnSubscribe<String>) emitter -> {
+                            System.out.println(Thread.currentThread().getName());
+                            emitter.onNext("1");
+                            emitter.onNext("2");
+                            emitter.onNext("a");
+                            emitter.onComplete();
+                        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .flatMap((Function<String, ObservableSource<Integer>>) s -> {
+                    System.out.println(Thread.currentThread().getName());
+                    return Observable.just(Integer.valueOf(s)*2);
+                })
+                .observeOn(Schedulers.newThread())
+                .doOnError(throwable -> {
+                    System.out.println(Thread.currentThread().getName());
+                    throwable.printStackTrace();
+                })
+                .subscribe(integer -> {
+                    System.out.println(Thread.currentThread().getName());
+                    System.out.println(integer);
+                })
+                .dispose();
+    }
+
+    @Test
+    public void getReplyTest(){
+
+        TopicService.getReply(this.iResponsibleView, 523986, 1, new ResponseListener<List<Reply>>() {
+            @Override
+            public void onComplete(List<Reply> result) {
+                for (Reply reply : result){
+                    System.out.println(reply.toString());
+                }
+            }
+            @Override
+            public void onFailed(String msg) {
+                System.out.println(msg);
+            }
+        });
+    }
+    @Test
+    public void getTopicDetailTest(){
+
+        RetrofitManager.create(TopicApi.class)
+                .getTopicDetail(523986,1)
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        System.out.println("TopicServiceTest.onSubscribe");
+                    }
+                    @Override
+                    public void onNext(String s) {
+                        List<Reply> res = HtmlUtil.getReplies(s);
+                        for (Reply reply:res){
+                            System.out.println(res);
+                        }
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+                    @Override
+                    public void onComplete() {
+                        System.out.println("TopicServiceTest.onComplete");
+                    }
+                });
+    }
     @Test
     public void cloneTest(){
 
@@ -126,6 +216,11 @@ public class TopicServiceTest {
             }
         })
         .getReply(topic, 1);
+        try {
+            Thread.sleep(50000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private IResponsibleView iResponsibleView = new IResponsibleView() {

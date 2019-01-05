@@ -142,6 +142,11 @@ public class Reply implements Cloneable {
     }
 
     @Override
+    public String toString() {
+        return member.getUsername() + ", " + ago +  ", " + content;
+    }
+
+    @Override
     protected Object clone(){
 
         Reply copy = null;

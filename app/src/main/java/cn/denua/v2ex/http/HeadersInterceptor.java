@@ -37,7 +37,7 @@ public class HeadersInterceptor implements Interceptor{
     public Response intercept(@NonNull Chain chain) throws IOException {
 
         Request originRequest = chain.request();
-        Log.d(getClass().getName(), originRequest.url().toString());
+//        Log.d(getClass().getName(), originRequest.url().toString());
         Request updateRequest = originRequest.newBuilder()
                 .addHeader("host", originRequest.url().host())
                 .build();

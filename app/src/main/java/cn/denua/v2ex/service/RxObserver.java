@@ -4,6 +4,7 @@
 
 package cn.denua.v2ex.service;
 
+import cn.denua.v2ex.interfaces.ResponseListener;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -21,7 +22,6 @@ public abstract class RxObserver<T> implements Observer<T> {
     RxObserver(BaseService<?> baseService){
         this.mBaseService = baseService;
     }
-
     @Override
     public void onSubscribe(Disposable d) {
         if (mBaseService!=null){
@@ -34,10 +34,13 @@ public abstract class RxObserver<T> implements Observer<T> {
 
         if (t == null){
             _onError(ErrorEnum.ERR_EMPTY_RESPONSE.getReadable());
+            return;
         }
-        if (t instanceof String
-                && ((String) t).contains(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern())){
+        if (t instanceof String){
+            if (((String) t).contains(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern()) ||
+                    ((String) t).contains(ErrorEnum.ERR_PAGE_NEED_LOGIN0.getPattern()))
             _onError(ErrorEnum.ERR_PAGE_NEED_LOGIN.getReadable());
+            return;
         }
         try {
             _onNext(t);
