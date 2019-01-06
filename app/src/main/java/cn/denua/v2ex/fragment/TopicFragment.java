@@ -6,9 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.orhanobut.logger.Logger;
@@ -18,12 +21,15 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.denua.v2ex.Config;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.adapter.TopicRecyclerViewAdapter;
+import cn.denua.v2ex.base.BaseActivity;
 import cn.denua.v2ex.base.BaseNetworkFragment;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Topic;
+import cn.denua.v2ex.service.ErrorEnum;
 import cn.denua.v2ex.service.TopicService;
 
 public class TopicFragment extends BaseNetworkFragment implements ResponseListener<List<Topic>> {
@@ -38,6 +44,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
 
     private TopicService topicService;
     private TabEnum mTabType;
+    private boolean mIsNeedLogin = false;
 
     public static TopicFragment create(TabEnum contentType){
 
@@ -87,7 +94,10 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     }
 
     public void onRefresh() {
-
+        if (mIsNeedLogin && !Config.IsLogin){
+            ToastUtils.showShort(R.string.not_login);
+            return;
+        }
         topicService.getTopic(mTabType, 1);
     }
 
@@ -95,7 +105,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     public void onComplete(List<Topic> result) {
 
         swipeRefreshLayout.setRefreshing(false);
-        this.topics = result;
+        topics = result;
         adapter.addTopics(topics);
         adapter.notifyDataSetChanged();
     }
@@ -103,11 +113,26 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     @Override
     public void onCompleteRequest() {
         super.onCompleteRequest();
-
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onFailed(String msg) {
-        ToastUtils.showShort(msg);
+
+        if(msg.equals(ErrorEnum.ERR_PAGE_NEED_LOGIN.getReadable())){
+            mIsNeedLogin = true;
+            TextView mTvError = new TextView(getContext());
+            mTvError.setLayoutParams(new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, 600));
+            mTvError.setTextSize(25);
+            mTvError.setTextColor(R.attr.attr_color_accent);
+            mTvError.setGravity(Gravity.CENTER);
+            mTvError.setText(msg);
+            adapter.setHeaderView(mTvError);
+            adapter.notifyItemChanged(0);
+        }else{
+            ToastUtils.showShort(msg);
+        }
+
     }
 }

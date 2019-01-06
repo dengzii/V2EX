@@ -17,6 +17,7 @@ import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
+import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -76,26 +77,31 @@ public class TopicService extends BaseService<List<Topic>> {
         }
     }
 
-    public void postTopic(String title, String content, String node){
+    public static void  postTopic(IResponsibleView iResponsibleView,
+                          String title,
+                          String content,
+                          String node,
+                          ResponseListener<Topic> listener){
 
         int syntax = 1;
         topicApi.getPostTopicPage(node)
-                .compose(RxUtil.io2io())
+                .compose(RxUtil.io2computation())
                 .flatMap((Function<String, ObservableSource<String>>) s -> {
                     int once = HtmlUtil.getOnceFromPostTopicPage(s);
                     if (once < 1){
-                        returnFailed(ErrorEnum.ERROR_PARSE_HTML);
-                        return null;
+                       ErrorEnum.ERROR_PARSE_HTML.throwThis();
                     }
                     return topicApi.createTopic(node, title, content, once, syntax);
                 })
-                .map((Function<String, List<Topic>>) s -> {
+                .map(s -> {
+                    ErrorEnum.ERROR_CREATE_TOPIC_TOO_OFTEN.check(s);
+                    ErrorEnum.ERROR_CREATE_TOPIC_NEED_VERIFY_EMAIL.check(s);
                     Topic topic = new Topic();
                     HtmlUtil.attachRepliesAndDetail(topic, s);
-                    return new ArrayList<Topic>(1){{add(topic);}};
+                    return topic;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mObserver);
+                .subscribe(new RxObserver2<>(iResponsibleView, listener));
     }
 
     private void getHot(){
@@ -130,61 +136,28 @@ public class TopicService extends BaseService<List<Topic>> {
                 .subscribe(new RxObserver<String>(this) {
                     @Override
                     public void _onNext(String s) {
-                        List<Topic> topics = HtmlUtil.getTopics(s);
-                        returnSuccess(topics);
+                        returnSuccess(HtmlUtil.getTopics(s));
                     }
                 });
     }
 
-    public void getTopicAndReply(int topicId){
-
-        Topic topic = new Topic(topicId);
-        topicApi.getTopicDetail(topicId, 1)
-                .compose(RxUtil.io2computation())
-                .map((Function<String, List<Topic>>) s -> {
-                    HtmlUtil.attachRepliesAndDetail(topic, s);
-                    return new ArrayList<Topic>(){{add(topic);}};
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mObserver);
-    }
-
-    public void getReply(Topic topic, int page){
-
-        Topic topicCopy = (Topic) topic.clone();
-        topicApi.getTopicDetail(topicCopy.getId(), page)
-                .compose(RxUtil.io2computation())
-                .map((Function<String, List<Topic>>) s -> {
-                    if (s.contains(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern())){
-                        cancel();
-                        returnFailed(ErrorEnum.ERR_PAGE_NEED_LOGIN);
-                        return null;
-                    }
-                    if (page == 1){
-                        HtmlUtil.attachRepliesAndDetail(topicCopy, s);
-                    }else {
-                        HtmlUtil.attachReplies(topicCopy, s);
-                    }
-                    return new ArrayList<Topic>(){{add(topicCopy);}};
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mObserver);
-    }
-
     public static void getTopicAndReply(IResponsibleView responsibleView,
                                         int topicId,
+                                        int page,
                                         ResponseListener<Topic> listener){
-        topicApi.getTopicDetail(topicId, 1)
-                .compose(RxUtil.io2computation())
-                .map((Function<String, Topic>) s -> {
-                    if (s.contains(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern())){
-                        listener.onFailed(ErrorEnum.ERR_PAGE_NEED_LOGIN.getReadable());
+        topicApi.getTopicDetail(topicId, page)
+                .compose(RxUtil.io2main())
+                .map(s -> {
+                    ErrorEnum.ERR_PAGE_NEED_LOGIN.check(s);
+                    try {
+                        return HtmlUtil.getTopicAndReplies(s);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        ErrorEnum.ERROR_PARSE_HTML.throwThis();
+                        return null;
                     }
-                    return null;
                 })
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(listener::onComplete)
-                .dispose();
+                .subscribe(new RxObserver2<>(responsibleView, listener));
     }
 
     public static void getReply(IResponsibleView responsibleView,
@@ -195,10 +168,8 @@ public class TopicService extends BaseService<List<Topic>> {
         topicApi.getTopicDetail(topicId, page)
                 .subscribeOn(Schedulers.computation())
                 .map(HtmlUtil::getReplies)
-                .doOnError(throwable -> listener.onFailed(throwable.getMessage()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(listener::onComplete)
-                .dispose();
+                .subscribe(new RxObserver2<>(responsibleView, listener));
 
     }
 

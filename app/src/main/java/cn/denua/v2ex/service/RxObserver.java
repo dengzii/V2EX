@@ -4,7 +4,6 @@
 
 package cn.denua.v2ex.service;
 
-import cn.denua.v2ex.interfaces.ResponseListener;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -37,10 +36,11 @@ public abstract class RxObserver<T> implements Observer<T> {
             return;
         }
         if (t instanceof String){
-            if (((String) t).contains(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern()) ||
-                    ((String) t).contains(ErrorEnum.ERR_PAGE_NEED_LOGIN0.getPattern()))
-            _onError(ErrorEnum.ERR_PAGE_NEED_LOGIN.getReadable());
-            return;
+            if (((String) t).contains(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern())
+                    || ((String) t).contains(ErrorEnum.ERR_PAGE_NEED_LOGIN0.getPattern())){
+                _onError(ErrorEnum.ERR_PAGE_NEED_LOGIN.getReadable());
+                return;
+            }
         }
         try {
             _onNext(t);

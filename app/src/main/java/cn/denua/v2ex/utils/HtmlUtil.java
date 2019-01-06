@@ -1,5 +1,7 @@
 package cn.denua.v2ex.utils;
 
+import com.blankj.utilcode.util.TimeUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -126,6 +128,47 @@ public class HtmlUtil {
         return topics;
     }
 
+    public static Topic getTopicAndReplies(String html){
+
+        Topic topic = new Topic();
+        Document document = Jsoup.parse(html);
+        Element header = document.selectFirst("#Main > .box");
+        String headerHtml = header.toString();
+        Element middleEle = document.selectFirst("#Main > .box > .cell > span");
+        Element contentEle = header.selectFirst(".topic_content");
+        Element subtleEle = header.selectFirst(".subtle");
+        String publishedTime = document.selectFirst("meta[property=article:published_time]")
+                .attr("content")
+                .replaceAll("[TZ]", " ");
+
+        topic.setCreated(StringUtil.strToTimestamp(publishedTime,null));
+        topic.setId(matcherGroup1Int(Pattern.compile("(\\d{2,})"),
+                document.selectFirst("meta[property=og:url]").attr("content")));
+        topic.setTitle(header.selectFirst(".header > h1").text());
+        topic.setClicks(matcherGroup1Int(PATTERN_TOPIC_CLICK, headerHtml));
+        topic.setAgo(matcherGroup1(Pattern.compile("· ([^·]+) ·"),
+                header.selectFirst(".header > small").toString()));
+        topic.setFavors(matcherGroup1Int(PATTERN_TOPIC_FAVORS, headerHtml));
+        topic.setContent_rendered("\n"
+                + (contentEle == null ? "<br>" : contentEle.toString())
+                + (subtleEle == null ? " " : subtleEle.toString())
+                + "\n\t---");
+        topic.setMember(new Member(
+                matcherGroup1(PATTERN_TOPIC_USERNAME, headerHtml),
+                matcherGroup1(PATTERN_TOPIC_USER_AVATAR, headerHtml)));
+        topic.setNode(new Node(
+                document.selectFirst("meta[property=article:tag]").attr("content"),
+                document.selectFirst("meta[property=article:section]").attr("content")));
+
+        if (middleEle != null){
+            String lastTouched = matcherGroup1(Pattern.compile("直到 ([^+]+)"), middleEle.toString());
+            topic.setLast_touched(lastTouched.isEmpty() ? 0 : StringUtil.strToTimestamp(lastTouched,null));
+            topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT, middleEle.toString()));
+        }
+        topic.setReplyList(getReplies(document, topic.getMember().getUsername()));
+        return topic;
+    }
+
     public static void attachRepliesAndDetail(Topic topic, String html){
 
         Document document = Jsoup.parse(html);
@@ -147,7 +190,6 @@ public class HtmlUtil {
             String avatar = matcherGroup1(PATTERN_TOPIC_USER_AVATAR, headerHtml);
             topic.setMember(new Member(username, avatar));
         }
-
         // topic not from home page
         if (topic.getContent_rendered()==null){
             Element contentBox = document.selectFirst("#Main > .box");
@@ -177,9 +219,8 @@ public class HtmlUtil {
         attachReplies(topic, html);
     }
 
-    public static List<Reply> getReplies(String html){
+    private static List<Reply> getReplies(Document document, String poster){
 
-        Document document = Jsoup.parse(html);
         Elements elements = document.select("#Main > .box > .cell[id]");
         Iterator<Element> elementIterator = elements.iterator();
 
@@ -206,7 +247,7 @@ public class HtmlUtil {
 
             reply.setId(id);
             reply.setMember(new Member(username, avatarNormal));
-//            reply.setPoster(username.equals(poster));
+            if (poster != null) reply.setPoster(username.equals(poster));
             reply.setAgo(matcherGroup1(PATTERN_REPLY_AGO, cell));
             reply.setVia(matcherGroup1(PATTERN_REPLY_VIA, cell));
             reply.setLike(matcherGroup1Int(PATTERN_REPLY_LIKE, cell));
@@ -215,6 +256,14 @@ public class HtmlUtil {
             replies.add(reply);
         }
         return replies;
+    }
+
+    public static List<Reply> getReplies(String html){
+        return getReplies(Jsoup.parse(html), null);
+    }
+
+    private static List<Reply> getReplies(Document document){
+        return getReplies(document, null);
     }
 
     public static void attachReplies(Topic topic, String html){
@@ -336,13 +385,6 @@ public class HtmlUtil {
         return "";
     }
 
-    /**
-     * 查找整数结果
-     *
-     * @param pattern 匹配
-     * @param str 字符串
-     * @return 0 则未匹配
-     */
     public static int matcherGroup1Int(Pattern pattern, String str){
         String res = matcherGroup1(pattern, str);
         return res.equals("") ? 0 : Integer.valueOf(res);

@@ -20,11 +20,30 @@ public class StringUtil {
 
     public static String timestampToStr(long timestamp){
 
-        if (timestamp < 9999999999L){
+        if (timestamp < 10000000000L){
             timestamp = timestamp * 1000L;
         }
         return new SimpleDateFormat(Config.getConfig(
                 ConfigRefEnum.CONFIG_DATE_FORMAT), Locale.getDefault()).format(timestamp);
+    }
+
+    /**
+     * 日期转时间戳
+     *
+     * @param date 日期
+     * @param format 日期的格式 默认：yyyy-MM-dd HH:mm:ss
+     * @return 时间戳
+     */
+    public static long strToTimestamp(String date, String format){
+
+        try {
+            if (format == null) format = "yyyy-MM-dd HH:mm:ss";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.getDefault());
+            return simpleDateFormat.parse(date).getTime() / 1000;
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     public static synchronized String getDateNow(String format){

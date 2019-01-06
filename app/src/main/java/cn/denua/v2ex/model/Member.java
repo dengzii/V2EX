@@ -245,8 +245,7 @@ public class Member implements Parcelable, Cloneable {
             }
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
-        }
-        return copy;
+        }return copy;
     }
 
     @Override

@@ -263,12 +263,24 @@ public class Topic implements Parcelable, Cloneable {
     public String toString() {
         return "Topic{" +
                 "id=" + id +
+                ", last_touched=" + last_touched +
+                ", last_modified=" + last_modified +
+                ", created=" + created +
+                ", clicks=" + clicks +
+                ", favors=" + favors +
+                ", thanks=" + thanks +
                 ", replies=" + replies +
+                ", upVote=" + upVote +
+                ", downVote=" + downVote +
                 ", title='" + title + '\'' +
                 ", last_reply_by='" + last_reply_by + '\'' +
+                ", url='" + url + '\'' +
                 ", ago='" + ago + '\'' +
-                ", last_reply_by=" + last_reply_by +
-                ", node=" + node.getTitle() +
+                ", nodeName='" + nodeName + '\'' +
+                ", nodeTitle='" + nodeTitle + '\'' +
+                ", node=" + node.toString() +
+                ", tags=" + tags +
+                ", csrfToken='" + csrfToken + '\'' +
                 '}';
     }
 

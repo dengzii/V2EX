@@ -24,6 +24,9 @@ public interface TopicApi {
     @GET("t/{id}")
     Observable<String> getTopicDetail(@Path("id") int id, @Query("p") int page);
 
+    @GET("amp/t/{id}/{page}")
+    Observable<String> getTopicAmp(@Path("id") int id, @Path("page") int page);
+
     @GET("/changes")
     Observable<String> getLatestTopic2();
 

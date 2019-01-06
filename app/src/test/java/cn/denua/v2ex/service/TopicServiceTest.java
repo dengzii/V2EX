@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.api.TopicApi;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.IResponsibleView;
@@ -60,35 +61,40 @@ public class TopicServiceTest {
     @Test
     public void test(){
 
-        Observable.create((ObservableOnSubscribe<String>) emitter -> {
-                            System.out.println(Thread.currentThread().getName());
-                            emitter.onNext("1");
-                            emitter.onNext("2");
-                            emitter.onNext("a");
-                            emitter.onComplete();
-                        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.computation())
-                .flatMap((Function<String, ObservableSource<Integer>>) s -> {
-                    System.out.println(Thread.currentThread().getName());
-                    return Observable.just(Integer.valueOf(s)*2);
-                })
-                .observeOn(Schedulers.newThread())
-                .doOnError(throwable -> {
-                    System.out.println(Thread.currentThread().getName());
-                    throwable.printStackTrace();
-                })
-                .subscribe(integer -> {
-                    System.out.println(Thread.currentThread().getName());
-                    System.out.println(integer);
-                })
-                .dispose();
+        TabEnum tabEnum = TabEnum.NODE;
+        tabEnum.setTitle("sandbox");
+        new TopicService(iResponsibleView, new ResponseListener<List<Topic>>() {
+            @Override
+            public void onComplete(List<Topic> result) {
+                System.out.println(result);
+            }
+            @Override
+            public void onFailed(String msg) {
+                System.err.println(msg);
+            }
+        }).getTopic(tabEnum,1);
+    }
+
+    @Test
+    public void getTopicWithReplyTest(){
+
+        TopicService.getTopicAndReply(this.iResponsibleView, 524071,1, new ResponseListener<Topic>() {
+            @Override
+            public void onFailed(String msg) {
+                System.err.println(msg);
+            }
+            @Override
+            public void onComplete(Topic result) {
+                System.out.println(result);
+            }
+        });
+
     }
 
     @Test
     public void getReplyTest(){
 
-        TopicService.getReply(this.iResponsibleView, 523986, 1, new ResponseListener<List<Reply>>() {
+        TopicService.getReply(this.iResponsibleView, 524330, 1, new ResponseListener<List<Reply>>() {
             @Override
             public void onComplete(List<Reply> result) {
                 for (Reply reply : result){
@@ -176,51 +182,6 @@ public class TopicServiceTest {
                         System.err.println(msg);
                     }
                 });
-    }
-
-    @Test
-    public void getReply(){
-
-        Topic topic = new Topic();
-        topic.setId(505378);
-
-        new TopicService(iResponsibleView, new ResponseListener<List<Topic>>() {
-            @Override
-            public void onComplete(List<Topic> result) {
-                Topic topic1 = result.get(0);
-                List<Reply> replies = topic1.getReplyList();
-
-                Log.d("CsrfToken", topic1.getCsrfToken());
-                Log.d("Node:", topic1.getNode().getName() + topic1.getNode().getTitle());
-                Log.d("Thanks:", String.valueOf(topic1.getThanks()));
-                Log.d("Clicks:", String.valueOf(topic1.getClicks()));
-
-                for (Tag tag:topic1.getTags()){
-                    Log.d("Tag", tag.getName());
-                }
-
-                if (replies == null){
-                    Log.e(null, "No replies exists.");
-                    return;
-                }
-                for (Reply reply:replies){
-                    Log.d(null,  reply.getMember().getAvatar_normal());
-                    Log.d(null, reply.getMember().getUsername() + reply.getAgo() + reply.getId() + reply.getVia());
-                    Log.d(null, reply.getContent());
-                    Log.d(null, "================================================================");
-                }
-            }
-            @Override
-            public void onFailed(String msg) {
-                Log.d(null, msg);
-            }
-        })
-        .getReply(topic, 1);
-        try {
-            Thread.sleep(50000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private IResponsibleView iResponsibleView = new IResponsibleView() {

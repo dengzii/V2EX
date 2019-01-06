@@ -278,7 +278,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             miLogin.setVisible(false);
             miLogin.setEnabled(false);
             tvBalance.setText(R.string.zero);
-            ivUserPic.setImageResource(R.drawable.ic_launcher_foreground);
+            miSignIn.setTitle(R.string.checked);
+            ivUserPic.setImageResource(R.drawable.ic_offline);
         }
     }
 

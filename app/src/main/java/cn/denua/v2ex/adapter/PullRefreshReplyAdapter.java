@@ -10,10 +10,14 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.List;
+
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.model.Reply;
 
 /*
  * pull refresh reply recycler view adapter
@@ -74,6 +78,19 @@ public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
+    public void setHeaderView(LinearLayout mLlHeader) {
+
+        mAdapter.setHeaderView(mLlHeader);
+    }
+
+    public void notifyItem(int position){
+        mAdapter.notifyItemChanged(position);
+    }
+
+    public void notifyAllData(){
+        mAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof FooterViewHolder && position > 10){
@@ -94,6 +111,9 @@ public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
+    public void addReplies(List<Reply> replies){
+        mAdapter.addReplies(replies);
+    }
     public interface OnPullUpListener{
         void onPullUp();
     }

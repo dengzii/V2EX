@@ -105,32 +105,6 @@ public class TopicView extends FrameLayout {
 
     private void bindViewWithData(){
 
-        if (isSimpleView) {
-            tvLastTouched.setText(topic.getAgo());
-            if (tvLastReply != null) {
-                tvLastReply.setText(topic.getLast_reply_by());
-            }
-            if (tvUpVote != null) {
-                tvUpVote.setText(topic.getUpVote()==0?"":String.valueOf(topic.getUpVote()));
-            }
-        } else {
-
-            String userPicUrl = topic.getMember().getAvatar_large();
-            ImageLoader.load(userPicUrl, ivUserPic, this);
-            if (tvUsername != null) {
-                tvUsername.setText(topic.getMember().getUsername());
-            }
-            if (topic.getCreated() == 0 && topic.getAgo() != null){
-                tvLastTouched.setText(topic.getAgo());
-            }else if (topic.getCreated() != 0){
-                tvLastTouched.setText(StringUtil.timestampToStr(
-                        mIsShowCreateDate ? topic.getCreated() : topic.getLast_touched()));
-            }
-            tvUsername.setOnClickListener(v -> goToUserDetail());
-            if (ivUserPic != null) {
-                ivUserPic.setOnClickListener(v -> goToUserDetail());
-            }
-        }
         tvTitle.setText(topic.getTitle());
         tvReply.setText(String.format(getResources().getString(R.string.place_holder_reply),
                 topic.getReplies()));
@@ -141,8 +115,34 @@ public class TopicView extends FrameLayout {
                     ? topic.getNode().getName()
                     : topic.getNode().getTitle());
         }
-
         tvNode.setOnClickListener(v -> goToNodeDetail());
+
+        if (isSimpleView) {
+            tvLastTouched.setText(topic.getAgo());
+            if (tvLastReply != null) {
+                tvLastReply.setText(topic.getLast_reply_by());
+            }
+            if (tvUpVote != null) {
+                tvUpVote.setText(topic.getUpVote()==0?"":String.valueOf(topic.getUpVote()));
+            }
+            return;
+        }
+
+        String userPicUrl = topic.getMember().getAvatar_large();
+        ImageLoader.load(userPicUrl, ivUserPic, this);
+        if (tvUsername != null) {
+            tvUsername.setText(topic.getMember().getUsername());
+        }
+        if (topic.getCreated() == 0 && topic.getAgo() != null){
+            tvLastTouched.setText(topic.getAgo());
+        }else if (topic.getCreated() != 0){
+            tvLastTouched.setText(StringUtil.timestampToStr(
+                    mIsShowCreateDate ? topic.getCreated() : topic.getLast_touched()));
+        }
+        tvUsername.setOnClickListener(v -> goToUserDetail());
+        if (ivUserPic != null) {
+            ivUserPic.setOnClickListener(v -> goToUserDetail());
+        }
     }
 
     private void goToUserDetail(){

@@ -34,7 +34,7 @@ import cn.denua.v2ex.utils.DialogUtil;
  * @email denua@foxmail.com
  * @date 2018/12/30 12
  */
-public class PostTopicActivity extends BaseNetworkActivity implements ResponseListener<List<Topic>> {
+public class PostTopicActivity extends BaseNetworkActivity implements ResponseListener<Topic> {
 
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
@@ -66,23 +66,28 @@ public class PostTopicActivity extends BaseNetworkActivity implements ResponseLi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        new TopicService(this, this).postTopic(mEtTitle.getText().toString(),
+        TopicService.postTopic(this,
+                mEtTitle.getText().toString(),
                 mEtContent.getText().toString(),
-                mTvNode.getText().toString());
+                mTvNode.getText().toString(),
+                this);
         return super.onOptionsItemSelected(item);
     }
 
     public void selectNode(View view){
 
         DialogUtil.showInputDialog(
-                this, "输入节点名称", null, "sandbox", value -> {
-                    mTvNode.setText(value);
-                });
+                this,
+                "输入节点名称",
+                null,
+                "sandbox",
+                value -> mTvNode.setText(value));
     }
 
     @Override
-    public void onComplete(List<Topic> result) {
-        TopicActivity.start(this, result.get(0).getId());
+    public void onComplete(Topic result) {
+
+        TopicActivity.start(this, result.getId());
     }
 
     @Override

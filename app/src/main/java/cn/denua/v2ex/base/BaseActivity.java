@@ -91,7 +91,7 @@ public class BaseActivity extends AppCompatActivity {
         return typedValue.data;
     }
 
-    protected int getColorAccent(){
+    public int getColorAccent(){
 
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.attr_color_accent, typedValue, true);
