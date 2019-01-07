@@ -218,6 +218,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             default:
                 break;
         }
+
     }
 
     private void signIn(){
