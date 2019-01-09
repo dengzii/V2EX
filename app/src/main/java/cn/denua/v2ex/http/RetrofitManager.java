@@ -69,7 +69,7 @@ public class RetrofitManager {
                 .hostnameVerifier((hostname, session) -> VERIFIED_HOST.contains(hostname));
 
         if (context != null){
-            X509TrustManager trustManager = HttpsUtil.getX509TrustManager(App.getApplication());
+            X509TrustManager trustManager = HttpsUtil.getX509TrustManager(context);
             okHttpClientBuilder.sslSocketFactory(
                     HttpsUtil.getSslSocketFactory(trustManager),
                     trustManager);

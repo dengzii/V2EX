@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.blankj.utilcode.util.ToastUtils;
 
 import cn.denua.v2ex.Config;
+import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.BaseActivity;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
@@ -17,6 +18,7 @@ public class WelcomeActivity extends BaseActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.act_welcome);
         setThemeNoActionBar();
 
         if (!Config.restoreAccount(this)) {
