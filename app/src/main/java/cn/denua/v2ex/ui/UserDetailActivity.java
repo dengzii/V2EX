@@ -68,7 +68,6 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
     @BindView(R.id.tv_number_created)
     TextView mNumberCreated;
 
-
     private Member mMember;
     private MemberPagerAdapter mPagerAdapter;
     private List<Fragment> mMemberTopicFragments = new ArrayList<>();

@@ -106,7 +106,7 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
             return;
         }
         ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-        itemViewHolder.topicView.loadDataFromTopic(topic);
+        itemViewHolder.topicView.setTopic(topic);
         itemViewHolder.topicView.setOnClickListener(v-> TopicActivity.start(context, topic));
     }
 

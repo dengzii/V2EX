@@ -92,18 +92,18 @@ public class TopicView extends FrameLayout {
     @Override
     protected void onWindowVisibilityChanged(int visibility) {
         super.onWindowVisibilityChanged(visibility);
-        if (topic != null)  bindViewWithData();
+        if (topic != null)  bindViewWithTopic();
     }
 
     public void setLastTouched(String lastTouched){
         tvLastTouched.setText(lastTouched);
     }
 
-    public void  loadDataFromTopic(Topic topic) {
+    public void  setTopic(Topic topic) {
         this.topic = topic;
     }
 
-    private void bindViewWithData(){
+    private void bindViewWithTopic(){
 
         tvTitle.setText(topic.getTitle());
         tvReply.setText(String.format(getResources().getString(R.string.place_holder_reply),
@@ -143,6 +143,11 @@ public class TopicView extends FrameLayout {
         if (ivUserPic != null) {
             ivUserPic.setOnClickListener(v -> goToUserDetail());
         }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
     }
 
     private void goToUserDetail(){

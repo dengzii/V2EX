@@ -68,8 +68,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     private MenuItem miLogin;
     private MenuItem miSignIn;
 
-    private UserService mUserService = new UserService(this);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,12 +130,10 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         super.onResume();
 
         if (!PermissionUtils.isGranted("android.permission.WRITE_EXTERNAL_STORAGE")){
-            MessageDialog messageDialog = new MessageDialog(this);
-            messageDialog.init(
-                    R.string.alert,
-                    R.string.need_storage_permission,
-                    (dialog, which) -> PermissionUtils.launchAppDetailsSettings());
-            messageDialog.showDialog();
+            DialogUtil.showMessage(this,
+                    getString(R.string.alert),
+                    getString(R.string.need_storage_permission),
+                    value -> PermissionUtils.launchAppDetailsSettings());
         }
         if (Config.sSignIn < 0){
             updateSignInMenu(Config.sSignIn * -1, false);
@@ -263,6 +259,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         Config.persistentAccount(this);
         RetrofitManager.clearCookies();
         setUserStatus();
+        updateSignInMenu(-1, true);
     }
 
     private void setUserStatus(){
@@ -286,7 +283,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private void updateSignInMenu(int days, boolean enabled){
 
-        miSignIn.setTitle("已连续签到 " + days + " 天");
+        miSignIn.setTitle(days > 0 ? "已连续签到 " + days + " 天" : getString(R.string.checked));
         miSignIn.setEnabled(enabled);
     }
 

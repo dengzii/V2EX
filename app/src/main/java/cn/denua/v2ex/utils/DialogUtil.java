@@ -6,13 +6,11 @@ package cn.denua.v2ex.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import cn.denua.v2ex.R;
-import cn.denua.v2ex.widget.MessageDialog;
 
 /*
  * @author denua

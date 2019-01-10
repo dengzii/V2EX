@@ -211,7 +211,7 @@ public class TopicActivity extends BaseNetworkActivity{
         if (mTopic != null){
             setTitle(mTopic.getTitle());
             mPageCount = mTopic.getReplies() / 100 + 1;
-            mTopicView.loadDataFromTopic(mTopic);
+            mTopicView.setTopic(mTopic);
             if (mTopic.getContent_rendered() != null){
                 mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered()),
                         "text/html", "utf-8");

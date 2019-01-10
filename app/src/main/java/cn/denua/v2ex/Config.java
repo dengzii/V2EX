@@ -41,7 +41,6 @@ public class Config {
     private static ArrayList<TabEnum> HOME_TAB_TITLES = new ArrayList<>();
 
     static final ArrayList<TabEnum> HOME_TAB_DEFAULT = new ArrayList<TabEnum>(){{
-        add(TabEnum.ALL);
         add(TabEnum.HOT);
         add(TabEnum.CHANGES);
     }};
