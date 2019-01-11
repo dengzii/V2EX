@@ -232,15 +232,15 @@ public class Member implements Parcelable, Cloneable {
         try {
             copy = (Member)super.clone();
             if (createdTopics!=null) {
-                copy.setCreatedTopics(new ArrayList<>());
+                copy.setCreatedTopics(new ArrayList<>(createdTopics.size()));
                 createdTopics.addAll(copy.getCreatedTopics());
             }
             if (qna != null) {
-                copy.setQna(new ArrayList<>());
+                copy.setQna(new ArrayList<>(qna.size()));
                 qna.addAll(copy.getQna());
             }
             if (replies != null) {
-                copy.setReplies(new ArrayList<>());
+                copy.setReplies(new ArrayList<>(replies.size()));
                 replies.addAll(copy.getReplies());
             }
         } catch (CloneNotSupportedException e) {

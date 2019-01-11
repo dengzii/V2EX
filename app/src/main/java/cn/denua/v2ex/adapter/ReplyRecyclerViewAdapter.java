@@ -36,12 +36,11 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     private FrameLayout.LayoutParams mLayoutParams;
 
     private ViewGroup mHeaderViewGroup;
-    private int mItemCount = 0;
 
-    public ReplyRecyclerViewAdapter(Context context){
+    public ReplyRecyclerViewAdapter(Context context, List<Reply> replies){
 
         this.context = context;
-        this.mReplies = new ArrayList<>();
+        this.mReplies = replies;
         this.mLayoutParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
     }
@@ -52,7 +51,6 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
     public void setHeaderView(ViewGroup view){
 
-        mItemCount += 1;
         mHeaderViewGroup = view;
     }
 
@@ -87,7 +85,6 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
             return;
         }
         mReplies.addAll(replies);
-        mItemCount += replies.size();
         notifyDataSetChanged();
     }
 
@@ -105,7 +102,7 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount() {
-        return mItemCount;
+        return mReplies.size() + (mHeaderViewGroup == null ? 0 : 1);
     }
 
     static class ItemViewHolder extends RecyclerView.ViewHolder{

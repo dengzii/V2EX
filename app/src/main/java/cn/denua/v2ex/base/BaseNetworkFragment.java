@@ -33,7 +33,7 @@ public class BaseNetworkFragment extends BaseFragment implements IResponsibleVie
 
     @Override
     public int getContextStatus() {
-        return !isDetached()||isResumed()
+        return ! isDetached()||isResumed()
                 ?VIEW_STATUS_ACTIVATED
                 :VIEW_STATUS_DESTROYED;
     }

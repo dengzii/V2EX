@@ -66,7 +66,7 @@ public class ImageLoader {
 
     public static void load(String url, ImageView imageView, View view){
 
-        Glide.with(view).load(url).into(imageView);
+        load(url, imageView, view.getContext());
     }
 
     private class MGlideModule implements GlideModule{

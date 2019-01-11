@@ -6,7 +6,9 @@ package cn.denua.v2ex.base;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.Nullable;
 
 import cn.denua.v2ex.interfaces.IResponsibleView;
 
@@ -18,6 +20,27 @@ import cn.denua.v2ex.interfaces.IResponsibleView;
  */
 @SuppressLint("Registered")
 public class BaseNetworkActivity extends BaseActivity implements IResponsibleView {
+
+    protected int mViewStatus = VIEW_STATUS_WAITING;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewStatus = VIEW_STATUS_ACTIVATED;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        mViewStatus = VIEW_STATUS_WAITING;
+    }
+
+    @CallSuper
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mViewStatus = VIEW_STATUS_DESTROYED;
+    }
 
     @Override
     public void onStartRequest() {
@@ -31,14 +54,13 @@ public class BaseNetworkActivity extends BaseActivity implements IResponsibleVie
 
     @Override
     public void onCompleteRequest() {
+
     }
 
     @Override
     @CallSuper
     public int getContextStatus() {
-        return isInForeground()
-                ? VIEW_STATUS_ACTIVATED
-                : VIEW_STATUS_ACTIVATED;
+        return mViewStatus;
     }
 
     @Override

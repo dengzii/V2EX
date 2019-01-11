@@ -246,11 +246,11 @@ public class Topic implements Parcelable, Cloneable {
                 copy.setNode((Node) node.clone());
             }
             if (replyList != null){
-                copy.setReplyList(new ArrayList<>());
+                copy.setReplyList(new ArrayList<>(replyList.size()));
                 replyList.addAll(copy.getReplyList());
             }
             if (tags != null) {
-                copy.setTags(new ArrayList<>());
+                copy.setTags(new ArrayList<>(tags.size()));
                 tags.addAll(copy.getTags());
             }
         } catch (CloneNotSupportedException e) {

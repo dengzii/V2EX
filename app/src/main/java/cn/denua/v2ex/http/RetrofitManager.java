@@ -45,6 +45,7 @@ public class RetrofitManager {
 
     private static Retrofit retrofit;
     private static CookiesManager cookiesManager;
+    private static Gson sGson;
 
     private RetrofitManager(){}
 
@@ -74,7 +75,7 @@ public class RetrofitManager {
                     HttpsUtil.getSslSocketFactory(trustManager),
                     trustManager);
         }
-        Gson gson = new GsonBuilder()
+        sGson = new GsonBuilder()
                 .serializeNulls()
                 .disableHtmlEscaping()
                 .setPrettyPrinting()
@@ -90,10 +91,14 @@ public class RetrofitManager {
             retrofitBuilder.addConverterFactory(BitmapConverterFactory.create());
         }
         retrofitBuilder.addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create(sGson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
         retrofit = retrofitBuilder.build();
+    }
+
+    public static Gson getGson(){
+        return sGson;
     }
 
     /**

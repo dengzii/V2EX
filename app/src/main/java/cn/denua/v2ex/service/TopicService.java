@@ -96,9 +96,7 @@ public class TopicService extends BaseService<List<Topic>> {
                 .map(s -> {
                     ErrorEnum.ERROR_CREATE_TOPIC_TOO_OFTEN.check(s);
                     ErrorEnum.ERROR_CREATE_TOPIC_NEED_VERIFY_EMAIL.check(s);
-                    Topic topic = new Topic();
-                    HtmlUtil.attachRepliesAndDetail(topic, s);
-                    return topic;
+                    return HtmlUtil.getTopicAndReplies(s);
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RxObserver2<>(iResponsibleView, listener));
@@ -132,13 +130,10 @@ public class TopicService extends BaseService<List<Topic>> {
     private void getTopicsByNode(String node, int page){
 
         topicApi.getTopicsByNode(node, page)
-                .compose(RxUtil.io2main())
-                .subscribe(new RxObserver<String>(this) {
-                    @Override
-                    public void _onNext(String s) {
-                        returnSuccess(HtmlUtil.getTopics(s));
-                    }
-                });
+                .compose(RxUtil.io2computation())
+                .map(HtmlUtil::getTopics)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RxObserver2<>(getView(), getResponseListener()));
     }
 
     public static void getTopicAndReply(IResponsibleView responsibleView,

@@ -4,6 +4,7 @@
 
 package cn.denua.v2ex.adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -35,6 +36,10 @@ public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public enum FooterStatus{
         LOADING, HIDDEN, COMPLETE
+    }
+
+    public PullRefreshReplyAdapter(Context context, List<Reply> replies){
+        this(new ReplyRecyclerViewAdapter(context, replies));
     }
 
     public PullRefreshReplyAdapter(ReplyRecyclerViewAdapter adapter){
@@ -83,11 +88,15 @@ public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.V
         mAdapter.setHeaderView(mLlHeader);
     }
 
+    public void notifyRangeChanged(int start, int count){
+        mAdapter.notifyItemRangeChanged(start, count);
+    }
+
     public void notifyItem(int position){
         mAdapter.notifyItemChanged(position);
     }
 
-    public void notifyAllData(){
+    public void notifyAllDataChanged(){
         mAdapter.notifyDataSetChanged();
     }
 

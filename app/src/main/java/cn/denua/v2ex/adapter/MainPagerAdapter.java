@@ -4,6 +4,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
+
 import java.util.List;
 
 import cn.denua.v2ex.Config;
@@ -23,10 +25,14 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        return super.instantiateItem(container, position);
+    }
+
+    @Override
     public int getCount() {
         return fragmentList.size();
     }
-
 
     @Override
     public Fragment getItem(int position) {

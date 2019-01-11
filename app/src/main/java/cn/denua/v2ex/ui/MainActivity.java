@@ -97,6 +97,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(Gravity.START));
         navigationView.setNavigationItemSelectedListener(this);
 
+        viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), topicFragments));
 
         ivUserPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.iv_user_pic);

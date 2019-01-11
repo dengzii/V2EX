@@ -138,7 +138,6 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
     public void onComplete(Member result) {
 
         this.mTopics = result.getCreatedTopics();
-        mRecyclerViewAdapter.addTopics(mTopics);
         mRecyclerViewAdapter.setHeaderView(getTopicListHeaderView(mTopics.size()));
         mRecyclerViewAdapter.notifyDataSetChanged();
     }

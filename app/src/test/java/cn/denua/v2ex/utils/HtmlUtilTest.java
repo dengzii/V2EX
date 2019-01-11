@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.denua.v2ex.model.Member;
 import cn.denua.v2ex.model.Topic;
 
 /*
@@ -24,11 +25,6 @@ public class HtmlUtilTest {
 
     @Before
     public void setUp() throws Exception {
-
-    }
-
-    @Test
-    public void getLoginFieldName() {
 
     }
 

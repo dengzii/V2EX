@@ -37,7 +37,6 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         this.mIsSimpleView = false;
         this.mTopics = topics;
         this.context = context;
-        this.mItemCount = topics.size();
         this.mWrapContentParams = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
@@ -78,11 +77,6 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         return new ItemViewHolder(topicView);
     }
 
-    public void addTopics(List<Topic> topics) {
-        this.mItemCount += topics.size();
-        this.mTopics.addAll(topics);
-    }
-
     @Override
     public int getItemViewType(int position) {
 
@@ -101,7 +95,7 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         if (holder instanceof OtherViewHolder){
             return;
         }
-        Topic topic = mTopics.get(position - ((mHeaderFrameLayout==null) ? 0 : 1));
+        Topic topic = mTopics.get(position - ((mHeaderFrameLayout == null) ? 0 : 1));
         if (topic == null){
             return;
         }
@@ -112,7 +106,7 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount() {
-        return mItemCount;
+        return mItemCount + mTopics.size();
     }
 
     static class ItemViewHolder extends RecyclerView.ViewHolder{

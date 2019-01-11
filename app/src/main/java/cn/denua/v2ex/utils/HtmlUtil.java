@@ -1,5 +1,7 @@
 package cn.denua.v2ex.utils;
 
+import android.util.Log;
+
 import com.blankj.utilcode.util.TimeUtils;
 
 import org.jsoup.Jsoup;
@@ -88,7 +90,7 @@ public class HtmlUtil {
 
         Document document = Jsoup.parse(html);
         Elements elements;
-        Node node = null;
+        Node node = Node.getNode();
 
         if (html.contains("TopicsNode")){
             elements = document.select("#TopicsNode >  .cell");
@@ -169,56 +171,6 @@ public class HtmlUtil {
         return topic;
     }
 
-    public static void attachRepliesAndDetail(Topic topic, String html){
-
-        Document document = Jsoup.parse(html);
-
-        Iterator<Element> it = document.select("#Main > .box > .cell > .fr > .tag").iterator();
-        Element header = document.selectFirst("#Main > .box > .header");
-
-        String headerHtml = header.html();
-        String middleHtml = document.selectFirst("#Main > .box > .cell").html();
-
-        List<Tag> tags = new ArrayList<>();
-        for ( ; it.hasNext(); ) {
-            tags.add(new Tag(it.next().text()));
-        }
-
-        if (topic.getTitle() == null){
-            topic.setTitle(header.select("h1").text());
-            String username = matcherGroup1(PATTERN_TOPIC_USERNAME, headerHtml);
-            String avatar = matcherGroup1(PATTERN_TOPIC_USER_AVATAR, headerHtml);
-            topic.setMember(new Member(username, avatar));
-        }
-        // topic not from home page
-        if (topic.getContent_rendered()==null){
-            Element contentBox = document.selectFirst("#Main > .box");
-            Element topicContent = contentBox.selectFirst(".cell");
-
-            topic.setContent_rendered("<br><br><hr>");
-            if (topicContent != null){
-                Elements subtle = contentBox.select(".subtle");
-                topic.setContent_rendered(topicContent.html() +
-                        (subtle == null ? "" :subtle.html()));
-            }
-        }
-//        topic.setClicks(matcherGroup1Int(PATTERN_TOPIC_CLICK, topicBottomHtml));
-        topic.setTags(tags);
-
-        if (topic.getNode() == null){
-            String nodeName = matcherGroup1(PATTERN_TOPIC_NODE_NAME, headerHtml);
-            String nodeTitle = matcherGroup1(PATTERN_TOPIC_NODE_TITLE, headerHtml);
-            topic.setNode(new Node(nodeName, nodeTitle));
-        }
-        topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT, middleHtml));
-        topic.setAgo(matcherGroup1(PATTERN_TOPIC_AGO_, headerHtml));
-//        topic.setFavors(matcherGroup1Int(PATTERN_TOPIC_FAVORS, topicBottomHtml));
-        topic.setThanks(matcherGroup1Int(PATTERN_TOPIC_THANKS, html));
-//        topic.setCsrfToken(matcherGroup1(PATTERN_TOPIC_CSRF, html));
-
-        attachReplies(topic, html);
-    }
-
     private static List<Reply> getReplies(Document document, String poster){
 
         Elements elements = document.select("#Main > .box > .cell[id]");
@@ -264,57 +216,6 @@ public class HtmlUtil {
 
     private static List<Reply> getReplies(Document document){
         return getReplies(document, null);
-    }
-
-    public static void attachReplies(Topic topic, String html){
-
-        if (topic.getReplies() == 0){
-            topic.setReplyList(new ArrayList<>());
-            return;
-        }
-
-        Document document = Jsoup.parse(html);
-        Elements elements = document.select("#Main > .box > .cell[id]");
-        Iterator<Element> elementIterator = elements.iterator();
-
-        List<Reply> replies = new ArrayList<>(elements.size());
-        String poster = topic.getMember().getUsername();
-
-        for (int f=0; elementIterator.hasNext(); f++) {
-            Element e = elementIterator.next();
-            Reply reply = new Reply();
-
-            Element element = e.selectFirst(".reply_content");
-            if (element != null){
-                for (Element img:element.select("img")){
-                    img.attr("width","100%");
-                    img.attr("height","auto");
-                }
-                reply.setContent(element.html());
-            }else{
-                throw new V2exException("This post seems to have been blocked\nEmpty reply content");
-            }
-
-            String cell = e.toString();
-            int id = matcherGroup1Int(PATTERN_REPLY_ID, cell);
-            String username = matcherGroup1(PATTERN_REPLY_USERNAME, cell);
-            String avatarNormal = matcherGroup1(PATTERN_REPLY_AVATAR, cell);
-
-            reply.setId(id);
-            reply.setMember(new Member(username, avatarNormal));
-            reply.setPoster(username.equals(poster));
-            reply.setAgo(matcherGroup1(PATTERN_REPLY_AGO, cell));
-            reply.setVia(matcherGroup1(PATTERN_REPLY_VIA, cell));
-            reply.setLike(matcherGroup1Int(PATTERN_REPLY_LIKE, cell));
-            reply.setFloor(f);
-
-            replies.add(reply);
-        }
-        if (topic.getReplyList()!= null) {
-            topic.getReplyList().addAll(replies);
-        } else{
-            topic.setReplyList(replies);
-        }
     }
 
     public static void attachCreatedTopics(Member member, String html){

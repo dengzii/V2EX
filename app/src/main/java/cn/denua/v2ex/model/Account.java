@@ -4,14 +4,7 @@
 
 package cn.denua.v2ex.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.io.Serializable;
-
-public class Account extends Member implements Serializable, Parcelable, Cloneable {
-
-    private static final long serialVersionUID  = 1L;
+public class Account extends Member {
 
     private int balance;
     private int notifications;
@@ -25,6 +18,8 @@ public class Account extends Member implements Serializable, Parcelable, Cloneab
     private int following;
 
     private String join;
+
+    private int sign;
 
     public Account(){
         super();
@@ -107,84 +102,11 @@ public class Account extends Member implements Serializable, Parcelable, Cloneab
         this.join = join;
     }
 
-    @Override
-    public Object clone() {
-        return super.clone();
+    public int getSign() {
+        return sign;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public void setSign(int sign) {
+        this.sign = sign;
     }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
-        dest.writeInt(this.balance);
-        dest.writeInt(this.notifications);
-        dest.writeInt(this.gold);
-        dest.writeInt(this.silver);
-        dest.writeInt(this.bronze);
-        dest.writeInt(this.favorNodes);
-        dest.writeInt(this.favorTopics);
-        dest.writeInt(this.following);
-        dest.writeString(this.join);
-        dest.writeInt(this.id);
-        dest.writeString(this.username);
-        dest.writeString(this.number);
-        dest.writeString(this.avatar_normal);
-        dest.writeString(this.status);
-        dest.writeString(this.avatar_mini);
-        dest.writeString(this.avatar_large);
-        dest.writeString(this.website);
-        dest.writeString(this.github);
-        dest.writeString(this.psn);
-        dest.writeString(this.twitter);
-        dest.writeString(this.bio);
-        dest.writeString(this.tagline);
-        dest.writeLong(this.created);
-        dest.writeString(this.location);
-        dest.writeString(this.btc);
-    }
-
-    protected Account(Parcel in) {
-        super(in);
-        this.balance = in.readInt();
-        this.notifications = in.readInt();
-        this.gold = in.readInt();
-        this.silver = in.readInt();
-        this.bronze = in.readInt();
-        this.favorNodes = in.readInt();
-        this.favorTopics = in.readInt();
-        this.following = in.readInt();
-        this.join = in.readString();
-        this.id = in.readInt();
-        this.username = in.readString();
-        this.number = in.readString();
-        this.avatar_normal = in.readString();
-        this.status = in.readString();
-        this.avatar_mini = in.readString();
-        this.avatar_large = in.readString();
-        this.website = in.readString();
-        this.github = in.readString();
-        this.psn = in.readString();
-        this.twitter = in.readString();
-        this.bio = in.readString();
-        this.tagline = in.readString();
-        this.created = in.readLong();
-        this.location = in.readString();
-        this.btc = in.readString();
-    }
-
-    public static final Creator<Account> CREATOR = new Creator<Account>() {
-        @Override
-        public Account createFromParcel(Parcel source) {
-            return new Account(source);
-        }
-
-        @Override
-        public Account[] newArray(int size) {
-            return new Account[size];
-        }
-    };
 }

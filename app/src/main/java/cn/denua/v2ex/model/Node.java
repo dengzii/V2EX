@@ -13,6 +13,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Node implements Parcelable, Cloneable {
 
+    private static Node node = new Node();
+
     protected int id;
     protected String name;
     protected String title;
@@ -30,6 +32,10 @@ public class Node implements Parcelable, Cloneable {
     protected String avart_normal;
     protected String avart_mini;
     protected String avart_large;
+
+    public static Node getNode(){
+        return (Node) node.clone();
+    }
 
     public int getId() {
         return id;

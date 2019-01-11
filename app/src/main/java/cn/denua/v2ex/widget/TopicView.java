@@ -58,6 +58,7 @@ public class TopicView extends FrameLayout {
     private Context context;
     private Topic topic;
     private boolean isSimpleView;
+    private boolean isStop;
 
     private static boolean mIsChineseNodeLabel;
     private static boolean mIsShowCreateDate;
@@ -92,7 +93,7 @@ public class TopicView extends FrameLayout {
     @Override
     protected void onWindowVisibilityChanged(int visibility) {
         super.onWindowVisibilityChanged(visibility);
-        if (topic != null)  bindViewWithTopic();
+        if (topic != null || !isStop)  bindViewWithTopic();
     }
 
     public void setLastTouched(String lastTouched){
@@ -101,6 +102,10 @@ public class TopicView extends FrameLayout {
 
     public void  setTopic(Topic topic) {
         this.topic = topic;
+    }
+
+    public void stop() {
+        isStop = true;
     }
 
     private void bindViewWithTopic(){

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,10 @@ import cn.denua.v2ex.service.TopicService;
 
 public class TopicFragment extends BaseNetworkFragment implements ResponseListener<List<Topic>> {
 
+    static public String TAG = "TopicFragment";
+    static
+    private RecyclerView.RecycledViewPool sRecyclerViewPool = new RecyclerView.RecycledViewPool();
+
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.rv_topics)
@@ -47,12 +52,10 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     private boolean mIsNeedLogin = false;
 
     public static TopicFragment create(TabEnum contentType){
-
         TopicFragment topicFragment = new TopicFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("contentType", contentType);
         topicFragment.setArguments(bundle);
-
         return topicFragment;
     }
 
@@ -63,6 +66,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
             this.mTabType = (TabEnum) getArguments().getSerializable("contentType");
         }
         topicService = new TopicService(this, this);
+        onRefresh();
     }
 
     @Nullable
@@ -78,6 +82,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
+        recyclerView.setRecycledViewPool(sRecyclerViewPool);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setDrawingCacheEnabled(true);
@@ -89,7 +94,6 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         setSwipeRefreshTheme(swipeRefreshLayout);
 
         swipeRefreshLayout.setRefreshing(true);
-        onRefresh();
         return savedView;
     }
 
@@ -104,10 +108,11 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     @Override
     public void onComplete(List<Topic> result) {
 
-        swipeRefreshLayout.setRefreshing(false);
-        topics = result;
-        adapter.addTopics(topics);
-        adapter.notifyDataSetChanged();
+        topics.clear();
+        topics.addAll(result);
+        if (adapter != null){
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

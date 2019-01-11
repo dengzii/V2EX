@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,18 +57,19 @@ public class TopicActivity extends BaseNetworkActivity{
 
     private int mPageCount;
     private int mCurrentPage = 1;
+    private List<Reply> mReplies = new ArrayList<>();
 
     private ResponseListener<List<Reply>> mRepliesListener = new ResponseListener<List<Reply>>() {
         @Override
         public void onComplete(List<Reply> result) {
 
-            mPullRecyclerAdapter.addReplies(result);
+            mReplies.addAll(result);
             if (mPageCount == mCurrentPage) {
                 mPullRecyclerAdapter.setStatus(PullRefreshReplyAdapter.FooterStatus.COMPLETE);
             }else {
                 mPullRecyclerAdapter.setStatus(PullRefreshReplyAdapter.FooterStatus.LOADING);
             }
-            mPullRecyclerAdapter.notifyDataSetChanged();
+            mPullRecyclerAdapter.notifyRangeChanged(mReplies.size() - result.size(), result.size());
         }
         @Override
         public void onFailed(String msg) {
@@ -74,10 +77,9 @@ public class TopicActivity extends BaseNetworkActivity{
         }
     };
 
-    private ResponseListener<Topic> mTopicListener =new ResponseListener<Topic>() {
+    private ResponseListener<Topic> mTopicListener = new ResponseListener<Topic>() {
         @Override
         public void onComplete(Topic result) {
-
             mPageCount = result.getReplies() / 100 + 1;
             if (mTopicId == -1 && mTopic != null && mTopic.getContent_rendered() == null){
                 mWebView.loadData(HtmlUtil.applyHtmlStyle(result.getContent_rendered()),
@@ -91,14 +93,17 @@ public class TopicActivity extends BaseNetworkActivity{
         private void loadReplies(Topic result){
 
             mTopic = result;
-            mPullRecyclerAdapter.addReplies(result.getReplyList());
+            mReplies.clear();
+            mReplies.addAll(mTopic.getReplyList());
             if (mPageCount == mCurrentPage) {
                 mPullRecyclerAdapter.setStatus(PullRefreshReplyAdapter.FooterStatus.COMPLETE);
             }
-            mPullRecyclerAdapter.notifyDataSetChanged();
+            mPullRecyclerAdapter.notifyAllDataChanged();
         }
         @Override
-        public void onFailed(String msg) {mSwipeRefreshLayout.setRefreshing(false);
+        public void onFailed(String msg) {
+
+            mSwipeRefreshLayout.setRefreshing(false);
             ToastUtils.showShort(msg);
             if ((null != mErrorMsg) && !mErrorMsg.equals(msg)){
                 TextView mTvError = new TextView(TopicActivity.this);
@@ -149,16 +154,17 @@ public class TopicActivity extends BaseNetworkActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        mSwipeRefreshLayout.setRefreshing(true);
-        onRefresh();
+        if (mReplies.size() == 0){
+            mSwipeRefreshLayout.setRefreshing(true);
+            onRefresh();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mWebView.stopLoading();
         mWebView.destroy();
-        mTopicView = null;
-        mPullRecyclerAdapter = null;
     }
 
     /**
@@ -174,8 +180,7 @@ public class TopicActivity extends BaseNetworkActivity{
         mRecyclerView.setDrawingCacheEnabled(true);
         mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
-        mPullRecyclerAdapter = new PullRefreshReplyAdapter(
-                new ReplyRecyclerViewAdapter(this));
+        mPullRecyclerAdapter = new PullRefreshReplyAdapter(this, mReplies);
         mPullRecyclerAdapter.setOnPullUpListener(this::loadNextPage);
         mRecyclerView.setAdapter(mPullRecyclerAdapter);
 
@@ -199,7 +204,6 @@ public class TopicActivity extends BaseNetworkActivity{
         mTopicView = new TopicView(this, false);
         mTopicView.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200));
-
 
         mWebView = new WebView(this);
         mWebView.setNetworkAvailable(true);
@@ -226,8 +230,8 @@ public class TopicActivity extends BaseNetworkActivity{
 
     private void onRefresh(){
 
-        int topicId = mTopicId == -1 ? mTopic.getId() : mTopicId;
-        TopicService.getTopicAndReply(this, topicId, 1, this.mTopicListener);
+        int topicId =(mTopicId == -1 ? mTopic.getId() : mTopicId);
+        TopicService.getTopicAndReply(this, topicId, 1, mTopicListener);
 
     }
 
@@ -249,8 +253,7 @@ public class TopicActivity extends BaseNetworkActivity{
 
     @Override
     public int getContextStatus() {
-        super.getContextStatus();
-        return IResponsibleView.VIEW_STATUS_ACTIVATED;
+        return super.getContextStatus();
     }
 
 

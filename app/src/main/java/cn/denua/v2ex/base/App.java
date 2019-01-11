@@ -27,6 +27,8 @@ public class App extends Application {
         Logger.addLogAdapter(new AndroidLogAdapter());
         RetrofitManager.init(this);
         Utils.init(this);
+
+        Logger.i("maxMemory" +( Runtime.getRuntime().maxMemory() / 1024 / 1024) + ", ");
     }
     public static Application getApplication(){
         return app;
