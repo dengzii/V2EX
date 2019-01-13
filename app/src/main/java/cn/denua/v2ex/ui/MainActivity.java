@@ -110,12 +110,12 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         ivUserPic.setImageResource(R.drawable.ic_offline);
         tvUserName.setText(getResources().getText(R.string.click_to_login));
         ivUserPic.setOnClickListener(v -> {
-            if (!Config.IsLogin){
+            if (!Config.getAccount().isLogin()){
                 changeUserStatus();
             }
         });
         tvUserName.setOnClickListener(v -> {
-            if (!Config.IsLogin){
+            if (!Config.getAccount().isLogin()){
                 changeUserStatus();
             }
         });
@@ -189,7 +189,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             case R.id.it_following:
                 break;
             case R.id.it_post:
-                if (Config.IsLogin)
+                if (Config.getAccount().isLogin())
                     startActivity(new Intent(this, PostTopicActivity.class));
                 break;
             case R.id.it_message:
@@ -220,7 +220,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private void signIn(){
 
-        if (!Config.IsLogin){
+        if (!Config.getAccount().isLogin()){
             ToastUtils.showShort("需要登录");
             return;
         }
@@ -240,7 +240,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private void changeUserStatus(){
 
-        if (!Config.IsLogin){
+        if (!Config.getAccount().isLogin()){
             startActivityForResult(new Intent(this, LoginActivity.class),
                     LOGIN_REQUEST_CODE);
             return;
@@ -255,7 +255,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private void logout(){
 
-        Config.IsLogin = false;
+        Config.getAccount().logout();
         Config.sAccount = new Account();
         Config.persistentAccount(this);
         RetrofitManager.clearCookies();
@@ -265,7 +265,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private void setUserStatus(){
 
-        if (Config.IsLogin){
+        if (Config.getAccount().isLogin()){
             miLogin.setIcon(R.drawable.ic_logout);
             miLogin.setEnabled(true);
             miLogin.setVisible(true);

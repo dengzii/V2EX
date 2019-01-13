@@ -131,7 +131,10 @@ public class TopicService extends BaseService<List<Topic>> {
 
         topicApi.getTopicsByNode(node, page)
                 .compose(RxUtil.io2computation())
-                .map(HtmlUtil::getTopics)
+                .map(s -> {
+                    ErrorEnum.ERR_PAGE_NEED_LOGIN0.check(s);
+                    return HtmlUtil.getTopics(s);
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RxObserver2<>(getView(), getResponseListener()));
     }

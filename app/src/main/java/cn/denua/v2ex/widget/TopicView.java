@@ -93,7 +93,7 @@ public class TopicView extends FrameLayout {
     @Override
     protected void onWindowVisibilityChanged(int visibility) {
         super.onWindowVisibilityChanged(visibility);
-        if (topic != null || !isStop)  bindViewWithTopic();
+        if (topic != null && !isStop)  bindViewWithTopic();
     }
 
     public void setLastTouched(String lastTouched){

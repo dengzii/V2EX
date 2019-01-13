@@ -7,28 +7,24 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.adapter.PullRefreshReplyAdapter;
-import cn.denua.v2ex.adapter.ReplyRecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseNetworkActivity;
-import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Topic;
@@ -37,11 +33,11 @@ import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.StringUtil;
 import cn.denua.v2ex.widget.TopicView;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class TopicActivity extends BaseNetworkActivity{
 
     private WebView mWebView;
+//    private TextView mTvContent;
     private TopicView mTopicView;
     private LinearLayout mLlHeader;
 
@@ -84,6 +80,7 @@ public class TopicActivity extends BaseNetworkActivity{
             if (mTopicId == -1 && mTopic != null && mTopic.getContent_rendered() == null){
                 mWebView.loadData(HtmlUtil.applyHtmlStyle(result.getContent_rendered()),
                         "text/html", "utf-8");
+//                mTvContent.setText(Html.fromHtml(HtmlUtil.applyHtmlStyle(result.getContent_rendered())));
                 mTopicView.setLastTouched(StringUtil.timestampToStr(result.getCreated()));
                 loadReplies(result);
             }else{
@@ -205,6 +202,7 @@ public class TopicActivity extends BaseNetworkActivity{
         mTopicView.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200));
 
+//        mTvContent = new TextView(this);
         mWebView = new WebView(this);
         mWebView.setNetworkAvailable(true);
         mWebView.setVerticalScrollBarEnabled(false);
@@ -217,6 +215,7 @@ public class TopicActivity extends BaseNetworkActivity{
             mPageCount = mTopic.getReplies() / 100 + 1;
             mTopicView.setTopic(mTopic);
             if (mTopic.getContent_rendered() != null){
+//                mTvContent.setText(Html.fromHtml(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered())));
                 mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered()),
                         "text/html", "utf-8");
             }
@@ -224,6 +223,7 @@ public class TopicActivity extends BaseNetworkActivity{
 
         mLlHeader.addView(mTopicView);
         mLlHeader.addView(mWebView);
+//        mLlHeader.addView(mTvContent);
         mPullRecyclerAdapter.setHeaderView(mLlHeader);
         mPullRecyclerAdapter.notifyItem(0);
     }

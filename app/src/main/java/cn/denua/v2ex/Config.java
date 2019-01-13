@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import cn.denua.v2ex.base.App;
 import cn.denua.v2ex.model.Account;
 
 /*
@@ -30,7 +31,7 @@ public class Config {
     private static HashMap<ConfigRefEnum, Serializable> CONFIG = new HashMap<>();
 
     public static Account sAccount = new Account();
-    public static boolean IsLogin = false;
+
     /**
      * 负数表示今日已签到 <br>
      * 0 表示未连续签到 <br>
@@ -49,6 +50,10 @@ public class Config {
         add(Locale.US);
         add(Locale.JAPAN);
     }};
+
+    public static Account getAccount() {
+        return sAccount;
+    }
 
     /**
      * 初始化配置, 从 SharedPreferences 文件中读取配置
@@ -94,14 +99,12 @@ public class Config {
     }
 
     /**
-     * 从指定 SharedPreferences 文件中读取以 json 形式保存的用户信息
-     *
-     * @param context the context
+     * 从 SharedPreferences 文件中读取以 json 形式保存的用户信息
      * @return 是否恢复账号信息成功
      */
-    public static boolean restoreAccount(Context context) {
+    public static boolean restoreAccount() {
         try {
-            SharedPreferences editor = context.getSharedPreferences(
+            SharedPreferences editor = App.getApplication().getSharedPreferences(
                     ConfigRefEnum.KEY_FILE_CONFIG_PREF.getKey(), Context.MODE_PRIVATE);
             sAccount = new Gson().fromJson(editor.getString(
                     ConfigRefEnum.KEY_ACCOUNT.getKey(),null), Account.class);

@@ -21,11 +21,12 @@ public class WelcomeActivity extends BaseActivity{
         setContentView(R.layout.act_welcome);
         setThemeNoActionBar();
 
-        if (!Config.restoreAccount(this)) {
+        if (!Config.restoreAccount()) {
             UserService.getInfo(new ResponseListener<Account>() {
                 @Override
                 public void onFailed(String msg) {
-                    finish(false);
+                    Config.sAccount.logout();
+                    finish();
                 }
                 @Override
                 public void onComplete(Account result) {
@@ -38,10 +39,10 @@ public class WelcomeActivity extends BaseActivity{
         }
     }
 
-    public void finish(boolean s) {
-        Config.IsLogin = s;
+    @Override
+    public void finish() {
         startActivity(new Intent(this, MainActivity.class));
-        finish();
+        super.finish();
     }
 
     private void checkSignIn(){
@@ -50,12 +51,12 @@ public class WelcomeActivity extends BaseActivity{
             @Override
             public void onComplete(Integer result) {
                 Config.sSignIn = result;
-                finish(true);
+                finish();
             }
             @Override
             public void onFailed(String msg) {
                 ToastUtils.showShort(msg);
-                finish(true);
+                finish();
             }
         });
     }

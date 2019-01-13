@@ -20,15 +20,28 @@ public class Account extends Member {
     private String join;
 
     private int sign;
+    private boolean isLogin = false;
 
     public Account(){
         super();
     }
 
+
+    public boolean isLogin() {
+        return isLogin;
+    }
+
+    public void logout(){
+        isLogin = false;
+    }
+
+    public void login(){
+        isLogin = true;
+    }
+
     public Account(String username, String avatar_normal) {
         super(username, avatar_normal);
     }
-
 
     public int getGold() {
         return gold;

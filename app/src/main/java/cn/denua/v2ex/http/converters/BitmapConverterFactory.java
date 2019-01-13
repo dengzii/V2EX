@@ -23,6 +23,10 @@ public class BitmapConverterFactory extends Converter.Factory{
 
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
+        if (type instanceof Class<?>) {
+            Class<?> aClass = (Class<?>) type;
+
+        }
         if (type == Bitmap.class)
             return BitmapConverter.INSTANCE;
         return null;

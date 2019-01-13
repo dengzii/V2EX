@@ -129,7 +129,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
         progressDialog.dismiss();
 
         Config.sAccount = result;
-        Config.IsLogin = true;
+        Config.getAccount().login();
         setResult(RESULT_SUCCESS);
         Config.persistentAccount(this);
         finish();
