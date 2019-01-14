@@ -120,9 +120,6 @@ public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    public void addReplies(List<Reply> replies){
-        mAdapter.addReplies(replies);
-    }
     public interface OnPullUpListener{
         void onPullUp();
     }
