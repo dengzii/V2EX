@@ -18,8 +18,9 @@ public class WelcomeActivity extends BaseActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_welcome);
         setThemeNoActionBar();
+        setContentView(R.layout.act_welcome);
+
 
         if (!Config.restoreAccount()) {
             UserService.getInfo(new ResponseListener<Account>() {
