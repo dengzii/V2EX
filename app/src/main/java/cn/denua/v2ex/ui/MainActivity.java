@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,10 +39,12 @@ import cn.denua.v2ex.fragment.TopicFragment;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
+import cn.denua.v2ex.service.RxObserver;
 import cn.denua.v2ex.service.UserService;
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.utils.DialogUtil;
 import cn.denua.v2ex.widget.MessageDialog;
+import io.reactivex.Observable;
 
 @SuppressWarnings("RedundantCast")
 public class MainActivity extends BaseNetworkActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -77,8 +80,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         ButterKnife.bind(this);
         initView();
-
-        setUserStatus();
     }
 
     protected void initView(){
@@ -124,6 +125,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     @Override
     protected void onStart() {
         super.onStart();
+        checkLoginStatus();
     }
 
     @Override
@@ -288,4 +290,37 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         miSignIn.setEnabled(enabled);
     }
 
+    private void checkLoginStatus(){
+
+        if (!Config.getAccount().isLogin() || !Config.restoreAccount()) {
+            UserService.getInfo(new ResponseListener<Account>() {
+                @Override
+                public void onFailed(String msg) {
+                    Config.sAccount.logout();
+                }
+                @Override
+                public void onComplete(Account result) {
+                    Config.sAccount = result;
+                    checkDailySignIn();
+                }
+            });
+        }else{
+            checkDailySignIn();
+        }
+        setUserStatus();
+    }
+
+    private void checkDailySignIn(){
+
+        UserService.signIn(true, new ResponseListener<Integer>() {
+            @Override
+            public void onComplete(Integer result) {
+                Config.sSignIn = result;
+            }
+            @Override
+            public void onFailed(String msg) {
+                ToastUtils.showShort(msg);
+            }
+        });
+    }
 }

@@ -23,11 +23,6 @@
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/MainTheme.NoActionbar">
-        </activity>
-
-        <activity
-            android:name=".ui.WelcomeActivity"
-            android:theme="@style/MainTheme.NoActionbar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +30,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:theme="@style/MainTheme.NoActionbar">
+        </activity>
+
         <activity
             android:name=".ui.TopicActivity"
             android:label="@string/topic"

@@ -16,7 +16,7 @@ public abstract class RxObserver<T> implements Observer<T> {
 
     private BaseService<?> mBaseService;
 
-    RxObserver(){}
+    public RxObserver(){}
 
     RxObserver(BaseService<?> baseService){
         this.mBaseService = baseService;
