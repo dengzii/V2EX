@@ -21,45 +21,6 @@ public class WelcomeActivity extends BaseActivity{
         setThemeNoActionBar();
         setContentView(R.layout.act_welcome);
 
-
-        if (!Config.restoreAccount()) {
-            UserService.getInfo(new ResponseListener<Account>() {
-                @Override
-                public void onFailed(String msg) {
-                    Config.sAccount.logout();
-                    finish();
-                }
-                @Override
-                public void onComplete(Account result) {
-                    Config.sAccount = result;
-                    checkSignIn();
-                }
-            });
-        }else{
-            checkSignIn();
-        }
-    }
-
-    @Override
-    public void finish() {
-        startActivity(new Intent(this, MainActivity.class));
-        super.finish();
-    }
-
-    private void checkSignIn(){
-
-        UserService.signIn(true, new ResponseListener<Integer>() {
-            @Override
-            public void onComplete(Integer result) {
-                Config.sSignIn = result;
-                finish();
-            }
-            @Override
-            public void onFailed(String msg) {
-                ToastUtils.showShort(msg);
-                finish();
-            }
-        });
     }
 }
 
