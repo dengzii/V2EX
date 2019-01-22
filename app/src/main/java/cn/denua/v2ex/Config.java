@@ -30,7 +30,7 @@ public class Config {
 
     private static HashMap<ConfigRefEnum, Serializable> CONFIG = new HashMap<>();
 
-    public static Account sAccount = new Account();
+    private static Account sAccount = new Account();
 
     /**
      * 负数表示今日已签到 <br>
@@ -55,6 +55,10 @@ public class Config {
         return sAccount;
     }
 
+    public static void setAccount(Account account){
+        sAccount = account;
+    }
+
     /**
      * 初始化配置, 从 SharedPreferences 文件中读取配置
      * @param context the context
@@ -62,6 +66,7 @@ public class Config {
     public static void init(Context context){
 
         loadConfig(context);
+        restoreAccount();
     }
 
     @SuppressWarnings("unchecked")

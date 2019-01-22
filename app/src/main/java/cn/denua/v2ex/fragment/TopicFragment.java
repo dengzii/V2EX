@@ -98,7 +98,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     }
 
     public void onRefresh() {
-        if (mIsNeedLogin && !Config.sAccount.isLogin()){
+        if (mIsNeedLogin && !Config.getAccount().isLogin()){
             ToastUtils.showShort(R.string.not_login);
             return;
         }

@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -26,7 +25,6 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,12 +37,9 @@ import cn.denua.v2ex.fragment.TopicFragment;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
-import cn.denua.v2ex.service.RxObserver;
 import cn.denua.v2ex.service.UserService;
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.utils.DialogUtil;
-import cn.denua.v2ex.widget.MessageDialog;
-import io.reactivex.Observable;
 
 @SuppressWarnings("RedundantCast")
 public class MainActivity extends BaseNetworkActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -71,6 +66,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     private MenuItem miLogin;
     private MenuItem miSignIn;
 
+    private Account mAccount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,8 +75,11 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         setThemeNoActionBar();
         setContentView(R.layout.act_main);
 
+        mAccount = Config.getAccount();
+
         ButterKnife.bind(this);
         initView();
+        checkLoginStatus();
     }
 
     protected void initView(){
@@ -111,12 +111,12 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         ivUserPic.setImageResource(R.drawable.ic_offline);
         tvUserName.setText(getResources().getText(R.string.click_to_login));
         ivUserPic.setOnClickListener(v -> {
-            if (!Config.getAccount().isLogin()){
+            if (!mAccount.isLogin()){
                 changeUserStatus();
             }
         });
         tvUserName.setOnClickListener(v -> {
-            if (!Config.getAccount().isLogin()){
+            if (!mAccount.isLogin()){
                 changeUserStatus();
             }
         });
@@ -125,7 +125,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     @Override
     protected void onStart() {
         super.onStart();
-        checkLoginStatus();
     }
 
     @Override
@@ -191,7 +190,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             case R.id.it_following:
                 break;
             case R.id.it_post:
-                if (Config.getAccount().isLogin())
+                if (mAccount.isLogin())
                     startActivity(new Intent(this, PostTopicActivity.class));
                 break;
             case R.id.it_message:
@@ -222,7 +221,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private void signIn(){
 
-        if (!Config.getAccount().isLogin()){
+        if (!mAccount.isLogin()){
             ToastUtils.showShort("需要登录");
             return;
         }
@@ -242,7 +241,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private void changeUserStatus(){
 
-        if (!Config.getAccount().isLogin()){
+        if (!mAccount.isLogin()){
             startActivityForResult(new Intent(this, LoginActivity.class),
                     LOGIN_REQUEST_CODE);
             return;
@@ -257,8 +256,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private void logout(){
 
-        Config.getAccount().logout();
-        Config.sAccount = new Account();
+        mAccount.logout();
+        mAccount = new Account();
         Config.persistentAccount(this);
         RetrofitManager.clearCookies();
         setUserStatus();
@@ -267,13 +266,13 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private void setUserStatus(){
 
-        if (Config.getAccount().isLogin()){
+        if (mAccount.isLogin()){
             miLogin.setIcon(R.drawable.ic_logout);
             miLogin.setEnabled(true);
             miLogin.setVisible(true);
-            Glide.with(this).load(Config.sAccount.getAvatar_large()).into(ivUserPic);
-            tvUserName.setText(Config.sAccount.getUsername());
-            tvBalance.setText(String.valueOf(Config.sAccount.getBalance()));
+            Glide.with(this).load(mAccount.getAvatar_large()).into(ivUserPic);
+            tvUserName.setText(mAccount.getUsername());
+            tvBalance.setText(String.valueOf(mAccount.getBalance()));
         }else{
             tvUserName.setText(R.string.click_to_login);
             miLogin.setVisible(false);
@@ -292,26 +291,26 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     private void checkLoginStatus(){
 
-        if (!Config.getAccount().isLogin() || !Config.restoreAccount()) {
+        if (!mAccount.isLogin()) {
             UserService.getInfo(new ResponseListener<Account>() {
                 @Override
                 public void onFailed(String msg) {
-                    Config.sAccount.logout();
+                    mAccount.logout();
                 }
                 @Override
                 public void onComplete(Account result) {
-                    Config.sAccount = result;
+                    Config.setAccount(result);
                     checkDailySignIn();
                 }
             });
         }else{
             checkDailySignIn();
         }
-        setUserStatus();
     }
 
     private void checkDailySignIn(){
 
+        setUserStatus();
         UserService.signIn(true, new ResponseListener<Integer>() {
             @Override
             public void onComplete(Integer result) {
