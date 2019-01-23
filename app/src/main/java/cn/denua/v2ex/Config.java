@@ -30,7 +30,7 @@ public class Config {
 
     private static HashMap<ConfigRefEnum, Serializable> CONFIG = new HashMap<>();
 
-    private static Account sAccount = new Account();
+    private static Account sAccount;
 
     /**
      * 负数表示今日已签到 <br>
@@ -65,6 +65,7 @@ public class Config {
      */
     public static void init(Context context){
 
+        setAccount(new Account());
         loadConfig(context);
         restoreAccount();
     }
@@ -113,11 +114,17 @@ public class Config {
                     ConfigRefEnum.KEY_FILE_CONFIG_PREF.getKey(), Context.MODE_PRIVATE);
             sAccount = new Gson().fromJson(editor.getString(
                     ConfigRefEnum.KEY_ACCOUNT.getKey(),null), Account.class);
+            if (sAccount == null){
+                sAccount = new Account();
+                return false;
+            }else {
+                return true;
+            }
         }catch (Exception e){
             e.printStackTrace();
             return false;
         }
-        return sAccount != null;
+
     }
 
     private static void loadConfig(Context context){
