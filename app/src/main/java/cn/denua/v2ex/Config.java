@@ -46,6 +46,7 @@ public class Config {
         add(TabEnum.CHANGES);
     }};
     public static final ArrayList<Locale> LOCAL_LIST = new ArrayList<Locale>(){{
+
         add(Locale.CHINA);
         add(Locale.US);
         add(Locale.JAPAN);
