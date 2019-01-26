@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 
@@ -67,6 +66,13 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     private MenuItem miSignIn;
 
     private Account mAccount;
+    /**
+     * 负数表示签到天数, 今日已签到 <br>
+     * 0 表示未连续签到, 今日未签到 <br>
+     * 正数表示今日未签到 <br>
+     */
+    static int sSignIn = 0;
+    private boolean isSigned = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +85,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         ButterKnife.bind(this);
         initView();
-        checkLoginStatus();
+
+        checkLoginAndSignStatus();
     }
 
     protected void initView(){
@@ -131,18 +138,14 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     protected void onResume() {
         super.onResume();
 
-        if (!PermissionUtils.isGranted("android.permission.WRITE_EXTERNAL_STORAGE")){
-            DialogUtil.showMessage(this,
-                    getString(R.string.alert),
-                    getString(R.string.need_storage_permission),
-                    value -> PermissionUtils.launchAppDetailsSettings());
-        }
-        if (Config.sSignIn < 0){
-            updateSignInMenu(Config.sSignIn * -1, false);
-        }
-        if (Config.sSignIn > 0){
-            updateSignInMenu(Config.sSignIn, true);
-        }
+//        if (!PermissionUtils.isGranted("android.permission.WRITE_EXTERNAL_STORAGE")){
+//            DialogUtil.showMessage(this,
+//                    getString(R.string.alert),
+//                    getString(R.string.need_storage_permission),
+//                    value -> PermissionUtils.launchAppDetailsSettings());
+//        }
+
+        updateSignInMenu();
     }
 
     @Override
@@ -210,13 +213,24 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         switch (requestCode){
             case LOGIN_REQUEST_CODE:
-                if (resultCode == LoginActivity.RESULT_SUCCESS)
-                    setUserStatus();
+                onActivityResultLogin(resultCode);
                 break;
             default:
                 break;
         }
 
+    }
+
+    private void onActivityResultLogin(int resultCode){
+
+        if (resultCode == LoginActivity.RESULT_SUCCESS){
+            setUserStatus();
+            if (Config.getConfig(ConfigRefEnum.CONFIG_AUTO_CHECK)){
+                signIn();
+            }else {
+                checkDailySignIn();
+            }
+        }
     }
 
     private void signIn(){
@@ -229,8 +243,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             @Override
             public void onComplete(Integer result) {
                 ToastUtils.showShort("签到成功, 连续签到天数 " + result.toString());
-                Config.sSignIn = result;
-                updateSignInMenu(result, false);
+                sSignIn = result;
+                updateSignInMenu();
             }
             @Override
             public void onFailed(String msg) {
@@ -261,7 +275,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         Config.persistentAccount(this);
         RetrofitManager.clearCookies();
         setUserStatus();
-        updateSignInMenu(-1, true);
+        updateSignInMenu();
     }
 
     private void setUserStatus(){
@@ -283,38 +297,42 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         }
     }
 
-    private void updateSignInMenu(int days, boolean enabled){
+    private void updateSignInMenu(){
 
-        miSignIn.setTitle(days > 0 ? "已连续签到 " + days + " 天" : getString(R.string.checked));
+        miSignIn.setTitle(sSignIn != 0 ? "已连续签到 " + Math.abs(sSignIn) + " 天" : getString(R.string.checked));
+        boolean enabled = sSignIn >= 0;
         miSignIn.setEnabled(enabled);
+        miSignIn.setCheckable(enabled);
     }
 
-    private void checkLoginStatus(){
+    private void checkLoginAndSignStatus(){
 
-        if (!mAccount.isLogin()) {
-            UserService.getInfo(new ResponseListener<Account>() {
-                @Override
-                public void onFailed(String msg) {
-                    mAccount.logout();
-                }
-                @Override
-                public void onComplete(Account result) {
-                    Config.setAccount(result);
-                    checkDailySignIn();
-                }
-            });
-        }else{
-            checkDailySignIn();
-        }
+        UserService.getInfo(new ResponseListener<Account>() {
+            @Override
+            public void onFailed(String msg) {
+                mAccount.logout();
+            }
+            @Override
+            public void onComplete(Account result) {
+                Config.setAccount(result);
+                checkDailySignIn();
+                setUserStatus();
+            }
+        });
     }
 
     private void checkDailySignIn(){
 
-        setUserStatus();
         UserService.signIn(true, new ResponseListener<Integer>() {
             @Override
             public void onComplete(Integer result) {
-                Config.sSignIn = result;
+                sSignIn = result;
+                mAccount.setSign(result);
+                if (sSignIn >= 0){
+                    if (Config.getConfig(ConfigRefEnum.CONFIG_AUTO_CHECK)) signIn();
+                }
+                updateSignInMenu();
+                setUserStatus();
             }
             @Override
             public void onFailed(String msg) {

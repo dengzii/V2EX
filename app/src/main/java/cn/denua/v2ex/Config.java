@@ -7,6 +7,8 @@ package cn.denua.v2ex;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+
 import com.google.gson.Gson;
 
 import java.io.Serializable;
@@ -32,21 +34,13 @@ public class Config {
 
     private static Account sAccount;
 
-    /**
-     * 负数表示今日已签到 <br>
-     * 0 表示未连续签到 <br>
-     * 正数表示今日未签到 <br>
-     */
-    public static int sSignIn = 0;
-
-    private static ArrayList<TabEnum> HOME_TAB_TITLES = new ArrayList<>();
-
     static final ArrayList<TabEnum> HOME_TAB_DEFAULT = new ArrayList<TabEnum>(){{
+        add(TabEnum.LATEST);
         add(TabEnum.HOT);
         add(TabEnum.CHANGES);
     }};
-    public static final ArrayList<Locale> LOCAL_LIST = new ArrayList<Locale>(){{
 
+    public static final ArrayList<Locale> LOCAL_LIST = new ArrayList<Locale>(){{
         add(Locale.CHINA);
         add(Locale.US);
         add(Locale.JAPAN);
@@ -66,7 +60,6 @@ public class Config {
      */
     public static void init(Context context){
 
-        setAccount(new Account());
         loadConfig(context);
         restoreAccount();
     }
@@ -140,16 +133,20 @@ public class Config {
                     ? (Serializable) pref.get(key)
                     : refEnum.getDefaultValue());
         }
-        HOME_TAB_TITLES.clear();
-        Set<String> homeTabs = preferences.getStringSet(ConfigRefEnum.CONFIG_HOME_TAB.getKey(),
-                    new TreeSet<String>(){{add(TabEnum.ALL.getTitle());}});
+        Set<String> homeTabs = preferences.getStringSet(
+                ConfigRefEnum.CONFIG_HOME_TAB.getKey(), null);
+        if (homeTabs == null){
+            CONFIG.put(ConfigRefEnum.CONFIG_HOME_TAB, HOME_TAB_DEFAULT);
+            return;
+        }
+        ArrayList<TabEnum> tabEnums = new ArrayList<>();
         for (String tab:homeTabs){
             TabEnum tabEnum = TabEnum.contains(tab)
                     ? TabEnum.valueOf(tab)
                     : TabEnum.findByDescriptor(tab);
-            HOME_TAB_TITLES.add(tabEnum);
+            tabEnums.add(tabEnum);
         }
-        CONFIG.put(ConfigRefEnum.CONFIG_HOME_TAB, HOME_TAB_TITLES);
+        CONFIG.put(ConfigRefEnum.CONFIG_HOME_TAB, tabEnums);
     }
 }
 
