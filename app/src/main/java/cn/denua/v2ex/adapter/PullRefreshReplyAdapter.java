@@ -26,7 +26,7 @@ import cn.denua.v2ex.model.Reply;
  * @author denua
  * @date 2018/12/03 18
  */
-public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PullRefreshReplyAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ReplyRecyclerViewAdapter mAdapter;
 

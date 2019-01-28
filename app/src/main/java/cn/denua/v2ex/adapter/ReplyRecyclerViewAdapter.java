@@ -78,16 +78,6 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         return 0;
     }
 
-    public void addReplies(List<Reply> replies){
-
-        if (replies.size() == mReplies.size() &&
-                (mReplies.size() != 0 && replies.get(0).getId() == mReplies.get(0).getId())){
-            return;
-        }
-        mReplies.addAll(replies);
-        notifyDataSetChanged();
-    }
-
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
@@ -112,6 +102,7 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
             super(itemView);
             this.replyView = (ReplyView) itemView;
         }
+
     }
 
     static class HeaderViewHolder extends RecyclerView.ViewHolder{

@@ -162,6 +162,7 @@ public class TopicActivity extends BaseNetworkActivity{
         super.onDestroy();
         mWebView.stopLoading();
         mWebView.destroy();
+        mWebView = null;
     }
 
     /**

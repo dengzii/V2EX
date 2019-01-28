@@ -44,7 +44,7 @@ public class WebImageSpan extends ImageSpan {
     private boolean isShow;
 
     public WebImageSpan(@NonNull Context context, String mUri, TextView mTextView) {
-        super(context, R.drawable.ic_launcher_background);
+        super(context, R.drawable.ic_launcher);
         this.mUri = mUri;
         this.mTextView = mTextView;
     }

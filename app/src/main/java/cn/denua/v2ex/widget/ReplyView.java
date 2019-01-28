@@ -137,7 +137,7 @@ public class ReplyView extends FrameLayout  {
                         .setUnderline()
                         .setClickSpan(new LinkClickSpan(matcher.group(2)));
             }else if (matcher.group(3) != null){
-                spanUtils.appendImage(R.drawable.ic_launcher_background)
+                spanUtils.appendImage(R.drawable.ic_launcher_round)
                         .setClickSpan(new ImageClickSpan(matcher.group(3)));
             }
         }

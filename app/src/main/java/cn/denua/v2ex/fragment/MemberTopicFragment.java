@@ -26,6 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.adapter.PullRefreshReplyAdapter;
 import cn.denua.v2ex.adapter.TopicRecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseNetworkFragment;
 import cn.denua.v2ex.interfaces.IResponsibleView;
@@ -137,7 +138,8 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
     @Override
     public void onComplete(Member result) {
 
-        this.mTopics = result.getCreatedTopics();
+        this.mTopics.clear();
+        this.mTopics.addAll(result.getCreatedTopics());
         mRecyclerViewAdapter.setHeaderView(getTopicListHeaderView(mTopics.size()));
         mRecyclerViewAdapter.notifyDataSetChanged();
     }
