@@ -1,8 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="128dp"
     android:height="128dp"
-    android:viewportHeight="108"
-    android:viewportWidth="108">
+    android:viewportHeight="128"
+    android:viewportWidth="128">
+
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M63,0 a64,64 0,1 0 2,0"/>
+
+    <clip-path android:pathData="M63,0 a64,64 0,1 0 2,0"/>
 
     <path
         android:fillColor="@color/blue_grey_divider"
