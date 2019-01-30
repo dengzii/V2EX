@@ -38,7 +38,7 @@ public enum ConfigRefEnum implements Serializable {
     CONFIG_DETAILED_USER_INFO               ("detailed_user_info",            false),
     CONFIG_TOPIC_CREATE_INSTEAD_TOUCHED     ("topic_created_instead_touched",    true),
     CONFIG_NODE_NAME_INSTEAD_TITLE          ("node_name_instead_title",   true),
-    CONFIG_DATE_FORMAT                      ("date_format", "yyyy/MM/dd HH:mm"),
+    CONFIG_DATE_FORMAT                      ("date_format", "MM-dd HH:mm"),
     CONFIG_REPLY_LINE_HEIGHT                ("reply_line_height",   1.3f),
     CONFIG_REPLY_FROM_API                   ("get_reply_from_api",  false),
 

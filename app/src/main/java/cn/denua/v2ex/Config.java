@@ -7,7 +7,6 @@ package cn.denua.v2ex;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 
 import com.google.gson.Gson;
 
@@ -17,7 +16,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import cn.denua.v2ex.base.App;
 import cn.denua.v2ex.model.Account;
@@ -100,9 +98,8 @@ public class Config {
 
     /**
      * 从 SharedPreferences 文件中读取以 json 形式保存的用户信息
-     * @return 是否恢复账号信息成功
      */
-    public static boolean restoreAccount() {
+    private static void restoreAccount() {
         try {
             SharedPreferences editor = App.getApplication().getSharedPreferences(
                     ConfigRefEnum.KEY_FILE_CONFIG_PREF.getKey(), Context.MODE_PRIVATE);
@@ -110,13 +107,9 @@ public class Config {
                     ConfigRefEnum.KEY_ACCOUNT.getKey(),null), Account.class);
             if (sAccount == null){
                 sAccount = new Account();
-                return false;
-            }else {
-                return true;
             }
         }catch (Exception e){
             e.printStackTrace();
-            return false;
         }
 
     }
