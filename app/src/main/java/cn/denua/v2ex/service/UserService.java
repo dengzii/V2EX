@@ -181,19 +181,15 @@ public class UserService extends BaseService<Account> {
      */
     public static void getInfo(ResponseListener<Account> responseListener){
 
-        mUserApi.getInfo()
+        mUserApi.getSettingPage()
                 .compose(RxUtil.io2computation())
                 .flatMap((Function<String, ObservableSource<Account>>) s -> {
-                    if (s.matches(ErrorEnum.ERR_PAGE_NEED_LOGIN.getPattern())){
-                        responseListener.onFailed(STATUS_NEED_LOGIN);
-                        return Observable.empty();
-                    }
+
+                    ErrorEnum.ERR_PAGE_NEED_LOGIN.check(s);
                     String username = HtmlUtil.matcherGroup1(
                             Pattern.compile("href=\"/member/([^\"]+)\""), s);
-                    if (username.trim().isEmpty()){
-                        responseListener.onFailed(ErrorEnum.ERROR_PARSE_HTML.getReadable());
-                        return Observable.empty();
-                    }
+                    if (username.trim().isEmpty()) ErrorEnum.ERROR_PARSE_HTML.throwThis();
+
                     return RetrofitManager.create(MemberApi.class)
                             .getMember(username)
                             .map(jsonObject -> {
@@ -204,6 +200,11 @@ public class UserService extends BaseService<Account> {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RxObserver<Account>() {
+                    @Override
+                    public void _onError(String msg) {
+                        super._onError(msg);
+                        responseListener.onFailed(msg);
+                    }
                     @Override
                     public void _onNext(Account account) {
                         responseListener.onComplete(account);

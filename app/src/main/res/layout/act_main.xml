@@ -53,10 +53,10 @@
 
         <android.support.design.widget.NavigationView
             android:id="@+id/navigation"
-            app:headerLayout="@layout/w_nav_header"
             android:layout_gravity="start"
             android:layout_width="260dp"
             android:layout_height="match_parent"
+            app:headerLayout="@layout/w_nav_header"
             app:menu="@menu/menu_nav_drawer"/>
 
     </LinearLayout>

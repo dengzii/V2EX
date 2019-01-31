@@ -34,7 +34,7 @@ public interface UserApi {
     Call<String> postLogin(@FieldMap Map<String, String> form);
 
     @GET("settings")
-    Observable<String> getInfo();
+    Observable<String> getSettingPage();
 
     @GET("/mission/daily")
     Observable<String> preSignIn();

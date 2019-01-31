@@ -248,6 +248,8 @@ public class HtmlUtil {
 
     public static void attachAccountInfo(Account account, String html){
 
+        account.setNotifications(matcherGroup1Int(
+                Pattern.compile("<a href=\"/notifications\">(\\d+) 条未读提醒</a>"), html));
         account.setFavorNodes(matcherGroup1Int(PATTERN_FAVOR_NODES, html));
         account.setFavorTopics(matcherGroup1Int(PATTERN_FAVOR_TOPIC, html));
         account.setFollowing(matcherGroup1Int(PATTERN_FOLLOWING, html));

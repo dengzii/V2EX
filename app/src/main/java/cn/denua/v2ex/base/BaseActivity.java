@@ -74,10 +74,16 @@ public class BaseActivity extends AppCompatActivity {
         swipeRefreshLayout.setColorSchemeResources(colorAccent.resourceId,
                 colorPrimaryDark.resourceId);
     }
+
     protected void setTheme(){
         setTheme(getCurrentThemeId());
     }
 
+    protected int getResolveAttr(int attr){
+        TypedValue typedColor = new TypedValue();
+        getTheme().resolveAttribute(attr, typedColor, true);
+        return typedColor.resourceId;
+    }
 
     protected int getCurrentThemeId(){
         return getResources().getIdentifier(Config.getConfig(ConfigRefEnum.CONFIG_THEME),

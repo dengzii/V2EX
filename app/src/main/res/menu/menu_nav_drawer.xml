@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/it_check"
         android:icon="@drawable/ic_coordinates"
-        android:checkable="true"
-        android:title="@string/checked"/>
+        android:title="@string/checked"
+        app:actionLayout="@layout/view_nav_item_action_view"/>
     <group
         android:orderInCategory="0">
         <item android:id="@+id/it_message"
             android:icon="@drawable/ic_message"
-            android:title="@string/message"/>
+            android:title="@string/message"
+            app:actionLayout="@layout/view_nav_item_action_view"/>
         <item android:id="@+id/it_post"
             android:icon="@drawable/ic_editor"
             android:title="@string/post"/>

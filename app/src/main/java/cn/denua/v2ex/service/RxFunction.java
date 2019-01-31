@@ -16,6 +16,7 @@ public abstract class RxFunction<T> implements Function<String, ObservableSource
     @Override
     public ObservableSource<T> apply(String s) throws VException {
 
+        if (s.trim().isEmpty()) ErrorEnum.ERR_EMPTY_RESPONSE.throwThis();
         ErrorEnum.ERR_PAGE_NEED_LOGIN0.check(s);
         if (mResponseView.getContextStatus() != IResponsibleView.VIEW_STATUS_ACTIVATED){
             Logger.e("IResponseView is not activated.");
