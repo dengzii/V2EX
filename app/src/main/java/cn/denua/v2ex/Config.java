@@ -6,6 +6,7 @@ package cn.denua.v2ex;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
@@ -60,6 +61,14 @@ public class Config {
 
         loadConfig(context);
         restoreAccount();
+    }
+
+    public static void saveState(Bundle bundle){
+
+    }
+
+    public static void restoreState(Bundle bundle){
+
     }
 
     @SuppressWarnings("unchecked")

@@ -3,6 +3,7 @@ package cn.denua.v2ex.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @date 2018/10/21
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class Member implements Parcelable, Cloneable {
+public class Member implements Parcelable, Cloneable, Serializable {
 
     protected int id;
     protected String username;
