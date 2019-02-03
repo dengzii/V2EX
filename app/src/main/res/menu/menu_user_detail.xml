@@ -18,4 +18,11 @@
         android:icon="@drawable/ic_close"
         />
 
+    <item
+        android:id="@+id/it_report"
+        app:showAsAction="collapseActionView"
+        android:title="@string/report"
+        android:icon="@drawable/ic_offline"
+        />
+
 </menu>
