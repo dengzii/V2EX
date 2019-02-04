@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,8 +27,13 @@ import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.model.Topic;
+import cn.denua.v2ex.service.RxObserver;
 import cn.denua.v2ex.service.TopicService;
 import cn.denua.v2ex.utils.DialogUtil;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /*
  * @author denua
@@ -86,8 +92,13 @@ public class PostTopicActivity extends BaseNetworkActivity implements ResponseLi
 
     @Override
     public void onComplete(Topic result) {
+        Observable.timer(500,TimeUnit.MILLISECONDS).subscribe(new RxObserver<Long>() {
+            @Override
+            public void _onNext(Long aLong) {
+                TopicActivity.start(PostTopicActivity.this, result.getId());
+            }
+        });
 
-        TopicActivity.start(this, result.getId());
     }
 
     @Override
