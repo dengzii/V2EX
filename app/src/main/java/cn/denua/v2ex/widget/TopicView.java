@@ -104,6 +104,13 @@ public class TopicView extends FrameLayout {
         this.topic = topic;
     }
 
+    public void bindData(){
+        bindViewWithTopic();
+    }
+
+    /**
+     * stop what ?
+     */
     public void stop() {
         isStop = true;
     }

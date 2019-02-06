@@ -1,47 +1,45 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:navigationBarColor">@color/transparent</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="android:navigationBarColor">@color/black</item>
         <item name="attr_color_badge">@color/light_grey</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:textColor">@color/text_light_bg</item>
         <item name="android:textColorSecondary">@color/grey</item>
         <item name="android:colorForeground">@color/foreground_light_bg</item>
+        <item name="attr_color_text_link">@color/default_text_link</item>
+        <item name="attr_style_alert_dialog">@style/LightDialog</item>
     </style>
 
-    <style name="DarkTheme" parent="Theme.AppCompat">
+    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/dark_primary</item>
         <item name="colorAccent">@color/dark_accent</item>
         <item name="colorPrimaryDark">@color/dark_primary_dark</item>
         <item name="colorError">@color/dark_accent</item>
 
-        <item name="attr_color_badge">@color/dark_secondary_text</item>
-
-        <item name="android:textColor">@color/dark_text</item>
+        <item name="alertDialogTheme">@style/DarkDialog</item>
+        <item name="android:textColor">@color/dark_secondary_text</item>
         <item name="android:textColorSecondary">@color/dark_secondary_text</item>
         <item name="android:windowBackground">@color/dark_primary</item>
-        <item name="android:colorForeground">@color/dark_secondary_text</item>
+        <item name="android:colorForeground">@color/dark_text</item>
+        <item name="android:textColorLink">@color/dark_link</item>
 
+        <item name="attr_style_alert_dialog">@style/DarkDialog</item>
+        <item name="attr_color_badge">@color/dark_secondary_text</item>
         <item name="attr_color_background">@color/dark_primary</item>
         <item name="attr_color_primary">@color/dark_primary</item>
         <item name="attr_color_primary_light">@color/dark_primary_light</item>
         <item name="attr_color_primary_dark">@color/dark_primary_dark</item>
         <item name="attr_color_accent">@color/dark_accent</item>
-        <item name="attr_color_text_secondary">@color/dark_secondary_text</item>
-        <item name="attr_color_text">@color/dark_text</item>
+        <item name="attr_color_text_secondary">@color/dark_text</item>
+        <item name="attr_color_text">@color/dark_secondary_text</item>
         <item name="attr_color_icons">@color/dark_icons</item>
         <item name="attr_color_divider">@color/dark_divider</item>
+        <item name="attr_color_text_link">@color/dark_link</item>
 
         <item name="attr_color_text_lightish">@color/dark_text_lightish</item>
         <item name="attr_color_text_secondary_inverse">@color/dark_primary_dark</item>
         <item name="attr_color_text_inverse">@color/dark_primary_light</item>
-
-        <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
-    </style>
-
-    <style name="MaterialTheme" parent="android:Theme.Material">
-        <item name="android:navigationBarColor">@color/transparent</item>
-        <item name="attr_color_text_link">@color/default_text_link</item>
     </style>
 
     <style name="MainTheme" parent="AppTheme">
@@ -64,7 +62,6 @@
         <item name="attr_color_text_secondary_inverse">@color/blue_grey_primary_dark</item>
         <item name="attr_color_text_inverse">@color/blue_grey_primary_light</item>
 
-        <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
     </style>
 
     <style name="GreenTheme" parent="AppTheme">
@@ -87,7 +84,6 @@
         <item name="attr_color_text_secondary_inverse">@color/green_primary_dark</item>
         <item name="attr_color_text_inverse">@color/green_primary_light</item>
 
-        <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
     </style>
 
     <style name="TealTheme" parent="AppTheme">
@@ -110,7 +106,6 @@
         <item name="attr_color_text_secondary_inverse">@color/teal_primary_dark</item>
         <item name="attr_color_text_inverse">@color/teal_primary_light</item>
 
-        <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
     </style>
 
     <style name="IndigoTheme" parent="AppTheme">
@@ -133,7 +128,6 @@
         <item name="attr_color_text_secondary_inverse">@color/indigo_primary_dark</item>
         <item name="attr_color_text_inverse">@color/indigo_primary_light</item>
 
-        <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
     </style>
 
     <style name="OrangeTheme" parent="AppTheme">
@@ -156,7 +150,6 @@
         <item name="attr_color_text_secondary_inverse">@color/orange_primary_dark</item>
         <item name="attr_color_text_inverse">@color/orange_primary_light</item>
 
-        <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
     </style>
     
     <style name="MainTheme.NoActionbar">

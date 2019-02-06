@@ -2,6 +2,7 @@ package cn.denua.v2ex.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,10 +81,13 @@ public class TopicActivity extends BaseNetworkActivity{
         public void onComplete(Topic result) {
             mPageCount = result.getReplies() / 100 + 1;
             if (mTopicId == -1 && mTopic != null && mTopic.getContent_rendered() == null){
-                mWebView.loadData(HtmlUtil.applyHtmlStyle(result.getContent_rendered()),
-                        "text/html", "utf-8");
                 mTopicView.setLastTouched(StringUtil.timestampToStr(result.getCreated()));
+            }else if (mTopicId >= 0){
+                mTopicView.setTopic(result);
+                mTopicView.bindData();
             }
+            mWebView.loadData(HtmlUtil.applyHtmlStyle(result.getContent_rendered(), TopicActivity.this),
+                    "text/html", "utf-8");
             loadReplies(result);
         }
         private void loadReplies(Topic result){
@@ -207,21 +212,20 @@ public class TopicActivity extends BaseNetworkActivity{
         mWebView.setHorizontalScrollBarEnabled(false);
         mWebView.setNetworkAvailable(true);
         mWebView.setFocusable(false);
+        mWebView.setBackgroundColor(getResolveAttr(R.attr.attr_color_background));
 
         if (mTopic != null){
             setTitle(mTopic.getTitle());
             mPageCount = mTopic.getReplies() / 100 + 1;
             mTopicView.setTopic(mTopic);
             if (mTopic.getContent_rendered() != null){
-//                mTvContent.setText(Html.fromHtml(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered())));
-                mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered()),
+                mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered(), this),
                         "text/html", "utf-8");
             }
         }
 
         mLlHeader.addView(mTopicView);
         mLlHeader.addView(mWebView);
-//        mLlHeader.addView(mTvContent);
         mPullRecyclerAdapter.setHeaderView(mLlHeader);
         mPullRecyclerAdapter.notifyItem(0);
     }

@@ -1,8 +1,12 @@
 package cn.denua.v2ex.utils;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
+import android.util.TypedValue;
 
 import com.blankj.utilcode.util.TimeUtils;
+import com.orhanobut.logger.Logger;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,6 +20,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.denua.v2ex.R;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.model.Member;
 import cn.denua.v2ex.model.Node;
@@ -265,12 +270,53 @@ public class HtmlUtil {
         account.setBalance(account.getBronze()+account.getSilver()*100+account.getGold()*10000);
     }
 
-    public static String applyHtmlStyle(String html){
+    public static String applyHtmlStyle(String html, Context context){
+
+        TypedValue typedColor = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.attr_color_text, typedColor, true);
+        int txtColor = typedColor.data;
+        context.getTheme().resolveAttribute(R.attr.attr_color_text_link, typedColor, true);
+        int linkColor = typedColor.data;
+        context.getTheme().resolveAttribute(R.attr.attr_color_accent, typedColor, true);
+        int codeColor = typedColor.data;
+        context.getTheme().resolveAttribute(R.attr.attr_color_text_secondary, typedColor, true);
+        int codeBackground = typedColor.data;
+
+        String textColorStr = "#" +
+                Integer.toHexString(Color.red(txtColor)) +
+                Integer.toHexString(Color.green(txtColor)) +
+                Integer.toHexString(Color.blue(txtColor));
+        String linkColorStr  = "#" +
+                Integer.toHexString(Color.red(linkColor)) +
+                Integer.toHexString(Color.green(linkColor)) +
+                Integer.toHexString(Color.blue(linkColor));
+        String codeColorStr  = "#" +
+                Integer.toHexString(Color.red(codeColor)) +
+                Integer.toHexString(Color.green(codeColor)) +
+                Integer.toHexString(Color.blue(codeColor));
+        String codeBackgroundStr  = "#" +
+                Integer.toHexString(Color.red(codeBackground)) +
+                Integer.toHexString(Color.green(codeBackground)) +
+                Integer.toHexString(Color.blue(codeBackground));
 
         if (html == null || html.equals("")){
             return "";
         }
         Document document = Jsoup.parse(html);
+        document.selectFirst("head").append("<style type=\"text/css\">" +
+                "* {" +
+                "   color:" + textColorStr + ";" +
+                "}" +
+                "a {" +
+                "   color:" + linkColorStr + ";" +
+                "}" +
+                "code,pre {" +
+                "    color: " + codeColorStr + ";" +
+                "    background: " + codeBackgroundStr + ";" +
+                "    padding: 3px;" +
+                "    border-radius: 5px;" +
+                "}" +
+                "</style>");
         for (Element img:document.select("img")){
             img.attr("width","100%");
             img.attr("height","auto");

@@ -82,7 +82,7 @@ public class BaseActivity extends AppCompatActivity {
     protected int getResolveAttr(int attr){
         TypedValue typedColor = new TypedValue();
         getTheme().resolveAttribute(attr, typedColor, true);
-        return typedColor.resourceId;
+        return typedColor.data;
     }
 
     protected int getCurrentThemeId(){

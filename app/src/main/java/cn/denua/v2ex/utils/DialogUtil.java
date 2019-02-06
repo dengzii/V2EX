@@ -6,11 +6,14 @@ package cn.denua.v2ex.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import cn.denua.v2ex.Config;
+import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
 import io.reactivex.annotations.Nullable;
 
@@ -27,7 +30,7 @@ public class DialogUtil {
                                               String title,
                                           DialogListener<Integer> onSelectItemListener){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, getTheme(context));
         builder.setTitle(title);
         builder.setSingleChoiceItems(arr, defaultVal, (dialog, which) -> {
             onSelectItemListener.onResult(which);
@@ -40,7 +43,7 @@ public class DialogUtil {
     public static AlertDialog getProgress(Context context,
                                           String title,
                                           @Nullable DialogListener<Boolean> dialogListener){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, getTheme(context));
         builder.setTitle(title);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 80);
@@ -70,7 +73,7 @@ public class DialogUtil {
                                    String msg,
                                    DialogListener<Boolean> dialogListener){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, getTheme(context));
         builder.setTitle(title);
         builder.setMessage(msg);
         builder.setPositiveButton("确 定", (dialog, which) -> {
@@ -90,7 +93,7 @@ public class DialogUtil {
                                        String defaultValue,
                                        DialogListener<String> dialogListener){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, getTheme(context));
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -119,6 +122,12 @@ public class DialogUtil {
                 .show();
     }
 
+    private static int getTheme(Context context){
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.attr_style_alert_dialog, typedValue, true);
+//        return typedValue.data;
+        return android.R.style.Theme_Material_Dialog_Alert;
+    }
     public interface DialogListener<T>{
         void onResult(T value);
     }

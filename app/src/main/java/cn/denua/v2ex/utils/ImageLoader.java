@@ -4,6 +4,7 @@
 
 package cn.denua.v2ex.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;

@@ -1,6 +1,7 @@
 package cn.denua.v2ex.base;
 
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,6 +9,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.blankj.utilcode.util.ResourceUtils;
+import com.orhanobut.logger.Logger;
 
 import cn.denua.v2ex.R;
 
@@ -24,20 +26,24 @@ public class BaseFragment extends Fragment {
         if (!(getActivity() instanceof BaseActivity)){
             return;
         }
-        TypedValue colorAccent = new TypedValue();
-        TypedValue colorPrimaryDark = new TypedValue();
-        getActivity().getTheme().resolveAttribute(R.attr.attr_color_accent,colorAccent,
-                true);
-        getActivity().getTheme().resolveAttribute(R.attr.attr_color_primary_dark,
-                colorPrimaryDark, true);
-        swipeRefreshLayout.setColorSchemeResources(colorAccent.resourceId,
-                colorPrimaryDark.resourceId);
+        swipeRefreshLayout.setColorSchemeResources(
+                getResolveAttrId(R.attr.attr_color_accent),
+                getResolveAttrId(R.attr.attr_color_primary_dark));
     }
 
-    protected int getResolveAttr(int attr){
+    protected int getResolveAttrData(int attr){
         TypedValue typedColor = new TypedValue();
-        if (getActivity() != null){
-            getActivity().getTheme().resolveAttribute(attr, typedColor, true);
+        if (getContext() != null){
+            getContext().getTheme().resolveAttribute(attr, typedColor, true);
+            return typedColor.data;
+        }
+        return -1;
+    }
+
+    protected int getResolveAttrId(int attr){
+        TypedValue typedColor = new TypedValue();
+        if (getContext() != null){
+            getContext().getTheme().resolveAttribute(attr, typedColor, true);
             return typedColor.resourceId;
         }
         return -1;

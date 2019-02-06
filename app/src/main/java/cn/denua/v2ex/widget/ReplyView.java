@@ -6,6 +6,7 @@ package cn.denua.v2ex.widget;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +17,7 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -65,15 +67,19 @@ public class ReplyView extends FrameLayout  {
     private Reply mReply;
     private Context mContext;
     private int mColorLink;
+    private int mColorAt;
+    private int mColorText;
 
     public ReplyView(@NonNull Context context) {
         super(context);
         this.mContext = context;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.mColorLink = getResources().getColor(R.color.default_text_link, context.getTheme());
-        }else{
-            this.mColorLink = getResources().getColor(R.color.default_text_link);
-        }
+
+        TypedValue typedValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(R.attr.attr_color_text_link, typedValue, true);
+        mColorLink = typedValue.data;
+        getContext().getTheme().resolveAttribute(R.attr.attr_color_text, typedValue, true);
+        mColorText = typedValue.data;
+        mColorAt = mColorLink;
         initView();
     }
 
@@ -122,19 +128,16 @@ public class ReplyView extends FrameLayout  {
         SpanUtils spanUtils = new SpanUtils();
 
         int index=0;
+
         while (matcher.find()){
             if (split.length != 0){
-                spanUtils.append(split[index++])
-                        .setForegroundColor(Color.BLACK);
+                spanUtils.append(split[index++]).setForegroundColor(mColorText);
             }
             if (matcher.group(1)!=null){
                 spanUtils.append("@" + matcher.group(1))
-                        .setClickSpan(new ReplyAtMemberClickSpan(matcher.group(1)))
-                        .setForegroundColor(mColorLink)
-                        .setBold();
+                        .setClickSpan(new ReplyAtMemberClickSpan(matcher.group(1)));
             }else if (matcher.group(2) != null){
                 spanUtils.append(matcher.group(2))
-                        .setUnderline()
                         .setClickSpan(new LinkClickSpan(matcher.group(2)));
             }else if (matcher.group(3) != null){
                 spanUtils.appendImage(R.drawable.ic_launcher_round)
@@ -172,7 +175,8 @@ public class ReplyView extends FrameLayout  {
 
         @Override
         public void updateDrawState(@NonNull TextPaint ds) {
-            ds.setColor(Color.BLUE);
+            ds.setColor(mColorAt);
+            ds.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
         @Override
@@ -187,6 +191,13 @@ public class ReplyView extends FrameLayout  {
         LinkClickSpan(String uri){
             this.mUri = uri;
         }
+
+        @Override
+        public void updateDrawState(@NonNull TextPaint ds) {
+            ds.setColor(mColorLink);
+            ds.setUnderlineText(true);
+        }
+
         @Override
         public void onClick(@NonNull View widget) {
             Toast.makeText(mContext, "Link:"+mUri, Toast.LENGTH_SHORT).show();
