@@ -13,11 +13,11 @@
     <color name="red">#f00</color>
     <color name="blue">#00f</color>
     <color name="green">#0f0</color>
-    <color name="dark_grey">#212121</color>
+    <color name="dark_grey">#353535</color>
     <color name="grey">#757575</color>
     <color name="light_grey">#bcbcbc</color>
 
-    <color name="foreground_light_bg">@color/grey</color>
+    <color name="foreground_light_bg">@color/dark_grey</color>
     <color name="text_light_bg">@color/dark_grey</color>
 
     <color name="label_normal">#bababa</color>

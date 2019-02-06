@@ -74,6 +74,7 @@
     <string name="date_format">时间格式</string>
     <string name="summary_date_format">yyyy/mm/dd hh:MM</string>
     <string name="clear_cache">清理缓存数据</string>
+    <string name="home_tabs">主页标签</string>
 
     <string name="advanced">高 级</string>
     <string name="home_tab">主页标签</string>

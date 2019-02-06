@@ -21,6 +21,7 @@
     <attr name="attr_color_text_secondary_inverse"  format="reference|color"/>
     <attr name="attr_color_text_lightish"           format="reference|color"/>
     <attr name="attr_color_text_link"       format="reference|color"/>
+    <attr name="attr_color_foreground"      format="reference|color"/>
 
     <attr name="attr_style_alert_dialog"    format="reference"/>
 

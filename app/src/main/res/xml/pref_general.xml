@@ -59,7 +59,7 @@
             android:summary="@string/summary_home_tab"
             android:entryValues="@array/list_home_tabs"
             android:entries="@array/list_home_tabs_entries"
-            android:dialogTitle="@string/key_home_tabs"/>
+            android:dialogTitle="@string/home_tabs"/>
         <SwitchPreference
             android:key="@string/key_detailed_user_info"
             android:title="@string/show_detailed_user_info"

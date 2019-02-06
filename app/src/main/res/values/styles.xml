@@ -8,31 +8,30 @@
         <item name="android:textColorSecondary">@color/grey</item>
         <item name="android:colorForeground">@color/foreground_light_bg</item>
         <item name="attr_color_text_link">@color/default_text_link</item>
-        <item name="attr_style_alert_dialog">@style/LightDialog</item>
+        <item name="android:alertDialogTheme">@style/Dialog</item>
+        <item name="attr_color_foreground">@color/foreground_light_bg</item>
     </style>
 
-    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="DarkTheme" parent="AppTheme">
         <item name="colorPrimary">@color/dark_primary</item>
         <item name="colorAccent">@color/dark_accent</item>
         <item name="colorPrimaryDark">@color/dark_primary_dark</item>
         <item name="colorError">@color/dark_accent</item>
 
-        <item name="alertDialogTheme">@style/DarkDialog</item>
-        <item name="android:textColor">@color/dark_secondary_text</item>
+        <item name="android:textColor">@color/dark_text</item>
         <item name="android:textColorSecondary">@color/dark_secondary_text</item>
         <item name="android:windowBackground">@color/dark_primary</item>
         <item name="android:colorForeground">@color/dark_text</item>
         <item name="android:textColorLink">@color/dark_link</item>
 
-        <item name="attr_style_alert_dialog">@style/DarkDialog</item>
         <item name="attr_color_badge">@color/dark_secondary_text</item>
         <item name="attr_color_background">@color/dark_primary</item>
         <item name="attr_color_primary">@color/dark_primary</item>
         <item name="attr_color_primary_light">@color/dark_primary_light</item>
         <item name="attr_color_primary_dark">@color/dark_primary_dark</item>
         <item name="attr_color_accent">@color/dark_accent</item>
-        <item name="attr_color_text_secondary">@color/dark_text</item>
-        <item name="attr_color_text">@color/dark_secondary_text</item>
+        <item name="attr_color_text_secondary">@color/dark_secondary_text</item>
+        <item name="attr_color_text">@color/dark_text</item>
         <item name="attr_color_icons">@color/dark_icons</item>
         <item name="attr_color_divider">@color/dark_divider</item>
         <item name="attr_color_text_link">@color/dark_link</item>

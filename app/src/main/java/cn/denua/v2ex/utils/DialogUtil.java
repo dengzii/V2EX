@@ -125,8 +125,7 @@ public class DialogUtil {
     private static int getTheme(Context context){
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.attr_style_alert_dialog, typedValue, true);
-//        return typedValue.data;
-        return android.R.style.Theme_Material_Dialog_Alert;
+        return typedValue.data;
     }
     public interface DialogListener<T>{
         void onResult(T value);

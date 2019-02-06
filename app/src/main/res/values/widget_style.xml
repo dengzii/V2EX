@@ -5,33 +5,21 @@
 
 <resources>
 
-    <style name="LightDialog" parent="android:Theme.Material.Dialog.Alert">
-        <item name="android:textColor">?attr_color_primary</item>
+    <style name="Dialog" parent="android:Theme.Material.Dialog">
+        <item name="android:textColor">?attr_color_text_inverse</item>
+        <item name="android:textColorPrimary">?attr_color_text_lightish</item>
+        <item name="android:textColorPrimaryDisableOnly">?attr_color_text</item>
+        <item name="android:colorForeground">?attr_color_text_lightish</item>
         <item name="colorPrimary">?attr_color_primary</item>
         <item name="colorAccent">?attr_color_accent</item>
-        <item name="colorButtonNormal">?attr_color_primary</item>
         <item name="colorPrimaryDark">?attr_color_primary_dark</item>
-        <item name="android:height">180dp</item>
-        <item name="android:width">280dp</item>
-        <item name="android:layout_height">180dp</item>
-        <item name="android:layout_width">280dp</item>
-        <item name="android:windowMinWidthMajor">65%</item>
-        <item name="android:windowMinWidthMinor">95%</item>
-    </style>@style/Theme.AppCompat.Light.Dialog.Alert
-
-    <style name="DarkDialog" parent="android:Theme.Material.Dialog.Alert">
-        <item name="android:textColor">?attr_color_primary</item>
-        <item name="colorPrimary">?attr_color_primary</item>
-        <item name="colorAccent">?attr_color_accent</item>
-        <item name="colorButtonNormal">?attr_color_primary</item>
-        <item name="colorPrimaryDark">?attr_color_primary_dark</item>
-        <item name="android:height">180dp</item>
-        <item name="android:width">280dp</item>
         <item name="android:windowBackground">?attr_color_primary</item>
-        <item name="android:layout_height">180dp</item>
-        <item name="android:layout_width">280dp</item>
         <item name="android:windowMinWidthMajor">65%</item>
         <item name="android:windowMinWidthMinor">95%</item>
+    </style>
+
+    <style name="Dialog.Dark">
+        <item name="android:windowBackground">?attr_color_background</item>
     </style>
 
     <style name="ToolBarLight" parent="ThemeOverlay.AppCompat.ActionBar">
