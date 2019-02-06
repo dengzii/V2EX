@@ -46,7 +46,7 @@
     <string name="poster">帖主</string>
     <string name="loading">加载中. . .</string>
     <string name="no_more">没有更多了 ~ </string>
-    <string name="logging_in">登录中……</string>
+    <string name="logging_in">登录中</string>
     <string name="alert">提 示</string>
     <string name="are_you_sure_logout">你确定要登出?</string>
     <string name="username_format_error">用户名格式错误</string>

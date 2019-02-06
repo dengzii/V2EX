@@ -1,5 +1,6 @@
 package cn.denua.v2ex.ui;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,11 +16,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.BaseNetworkActivity;
+import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.NextResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.UserService;
 import cn.denua.v2ex.Config;
-import cn.denua.v2ex.widget.ProgressDialog;
+import cn.denua.v2ex.utils.DialogUtil;
 
 /*
  * LoginActivity
@@ -43,7 +45,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
     ProgressBar progressBar;
     private UserService loginService;
 
-    private ProgressDialog progressDialog = new ProgressDialog();
+    private AlertDialog mProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +54,8 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
         ButterKnife.bind(this);
 
         setTitle(R.string.login);
-        progressDialog.setTitle(getResources().getString(R.string.logging_in));
+        mProgressDialog = DialogUtil.getProgress(this,
+                getResources().getString(R.string.logging_in), null);
         loginService = new UserService(this,this);
         loginService.preLogin();
         ivCaptcha.setVisibility(View.GONE);
@@ -83,7 +86,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
                 etAccount.getText().toString(),
                 etPassword.getText().toString(),
                 etCaptchaCode.getText().toString());
-        progressDialog.show(getSupportFragmentManager(), "login_progress");
+        mProgressDialog.show();
     }
 
     @OnClick(R.id.iv_captcha)
@@ -94,21 +97,8 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
     }
 
     @Override
-    public void onStartRequest() {
-        super.onStartRequest();
-
-    }
-
-    @Override
-    public void onCompleteRequest() {
-        super.onCompleteRequest();
-    }
-
-    @Override
     public void onFailed(String msg) {
-        if (progressDialog !=null && progressDialog.isAdded()){
-            progressDialog.dismiss();
-        }
+        mProgressDialog.dismiss();
         if (msg.equals(UserService.STATUS_WRONG_FIELDS)) {
             loginService.preLogin();
         }
@@ -126,7 +116,7 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
     @Override
     public void onComplete(Account result) {
 
-        progressDialog.dismiss();
+       mProgressDialog.dismiss();
 
         Config.setAccount(result);
         Config.getAccount().login();

@@ -9,8 +9,10 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import cn.denua.v2ex.R;
+import io.reactivex.annotations.Nullable;
 
 /*
  * @author denua
@@ -33,6 +35,34 @@ public class DialogUtil {
         });
         builder.setPositiveButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
         builder.create().show();
+    }
+
+    public static AlertDialog getProgress(Context context,
+                                          String title,
+                                          @Nullable DialogListener<Boolean> dialogListener){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, 80);
+        FrameLayout frameLayout = new FrameLayout(context);
+        frameLayout.setLayoutParams(layoutParams);
+        frameLayout.setPadding(0,50, 0, 50);
+        ProgressBar progressBar = new ProgressBar(context);
+        progressBar.setLayoutParams(layoutParams);
+        frameLayout.addView(progressBar);
+        builder.setView(frameLayout);
+        builder.setCancelable(false);
+        if (dialogListener != null) builder.setNegativeButton("取 消", (dialog, which) -> {
+            dialogListener.onResult(false);
+            dialog.dismiss();
+        });
+        return builder.create();
+    }
+
+    public static void showProgress(Context context,
+                                    String title,
+                                    @Nullable DialogListener<Boolean> dialogListener){
+        getProgress(context, title, dialogListener).show();
     }
 
     public static void showMessage(Context context,
