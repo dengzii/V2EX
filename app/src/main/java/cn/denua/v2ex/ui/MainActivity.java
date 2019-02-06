@@ -298,9 +298,6 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             Glide.with(this).load(mAccount.getAvatar_large()).into(ivUserPic);
             tvUserName.setText(mAccount.getUsername());
             tvBalance.setText(String.valueOf(mAccount.getBalance()));
-
-            TextView tvSignIn =  (TextView) miSignIn.getActionView().findViewById(R.id.tv_badge_msg);
-            tvSignIn.setText(String.valueOf(Math.abs(mAccount.getSign())));
             TextView tvNotify = (TextView) miNotifications.getActionView().findViewById(R.id.tv_badge_msg);
             tvNotify.setText(String.valueOf(mAccount.getNotifications()));
 
@@ -318,6 +315,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         miSignIn.setTitle(sSignIn != 0 ? "已连续签到 " + Math.abs(sSignIn) + " 天" : getString(R.string.checked));
         boolean enabled = sSignIn >= 0;
+        TextView tvSignIn =  (TextView) miSignIn.getActionView().findViewById(R.id.tv_badge_msg);
+        tvSignIn.setText(String.valueOf(Math.abs(mAccount.getSign())));
         miSignIn.setEnabled(enabled);
         miSignIn.setCheckable(enabled);
     }

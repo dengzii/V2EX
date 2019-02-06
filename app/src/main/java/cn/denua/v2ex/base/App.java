@@ -8,6 +8,7 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
 import cn.denua.v2ex.Config;
+import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
@@ -24,6 +25,8 @@ public class App extends Application {
         app = this;
 
         Config.init(this);
+        setTheme(getResources().getIdentifier(Config.getConfig(ConfigRefEnum.CONFIG_THEME),
+                "style", getPackageName()));
         Logger.addLogAdapter(new AndroidLogAdapter());
         RetrofitManager.init(this);
         Utils.init(this);

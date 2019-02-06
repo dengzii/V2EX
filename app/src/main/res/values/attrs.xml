@@ -15,6 +15,7 @@
     <attr name="attr_color_icons"           format="reference|color"/>
     <attr name="attr_color_divider"         format="reference|color"/>
     <attr name="attr_color_background"      format="reference|color"/>
+    <attr name="attr_color_badge"           format="reference|color"/>
 
     <attr name="attr_color_text_inverse"            format="reference|color"/>
     <attr name="attr_color_text_secondary_inverse"  format="reference|color"/>

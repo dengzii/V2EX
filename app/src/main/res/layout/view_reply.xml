@@ -26,8 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:textSize="6.5pt"
-        android:textColor="?attr_color_text"
+        android:textSize="6pt"
+        android:textColor="?attr_color_text_secondary"
         android:text="@string/placeholder"
         app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,13 +39,15 @@
         android:layout_marginStart="10dp"
         android:textColor="?attr_color_text_secondary"
         android:text="@string/placeholder"
+        android:textSize="6pt"
         app:layout_constraintBottom_toTopOf="@+id/tv_floor"
         app:layout_constraintStart_toEndOf="@+id/tv_username"
         app:layout_constraintTop_toTopOf="@+id/tv_username" />
 
     <TextView
         android:id="@+id/tv_via"
-        style="@style/TextSmall"
+        android:textSize="5pt"
+        android:textColor="@color/dark_secondary_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/placeholder"
@@ -83,7 +85,7 @@
         android:paddingStart="15dp"
         android:layout_marginTop="10dp"
         android:text="@string/placeholder"
-        android:textColor="@color/primary"
+        android:textColor="?attr_color_text"
         android:textSize="6.5pt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_user_pic" />
@@ -94,7 +96,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="@string/poster"
-        android:textColor="@color/primary"
+        android:textStyle="bold"
+        android:textColor="?attr_color_accent"
         app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
         app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 

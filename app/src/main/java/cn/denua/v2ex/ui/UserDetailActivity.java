@@ -7,6 +7,7 @@ package cn.denua.v2ex.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -75,7 +76,7 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
 
     public static void start(Context context, Member member){
         Intent intent = new Intent(context, UserDetailActivity.class);
-        intent.putExtra(EXTRA_MEMBER, member);
+        intent.putExtra(EXTRA_MEMBER, (Parcelable) member);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(intent);
     }

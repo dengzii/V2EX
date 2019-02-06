@@ -75,7 +75,7 @@
         android:paddingEnd="6dp"
         android:paddingBottom="4dp"
         android:text="@string/placeholder"
-        android:textColor="?attr_color_text_secondary"
+        android:textColor="?attr_color_text"
         android:textSize="5pt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

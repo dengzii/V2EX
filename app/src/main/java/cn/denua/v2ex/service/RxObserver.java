@@ -47,6 +47,9 @@ public abstract class RxObserver<T> implements Observer<T> {
         }catch (V2exException e){
             e.printStackTrace();
             _onError(e.getMsg());
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            _onError(e.getMessage());
         }
     }
 

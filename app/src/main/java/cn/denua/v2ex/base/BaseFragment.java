@@ -34,6 +34,15 @@ public class BaseFragment extends Fragment {
                 colorPrimaryDark.resourceId);
     }
 
+    protected int getResolveAttr(int attr){
+        TypedValue typedColor = new TypedValue();
+        if (getActivity() != null){
+            getActivity().getTheme().resolveAttribute(attr, typedColor, true);
+            return typedColor.resourceId;
+        }
+        return -1;
+    }
+
     public String getContentType() {
         return contentType;
     }

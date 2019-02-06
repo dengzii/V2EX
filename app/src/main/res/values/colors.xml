@@ -13,10 +13,27 @@
     <color name="red">#f00</color>
     <color name="blue">#00f</color>
     <color name="green">#0f0</color>
-    
+    <color name="dark_grey">#212121</color>
+    <color name="grey">#757575</color>
+    <color name="light_grey">#bcbcbc</color>
+
+    <color name="foreground_light_bg">@color/grey</color>
+    <color name="text_light_bg">@color/dark_grey</color>
+
     <color name="label_normal">#bababa</color>
     <color name="label_accent">#bbbbbb</color>
     <color name="default_text_link">#52b1ff</color>
+
+    <!--Dark-->
+    <color name="dark_primary_dark">#313335</color>
+    <color name="dark_primary_light">#595b5d</color>
+    <color name="dark_primary">#3c3f41</color>
+    <color name="dark_accent">#bababa</color>
+    <color name="dark_text">#b9b9b9</color>
+    <color name="dark_secondary_text">#5e6163</color>
+    <color name="dark_divider">#555555</color>
+    <color name="dark_icons">#869299</color>
+    <color name="dark_text_lightish">#e2e2e2</color>
 
     <!--BlueGrey-->
     <color name="blue_grey_primary_dark">#455A64</color>

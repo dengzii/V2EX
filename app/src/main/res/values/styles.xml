@@ -2,7 +2,43 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="attr_color_badge">@color/light_grey</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:textColor">@color/text_light_bg</item>
+        <item name="android:textColorSecondary">@color/grey</item>
+        <item name="android:colorForeground">@color/foreground_light_bg</item>
     </style>
+
+    <style name="DarkTheme" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/dark_primary</item>
+        <item name="colorAccent">@color/dark_accent</item>
+        <item name="colorPrimaryDark">@color/dark_primary_dark</item>
+        <item name="colorError">@color/dark_accent</item>
+
+        <item name="attr_color_badge">@color/dark_secondary_text</item>
+
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textColorSecondary">@color/dark_secondary_text</item>
+        <item name="android:windowBackground">@color/dark_primary</item>
+        <item name="android:colorForeground">@color/dark_secondary_text</item>
+
+        <item name="attr_color_background">@color/dark_primary</item>
+        <item name="attr_color_primary">@color/dark_primary</item>
+        <item name="attr_color_primary_light">@color/dark_primary_light</item>
+        <item name="attr_color_primary_dark">@color/dark_primary_dark</item>
+        <item name="attr_color_accent">@color/dark_accent</item>
+        <item name="attr_color_text_secondary">@color/dark_secondary_text</item>
+        <item name="attr_color_text">@color/dark_text</item>
+        <item name="attr_color_icons">@color/dark_icons</item>
+        <item name="attr_color_divider">@color/dark_divider</item>
+
+        <item name="attr_color_text_lightish">@color/dark_text_lightish</item>
+        <item name="attr_color_text_secondary_inverse">@color/dark_primary_dark</item>
+        <item name="attr_color_text_inverse">@color/dark_primary_light</item>
+
+        <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
+    </style>
+
     <style name="MaterialTheme" parent="android:Theme.Material">
         <item name="android:navigationBarColor">@color/transparent</item>
         <item name="attr_color_text_link">@color/default_text_link</item>
@@ -13,11 +49,6 @@
         <item name="colorAccent">@color/blue_grey_accent</item>
         <item name="colorPrimaryDark">@color/blue_grey_primary_dark</item>
         <item name="colorError">@color/blue_grey_accent</item>
-
-        <item name="android:textColor">@color/blue_grey_text</item>
-        <item name="android:textColorSecondary">@color/blue_grey_secondary_text</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:colorForeground">@color/blue_grey_icons</item>
 
         <item name="attr_color_background">@color/white</item>
         <item name="attr_color_primary">@color/blue_grey_primary</item>
@@ -42,11 +73,6 @@
         <item name="colorPrimaryDark">@color/green_primary_dark</item>
         <item name="colorError">@color/green_accent</item>
 
-        <item name="android:textColor">@color/green_primary_text</item>
-        <item name="android:textColorSecondary">@color/green_secondary_text</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:colorForeground">@color/green_primary_text</item>
-
         <item name="attr_color_background">@color/white</item>
         <item name="attr_color_primary">@color/green_primary</item>
         <item name="attr_color_primary_light">@color/green_primary_light</item>
@@ -69,11 +95,6 @@
         <item name="colorAccent">@color/teal_accent</item>
         <item name="colorPrimaryDark">@color/teal_primary_dark</item>
         <item name="colorError">@color/teal_accent</item>
-
-        <item name="android:textColor">@color/teal_primary_text</item>
-        <item name="android:textColorSecondary">@color/teal_secondary_text</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:colorForeground">@color/teal_primary_text</item>
 
         <item name="attr_color_background">@color/white</item>
         <item name="attr_color_primary">@color/teal_primary</item>
@@ -98,11 +119,6 @@
         <item name="colorPrimaryDark">@color/indigo_primary_dark</item>
         <item name="colorError">@color/indigo_accent</item>
 
-        <item name="android:textColor">@color/indigo_primary_text</item>
-        <item name="android:textColorSecondary">@color/indigo_secondary_text</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:colorForeground">@color/indigo_primary_text</item>
-
         <item name="attr_color_background">@color/white</item>
         <item name="attr_color_primary">@color/indigo_primary</item>
         <item name="attr_color_primary_light">@color/indigo_primary_light</item>
@@ -125,11 +141,6 @@
         <item name="colorAccent">@color/orange_accent</item>
         <item name="colorPrimaryDark">@color/orange_primary_dark</item>
         <item name="colorError">@color/orange_accent</item>
-
-        <item name="android:textColor">@color/orange_primary_text</item>
-        <item name="android:textColorSecondary">@color/orange_secondary_text</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:colorForeground">@color/orange_primary_text</item>
 
         <item name="attr_color_background">@color/white</item>
         <item name="attr_color_primary">@color/orange_primary</item>
@@ -177,6 +188,12 @@
     </style>
 
     <style name="OrangeTheme.NoActionbar">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="DarkTheme.NoActionbar">
         <item name="windowActionBar">false</item>
         <item name="android:windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

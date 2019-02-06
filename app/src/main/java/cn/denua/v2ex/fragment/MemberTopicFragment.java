@@ -167,7 +167,7 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
         textView.setText(String.format(
                 getResources().getString(R.string.place_holder_topic_count), topicCount));
         textView.setTextSize(20);
-        textView.setTextColor(Color.BLACK);
+//        textView.setTextColor(getResolveAttr(R.attr.attr_color_text));
         textView.setTypeface(Typeface.DEFAULT_BOLD);
         return textView;
     }
