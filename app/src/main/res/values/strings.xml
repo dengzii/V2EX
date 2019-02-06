@@ -44,6 +44,7 @@
     <string name="up_vote">赞</string>
     <string name="down_vote">踩</string>
     <string name="poster">帖主</string>
+    <string name="loading">加载中. . .</string>
     <string name="no_more">没有更多了 ~ </string>
     <string name="logging_in">登录中……</string>
     <string name="alert">提 示</string>

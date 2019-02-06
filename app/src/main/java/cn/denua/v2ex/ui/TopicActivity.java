@@ -65,7 +65,8 @@ public class TopicActivity extends BaseNetworkActivity{
             }else {
                 mPullRecyclerAdapter.setStatus(PullRefreshReplyAdapter.FooterStatus.LOADING);
             }
-            mPullRecyclerAdapter.notifyRangeChanged(mReplies.size() - result.size(), result.size());
+            mPullRecyclerAdapter.notifyRangeChanged(
+                    mReplies.size() - result.size(), result.size());
         }
         @Override
         public void onFailed(String msg) {
@@ -80,22 +81,18 @@ public class TopicActivity extends BaseNetworkActivity{
             if (mTopicId == -1 && mTopic != null && mTopic.getContent_rendered() == null){
                 mWebView.loadData(HtmlUtil.applyHtmlStyle(result.getContent_rendered()),
                         "text/html", "utf-8");
-//                mTvContent.setText(Html.fromHtml(HtmlUtil.applyHtmlStyle(result.getContent_rendered())));
                 mTopicView.setLastTouched(StringUtil.timestampToStr(result.getCreated()));
-                loadReplies(result);
-            }else{
-                loadReplies(result);
             }
+            loadReplies(result);
         }
         private void loadReplies(Topic result){
-
             mTopic = result;
             mReplies.clear();
             mReplies.addAll(mTopic.getReplyList());
             if (mPageCount == mCurrentPage) {
                 mPullRecyclerAdapter.setStatus(PullRefreshReplyAdapter.FooterStatus.COMPLETE);
             }
-            mPullRecyclerAdapter.notifyAllDataChanged();
+            mPullRecyclerAdapter.notifyDataSetChanged();
         }
         @Override
         public void onFailed(String msg) {
@@ -231,6 +228,8 @@ public class TopicActivity extends BaseNetworkActivity{
 
     private void onRefresh(){
 
+        mCurrentPage = 1;
+        mPullRecyclerAdapter.setStatus(PullRefreshReplyAdapter.FooterStatus.LOADING);
         int topicId =(mTopicId == -1 ? mTopic.getId() : mTopicId);
         TopicService.getTopicAndReply(this, topicId, 1, mTopicListener);
 

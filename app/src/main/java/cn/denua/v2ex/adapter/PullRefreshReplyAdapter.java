@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import cn.denua.v2ex.R;
@@ -33,6 +35,8 @@ public class PullRefreshReplyAdapter<T> extends RecyclerView.Adapter<RecyclerVie
     private ViewGroup mFooterViewGroup;
     private FooterStatus mStatus = FooterStatus.LOADING;
     private OnPullUpListener mOnPullUpListener;
+    private TextView mTvStatus;
+    private ProgressBar mPbLoading;
 
     public enum FooterStatus{
         LOADING, HIDDEN, COMPLETE
@@ -48,24 +52,34 @@ public class PullRefreshReplyAdapter<T> extends RecyclerView.Adapter<RecyclerVie
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200);
         mFooterViewGroup = new FrameLayout(mAdapter.getContext());
         mFooterViewGroup.setLayoutParams(layoutParams);
-        ProgressBar progressBar = new ProgressBar(mAdapter.getContext());
-        progressBar.setLayoutParams(new FrameLayout.LayoutParams(
+        mPbLoading = new ProgressBar(mAdapter.getContext());
+        mPbLoading.setLayoutParams(new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 80));
-        mFooterViewGroup.addView(progressBar);
+        mFooterViewGroup.addView(mPbLoading);
         mFooterViewGroup.setVisibility(View.INVISIBLE);
+
+        mTvStatus = new TextView(mAdapter.getContext());
+        mTvStatus.setTextSize(15);
+        mTvStatus.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        mTvStatus.setGravity(Gravity.CENTER);
     }
 
     public void setStatus(FooterStatus mStatus) {
         this.mStatus = mStatus;
-        if (mStatus == FooterStatus.COMPLETE){
-            mFooterViewGroup.removeAllViews();
-            TextView textView = new TextView(mAdapter.getContext());
-            textView.setText(mAdapter.getContext().getText(R.string.no_more));
-            textView.setTextSize(15);
-            textView.setLayoutParams(new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-            textView.setGravity(Gravity.CENTER);
-            mFooterViewGroup.addView(textView);
+        switch (mStatus){
+            case COMPLETE:
+                mFooterViewGroup.removeAllViews();
+                mTvStatus.setText(mAdapter.getContext().getString(R.string.no_more));
+                mFooterViewGroup.addView(mTvStatus);
+                break;
+            case LOADING:
+                mFooterViewGroup.removeAllViews();
+                mFooterViewGroup.addView(mPbLoading);
+                break;
+            case HIDDEN:
+                mFooterViewGroup.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -89,6 +103,7 @@ public class PullRefreshReplyAdapter<T> extends RecyclerView.Adapter<RecyclerVie
     }
 
     public void notifyRangeChanged(int start, int count){
+
         mAdapter.notifyItemRangeChanged(start, count);
     }
 
