@@ -54,7 +54,6 @@ public class PostTopicActivity extends BaseNetworkActivity implements ResponseLi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setThemeNoActionBar();
         setContentView(R.layout.act_post_topic);
         ButterKnife.bind(this);
 

@@ -1,5 +1,7 @@
 package cn.denua.v2ex.service;
 
+import android.support.annotation.CallSuper;
+
 import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import io.reactivex.Observer;
@@ -22,6 +24,7 @@ public class RxObserver2<T> implements Observer<T> {
         }
     }
 
+    @CallSuper
     @Override
     public void onNext(T t) {
         if (isViewReady() && t != null){

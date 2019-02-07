@@ -83,8 +83,8 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setNoToolbar();
         super.onCreate(savedInstanceState);
-        setThemeNoActionBar();
         setContentView(R.layout.act_user_detail);
 
         this.mMember = getIntent().getParcelableExtra(EXTRA_MEMBER);
@@ -100,7 +100,8 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
             new MemberService (this, this)
                 .getMemberDetail(mMember.getUsername());
         }else {
-            mNumberCreated.setText(StringUtil.timestampToStr(mMember.getCreated()));
+            mNumberCreated.setText(
+                    StringUtil.timestampToStr(mMember.getCreated(), "yyyy-MM-dd HH:mm:ss"));
         }
     }
 

@@ -158,6 +158,21 @@ public class TopicService extends BaseService<List<Topic>> {
                 .subscribe(new RxObserver2<>(responsibleView, listener));
     }
 
+    public static void postReply(IResponsibleView responsibleView,
+                                 Topic topic,
+                                 String content,
+                                 ResponseListener<String> responseListener){
+        topicApi.postReply(topic.getId(), topic.getOnce(), content)
+        .compose(RxUtil.io2main())
+        .subscribe(new RxObserver2<String>(responsibleView, responseListener) {
+            @Override
+            public void onNext(String s) {
+                super.onNext(s);
+
+            }
+        });
+    }
+
     public static void getReply(IResponsibleView responsibleView,
                                 int topicId,
                                 int page,

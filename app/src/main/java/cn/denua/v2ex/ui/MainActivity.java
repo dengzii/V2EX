@@ -80,9 +80,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setNoToolbar();
         super.onCreate(savedInstanceState);
-
-        setThemeNoActionBar();
         setContentView(R.layout.act_main);
 
         mAccount = Config.getAccount();

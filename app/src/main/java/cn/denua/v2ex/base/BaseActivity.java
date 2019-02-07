@@ -2,15 +2,31 @@ package cn.denua.v2ex.base;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.AttrRes;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.ScreenUtils;
+
+import java.util.zip.Inflater;
 
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.utils.UnexpectedExceptionHandler;
 
 import static cn.denua.v2ex.utils.StatusBarUtil.getStatusBarHeight;
 
@@ -23,34 +39,49 @@ import static cn.denua.v2ex.utils.StatusBarUtil.getStatusBarHeight;
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
+    private ViewGroup mViewRoot;
+    private FrameLayout mFlContainer;
+    private Toolbar mToolBar;
+
     private boolean mInForeground = false;
+    private boolean mIsToolBar = true;
+    protected int mStatusBarHeight;
+    protected int mNavBarHeight;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 //        UnexpectedExceptionHandler.getInstance().init();
 
+        mStatusBarHeight = BarUtils.getStatusBarHeight();
+        mNavBarHeight = BarUtils.getNavBarHeight();
         setTheme();
+//        BarUtils.setStatusBarColor(this, getResolveAttr(R.attr.attr_color_primary_dark));
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-//        ImmersionBar.with(this)
-//                .navigationBarAlpha(0.2f)
-//                .init();
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
+        super.setContentView(R.layout.w_layout_act_root);
 
-//        ViewGroup viewGroup = (ViewGroup ) getWindow().getDecorView().findViewById(android.R.id.content);
-//        BarUtils.addMarginTopEqualStatusBarHeight(viewGroup);
-
-//        addStatusBarPlaceHolder();
+        mViewRoot = find(R.id.v_root);
+        if (!mIsToolBar){
+            mViewRoot.removeView(find(R.id.ll_toolbar));
+        }else{
+            initToolBar();
+        }
+        mFlContainer = find(R.id.fl_root_container);
+        View bar = find(R.id.v_root_top);
+        bar.getLayoutParams().height = mStatusBarHeight;
+        bar.setBackgroundColor(getResolveAttr(R.attr.attr_color_primary_dark));
+        LayoutInflater.from(this).inflate(layoutResID, mFlContainer,true);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         this.mInForeground = true;
+
     }
 
     @Override
@@ -61,6 +92,10 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void initView(){
         
+    }
+
+    protected void setNoToolbar(){
+        this.mIsToolBar = false;
     }
 
     protected void setSwipeRefreshTheme(SwipeRefreshLayout swipeRefreshLayout){
@@ -79,7 +114,14 @@ public class BaseActivity extends AppCompatActivity {
         setTheme(getCurrentThemeId());
     }
 
-    protected int getResolveAttr(int attr){
+    protected void initToolBar(){
+
+        mToolBar = find(R.id.ll_toolbar).findViewById(R.id.toolbar);
+        mToolBar.setElevation(5);
+        mToolBar.setNavigationOnClickListener(v -> finish());
+    }
+
+    protected int getResolveAttr(@AttrRes int attr){
         TypedValue typedColor = new TypedValue();
         getTheme().resolveAttribute(attr, typedColor, true);
         return typedColor.data;
@@ -90,7 +132,7 @@ public class BaseActivity extends AppCompatActivity {
                 "style", getPackageName());
     }
 
-    protected int getColorAttr(int attr){
+    protected int getColorAttr(@AttrRes int attr){
 
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(attr, typedValue, true);
@@ -104,29 +146,9 @@ public class BaseActivity extends AppCompatActivity {
         return typedValue.data;
     }
 
-    protected void setThemeNoActionBar(){
-        switch (getCurrentThemeId()){
-            case R.style.MainTheme:
-                setTheme(R.style.MainTheme_NoActionbar);
-                break;
-            case R.style.GreenTheme:
-                setTheme(R.style.GreenTheme_NoActionbar);
-                break;
-            case R.style.TealTheme:
-                setTheme(R.style.TealTheme_NoActionbar);
-                break;
-            case R.style.IndigoTheme:
-                setTheme(R.style.IndigoTheme_NoActionbar);
-                break;
-            case R.style.OrangeTheme:
-                setTheme(R.style.OrangeTheme_NoActionbar);
-                break;
-            case R.style.DarkTheme:
-                setTheme(R.style.DarkTheme_NoActionbar);
-                break;
-            default:
-                break;
-        }
+    @SuppressWarnings("unchecked")
+    protected <T extends View> T find(@IdRes int id){
+        return (T) findViewById(id);
     }
 
     protected boolean  isInForeground(){

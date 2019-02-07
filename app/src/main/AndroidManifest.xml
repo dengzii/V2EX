@@ -21,8 +21,7 @@
             android:value="2.2" />
 
         <activity
-            android:name=".ui.MainActivity"
-            android:theme="@style/MainTheme.NoActionbar">
+            android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -32,8 +31,7 @@
         </activity>
 
         <activity
-            android:name=".ui.WelcomeActivity"
-            android:theme="@style/MainTheme.NoActionbar">
+            android:name=".ui.WelcomeActivity">
         </activity>
 
         <activity

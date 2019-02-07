@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:navigationBarColor">@color/black</item>
         <item name="attr_color_badge">@color/light_grey</item>
         <item name="android:windowBackground">@color/white</item>
@@ -10,6 +10,13 @@
         <item name="attr_color_text_link">@color/default_text_link</item>
         <item name="android:alertDialogTheme">@style/Dialog</item>
         <item name="attr_color_foreground">@color/foreground_light_bg</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="DarkTheme" parent="AppTheme">
@@ -149,47 +156,6 @@
         <item name="attr_color_text_secondary_inverse">@color/orange_primary_dark</item>
         <item name="attr_color_text_inverse">@color/orange_primary_light</item>
 
-    </style>
-    
-    <style name="MainTheme.NoActionbar">
-        <item name="windowActionBar">false</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
-    <style name="GreenTheme.NoActionbar">
-        <item name="windowActionBar">false</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
-    <style name="TealTheme.NoActionbar">
-        <item name="windowActionBar">false</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
-    <style name="IndigoTheme.NoActionbar">
-        <item name="windowActionBar">false</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
-    <style name="OrangeTheme.NoActionbar">
-        <item name="windowActionBar">false</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-    <style name="DarkTheme.NoActionbar">
-        <item name="windowActionBar">false</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowNoTitle">true</item>
     </style>
 
 </resources>

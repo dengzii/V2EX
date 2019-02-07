@@ -18,13 +18,16 @@ import cn.denua.v2ex.ConfigRefEnum;
 public class StringUtil {
 
 
-    public static String timestampToStr(long timestamp){
+    public static String timestampToStr(long secondTimestamp){
 
-        if (timestamp < 10000000000L){
-            timestamp = timestamp * 1000L;
+        if (secondTimestamp < 10000000000L){
+            secondTimestamp = secondTimestamp * 1000L;
         }
-        return new SimpleDateFormat(Config.getConfig(
-                ConfigRefEnum.CONFIG_DATE_FORMAT), Locale.getDefault()).format(timestamp);
+        return timestampToStr(secondTimestamp, Config.getConfig(ConfigRefEnum.CONFIG_DATE_FORMAT));
+    }
+
+    public static String timestampToStr(long millTimestamp, String format){
+        return new SimpleDateFormat(format, Locale.getDefault()).format(millTimestamp);
     }
 
     /**

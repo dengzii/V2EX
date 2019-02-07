@@ -43,6 +43,7 @@ public class Topic implements Parcelable, Cloneable {
     private List<Tag> tags = new ArrayList<>();
 
     private String csrfToken;
+    private int once;
 
     public Topic(){}
 
@@ -232,6 +233,14 @@ public class Topic implements Parcelable, Cloneable {
 
     public void setNodeTitle(String nodeTitle) {
         this.nodeTitle = nodeTitle;
+    }
+
+    public int getOnce() {
+        return once;
+    }
+
+    public void setOnce(int once) {
+        this.once = once;
     }
 
     public Object clone(){

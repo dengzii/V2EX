@@ -48,7 +48,6 @@ public interface TopicApi {
     @GET("/api/replies/show.json")
     Observable<JsonArray> getReplies(@Query("topic_id") int id, @Query("p") int page);
 
-
     @POST("/down/topic")
     Observable<String> downVote(@Path("id") int id, @Field("t") String v);
 
@@ -64,4 +63,9 @@ public interface TopicApi {
                                    @Query("content") String content,
                                    @Query("once") int once,
                                    @Query("syntax") int syntax);
+
+    @POST("/t/{id}")
+    Observable<String> postReply(@Path("id") int id,
+                                 @Query("once") int once,
+                                 @Query("content") String content);
 }

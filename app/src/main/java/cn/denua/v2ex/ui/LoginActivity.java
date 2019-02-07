@@ -16,7 +16,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.base.BaseNetworkActivity;
-import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.NextResponseListener;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.service.UserService;
@@ -116,8 +115,8 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
     @Override
     public void onComplete(Account result) {
 
-       mProgressDialog.dismiss();
-
+        mProgressDialog.dismiss();
+        mProgressDialog = null;
         Config.setAccount(result);
         Config.getAccount().login();
         setResult(RESULT_SUCCESS);
