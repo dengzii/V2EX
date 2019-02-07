@@ -109,4 +109,6 @@
             android:summary="@string/version_no"/>
     </PreferenceCategory>
 
+    <PreferenceCategory/>
+    <PreferenceCategory/>
 </PreferenceScreen>
