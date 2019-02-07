@@ -3,6 +3,7 @@ package cn.denua.v2ex.base;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
+import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -14,19 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.BarUtils;
-import com.blankj.utilcode.util.ScreenUtils;
-
-import java.util.zip.Inflater;
 
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
-import cn.denua.v2ex.utils.UnexpectedExceptionHandler;
 
 import static cn.denua.v2ex.utils.StatusBarUtil.getStatusBarHeight;
 
@@ -56,7 +50,6 @@ public class BaseActivity extends AppCompatActivity {
         mStatusBarHeight = BarUtils.getStatusBarHeight();
         mNavBarHeight = BarUtils.getNavBarHeight();
         setTheme();
-//        BarUtils.setStatusBarColor(this, getResolveAttr(R.attr.attr_color_primary_dark));
     }
 
     @Override
@@ -81,7 +74,6 @@ public class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         this.mInForeground = true;
-
     }
 
     @Override
@@ -90,6 +82,7 @@ public class BaseActivity extends AppCompatActivity {
         this.mInForeground = false;
     }
 
+    @CallSuper
     protected void initView(){
         
     }

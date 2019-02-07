@@ -83,8 +83,8 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setNoToolbar();
         super.onCreate(savedInstanceState);
+        super.setNoToolbar();
         setContentView(R.layout.act_user_detail);
 
         this.mMember = getIntent().getParcelableExtra(EXTRA_MEMBER);
@@ -107,13 +107,14 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
 
     @Override
     protected void initView() {
+        super.initView();
 
         mToolbar.setTitle(mMember.getUsername());
         mToolbar.inflateMenu(R.menu.menu_user_detail);
 
         mTabLayout.setupWithViewPager(mViewPager);
 
-        List<String> tabs = new ArrayList<String>(){{
+        List<String> tabs = new ArrayList<String>() {{
             add("Post");
             add("Reply");
             add("Other");

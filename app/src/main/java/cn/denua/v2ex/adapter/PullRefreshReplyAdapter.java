@@ -15,8 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import cn.denua.v2ex.R;
@@ -28,7 +26,7 @@ import cn.denua.v2ex.model.Reply;
  * @author denua
  * @date 2018/12/03 18
  */
-public class PullRefreshReplyAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ReplyRecyclerViewAdapter mAdapter;
 
@@ -85,6 +83,10 @@ public class PullRefreshReplyAdapter<T> extends RecyclerView.Adapter<RecyclerVie
 
     public void setOnPullUpListener(OnPullUpListener onPullUpListener) {
         this.mOnPullUpListener = onPullUpListener;
+    }
+
+    public void setBottomPadding(int height){
+        mAdapter.setBottomPadding(height);
     }
 
     @NonNull

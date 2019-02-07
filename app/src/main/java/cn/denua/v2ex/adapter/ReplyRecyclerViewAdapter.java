@@ -31,11 +31,14 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
     private final int HEADER = 1;
     final int FOOTER = 2;
+    final int BOTTOM_PADDING = 4;
     private List<Reply> mReplies;
     private Context context;
     private FrameLayout.LayoutParams mLayoutParams;
 
     private ViewGroup mHeaderViewGroup;
+
+    private View mBottomPaddingView;
 
     public ReplyRecyclerViewAdapter(Context context, List<Reply> replies){
 
@@ -43,10 +46,17 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         this.mReplies = replies;
         this.mLayoutParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        mBottomPaddingView = new View(context);
+        mBottomPaddingView.setLayoutParams(
+                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
     }
 
     public Context getContext() {
         return context;
+    }
+
+    public void setBottomPadding(int height){
+        mBottomPaddingView.getLayoutParams().height = height;
     }
 
     public void setHeaderView(ViewGroup view){
@@ -60,6 +70,8 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
         if (viewType == HEADER){
             return new HeaderViewHolder(mHeaderViewGroup);
+        }else if (viewType == BOTTOM_PADDING){
+            return new PaddingViewHolder(mBottomPaddingView);
         }
         ReplyView replyView = new ReplyView(parent.getContext());
         replyView.setLayoutParams(mLayoutParams);
@@ -72,8 +84,11 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         if (position == 0 && mHeaderViewGroup != null){
             return HEADER;
         }
-        if (position == getItemCount()){
+        if (position == getItemCount() - 1){
             return FOOTER;
+        }
+        if (position == getItemCount()){
+            return BOTTOM_PADDING;
         }
         return 0;
     }
@@ -111,6 +126,15 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         HeaderViewHolder(View itemView) {
             super(itemView);
             this.viewGroup = (ViewGroup) itemView;
+        }
+    }
+
+    static class PaddingViewHolder extends RecyclerView.ViewHolder{
+
+        View view;
+        PaddingViewHolder(View itemView) {
+            super(itemView);
+            this.view = itemView;
         }
     }
 }

@@ -26,10 +26,13 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     private final int ITEM = 0;
     private final int HEADER = 1;
     private final int FOOT = 2;
+    private final int BOTTOM_PADDING = 3;
     private int mItemCount = 0;
 
     private FrameLayout mHeaderFrameLayout;
     private FrameLayout mFooterFrameLayout;
+
+    private View mBottomPading;
 
     private FrameLayout.LayoutParams mWrapContentParams;
 
@@ -39,6 +42,9 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         this.context = context;
         this.mWrapContentParams = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mBottomPading = new View(context);
+        mBottomPading.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                0));
     }
 
     public void setIsSimpleView(boolean isSimpleView){
@@ -51,6 +57,10 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
                 ViewGroup.LayoutParams.MATCH_PARENT, 100, Gravity.CENTER_VERTICAL));
         mHeaderFrameLayout.addView(headerView);
         mItemCount += 1;
+    }
+
+    public void setBottomPadding(int height){
+        mBottomPading.getLayoutParams().height = height;
     }
 
     public void setFooterView(View footerView){
@@ -72,6 +82,9 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         if (viewType == FOOT && mFooterFrameLayout != null){
             return new OtherViewHolder(mFooterFrameLayout);
         }
+        if (viewType == BOTTOM_PADDING){
+            return new OtherViewHolder(mBottomPading);
+        }
         TopicView topicView = new TopicView(context, mIsSimpleView);
         topicView.setLayoutParams(mWrapContentParams);
         return new ItemViewHolder(topicView);
@@ -80,10 +93,12 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public int getItemViewType(int position) {
 
-        if (position+1 == getItemCount() && mTopics.size() > 12){
-            return FOOT;
+        if (position + 1 == getItemCount()){
+            return BOTTOM_PADDING;
         }else if (position == 0){
             return HEADER;
+        }else if (position + 1 == getItemCount() && mTopics.size() > 12){
+            return FOOT;
         }else{
             return ITEM;
         }
@@ -120,10 +135,10 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
     static class OtherViewHolder extends RecyclerView.ViewHolder{
 
-        FrameLayout frameLayout;
+        View frameLayout;
         OtherViewHolder(View itemView) {
             super(itemView);
-            this.frameLayout = (FrameLayout) itemView;
+            this.frameLayout  = itemView;
         }
     }
 }

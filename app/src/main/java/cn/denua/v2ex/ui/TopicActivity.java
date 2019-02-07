@@ -184,6 +184,7 @@ public class TopicActivity extends BaseNetworkActivity{
         mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         mPullRecyclerAdapter = new PullRefreshReplyAdapter(this, mReplies);
+        mPullRecyclerAdapter.setBottomPadding(mNavBarHeight);
         mPullRecyclerAdapter.setOnPullUpListener(this::loadNextPage);
         mRecyclerView.setAdapter(mPullRecyclerAdapter);
 

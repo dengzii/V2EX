@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ToastUtils;
 
 import java.util.ArrayList;
@@ -82,6 +83,7 @@ public class MemberTopicFragment extends BaseNetworkFragment implements Response
         ButterKnife.bind(this, savedView);
 
         mRecyclerViewAdapter = new TopicRecyclerViewAdapter(getContext(), mTopics);
+        mRecyclerViewAdapter.setBottomPadding(BarUtils.getNavBarHeight());
         mRecyclerViewAdapter.setIsSimpleView(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

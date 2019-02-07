@@ -80,8 +80,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setNoToolbar();
         super.onCreate(savedInstanceState);
+        setNoToolbar();
         setContentView(R.layout.act_main);
 
         mAccount = Config.getAccount();
@@ -91,7 +91,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     }
 
     protected void initView(){
-
+        super.initView();
         setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.menu_toolbar_main);
         tabLayout.setupWithViewPager(viewPager);

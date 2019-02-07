@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.orhanobut.logger.Logger;
 
@@ -88,6 +89,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(RecyclerView.DRAWING_CACHE_QUALITY_LOW);
         adapter = new TopicRecyclerViewAdapter(getContext(), topics);
+        adapter.setBottomPadding(BarUtils.getNavBarHeight());
         recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
 
