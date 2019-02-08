@@ -121,7 +121,7 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount() {
-        return mItemCount + mTopics.size();
+        return mItemCount + mTopics.size() + 1;
     }
 
     static class ItemViewHolder extends RecyclerView.ViewHolder{

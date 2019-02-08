@@ -42,8 +42,6 @@ import io.reactivex.functions.Consumer;
  */
 public class PostTopicActivity extends BaseNetworkActivity implements ResponseListener<Topic> {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolBar;
     @BindView(R.id.et_title)
     EditText mEtTitle;
     @BindView(R.id.et_content)
@@ -57,7 +55,6 @@ public class PostTopicActivity extends BaseNetworkActivity implements ResponseLi
         setContentView(R.layout.act_post_topic);
         ButterKnife.bind(this);
 
-        setSupportActionBar(mToolBar);
         mTvNode.setOnClickListener(this::selectNode);
     }
 
@@ -71,11 +68,13 @@ public class PostTopicActivity extends BaseNetworkActivity implements ResponseLi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        TopicService.postTopic(this,
-                mEtTitle.getText().toString(),
-                mEtContent.getText().toString(),
-                mTvNode.getText().toString(),
-                this);
+        if (item.getItemId() == R.id.it_confirm){
+            TopicService.postTopic(this,
+                    mEtTitle.getText().toString(),
+                    mEtContent.getText().toString(),
+                    mTvNode.getText().toString(),
+                    this);
+        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -111,6 +111,7 @@ public class BaseActivity extends AppCompatActivity {
 
         mToolBar = find(R.id.ll_toolbar).findViewById(R.id.toolbar);
         mToolBar.setElevation(5);
+        setSupportActionBar(mToolBar);
         mToolBar.setNavigationOnClickListener(v -> finish());
     }
 

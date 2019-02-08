@@ -107,7 +107,7 @@ public class ReplyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount() {
-        return mReplies.size() + (mHeaderViewGroup == null ? 0 : 1);
+        return mReplies.size() + (mHeaderViewGroup == null ? 0 : 1) + 1;
     }
 
     static class ItemViewHolder extends RecyclerView.ViewHolder{
