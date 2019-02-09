@@ -6,9 +6,12 @@
     android:viewportWidth="128">
 
     <path
-        android:strokeLineCap="round"
         android:fillColor="@color/white"
-        android:pathData="M0,0H128V128H0z"/>
+        android:pathData=
+            "M15,0 Q0,0 0,15 T10,15M15,128 Q0,128 0,113 T10,113M128,15Q128,0 113,0T118,15M113,128Q128,128 128,113T113,113"/>
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M15,0 H112 L128,15 V113 L113,128 H15 L0,113 V15"/>
 
     <path
         android:fillColor="@color/blue_grey_divider"
@@ -16,10 +19,12 @@
 
     <path
         android:fillColor="@color/blue_grey_divider"
-        android:pathData="M100,30 L53,98 82,128 128,128 128,57"/>
+        android:pathData="M100,30 L53,98 82,128 113,128 128,113, 128 57M113,128Q128,128 128,113T113,113"/>
 
     <path
         android:fillColor="@color/black"
         android:pathData="M26,30 L46,30 64,78 82,30 100, 30 75,98 53,98"/>
+
+
 
 </vector>
