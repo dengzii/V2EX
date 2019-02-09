@@ -42,7 +42,6 @@ import cn.denua.v2ex.widget.TopicView;
 public class TopicActivity extends BaseNetworkActivity{
 
     private WebView mWebView;
-//    private TextView mTvContent;
     private TopicView mTopicView;
     private LinearLayout mLlHeader;
 
@@ -89,8 +88,7 @@ public class TopicActivity extends BaseNetworkActivity{
                 mTopicView.setTopic(result);
                 mTopicView.bindData();
             }
-            mWebView.loadData(HtmlUtil.applyHtmlStyle(result.getContent_rendered(), TopicActivity.this),
-                    "text/html", "utf-8");
+            loadTopicContent(result.getContent_rendered());
             loadReplies(result);
         }
         private void loadReplies(Topic result){
@@ -173,8 +171,9 @@ public class TopicActivity extends BaseNetworkActivity{
     /**
      * 初始化 RecyclerView
      */
-    protected void initView(){
+    protected void initView() {
 
+        super.initView();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -193,6 +192,22 @@ public class TopicActivity extends BaseNetworkActivity{
         initHeaderView();
     }
 
+    @Override
+    public void onStartRequest() {
+        super.onStartRequest();
+    }
+
+    @Override
+    public void onCompleteRequest() {
+        super.onCompleteRequest();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public int getContextStatus() {
+        return super.getContextStatus();
+    }
+
     /**
      * 初始化话题相关信息的 view
      */
@@ -209,7 +224,6 @@ public class TopicActivity extends BaseNetworkActivity{
         mTopicView.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200));
 
-//        mTvContent = new TextView(this);
         mWebView = new WebView(this);
         mWebView.setNetworkAvailable(true);
         mWebView.setVerticalScrollBarEnabled(false);
@@ -217,14 +231,14 @@ public class TopicActivity extends BaseNetworkActivity{
         mWebView.setNetworkAvailable(true);
         mWebView.setFocusable(false);
         mWebView.setBackgroundColor(getResolveAttr(R.attr.attr_color_background));
+        mWebView.getSettings().setDefaultTextEncodingName("utf-8");
 
         if (mTopic != null){
             setTitle(mTopic.getTitle());
             mPageCount = mTopic.getReplies() / 100 + 1;
             mTopicView.setTopic(mTopic);
             if (mTopic.getContent_rendered() != null){
-                mWebView.loadData(HtmlUtil.applyHtmlStyle(mTopic.getContent_rendered(), this),
-                        "text/html", "utf-8");
+                loadTopicContent(mTopic.getContent_rendered());
             }
         }
 
@@ -248,21 +262,10 @@ public class TopicActivity extends BaseNetworkActivity{
         TopicService.getReply(this, mTopic.getId(), ++mCurrentPage, mRepliesListener);
     }
 
-    @Override
-    public void onStartRequest() {
-        super.onStartRequest();
-    }
+    private void loadTopicContent(String content){
 
-    @Override
-    public void onCompleteRequest() {
-        super.onCompleteRequest();
-        mSwipeRefreshLayout.setRefreshing(false);
+        mWebView.loadDataWithBaseURL(null, HtmlUtil.applyHtmlStyle(content, this),
+                "text/html","utf-8",null);
     }
-
-    @Override
-    public int getContextStatus() {
-        return super.getContextStatus();
-    }
-
 
 }

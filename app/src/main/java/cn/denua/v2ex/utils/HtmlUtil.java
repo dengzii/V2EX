@@ -303,7 +303,9 @@ public class HtmlUtil {
             return "";
         }
         Document document = Jsoup.parse(html);
-        document.selectFirst("head").append("<style type=\"text/css\">" +
+        document.head()
+                .append(
+                "<style type=\"text/css\">" +
                 "* {" +
                 "   color:" + textColorStr + ";" +
                 "}" +
@@ -315,8 +317,11 @@ public class HtmlUtil {
                 "    background: " + codeBackgroundStr + ";" +
                 "    padding: 3px;" +
                 "    border-radius: 5px;" +
-                "}" +
+                "} img { border:1px solid grey;}" +
                 "</style>");
+        document.head()
+                .append("<meta name=\"content-type\" content=\"text/html; charset=utf-8\">" +
+                        "<meta http-equlv=\"Content-Type\" content=\"text/html;charset=utf-8\">");
         for (Element img:document.select("img")){
             img.attr("width","100%");
             img.attr("height","auto");

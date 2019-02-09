@@ -313,7 +313,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         if (sSignIn == 0){
             miSignIn.setTitle(R.string.checked);
         }else {
-            miSignIn.setTitle(sSignIn != 0 ? "已连续签到 " + Math.abs(sSignIn) + " 天" : getString(R.string.checked));
+            miSignIn.setTitle("已连续签到 " + Math.abs(sSignIn) + " 天");
         }
         boolean enabled = sSignIn >= 0;
         TextView tvSignIn =  (TextView) miSignIn.getActionView().findViewById(R.id.tv_badge_msg);
@@ -321,7 +321,11 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         miSignIn.setEnabled(enabled);
         miSignIn.setCheckable(enabled);
         TextView tvNotify = (TextView) miNotifications.getActionView().findViewById(R.id.tv_badge_msg);
-        tvNotify.setText(String.valueOf(mAccount.getNotifications() == 0 ?"":mAccount.getNotifications()));
+        if (mAccount.getNotifications() == 0) {
+            tvNotify.setVisibility(View.INVISIBLE);
+        } else {
+            tvNotify.setText(String.valueOf(mAccount.getNotifications()));
+        }
     }
 
     private void checkLoginAndSignStatus(){
