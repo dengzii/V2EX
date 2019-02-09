@@ -23,15 +23,15 @@ import retrofit2.http.Query;
 public interface UserApi {
 
     @GET("signin")
-    Call<String> getLoginPage();
+    Observable<String> getLoginPage();
 
     @GET("_captcha")
-    Call<Bitmap> getCaptcha(@Query("once") String once);
+    Observable<Bitmap> getCaptcha(@Query("once") String once);
 
     @POST("signin")
     @Headers({"Referer:https://www.v2ex.com/signin",  "Origin:https://www.v2ex.com"})
     @FormUrlEncoded
-    Call<String> postLogin(@FieldMap Map<String, String> form);
+    Observable<String> postLogin(@FieldMap Map<String, String> form);
 
     @GET("settings")
     Observable<String> getSettingPage();

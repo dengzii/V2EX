@@ -161,7 +161,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 //                    value -> PermissionUtils.launchAppDetailsSettings());
 //        }
 
-        updateSignInMenu();
+        updateMenu();
     }
 
     @Override
@@ -254,7 +254,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             public void onComplete(Integer result) {
                 ToastUtils.showShort("签到成功, 连续签到天数 " + result.toString());
                 sSignIn = result;
-                updateSignInMenu();
+                updateMenu();
             }
             @Override
             public void onFailed(String msg) {
@@ -282,10 +282,11 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         mAccount.logout();
         mAccount = new Account();
+        sSignIn = 0;
         Config.persistentAccount(this);
         RetrofitManager.clearCookies();
         setUserStatus();
-        updateSignInMenu();
+        updateMenu();
     }
 
     private void setUserStatus(){
@@ -297,27 +298,30 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             Glide.with(this).load(mAccount.getAvatar_large()).into(ivUserPic);
             tvUserName.setText(mAccount.getUsername());
             tvBalance.setText(String.valueOf(mAccount.getBalance()));
-            TextView tvNotify = (TextView) miNotifications.getActionView().findViewById(R.id.tv_badge_msg);
-            tvNotify.setText(String.valueOf(mAccount.getNotifications()));
-
         }else{
             tvUserName.setText(R.string.click_to_login);
             miLogin.setVisible(false);
             miLogin.setEnabled(false);
             tvBalance.setText(R.string.zero);
-            miSignIn.setTitle(R.string.checked);
             ivUserPic.setImageResource(R.drawable.ic_offline);
         }
+        updateMenu();
     }
 
-    private void updateSignInMenu(){
+    private void updateMenu(){
 
-        miSignIn.setTitle(sSignIn != 0 ? "已连续签到 " + Math.abs(sSignIn) + " 天" : getString(R.string.checked));
+        if (sSignIn == 0){
+            miSignIn.setTitle(R.string.checked);
+        }else {
+            miSignIn.setTitle(sSignIn != 0 ? "已连续签到 " + Math.abs(sSignIn) + " 天" : getString(R.string.checked));
+        }
         boolean enabled = sSignIn >= 0;
         TextView tvSignIn =  (TextView) miSignIn.getActionView().findViewById(R.id.tv_badge_msg);
         tvSignIn.setText(String.valueOf(Math.abs(mAccount.getSign())));
         miSignIn.setEnabled(enabled);
         miSignIn.setCheckable(enabled);
+        TextView tvNotify = (TextView) miNotifications.getActionView().findViewById(R.id.tv_badge_msg);
+        tvNotify.setText(String.valueOf(mAccount.getNotifications() == 0 ?"":mAccount.getNotifications()));
     }
 
     private void checkLoginAndSignStatus(){
@@ -346,7 +350,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 if (sSignIn >= 0){
                     if (Config.getConfig(ConfigRefEnum.CONFIG_AUTO_CHECK)) signIn();
                 }
-                updateSignInMenu();
+                updateMenu();
                 setUserStatus();
             }
             @Override

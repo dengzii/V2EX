@@ -36,14 +36,11 @@ import retrofit2.Call;
  */
 public class UserService extends BaseService<Account> {
 
-    public static final String STATUS_NEED_LOGIN = "未登录";
     public static final String STATUS_IP_BANED = "IP在一天内被禁止登录";
-    public static final String STATUS_GET_INFO_FAILED = "获取用户信息失败";
     public static final String STATUS_WRONG_FIELDS = "登录字段错误";
-    public static final String STATUS_EMPTY_RESPONSE_BODY = "响应体为空";
 
     private static UserApi mUserApi = RetrofitManager.create(UserApi.class);
-    private String[] fieldNames;
+    private static String[] fieldNames;
     private NextResponseListener<Bitmap, Account> callBack;
 
     public UserService(IResponsibleView iResponsibleView, NextResponseListener<Bitmap, Account> loginListener){
@@ -56,6 +53,9 @@ public class UserService extends BaseService<Account> {
 
     /**
      * 签到
+     * 返回的结果为连续签到的天数
+     * 结果为负数则表示今日不可签到, 正数则可签到
+     *
      * @param isCheck  检查是否已签到
      * @param responseListener 结果监听
      */
@@ -65,17 +65,21 @@ public class UserService extends BaseService<Account> {
                 .compose(RxUtil.io2computation())
                 .flatMap((Function<String, ObservableSource<Integer>>) s -> {
 
+                    ErrorEnum.ERR_PAGE_NEED_LOGIN0.check(s);
                     int once = HtmlUtil.getOnceFromSignInPage(s);
                     int times = HtmlUtil.matcherGroup1Int(Pattern.compile("已连续登录 (\\d+) 天"), s);
                     boolean isSignIn = !HtmlUtil.matcherGroup1(
                             Pattern.compile("(每日登录奖励已领取)"), s).isEmpty();
 
-                    if (isSignIn && isCheck){
+                    // 如果为检查 签到次数, 则直接返回签到次数与是否可签到
+                    if (isCheck){
+                        return Observable.just(times * (isSignIn ? -1:1));
+                    }
+                    // 如果今日已签到, 则直接返回签到次数
+                    if(isSignIn){
                         return Observable.just(times * -1);
-                    }else if (!isSignIn && isCheck){
-                        return Observable.just(times);
                     }else if (once == 0){
-                        return Observable.just(-1);
+                        return Observable.just(Integer.MAX_VALUE);
                     }
                     return mUserApi.signIn(once).map(s1 ->
                             HtmlUtil.matcherGroup1Int(Pattern.compile("已连续登录 (\\d+) 天"), s1));
@@ -84,9 +88,8 @@ public class UserService extends BaseService<Account> {
                 .subscribe(new RxObserver<Integer>() {
                     @Override
                     public void _onNext(Integer s) {
-                        if (isCheck || s > 0){
-                            responseListener.onComplete(s);
-                        }else {
+                        responseListener.onComplete(s);
+                        if (s == Integer.MAX_VALUE){
                             _onError("签到失败");
                         }
                     }
@@ -104,38 +107,25 @@ public class UserService extends BaseService<Account> {
      */
     public void preLogin(){
 
-        mUserApi.getLoginPage().enqueue(new ResponseHandler<String>() {
-            @Override
-            public void handle(boolean success, String result, Call<String> call, String msg) {
-
-                if (!success || result.matches("[\\S\\s]+登录受限[\\S\\s]+")){
-                    callBack.onFailed(!success ? msg : STATUS_IP_BANED);
-                    return;
-                }
-                try{
-                    fieldNames = HtmlUtil.getLoginFieldName(result);
-                }catch (Exception e){
-                    callBack.onFailed(e.getLocalizedMessage());
-                    return;
-                }
-                getCaptcha(fieldNames[3]);
-            }
-        });
-
-    }
-
-    private void getCaptcha(String once){
-
-        mUserApi.getCaptcha(once).enqueue(new ResponseHandler<Bitmap>() {
-            @Override
-            public void handle(boolean success, Bitmap result, Call<Bitmap> call, String msg) {
-                if (success){
-                    callBack.onNextResult(result);
-                    return;
-                }
-                callBack.onFailed(msg);
-            }
-        });
+        mUserApi.getLoginPage()
+                .compose(RxUtil.io2computation())
+                .flatMap((Function<String, ObservableSource<Bitmap>>) s -> {
+                    ErrorEnum.ERROR_AUTH_IP_BE_BANED.check(s);
+                    fieldNames = HtmlUtil.getLoginFieldName(s);
+                    return mUserApi.getCaptcha(fieldNames[3]);
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RxObserver<Bitmap>() {
+                    @Override
+                    public void _onNext(Bitmap bitmap) {
+                        callBack.onNextResult(bitmap);
+                    }
+                    @Override
+                    public void _onError(String msg) {
+                        super._onError(msg);
+                        returnFailed(msg);
+                    }
+                });
     }
     /**
      * 登录到 v2ex
@@ -152,26 +142,29 @@ public class UserService extends BaseService<Account> {
         form.put(fieldNames[1], password);
         form.put(fieldNames[2], checkCode);
         form.put("once", fieldNames[3]);
-        form.put("next", "/");
+        form.put("next", "/settings");
 
-        mUserApi.postLogin(form).enqueue(new ResponseHandler<String>() {
-            @Override
-            public void handle(boolean success, String result, Call<String> call, String msg) {
-                if (!success || (null==result)){
-                    callBack.onFailed(msg);
-                    return;
-                }
-                if (result.matches("[\\S\\s]+登录受限[\\S\\s]+")){
-                    callBack.onFailed(STATUS_IP_BANED);
-                    return;
-                }
-                if (result.matches("[\\S\\s]+登录有点问题[\\S\\s]+")){
-                    callBack.onFailed(STATUS_WRONG_FIELDS);
-                    return;
-                }
-                getInfo(callBack);
-            }
-        });
+        mUserApi.postLogin(form)
+                .compose(RxUtil.io2computation())
+                .flatMap((Function<String, ObservableSource<Account>>) s -> {
+                    ErrorEnum.ERROR_AUTH_LOGIN_PROBLEM.check(s);
+                    ErrorEnum.ERROR_AUTH_IP_BE_BANED.check(s);
+                    ErrorEnum.ERROR_AUTH_LOGIN_UNKNOWN_PROBLEM.check(s);
+                    return getAccount(s);
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RxObserver<Account>() {
+                    @Override
+                    public void _onNext(Account s) {
+                        callBack.onComplete(s);
+                    }
+                    @Override
+                    public void _onError(String msg) {
+                        super._onError(msg);
+                        returnFailed(msg);
+                    }
+                });
+
     }
 
     /**
@@ -184,19 +177,9 @@ public class UserService extends BaseService<Account> {
         mUserApi.getSettingPage()
                 .compose(RxUtil.io2computation())
                 .flatMap((Function<String, ObservableSource<Account>>) s -> {
-
                     ErrorEnum.ERR_PAGE_NEED_LOGIN.check(s);
-                    String username = HtmlUtil.matcherGroup1(
-                            Pattern.compile("href=\"/member/([^\"]+)\""), s);
-                    if (username.trim().isEmpty()) ErrorEnum.ERROR_PARSE_HTML.throwThis();
-
-                    return RetrofitManager.create(MemberApi.class)
-                            .getMember(username)
-                            .map(jsonObject -> {
-                                Account account = new Gson().fromJson(jsonObject, Account.class);
-                                HtmlUtil.attachAccountInfo(account, s);
-                                return account;
-                            });
+                    ErrorEnum.ERR_PAGE_NEED_LOGIN0.check(s);
+                    return getAccount(s);
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RxObserver<Account>() {
@@ -209,6 +192,29 @@ public class UserService extends BaseService<Account> {
                     public void _onNext(Account account) {
                         responseListener.onComplete(account);
                     }
+                });
+    }
+
+    /**
+     * 尝试从设置页面获取账号， 并返回用于转换的可观察对象
+     * 正常情况下，html 为设置页面的内容， 如果未登入，或者登录的时候遇到了问题则抛出异常
+     *
+     * @param html 获取的 html
+     * @return rxjava 观察源
+     * @throws VException 可预知的异常
+     */
+    private static ObservableSource<Account> getAccount(String html) throws VException {
+
+        String username = HtmlUtil.matcherGroup1(
+                Pattern.compile("href=\"/member/([^\"]+)\""), html);
+        if (username.trim().isEmpty()) ErrorEnum.ERROR_AUTH_LOGIN_UNKNOWN_PROBLEM.throwThis();
+
+        return RetrofitManager.create(MemberApi.class)
+                .getMember(username)
+                .map(jsonObject -> {
+                    Account account = new Gson().fromJson(jsonObject, Account.class);
+                    HtmlUtil.attachAccountInfo(account, html);
+                    return account;
                 });
     }
 }

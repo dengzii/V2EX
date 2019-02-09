@@ -37,7 +37,7 @@ public class HeadersInterceptor implements Interceptor{
     public Response intercept(@NonNull Chain chain) throws IOException {
 
         Request originRequest = chain.request();
-        Log.d(getClass().getName(), originRequest.url().toString());
+        Log.d(getClass().getName(), originRequest.method() + " " + originRequest.url().toString());
         Request updateRequest = originRequest.newBuilder()
                 .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0")
                 .addHeader("host", originRequest.url().host())
