@@ -73,7 +73,7 @@ public class UserService extends BaseService<Account> {
 
                     // 如果为检查 签到次数, 则直接返回签到次数与是否可签到
                     if (isCheck){
-                        return Observable.just(times * (isSignIn ? -1:1));
+                        return Observable.just(times * (isSignIn ? 1:-1));
                     }
                     // 如果今日已签到, 则直接返回签到次数
                     if(isSignIn){
