@@ -33,18 +33,34 @@ import static cn.denua.v2ex.utils.StatusBarUtil.getStatusBarHeight;
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
+    /**
+     * 所有活动的布局都包含这个根布局, 这个布局包括  <br>
+     * ToolBar <br>
+     * 顶部填充的 statusBar 的高度  <br>
+     * 全屏返回手势检测  <br>
+     * 每个 Activity 的布局  <br>
+     * 底部 NavBar 的填充高度  <br>
+     */
     private ViewGroup mViewRoot;
+    /**
+     * 每个 Activity 的布局容器
+     */
     private FrameLayout mFlContainer;
+    private ViewGroup mToolBarContainer;
     private Toolbar mToolBar;
 
+    /**
+     * 当前 Activity 是否在前台, 用于后台耗时请求是否返回数据
+     */
     private boolean mInForeground = false;
-    private boolean mIsToolBar = true;
+    private boolean mIsShowToolBar = true;
     protected int mStatusBarHeight;
     protected int mNavBarHeight;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 未捕获的异常, 记录错误上传
 //        UnexpectedExceptionHandler.getInstance().init();
 
         mStatusBarHeight = BarUtils.getStatusBarHeight();
@@ -58,8 +74,9 @@ public class BaseActivity extends AppCompatActivity {
         super.setContentView(R.layout.w_layout_act_root);
 
         mViewRoot = find(R.id.v_root);
-        if (!mIsToolBar){
-            mViewRoot.removeView(find(R.id.ll_toolbar));
+        mToolBarContainer = find(R.id.ll_toolbar);
+        if (!mIsShowToolBar){
+            mViewRoot.removeView(mToolBarContainer);
         }else{
             initToolBar();
         }
@@ -87,10 +104,18 @@ public class BaseActivity extends AppCompatActivity {
         
     }
 
+    /**
+     * 隐藏 ToolBar, 需要在 setContentView 前调用
+     */
     protected void setNoToolbar(){
-        this.mIsToolBar = false;
+        this.mIsShowToolBar = false;
     }
 
+    /**
+     * 许多 Activity 中都有用到 SwipeRefreshLayout, 在这统一添加这个方法设置颜色样式
+     *
+     * @param swipeRefreshLayout the swipeRefreshLayout
+     */
     protected void setSwipeRefreshTheme(SwipeRefreshLayout swipeRefreshLayout){
 
         TypedValue colorAccent = new TypedValue();
@@ -107,7 +132,7 @@ public class BaseActivity extends AppCompatActivity {
         setTheme(getCurrentThemeId());
     }
 
-    protected void initToolBar(){
+    private void initToolBar(){
 
         mToolBar = find(R.id.ll_toolbar).findViewById(R.id.toolbar);
         mToolBar.setElevation(5);
@@ -115,12 +140,24 @@ public class BaseActivity extends AppCompatActivity {
         mToolBar.setNavigationOnClickListener(v -> finish());
     }
 
+    /**
+     * 通过当前主题解析 attr 的真实值
+     *
+     * @param attr The attr id
+     * @return The data of attr
+     */
     protected int getResolveAttr(@AttrRes int attr){
         TypedValue typedColor = new TypedValue();
         getTheme().resolveAttribute(attr, typedColor, true);
         return typedColor.data;
     }
 
+    /**
+     * 获取当前主题的 Id
+     * 主题保存在 Config 配置中
+     *
+     * @return The id of current theme
+     */
     protected int getCurrentThemeId(){
         return getResources().getIdentifier(Config.getConfig(ConfigRefEnum.CONFIG_THEME),
                 "style", getPackageName());
