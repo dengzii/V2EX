@@ -77,10 +77,12 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
      * 正数表示今日未签到 <br>
      */
     static int sSignIn = 0;
+    private long mLatestBackPressed = 0L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 布局中已有 toolbar 需要与 CoordinateLayout 布局配合
         setNoToolbar();
         setContentView(R.layout.act_main);
 
@@ -92,6 +94,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
     protected void initView(){
         super.initView();
+
         setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.menu_toolbar_main);
         tabLayout.setupWithViewPager(viewPager);
@@ -120,12 +123,12 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         tvUserName.setText(getResources().getText(R.string.click_to_login));
         ivUserPic.setOnClickListener(v -> {
             if (!mAccount.isLogin()){
-                changeUserStatus();
+                onNavItemUserStatusClick();
             }
         });
         tvUserName.setOnClickListener(v -> {
             if (!mAccount.isLogin()){
-                changeUserStatus();
+                onNavItemUserStatusClick();
             } else{
                 UserDetailActivity.start(this, mAccount);
             }
@@ -176,7 +179,12 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         if (drawerLayout.isDrawerOpen(Gravity.START)){
             drawerLayout.closeDrawer(Gravity.START);
         }else{
-            super.onBackPressed();
+            if ((System.currentTimeMillis() - mLatestBackPressed) < 1000){
+                finish();
+            }else{
+                mLatestBackPressed = System.currentTimeMillis();
+                ToastUtils.showShort("再按一次返回键退出");
+            }
         }
     }
 
@@ -193,6 +201,10 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * @param item The menu item witch clicked
+     * @return Pass event
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -215,7 +227,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             case R.id.it_message:
                 break;
             case R.id.it_login_out:
-                changeUserStatus();
+                onNavItemUserStatusClick();
                 break;
             default:break;
         }
@@ -244,6 +256,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         }
     }
 
+    /**
+     * 签到
+     */
     private void signIn(){
 
         if (!mAccount.isLogin() || sSignIn < 0){
@@ -263,7 +278,10 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         });
     }
 
-    private void changeUserStatus(){
+    /**
+     * 改变用户登录状态
+     */
+    private void onNavItemUserStatusClick(){
 
         if (!mAccount.isLogin()){
             startActivityForResult(new Intent(this, LoginActivity.class),
@@ -278,6 +296,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 });
     }
 
+    /**
+     * 用户登出, 清理并更新相关状态
+     */
     private void logout(){
 
         mAccount.logout();
@@ -289,6 +310,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         updateMenu();
     }
 
+    /**
+     * 设置用户状态, 根据是否已经登录改变左侧导航菜单的 HeaderView
+     */
     private void setUserStatus(){
 
         if (mAccount.isLogin()){
@@ -308,6 +332,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         updateMenu();
     }
 
+    /**
+     * 更新左侧导航栏 item
+     */
     private void updateMenu(){
 
         if (sSignIn == 0){
@@ -328,6 +355,10 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         }
     }
 
+    /**
+     * 检查并更新登录状态和签到状态
+     * 尝试获取用户信息页面, 如果成功则检查签到状态
+     */
     private void checkLoginAndSignStatus(){
 
         UserService.getInfo(new ResponseListener<Account>() {
@@ -344,6 +375,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         });
     }
 
+    /**
+     * 检查每日签到状态
+     */
     private void checkDailySignIn(){
 
         UserService.signIn(true, new ResponseListener<Integer>() {

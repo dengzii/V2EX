@@ -68,7 +68,8 @@ public class TopicService extends BaseService<List<Topic>> {
             case NODE:
                 getTopicsByNode(type.getTitle(), page);
                 break;
-            case ALL:
+            case TAB:
+                getTopicByTab(type.getTitle());
                 break;
             case FOLLOWING:
                 break;
@@ -100,6 +101,12 @@ public class TopicService extends BaseService<List<Topic>> {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RxObserver2<>(iResponsibleView, listener));
+    }
+
+    private void getTopicByTab(String tab){
+
+        // TODO: 2019/2/13
+//        topicApi.getTopicByTab(tab);
     }
 
     private void getHot(){

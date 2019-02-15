@@ -102,7 +102,11 @@ public class TopicView extends FrameLayout {
 
     public void  setTopic(Topic topic) {
         this.topic = topic;
-        bindViewWithTopic();
+        try {
+            bindViewWithTopic();
+        }catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     public void bindData(){

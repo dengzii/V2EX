@@ -19,7 +19,7 @@ public enum TabEnum implements Serializable {
     HOT     ("热 门"),
     LATEST  ("最 新"),
     CHANGES ("最近更新"),
-    ALL     ("全 部"),
+    TAB     ("tab"),
     FOLLOWING("关 注"),
     MESSAGE ("消 息"),
 

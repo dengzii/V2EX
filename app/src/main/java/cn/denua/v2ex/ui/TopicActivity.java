@@ -124,7 +124,7 @@ public class TopicActivity extends BaseNetworkActivity{
     private static void start(Context context, int topicId, Topic topic){
 
         Intent intent = new Intent(context, TopicActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("topicId", topicId);
         if (topic != null) intent.putExtra("topic", topic);
         context.startActivity(intent);
@@ -136,6 +136,14 @@ public class TopicActivity extends BaseNetworkActivity{
 
     public static void start(Context context, Topic topic){
         start(context, -1, topic);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mTopic = getIntent().getParcelableExtra("topic");
+        mTopicId = getIntent().getIntExtra("topicId",-1);
+        initView();
     }
 
     @Override

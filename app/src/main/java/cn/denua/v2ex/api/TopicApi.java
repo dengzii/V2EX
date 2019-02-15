@@ -36,11 +36,17 @@ public interface TopicApi {
     @GET("/new/{node}")
     Observable<String> getPostTopicPage(@Path("node") String node);
 
+    @GET("/")
+    Observable<String> getTopicByTab(@Query("tab") String tab);
+
     @GET("api/topics/hot.json")
     Observable<JsonArray> getHotTopic();
 
     @GET("api/topics/latest.json")
     Observable<JsonArray> getLatestTopic();
+
+    @GET("/recent")
+    Observable<String> getLatestTopic(@Query("p") int page);
 
     @GET("/api/topics/show.json")
     Observable<JsonArray> getTopic(@Query("id")int id);
