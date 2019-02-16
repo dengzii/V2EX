@@ -2,25 +2,19 @@ package cn.denua.v2ex.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +29,7 @@ import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.service.TopicService;
 import cn.denua.v2ex.utils.HtmlUtil;
-import cn.denua.v2ex.utils.StringUtil;
+import cn.denua.v2ex.utils.TimeUtil;
 import cn.denua.v2ex.widget.TopicView;
 
 
@@ -83,7 +77,7 @@ public class TopicActivity extends BaseNetworkActivity{
         public void onComplete(Topic result) {
             mPageCount = result.getReplies() / 100 + 1;
             if (mTopicId == -1 && mTopic != null && mTopic.getContent_rendered() == null){
-                mTopicView.setLastTouched(StringUtil.timestampToStr(result.getCreated()));
+                mTopicView.setLastTouched(TimeUtil.timestampToStr(result.getCreated()));
             }else if (mTopicId >= 0){
                 mTopicView.setTopic(result);
                 mTopicView.bindData();

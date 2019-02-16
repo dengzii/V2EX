@@ -16,7 +16,7 @@ import java.util.Locale;
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
-import cn.denua.v2ex.utils.StringUtil;
+import cn.denua.v2ex.utils.TimeUtil;
 
 /*
  * @author denua
@@ -41,11 +41,11 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
         String[] dateEntries = new String[dateFormatPreference.getEntryValues().length];
         int i = 0;
         for (CharSequence s:dateFormatPreference.getEntryValues()){
-            String date = StringUtil.getDateNow(String.valueOf(s));
+            String date = TimeUtil.getDateNow(String.valueOf(s));
             dateEntries[i++] = date;
         }
         dateFormatPreference.setEntries(dateEntries);
-        dateFormatPreference.setSummary(StringUtil.getDateNow(Config.getConfig(
+        dateFormatPreference.setSummary(TimeUtil.getDateNow(Config.getConfig(
                 ConfigRefEnum.CONFIG_DATE_FORMAT)));
 
         ListPreference localePreference = (ListPreference) findPreference(getString(R.string.key_local));

@@ -16,6 +16,13 @@
     <PreferenceCategory
         android:title="@string/general">
 
+        <ListPreference
+            android:title="@string/font_scale"
+            android:key="@string/key_font_scale"
+            android:defaultValue="1"
+            android:summary="@string/summary_font_scale"
+            android:entries="@array/list_font_size_entries"
+            android:entryValues="@array/list_font_size_entries"/>
         <SwitchPreference
             android:key="@string/key_auto_check"
             android:defaultValue="false"
@@ -36,6 +43,7 @@
             android:title="@string/auto_night_time"
             android:summary="@string/auto_night_time_default"
             android:dependency="@string/key_auto_night_theme"
+            android:defaultValue="21:00-06:30"
             android:entryValues="@array/list_auto_night_time"
             android:entries="@array/list_auto_night_time_entries"/>
         <ListPreference

@@ -13,29 +13,18 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.blankj.utilcode.constant.TimeConstants;
-import com.blankj.utilcode.util.ScreenUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.orhanobut.logger.Logger;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.denua.v2ex.Config;
-import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.adapter.MemberPagerAdapter;
 import cn.denua.v2ex.base.BaseNetworkActivity;
@@ -45,7 +34,7 @@ import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Member;
 import cn.denua.v2ex.service.MemberService;
 import cn.denua.v2ex.utils.ImageLoader;
-import cn.denua.v2ex.utils.StringUtil;
+import cn.denua.v2ex.utils.TimeUtil;
 
 /*
  * User detail page
@@ -101,7 +90,7 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
                 .getMemberDetail(mMember.getUsername());
         }else {
             mNumberCreated.setText(
-                    StringUtil.timestampToStr(mMember.getCreated(), "yyyy-MM-dd HH:mm:ss"));
+                    TimeUtil.timestampToStr(mMember.getCreated(), "yyyy-MM-dd HH:mm:ss"));
         }
     }
 
@@ -158,7 +147,7 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
     @Override
     public void onComplete(Member result) {
 
-        this.mNumberCreated.setText(StringUtil.timestampToStr(result.getCreated()));
+        this.mNumberCreated.setText(TimeUtil.timestampToStr(result.getCreated()));
     }
 
     @Override

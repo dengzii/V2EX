@@ -12,7 +12,10 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -20,6 +23,7 @@ import java.util.Set;
 
 import cn.denua.v2ex.base.App;
 import cn.denua.v2ex.model.Account;
+import cn.denua.v2ex.utils.TimeUtil;
 
 /*
  * App 配置相关
@@ -61,6 +65,17 @@ public class Config {
 
         loadConfig(context);
         restoreAccount();
+        System.out.println((Boolean) getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_THEME));
+        if (getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_THEME)){
+            String[] autoNightThemeTime =
+                    ((String)getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_TIME)).split("_");
+            System.out.println(Arrays.toString(autoNightThemeTime));
+            if (autoNightThemeTime.length == 2 &&
+                    TimeUtil.isNowBetweenTimeSpanOfDay(autoNightThemeTime[0], autoNightThemeTime[1])){
+                setConfig(ConfigRefEnum.CONFIG_THEME, "DarkTheme");
+            }
+        }
+
     }
 
     public static void saveState(Bundle bundle){

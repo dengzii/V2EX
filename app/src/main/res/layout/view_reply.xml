@@ -63,6 +63,7 @@
         android:layout_marginBottom="8dp"
         android:textColor="?attr_color_text_secondary"
         android:text="@string/zero"
+        android:layout_marginTop="2dp"
         app:layout_constraintBottom_toTopOf="@+id/tv_poster"
         app:layout_constraintEnd_toStartOf="@+id/iv_like"
         app:layout_constraintTop_toTopOf="@+id/tv_username" />
@@ -71,6 +72,7 @@
         android:id="@+id/iv_like"
         android:layout_width="wrap_content"
         android:layout_height="18dp"
+        android:layout_marginTop="2dp"
         android:src="@drawable/ic_like"
         app:layout_constraintBottom_toBottomOf="@+id/tv_like"
         app:layout_constraintEnd_toEndOf="parent"

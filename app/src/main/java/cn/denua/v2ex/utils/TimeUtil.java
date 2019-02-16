@@ -4,6 +4,7 @@
 
 package cn.denua.v2ex.utils;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 import cn.denua.v2ex.Config;
@@ -15,8 +16,21 @@ import cn.denua.v2ex.ConfigRefEnum;
  * @author denua
  * @date 2018/11/26 16
  */
-public class StringUtil {
+public class TimeUtil {
 
+    public static boolean isNowBetweenTimeSpanOfDay(String startHourMin, String endHourMin){
+
+        Calendar calendar = Calendar.getInstance();
+
+        int now = calendar.get(Calendar.HOUR_OF_DAY) *  60 + calendar.get(Calendar.MINUTE);
+
+        int start = Integer.valueOf(startHourMin.substring(0, 2)) * 60
+                +  Integer.valueOf(startHourMin.substring(3, 5));
+        int end = Integer.valueOf(endHourMin.substring(0, 2)) * 60
+                + Integer.valueOf(endHourMin.substring(3, 5));
+
+        return (now >= start && now <= end);
+    }
 
     public static String timestampToStr(long secondTimestamp){
 

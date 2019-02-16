@@ -20,5 +20,6 @@
     <string name="key_reply_line_height">reply_line_height</string>
     <string name="key_reward">key_reward</string>
     <string name="key_share">key_share</string>
+    <string name="key_font_scale">key_font_scale</string>
 
 </resources>

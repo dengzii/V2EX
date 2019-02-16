@@ -89,7 +89,11 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         mAccount = Config.getAccount();
         ButterKnife.bind(this);
         initView();
-        checkLoginAndSignStatus();
+        if (mAccount.isLogin()){
+            checkDailySignIn();
+        }else{
+            checkLoginAndSignStatus();
+        }
     }
 
     protected void initView(){
@@ -157,13 +161,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
     protected void onResume() {
         super.onResume();
 
-//        if (!PermissionUtils.isGranted("android.permission.WRITE_EXTERNAL_STORAGE")){
-//            DialogUtil.showMessage(this,
-//                    getString(R.string.alert),
-//                    getString(R.string.need_storage_permission),
-//                    value -> PermissionUtils.launchAppDetailsSettings());
-//        }
-
+        setUserStatus();
         updateMenu();
     }
 
@@ -181,6 +179,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         }else{
             if ((System.currentTimeMillis() - mLatestBackPressed) < 1000){
                 finish();
+                System.exit(0);
             }else{
                 mLatestBackPressed = System.currentTimeMillis();
                 ToastUtils.showShort("再按一次返回键退出");

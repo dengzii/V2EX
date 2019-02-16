@@ -6,7 +6,6 @@ package cn.denua.v2ex.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
@@ -22,7 +21,7 @@ import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.ui.NodeActivity;
 import cn.denua.v2ex.ui.UserDetailActivity;
 import cn.denua.v2ex.utils.ImageLoader;
-import cn.denua.v2ex.utils.StringUtil;
+import cn.denua.v2ex.utils.TimeUtil;
 
 /*
  * Topic 话题列表的 item, 自定义 view
@@ -153,7 +152,7 @@ public class TopicView extends FrameLayout {
         if (topic.getCreated() == 0 && topic.getAgo() != null){
             tvLastTouched.setText(topic.getAgo());
         }else if (topic.getCreated() != 0){
-            tvLastTouched.setText(StringUtil.timestampToStr(
+            tvLastTouched.setText(TimeUtil.timestampToStr(
                     mIsShowCreateDate ? topic.getCreated() : topic.getLast_touched()));
         }
         tvUsername.setOnClickListener(v -> goToUserDetail());

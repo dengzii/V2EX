@@ -2,11 +2,7 @@ package cn.denua.v2ex.utils;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.util.TypedValue;
-
-import com.blankj.utilcode.util.TimeUtils;
-import com.orhanobut.logger.Logger;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,7 +21,6 @@ import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.model.Member;
 import cn.denua.v2ex.model.Node;
 import cn.denua.v2ex.model.Reply;
-import cn.denua.v2ex.model.Tag;
 import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.service.V2exException;
 
@@ -148,7 +143,7 @@ public class HtmlUtil {
                 .attr("content")
                 .replaceAll("[TZ]", " ");
 
-        topic.setCreated(StringUtil.strToTimestamp(publishedTime,null));
+        topic.setCreated(TimeUtil.strToTimestamp(publishedTime,null));
         topic.setId(matcherGroup1Int(Pattern.compile("(\\d{2,})"),
                 document.selectFirst("meta[property=og:url]").attr("content")));
         topic.setTitle(header.selectFirst(".header > h1").text());
@@ -169,7 +164,7 @@ public class HtmlUtil {
 
         if (middleEle != null){
             String lastTouched = matcherGroup1(Pattern.compile("直到 ([^+]+)"), middleEle.toString());
-            topic.setLast_touched(lastTouched.isEmpty() ? 0 : StringUtil.strToTimestamp(lastTouched,null));
+            topic.setLast_touched(lastTouched.isEmpty() ? 0 : TimeUtil.strToTimestamp(lastTouched,null));
             topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT, middleEle.toString()));
         }
         topic.setReplyList(getReplies(document, topic.getMember().getUsername()));

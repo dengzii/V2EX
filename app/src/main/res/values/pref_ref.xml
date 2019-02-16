@@ -8,6 +8,7 @@
     <string name="key_auto_night_theme">auto_night_theme</string>
     <string name="key_auto_night_time">auto_night_time</string>
     <string name="key_auto_check">auto_check</string>
+    <string name="key_font_scale">key_font_scale</string>
     <string name="key_check_message_background">check_message_background</string>
     <string name="key_date_format">date_format</string>
 
@@ -73,14 +74,28 @@
     </string-array>
 
     <string-array name="list_auto_night_time">
-        <item>21:00–7:00</item>
-        <item>21:30–7:00</item>
-        <item>22:00–7:00</item>
+        <item>20:30_07:00</item>
+        <item>20:30_06:30</item>
+        <item>21:00_07:00</item>
+        <item>21:30_07:00</item>
+        <item>22:00_07:00</item>
     </string-array>
     <string-array name="list_auto_night_time_entries">
-        <item>21:00–7:00</item>
-        <item>21:30–7:00</item>
-        <item>22:00–7:00</item>
+        <item>20:30–07:00</item>
+        <item>20:30–06:30</item>
+        <item>21:00–07:00</item>
+        <item>21:30–07:00</item>
+        <item>22:00–07:00</item>
     </string-array>
+
+    <string-array name="list_font_size">
+        <item>0.8</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="list_font_size_entries">
+        <item>0.8 倍</item>
+        <item>默认大小</item>
+    </string-array>
+
 
 </resources>
