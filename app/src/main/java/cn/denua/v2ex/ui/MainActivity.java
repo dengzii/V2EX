@@ -28,6 +28,7 @@ import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,9 +41,11 @@ import cn.denua.v2ex.fragment.TopicFragment;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
+import cn.denua.v2ex.service.RxObserver;
 import cn.denua.v2ex.service.UserService;
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.utils.DialogUtil;
+import io.reactivex.Observable;
 
 @SuppressWarnings("RedundantCast")
 public class MainActivity extends BaseNetworkActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -179,7 +182,12 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         }else{
             if ((System.currentTimeMillis() - mLatestBackPressed) < 1000){
                 finish();
-                System.exit(0);
+                Observable.timer(500, TimeUnit.MILLISECONDS).subscribe(new RxObserver<Long>() {
+                    @Override
+                    public void _onNext(Long aLong) {
+                        System.exit(0);
+                    }
+                });
             }else{
                 mLatestBackPressed = System.currentTimeMillis();
                 ToastUtils.showShort("再按一次返回键退出");

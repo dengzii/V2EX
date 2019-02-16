@@ -40,6 +40,13 @@ public class TimeUtil {
         return timestampToStr(secondTimestamp, Config.getConfig(ConfigRefEnum.CONFIG_DATE_FORMAT));
     }
 
+    /**
+     * 毫秒转时间字符串
+     *
+     * @param millTimestamp 毫秒
+     * @param format 格式
+     * @return 格式化的时间
+     */
     public static String timestampToStr(long millTimestamp, String format){
         return new SimpleDateFormat(format, Locale.getDefault()).format(millTimestamp);
     }

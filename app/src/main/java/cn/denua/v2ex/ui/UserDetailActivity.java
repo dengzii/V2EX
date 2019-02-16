@@ -90,7 +90,7 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
                 .getMemberDetail(mMember.getUsername());
         }else {
             mNumberCreated.setText(
-                    TimeUtil.timestampToStr(mMember.getCreated(), "yyyy-MM-dd HH:mm:ss"));
+                    TimeUtil.timestampToStr(mMember.getCreated()*1000, "yyyy-MM-dd HH:mm:ss"));
         }
     }
 
@@ -147,7 +147,7 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
     @Override
     public void onComplete(Member result) {
 
-        this.mNumberCreated.setText(TimeUtil.timestampToStr(result.getCreated()));
+        this.mNumberCreated.setText(TimeUtil.timestampToStr(result.getCreated(), "yyyy-MM-dd HH:mm:ss"));
     }
 
     @Override
