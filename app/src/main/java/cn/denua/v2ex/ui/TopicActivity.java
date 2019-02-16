@@ -224,7 +224,8 @@ public class TopicActivity extends BaseNetworkActivity{
         
         mTopicView = new TopicView(this, false);
         mTopicView.setLayoutParams(
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200));
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        mTopicView.adjustedSize();
 
         mWebView = new WebView(this);
         mWebView.setNetworkAvailable(true);

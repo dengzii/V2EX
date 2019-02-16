@@ -89,6 +89,10 @@ public class TopicView extends FrameLayout {
         ButterKnife.bind(this);
     }
 
+    public void adjustedSize(){
+        tvTitle.setMaxLines(100);
+    }
+
     @Override
     protected void onWindowVisibilityChanged(int visibility) {
         super.onWindowVisibilityChanged(visibility);

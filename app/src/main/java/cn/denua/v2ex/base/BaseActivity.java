@@ -1,6 +1,9 @@
 package cn.denua.v2ex.base;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
 import android.support.annotation.CallSuper;
@@ -57,6 +60,8 @@ public class BaseActivity extends AppCompatActivity {
     protected int mStatusBarHeight;
     protected int mNavBarHeight;
 
+    private static Configuration mConfig;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +96,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         this.mInForeground = true;
+        setFontScaleAndUiScale();
     }
 
     @Override
@@ -132,14 +138,6 @@ public class BaseActivity extends AppCompatActivity {
         setTheme(getCurrentThemeId());
     }
 
-    private void initToolBar(){
-
-        mToolBar = find(R.id.ll_toolbar).findViewById(R.id.toolbar);
-        mToolBar.setElevation(5);
-        setSupportActionBar(mToolBar);
-        mToolBar.setNavigationOnClickListener(v -> finish());
-    }
-
     /**
      * 通过当前主题解析 attr 的真实值
      *
@@ -170,7 +168,7 @@ public class BaseActivity extends AppCompatActivity {
         return typedValue.data;
     }
 
-    public int getColorAccent(){
+    protected int getColorAccent(){
 
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.attr_color_accent, typedValue, true);
@@ -190,5 +188,28 @@ public class BaseActivity extends AppCompatActivity {
 
         ViewGroup rootView = (ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content);
         rootView.setPadding(0, getStatusBarHeight(this), 0, 0);
+    }
+
+    /**
+     * 配置字体和ui的缩放
+     */
+    private void setFontScaleAndUiScale(){
+        if (mConfig == null){
+            mConfig = getResources().getConfiguration();
+            mConfig.fontScale
+                    = mConfig.fontScale * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_FONT_SCALE));
+            mConfig.densityDpi = (int) (mConfig.densityDpi
+                                * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_UI_SCALE)));
+        }
+        onConfigurationChanged(mConfig);
+        getResources().updateConfiguration(mConfig, getResources().getDisplayMetrics());
+    }
+
+    private void initToolBar(){
+
+        mToolBar = find(R.id.ll_toolbar).findViewById(R.id.toolbar);
+        mToolBar.setElevation(5);
+        setSupportActionBar(mToolBar);
+        mToolBar.setNavigationOnClickListener(v -> finish());
     }
 }

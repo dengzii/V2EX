@@ -147,7 +147,7 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
     @Override
     public void onComplete(Member result) {
 
-        this.mNumberCreated.setText(TimeUtil.timestampToStr(result.getCreated(), "yyyy-MM-dd HH:mm:ss"));
+        this.mNumberCreated.setText(TimeUtil.timestampToStr(result.getCreated() * 1000, "yyyy-MM-dd HH:mm:ss"));
     }
 
     @Override

@@ -40,7 +40,6 @@ public class Config {
     static final ArrayList<TabEnum> HOME_TAB_DEFAULT = new ArrayList<TabEnum>(){{
         add(TabEnum.LATEST);
         add(TabEnum.HOT);
-        add(TabEnum.CHANGES);
     }};
 
     public static final ArrayList<Locale> LOCAL_LIST = new ArrayList<Locale>(){{

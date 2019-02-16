@@ -2,6 +2,8 @@ package cn.denua.v2ex.base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -24,6 +26,7 @@ public class App extends Application implements Application.ActivityLifecycleCal
 
     private static App app;
     private List<Activity> mActivities = new ArrayList<>();
+    private Configuration mConfig;
 
     @Override
     public void onCreate() {
@@ -39,7 +42,21 @@ public class App extends Application implements Application.ActivityLifecycleCal
 
         Logger.i("maxMemory" +( Runtime.getRuntime().maxMemory() / 1024 / 1024) + ", ");
         registerActivityLifecycleCallbacks(this);
+        setFontScaleAndUiScale();
     }
+
+    private void setFontScaleAndUiScale(){
+        if (mConfig == null){
+            mConfig = getResources().getConfiguration();
+            mConfig.fontScale
+                    = mConfig.fontScale * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_FONT_SCALE));
+            mConfig.densityDpi = (int) (mConfig.densityDpi
+                    * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_UI_SCALE)));
+        }
+        onConfigurationChanged(mConfig);
+        getResources().updateConfiguration(mConfig, getResources().getDisplayMetrics());
+    }
+
     public static Application getApplication(){
         return app;
     }
@@ -76,6 +93,6 @@ public class App extends Application implements Application.ActivityLifecycleCal
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        mActivities.add(activity);
+        mActivities.remove(activity);
     }
 }

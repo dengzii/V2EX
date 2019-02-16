@@ -5,6 +5,8 @@
 package cn.denua.v2ex.ui;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -131,6 +133,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         ivUserPic.setOnClickListener(v -> {
             if (!mAccount.isLogin()){
                 onNavItemUserStatusClick();
+            }else{
+                UserDetailActivity.start(this, mAccount);
             }
         });
         tvUserName.setOnClickListener(v -> {
@@ -347,7 +351,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         if (sSignIn == 0){
             miSignIn.setTitle(R.string.checked);
         }else {
-            miSignIn.setTitle("已连续签到 " + Math.abs(sSignIn) + " 天");
+            miSignIn.setTitle("已连续签到");
         }
         boolean enabled = sSignIn >= 0;
         TextView tvSignIn =  (TextView) miSignIn.getActionView().findViewById(R.id.tv_badge_msg);

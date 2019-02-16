@@ -3,7 +3,7 @@
 <android.support.constraint.ConstraintLayout
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/ripple_light_accent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -11,7 +11,7 @@
     android:paddingStart="15dp"
     android:paddingEnd="15dp"
     android:paddingTop="10dp"
-    android:paddingBottom="0dp"
+    android:paddingBottom="15dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -34,7 +34,7 @@
         android:maxLines="1"
         android:text="@string/placeholder"
         android:textColor="?attr_color_text_secondary"
-        android:textSize="5pt"
+        android:textSize="@dimen/text_small"
         app:layout_constraintBottom_toBottomOf="@+id/tv_node"
         app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
         app:layout_constraintTop_toTopOf="@+id/tv_node" />
@@ -49,7 +49,7 @@
         android:text="@string/placeholder"
         android:textAlignment="center"
         android:textColor="?attr_color_text_secondary"
-        android:textSize="5pt"
+        android:textSize="@dimen/text_small"
         app:layout_constraintBottom_toBottomOf="@+id/tv_username"
         app:layout_constraintStart_toEndOf="@+id/tv_username" />
 
@@ -60,7 +60,7 @@
         android:layout_marginStart="8dp"
         android:text="@string/placeholder"
         android:textColor="?attr_color_text_secondary"
-        android:textSize="5pt"
+        android:textSize="@dimen/text_small"
         app:layout_constraintBottom_toBottomOf="@+id/tv_reply"
         app:layout_constraintStart_toEndOf="@+id/tv_reply" />
 
@@ -76,7 +76,7 @@
         android:paddingBottom="4dp"
         android:text="@string/placeholder"
         android:textColor="?attr_color_text"
-        android:textSize="5pt"
+        android:textSize="@dimen/text_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -98,7 +98,7 @@
             android:maxLines="2"
             android:text="@string/placeholder"
             android:textColor="?attr_color_text"
-            android:textSize="7pt"
+            android:textSize="@dimen/text_normal"
             app:layout_constraintBottom_toTopOf="@+id/tv_username"
             app:layout_constraintStart_toEndOf="@+id/iv_user_pic"
             app:layout_constraintTop_toTopOf="parent" />

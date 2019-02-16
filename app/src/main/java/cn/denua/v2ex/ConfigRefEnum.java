@@ -31,6 +31,9 @@ public enum ConfigRefEnum implements Serializable {
 
     CONFIG_CHECK_MESSAGE_BACKGROUND ("check_message_background", false),
 
+    CONFIG_FONT_SCALE           ("font_scale",          1F),
+    CONFIG_UI_SCALE             ("ui_scale",            1F),
+
     CONFIG_HOME_TAB             ("home_tabs",           Config.HOME_TAB_DEFAULT),
     CONFIG_MEMBER_TAB           ("member_tab",          null),
     CONFIG_LOCAL                ("local",               Locale.CHINA),

@@ -9,4 +9,9 @@
 
     <dimen name="text_center_error">8pt</dimen>
     <dimen name="text_title">9pt</dimen>
+    <dimen name="text_tiny">10sp</dimen>
+    <dimen name="text_small">12sp</dimen>
+    <dimen name="text_normal">15sp</dimen>
+    <dimen name="text_large">17sp</dimen>
+    <dimen name="text_huge">20sp</dimen>
 </resources>

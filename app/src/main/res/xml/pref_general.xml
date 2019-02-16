@@ -10,6 +10,7 @@
         android:key="@string/key_theme"
         android:title="@string/theme"
         android:dialogTitle="@string/theme"
+        android:defaultValue="DarkTheme"
         android:entryValues="@array/list_theme"
         android:entries="@array/list_theme_entries"/>
 
@@ -22,7 +23,7 @@
             android:defaultValue="1"
             android:summary="@string/summary_font_scale"
             android:entries="@array/list_font_size_entries"
-            android:entryValues="@array/list_font_size_entries"/>
+            android:entryValues="@array/list_font_size"/>
         <SwitchPreference
             android:key="@string/key_auto_check"
             android:defaultValue="false"
@@ -43,7 +44,7 @@
             android:title="@string/auto_night_time"
             android:summary="@string/auto_night_time_default"
             android:dependency="@string/key_auto_night_theme"
-            android:defaultValue="21:00-06:30"
+            android:defaultValue="20:30_06:30"
             android:entryValues="@array/list_auto_night_time"
             android:entries="@array/list_auto_night_time_entries"/>
         <ListPreference
@@ -68,6 +69,13 @@
             android:entryValues="@array/list_home_tabs"
             android:entries="@array/list_home_tabs_entries"
             android:dialogTitle="@string/home_tabs"/>
+        <ListPreference
+            android:title="@string/ui_scale"
+            android:key="@string/key_ui_scale"
+            android:defaultValue="1"
+            android:summary="@string/summary_ui_scale"
+            android:entries="@array/list_ui_scale_entries"
+            android:entryValues="@array/list_ui_scale"/>
         <SwitchPreference
             android:key="@string/key_detailed_user_info"
             android:title="@string/show_detailed_user_info"

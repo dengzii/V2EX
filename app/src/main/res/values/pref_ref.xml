@@ -8,7 +8,7 @@
     <string name="key_auto_night_theme">auto_night_theme</string>
     <string name="key_auto_night_time">auto_night_time</string>
     <string name="key_auto_check">auto_check</string>
-    <string name="key_font_scale">key_font_scale</string>
+    <string name="key_font_scale">font_scale</string>
     <string name="key_check_message_background">check_message_background</string>
     <string name="key_date_format">date_format</string>
 
@@ -22,6 +22,7 @@
     <string name="key_get_reply_from_api">get_reply_from_api</string>
     <string name="key_reply_line_height">reply_line_height</string>
 
+    <string name="key_ui_scale">ui_scale</string>
     <string name="key_reward">key_reward</string>
     <string name="key_share">key_share</string>
 
@@ -45,15 +46,12 @@
     <string-array name="list_home_tabs">
         <item>HOT</item>
         <item>LATEST</item>
-        <item>CHANGES</item>
-        <item>ALL</item>
         <item>FOLLOWING</item>
         <item>sandbox</item>
     </string-array>
     <string-array name="list_home_tabs_entries">
-        <item>热 门</item>
+        <item>今日热议</item>
         <item>最 新</item>
-        <item>最近更新</item>
         <item>关 注</item>
         <item>沙 盒</item>
     </string-array>
@@ -88,13 +86,42 @@
         <item>22:00–07:00</item>
     </string-array>
 
-    <string-array name="list_font_size">
+    <string-array name="list_ui_scale">
+        <item>0.7</item>
         <item>0.8</item>
+        <item>0.9</item>
         <item>1</item>
+        <item>1.2</item>
+        <item>1.3</item>
+        <item>1.4</item>
+    </string-array>
+    <string-array name="list_ui_scale_entries">
+        <item>0.7 倍</item>
+        <item>0.8 倍</item>
+        <item>0.9 倍</item>
+        <item>默认缩放</item>
+        <item>1.2 倍</item>
+        <item>1.3 倍</item>
+        <item>1.4 倍</item>
+    </string-array>
+
+    <string-array name="list_font_size">
+        <item>0.7</item>
+        <item>0.8</item>
+        <item>0.9</item>
+        <item>1</item>
+        <item>1.2</item>
+        <item>1.3</item>
+        <item>1.4</item>
     </string-array>
     <string-array name="list_font_size_entries">
-        <item>0.8 倍</item>
+        <item>非常小</item>
+        <item>很小</item>
+        <item>小</item>
         <item>默认大小</item>
+        <item>大</item>
+        <item>特大</item>
+        <item>巨大</item>
     </string-array>
 
 

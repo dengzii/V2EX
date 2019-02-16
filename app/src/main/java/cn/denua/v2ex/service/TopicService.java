@@ -60,9 +60,6 @@ public class TopicService extends BaseService<List<Topic>> {
             case LATEST:
                 getLatest();
                 break;
-            case CHANGES:
-                getChanges();
-                break;
             case CUSTOM:
                 break;
             case NODE:

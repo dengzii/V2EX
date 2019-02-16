@@ -64,7 +64,7 @@
 
     <string name="general">通 用</string>
     <string name="font_scale">字体大小</string>
-    <string name="summary_font_scale">字体大小缩放</string>
+    <string name="summary_font_scale">字体大小缩放, 相对于默认 APP 默认大小</string>
     <string name="auto_check">自动签到</string>
     <string name="summary_auto_check">每次开启app时自动签到</string>
     <string name="auto_night_theme">自动夜晚主题</string>
@@ -81,6 +81,8 @@
     <string name="advanced">高 级</string>
     <string name="home_tab">主页标签</string>
     <string name="summary_home_tab">自定义主页 Tab 以及顺序</string>
+    <string name="ui_scale">UI 缩放</string>
+    <string name="summary_ui_scale">用户界面的缩放</string>
     <string name="topic_created_instead_touched">使用话题创建时间</string>
     <string name="summary_topic_created_instead_touched">显示话题的创建时间代替最后更新时间,仅部分类型话题可用</string>
     <string name="show_detailed_user_info">详细用户信息</string>

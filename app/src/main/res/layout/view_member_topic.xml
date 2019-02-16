@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text="@string/placeholder"
         android:layout_marginStart="15dp"
-        android:textSize="6pt"
+        android:textSize="@dimen/text_small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +30,7 @@
         android:layout_marginStart="10dp"
         android:text="@string/placeholder"
         android:textColor="?attr_color_text_secondary"
-        android:textSize="5pt"
+        android:textSize="@dimen/text_small"
         app:layout_constraintStart_toEndOf="@+id/tv_reply"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,7 +41,7 @@
         android:layout_marginStart="10dp"
         android:textColor="?attr_color_text_secondary"
         android:text="@string/placeholder"
-        android:textSize="5pt"
+        android:textSize="@dimen/text_small"
         app:layout_constraintStart_toEndOf="@+id/tv_latest_touched"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,7 +52,7 @@
         android:layout_marginStart="10dp"
         android:text="@string/placeholder"
         android:textColor="?attr_color_text_secondary"
-        android:textSize="5pt"
+        android:textSize="@dimen/text_small"
         app:layout_constraintStart_toEndOf="@+id/tv_last_reply"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,7 +69,7 @@
         android:layout_marginEnd="15dp"
         android:text="@string/placeholder"
         android:textColor="?attr_color_text"
-        android:textSize="5pt"
+        android:textSize="@dimen/text_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -85,7 +85,7 @@
         android:maxLines="2"
         android:text="@string/placeholder"
         android:textColor="?attr_color_text"
-        android:textSize="7pt"
+        android:textSize="@dimen/text_normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_latest_touched" />
