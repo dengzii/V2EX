@@ -68,10 +68,12 @@ public class Config {
      */
     public static void init(Context context){
 
+        if (mConfig == null){
+            mConfig = context.getResources().getConfiguration();
+        }
         loadConfig(context);
         restoreAccount();
 
-        mConfig = context.getResources().getConfiguration();
         if (getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_THEME)){
             String[] autoNightThemeTime =
                     ((String)getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_TIME)).split("_");
@@ -111,7 +113,7 @@ public class Config {
         CONFIG.put(key, value);
     }
 
-    public static Configuration getConfiguretion(){
+    public static Configuration getConfiguration(){
         return mConfig;
     }
     /**

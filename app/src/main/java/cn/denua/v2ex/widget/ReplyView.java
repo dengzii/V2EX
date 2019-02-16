@@ -35,6 +35,7 @@ import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.model.Reply;
 import cn.denua.v2ex.ui.UserDetailActivity;
+import cn.denua.v2ex.ui.WebViewActivity;
 import cn.denua.v2ex.utils.ImageLoader;
 
 /*
@@ -200,7 +201,7 @@ public class ReplyView extends FrameLayout  {
 
         @Override
         public void onClick(@NonNull View widget) {
-            Toast.makeText(mContext, "Link:"+mUri, Toast.LENGTH_SHORT).show();
+            WebViewActivity.start(getContext(), mUri);
         }
     }
 
@@ -214,7 +215,7 @@ public class ReplyView extends FrameLayout  {
 
         @Override
         public void onClick(@NonNull View widget) {
-            Toast.makeText(mContext, "Image: "+mUri, Toast.LENGTH_SHORT).show();
+            WebViewActivity.start(getContext(), mUri);
         }
     }
 }

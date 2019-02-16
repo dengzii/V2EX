@@ -26,13 +26,13 @@ public enum ConfigRefEnum implements Serializable {
     CONFIG_LAST_TOUCHED         ("last_touched",        0L),
     CONFIG_THEME                ("key_theme",           "MainTheme"),
     CONFIG_AUTO_NIGHT_THEME     ("auto_night_theme",    true),
-    CONFIG_AUTO_NIGHT_TIME      ("auto_night_time",     18.30f),
+    CONFIG_AUTO_NIGHT_TIME      ("auto_night_time",     "20:30_06:30"),
     CONFIG_AUTO_CHECK           ("auto_check",          false),
 
     CONFIG_CHECK_MESSAGE_BACKGROUND ("check_message_background", false),
 
-    CONFIG_FONT_SCALE           ("font_scale",          1F),
-    CONFIG_UI_SCALE             ("ui_scale",            1F),
+    CONFIG_FONT_SCALE           ("font_scale",          "1"),
+    CONFIG_UI_SCALE             ("ui_scale",            "1"),
 
     CONFIG_HOME_TAB             ("home_tabs",           Config.HOME_TAB_DEFAULT),
     CONFIG_MEMBER_TAB           ("member_tab",          null),

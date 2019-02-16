@@ -147,7 +147,7 @@ public class UserService extends BaseService<Account> {
         mUserApi.postLogin(form)
                 .compose(RxUtil.io2computation())
                 .flatMap((Function<String, ObservableSource<Account>>) s -> {
-                    ErrorEnum.ERROR_AUTH_LOGIN_PROBLEM.check(s);
+//                    ErrorEnum.ERROR_AUTH_LOGIN_PROBLEM.check(s);
                     ErrorEnum.ERROR_AUTH_IP_BE_BANED.check(s);
                     ErrorEnum.ERROR_AUTH_LOGIN_UNKNOWN_PROBLEM.check(s);
                     return getAccount(s);

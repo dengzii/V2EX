@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
@@ -48,6 +49,7 @@ public class App extends Application implements Application.ActivityLifecycleCal
     private void setFontScaleAndUiScale(){
         if (mConfig == null){
             mConfig = getResources().getConfiguration();
+            System.out.println((String) Config.getConfig(ConfigRefEnum.CONFIG_FONT_SCALE));
             mConfig.fontScale
                     = mConfig.fontScale * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_FONT_SCALE));
             mConfig.densityDpi = (int) (mConfig.densityDpi

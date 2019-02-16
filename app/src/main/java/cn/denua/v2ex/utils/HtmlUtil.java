@@ -301,17 +301,20 @@ public class HtmlUtil {
         document.head()
                 .append(
                 "<style type=\"text/css\">" +
-                "* {" +
+                "body{width:95%;}" +
+                        "* {" +
                 "   color:" + textColorStr + ";" +
                 "}" +
                 "a {" +
                 "   color:" + linkColorStr + ";" +
+                        "word-wrap:break-word;" +
                 "}" +
                 "code,pre {" +
                 "    color: " + codeColorStr + ";" +
                 "    background: " + codeBackgroundStr + ";" +
                 "    padding: 3px;" +
                 "    border-radius: 5px;" +
+                        "word-wrap:normal;" +
                 "} img { border:1px solid grey;}" +
                 "</style>");
         document.head()

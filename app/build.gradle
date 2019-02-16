@@ -8,8 +8,8 @@ android {
         applicationId "cn.denua.v2ex"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 33
-        versionName 'alpha 3.3'
+        versionCode 35
+        versionName 'alpha 3.5'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

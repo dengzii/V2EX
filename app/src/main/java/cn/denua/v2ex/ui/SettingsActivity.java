@@ -32,7 +32,9 @@ public class SettingsActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Config.init(this);
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 }

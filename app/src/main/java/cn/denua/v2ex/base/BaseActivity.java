@@ -75,18 +75,7 @@ public class BaseActivity extends AppCompatActivity {
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         super.setContentView(R.layout.w_layout_act_root);
-
-        mViewRoot = find(R.id.v_root);
-        mToolBarContainer = find(R.id.ll_toolbar);
-        if (!mIsShowToolBar){
-            mViewRoot.removeView(mToolBarContainer);
-        }else{
-            initToolBar();
-        }
-        mFlContainer = find(R.id.fl_root_container);
-        View bar = find(R.id.v_root_top);
-        bar.getLayoutParams().height = mStatusBarHeight;
-        bar.setBackgroundColor(getResolveAttr(R.attr.attr_color_primary_dark));
+        setRootView();
         LayoutInflater.from(this).inflate(layoutResID, mFlContainer,true);
     }
 
@@ -191,9 +180,24 @@ public class BaseActivity extends AppCompatActivity {
     /**
      * 配置字体和ui的缩放
      */
-    private void setFontScaleAndUiScale(){
-        onConfigurationChanged(Config.getConfiguretion());
-        getResources().updateConfiguration(Config.getConfiguretion(), getResources().getDisplayMetrics());
+    protected void setFontScaleAndUiScale(){
+        onConfigurationChanged(Config.getConfiguration());
+        getResources().updateConfiguration(Config.getConfiguration(), getResources().getDisplayMetrics());
+    }
+
+    private void setRootView(){
+
+        mViewRoot = find(R.id.v_root);
+        mToolBarContainer = find(R.id.ll_toolbar);
+        if (!mIsShowToolBar){
+            mViewRoot.removeView(mToolBarContainer);
+        }else{
+            initToolBar();
+        }
+        mFlContainer = find(R.id.fl_root_container);
+        View bar = find(R.id.v_root_top);
+        bar.getLayoutParams().height = mStatusBarHeight;
+        bar.setBackgroundColor(getResolveAttr(R.attr.attr_color_primary_dark));
     }
 
     private void initToolBar(){

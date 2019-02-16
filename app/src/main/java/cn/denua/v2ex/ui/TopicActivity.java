@@ -10,9 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
 
@@ -30,12 +32,13 @@ import cn.denua.v2ex.model.Topic;
 import cn.denua.v2ex.service.TopicService;
 import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.TimeUtil;
+import cn.denua.v2ex.widget.CustomWebView;
 import cn.denua.v2ex.widget.TopicView;
 
 
 public class TopicActivity extends BaseNetworkActivity{
 
-    private WebView mWebView;
+    private CustomWebView mWebView;
     private TopicView mTopicView;
     private LinearLayout mLlHeader;
 
@@ -223,11 +226,11 @@ public class TopicActivity extends BaseNetworkActivity{
         mLlHeader.setLayoutParams(linearLayoutParams);
         
         mTopicView = new TopicView(this, false);
-        mTopicView.setLayoutParams(
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        mTopicView.setLayoutParams(linearLayoutParams);
         mTopicView.adjustedSize();
 
-        mWebView = new WebView(this);
+        mWebView = new CustomWebView(this);
+        mWebView.setLayoutParams(linearLayoutParams);
         mWebView.setNetworkAvailable(true);
         mWebView.setVerticalScrollBarEnabled(false);
         mWebView.setHorizontalScrollBarEnabled(false);
@@ -235,6 +238,8 @@ public class TopicActivity extends BaseNetworkActivity{
         mWebView.setFocusable(false);
         mWebView.setBackgroundColor(getResolveAttr(R.attr.attr_color_background));
         mWebView.getSettings().setDefaultTextEncodingName("utf-8");
+        mWebView.setLoadFinishListener(this::setFontScaleAndUiScale);
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
         if (mTopic != null){
             setTitle(mTopic.getTitle());
