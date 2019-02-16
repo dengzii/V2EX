@@ -6,6 +6,7 @@ package cn.denua.v2ex;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -37,6 +38,11 @@ public class Config {
 
     private static Account sAccount;
 
+    /**
+     * 用于配置字体与UI缩放
+     */
+    private static Configuration mConfig;
+
     static final ArrayList<TabEnum> HOME_TAB_DEFAULT = new ArrayList<TabEnum>(){{
         add(TabEnum.LATEST);
         add(TabEnum.HOT);
@@ -64,11 +70,11 @@ public class Config {
 
         loadConfig(context);
         restoreAccount();
-        System.out.println((Boolean) getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_THEME));
+
+        mConfig = context.getResources().getConfiguration();
         if (getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_THEME)){
             String[] autoNightThemeTime =
                     ((String)getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_TIME)).split("_");
-            System.out.println(Arrays.toString(autoNightThemeTime));
             if (autoNightThemeTime.length == 2 &&
                     TimeUtil.isNowBetweenTimeSpanOfDay(autoNightThemeTime[0], autoNightThemeTime[1])){
                 setConfig(ConfigRefEnum.CONFIG_THEME, "DarkTheme");
@@ -105,6 +111,9 @@ public class Config {
         CONFIG.put(key, value);
     }
 
+    public static Configuration getConfiguretion(){
+        return mConfig;
+    }
     /**
      * 将用户信息 (Account) 以 json 的形式持久化
      *
@@ -163,6 +172,10 @@ public class Config {
             tabEnums.add(tabEnum);
         }
         CONFIG.put(ConfigRefEnum.CONFIG_HOME_TAB, tabEnums);
+        mConfig.fontScale =
+                mConfig.fontScale * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_FONT_SCALE));
+        mConfig.densityDpi = (int) (mConfig.densityDpi
+                * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_UI_SCALE)));
     }
 }
 

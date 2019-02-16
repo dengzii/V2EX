@@ -60,8 +60,6 @@ public class BaseActivity extends AppCompatActivity {
     protected int mStatusBarHeight;
     protected int mNavBarHeight;
 
-    private static Configuration mConfig;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,15 +192,8 @@ public class BaseActivity extends AppCompatActivity {
      * 配置字体和ui的缩放
      */
     private void setFontScaleAndUiScale(){
-        if (mConfig == null){
-            mConfig = getResources().getConfiguration();
-            mConfig.fontScale
-                    = mConfig.fontScale * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_FONT_SCALE));
-            mConfig.densityDpi = (int) (mConfig.densityDpi
-                                * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_UI_SCALE)));
-        }
-        onConfigurationChanged(mConfig);
-        getResources().updateConfiguration(mConfig, getResources().getDisplayMetrics());
+        onConfigurationChanged(Config.getConfiguretion());
+        getResources().updateConfiguration(Config.getConfiguretion(), getResources().getDisplayMetrics());
     }
 
     private void initToolBar(){
