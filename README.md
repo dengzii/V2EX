@@ -48,6 +48,6 @@ V2EX 第三方 Android 客户端
 
 ## 其他
  
-![home](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/alipay.jpg)
-![nav](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/wechat.jpg)
+![home](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/alipay.png)
+![nav](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/wechat.png)
 
