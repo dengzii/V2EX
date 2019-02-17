@@ -10,12 +10,13 @@ import java.util.List;
 
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.ConfigRefEnum;
+import cn.denua.v2ex.Tab;
 import cn.denua.v2ex.TabEnum;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragmentList;
-    private List<TabEnum> titles;
+    private List<Tab> titles;
 
     public MainPagerAdapter(FragmentManager fragmentManager, List<Fragment> fragmentList){
         super(fragmentManager);
@@ -42,7 +43,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return titles.get(position).getTitle();
+        Tab tabEnum = titles.get(position);
+        return tabEnum.getName() != null ? tabEnum.getName() : tabEnum.getTitle();
     }
 
 }

@@ -96,7 +96,7 @@ public class HtmlUtil {
             elements = document.select("#TopicsNode >  .cell");
             node = new Node("","");
         }else {
-            elements = document.select("#Main > .box > .cell");
+            elements = document.selectFirst("#Main > .box").select("> .item");
         }
 
         List<Topic> topics = new ArrayList<>(101);
@@ -110,7 +110,7 @@ public class HtmlUtil {
                 topic = new Topic();
                 String s = element.toString().replaceAll("&nbsp;", " ");
                 topic.setId(matcherGroup1Int(PATTERN_TOPIC_ID, s));
-                topic.setTitle(element.selectFirst(".item_title").text());//fixme null point exception
+                topic.setTitle(element.selectFirst(".item_title").text());
                 topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT_, s));
                 topic.setAgo(matcherGroup1(PATTERN_TOPIC_AGO_, s));
 

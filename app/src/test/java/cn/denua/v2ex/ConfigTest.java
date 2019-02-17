@@ -27,6 +27,15 @@ public class ConfigTest {
     }
 
     @Test
+    public void test1(){
+        TabEnum tabEnum = TabEnum.TAB;
+        tabEnum.setName("he");
+        TabEnum tabEnum1 = TabEnum.TAB;
+        System.out.println(tabEnum == tabEnum1);
+        System.out.println(tabEnum1.getName());
+    }
+
+    @Test
     public void test(){
 
         System.out.println(TabEnum.findByDescriptor("DD").getTitle());

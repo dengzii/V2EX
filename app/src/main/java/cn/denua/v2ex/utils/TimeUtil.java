@@ -3,6 +3,7 @@
  */
 
 package cn.denua.v2ex.utils;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -18,6 +19,13 @@ import cn.denua.v2ex.ConfigRefEnum;
  */
 public class TimeUtil {
 
+    /**
+     * 判断现在是否在一个时间段内, 这个时间段跨越两天, 时间段的格式为 HH:mm
+     *
+     * @param startHourMin 开始时间 格式 HH:mm
+     * @param endHourMin 结束时间
+     * @return 是否在这个时间段
+     */
     public static boolean isNowBetweenTimeSpanOfDay(String startHourMin, String endHourMin){
 
         Calendar calendar = Calendar.getInstance();
@@ -28,8 +36,7 @@ public class TimeUtil {
                 +  Integer.valueOf(startHourMin.substring(3, 5));
         int end = Integer.valueOf(endHourMin.substring(0, 2)) * 60
                 + Integer.valueOf(endHourMin.substring(3, 5));
-
-        return (now >= start && now <= end);
+        return ((now < (24 * 60)) && now >= start) || (now <= end);
     }
 
     public static String timestampToStr(long secondTimestamp){

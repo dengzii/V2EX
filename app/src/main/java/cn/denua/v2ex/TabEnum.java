@@ -31,7 +31,7 @@ public enum TabEnum implements Serializable {
     static final EnumFindHelper<TabEnum, String> sFindHelper =
             new EnumFindHelper<>(TabEnum.class, TabEnum::getTitle);
 
-    TabEnum(String title){
+    TabEnum(String title) {
         this.title = title;
     }
 

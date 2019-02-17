@@ -36,6 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.Tab;
 import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.adapter.MainPagerAdapter;
 import cn.denua.v2ex.base.BaseNetworkActivity;
@@ -108,8 +109,8 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         toolbar.inflateMenu(R.menu.menu_toolbar_main);
         tabLayout.setupWithViewPager(viewPager);
 
-        ArrayList<TabEnum> tabEnums = Config.getConfig(ConfigRefEnum.CONFIG_HOME_TAB);
-        for (TabEnum s:tabEnums){
+        ArrayList<Tab> tabEnums = Config.getConfig(ConfigRefEnum.CONFIG_HOME_TAB);
+        for (Tab s:tabEnums){
             tabLayout.addTab(tabLayout.newTab());
             topicFragments.add(TopicFragment.create(s));
         }

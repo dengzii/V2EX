@@ -10,6 +10,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
@@ -43,9 +44,11 @@ public class Config {
      */
     private static Configuration mConfig;
 
-    static final ArrayList<TabEnum> HOME_TAB_DEFAULT = new ArrayList<TabEnum>(){{
-        add(TabEnum.LATEST);
-        add(TabEnum.HOT);
+    static final ArrayList<Tab> HOME_TAB_DEFAULT = new ArrayList<Tab>(){{
+        add(new Tab(TabEnum.LATEST, "",TabEnum.LATEST.getTitle()));
+        add(new Tab(TabEnum.HOT, "", TabEnum.HOT.getTitle()));
+        add(new Tab(TabEnum.TAB, "tech","技 术"));
+        add(new Tab(TabEnum.TAB, "creative","好 玩"));
     }};
 
     public static final ArrayList<Locale> LOCAL_LIST = new ArrayList<Locale>(){{
@@ -77,8 +80,10 @@ public class Config {
         if (getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_THEME)){
             String[] autoNightThemeTime =
                     ((String)getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_TIME)).split("_");
+            ToastUtils.showShort( autoNightThemeTime[0] + "-" + autoNightThemeTime[1]);
             if (autoNightThemeTime.length == 2 &&
                     TimeUtil.isNowBetweenTimeSpanOfDay(autoNightThemeTime[0], autoNightThemeTime[1])){
+                ToastUtils.showShort("黑暗主题已启用, " + autoNightThemeTime[0] + "-" + autoNightThemeTime[1]);
                 setConfig(ConfigRefEnum.CONFIG_THEME, "DarkTheme");
             }
         }
@@ -166,12 +171,21 @@ public class Config {
             CONFIG.put(ConfigRefEnum.CONFIG_HOME_TAB, HOME_TAB_DEFAULT);
             return;
         }
-        ArrayList<TabEnum> tabEnums = new ArrayList<>();
+        ArrayList<Tab> tabEnums = new ArrayList<>();
         for (String tab:homeTabs){
-            TabEnum tabEnum = TabEnum.contains(tab)
-                    ? TabEnum.valueOf(tab)
-                    : TabEnum.findByDescriptor(tab);
-            tabEnums.add(tabEnum);
+            if (tab.startsWith("tab")){
+                Tab tabEnum = new Tab(TabEnum.TAB, tab.split("_")[1], tab.split("_")[2]);
+                tabEnums.add(tabEnum);
+            } else if (tab.startsWith("node")){
+                Tab tabEnum = new Tab(TabEnum.NODE, tab.split("_")[1], tab.split("_")[2]);
+                tabEnums.add(tabEnum);
+            } else{
+                TabEnum tabEnum = TabEnum.contains(tab)
+                        ? TabEnum.valueOf(tab)
+                        : TabEnum.findByDescriptor(tab);
+                Tab tab1 = new Tab(tabEnum, null, tabEnum.getTitle());
+                tabEnums.add(tab1);
+            }
         }
         CONFIG.put(ConfigRefEnum.CONFIG_HOME_TAB, tabEnums);
         mConfig.fontScale =

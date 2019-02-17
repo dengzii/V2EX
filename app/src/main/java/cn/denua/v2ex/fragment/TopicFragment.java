@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -25,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.Tab;
 import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.adapter.TopicRecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseActivity;
@@ -49,10 +51,10 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     private List<Topic> topics = new ArrayList<>();
 
     private TopicService topicService;
-    private TabEnum mTabType;
+    private Tab mTabType;
     private boolean mIsNeedLogin = false;
 
-    public static TopicFragment create(TabEnum contentType){
+    public static TopicFragment create(Tab contentType){
         TopicFragment topicFragment = new TopicFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("contentType", contentType);
@@ -64,7 +66,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if ( getArguments() != null){
-            this.mTabType = (TabEnum) getArguments().getSerializable("contentType");
+            this.mTabType = (Tab) getArguments().getSerializable("contentType");
         }
         topicService = new TopicService(this, this);
         onRefresh();
@@ -126,6 +128,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     @Override
     public void onFailed(String msg) {
 
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
         if(msg.equals(ErrorEnum.ERR_PAGE_NEED_LOGIN.getReadable())){
             mIsNeedLogin = true;
             TextView mTvError = new TextView(getContext());
@@ -136,7 +139,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
             mTvError.setGravity(Gravity.CENTER);
             mTvError.setText(msg);
             adapter.setHeaderView(mTvError);
-            adapter.notifyItemChanged(0);
+            adapter.notifyDataSetChanged();
         }else{
             ToastUtils.showShort(msg);
         }

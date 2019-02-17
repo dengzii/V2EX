@@ -46,14 +46,26 @@
     <string-array name="list_home_tabs">
         <item>HOT</item>
         <item>LATEST</item>
-        <item>FOLLOWING</item>
-        <item>sandbox</item>
+        <item>node_沙 盒_sandbox</item>
+        <item>tab_关 注_members</item>
+        <item>tab_技 术_tech</item>
+        <item>tab_创 意_creative</item>
+        <item>tab_好 玩_play</item>
+        <item>tab_Apple_apple</item>
+        <item>tab_酷工作_jobs</item>
+        <item>tab_交 易_deals</item>
     </string-array>
     <string-array name="list_home_tabs_entries">
         <item>今日热议</item>
         <item>最 新</item>
-        <item>关 注</item>
         <item>沙 盒</item>
+        <item>关 注</item>
+        <item>技 术</item>
+        <item>创 意</item>
+        <item>好 玩</item>
+        <item>Apple</item>
+        <item>酷工作</item>
+        <item>交 易</item>
     </string-array>
 
     <string-array name="list_date_format">
