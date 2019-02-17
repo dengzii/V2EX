@@ -1,5 +1,4 @@
 # V2EX
-V2EX third-part client for Android
 
 V2EX 第三方 Android 客户端
 
@@ -8,41 +7,47 @@ V2EX 第三方 Android 客户端
 ![home](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/home1.jpg)
 ![nav](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/topic1.jpg)
 
-## Summary
+## 简介
 
-- Material Design style
-- smooth animation
-- diversity theme
-- friendly user interface
-- most important : **Open Source**
+- Material Design 风格
+- 平滑的动画
+- 多种主题风格可选
+- 友好的用户界面
+- 最重要的 : **开源**
 
-## Features
+## 功能
 
-1. login to v2ex
-2. full account information
-3. check in everyday
-4. favor, focus member, node, topic
-5. view topic, member, node detail
-5. thanks, like and dislike, down vote and up vote
-6. add comment and reply to comment, hide comment
-7. custom home page tab
-8. post topic, receive message, comment
+3. 基本功能
+3. ~~每日签到~~
+4. ~~自定义主页标签~~
+5. ~~字体大小和界面缩放~~
+6. 谷歌登录
+7. 全屏侧滑手势返回
+8. 评论, 点赞, 
+9. block, 关注
+10. 详细用户信息
+11. 用户注册, 设置
 
-## Toolkit and environment
+## 开发工具以及环境
 
 - JDK 8
 - Gradle 3.2.1
 - AndroidStudio 3.22
 - Android SDK 27
 
-## Dependencies
+## 依赖的第三方库
 
-- Retrofit 2.4.0
-- ButterKnife 8.8.1
-- Gson 8.2.5
-- Glide 4.5.0
-- Logger 2.2.0
-- RxAndroid 2.1.0
-- RxJava 2.2.0
-- UtilCode 1.21.2
+- [Retrofit 2.4.0](https://github.com/square/retrofit)
+- [ButterKnife 8.8.1](https://github.com/JakeWharton/butterknife)
+- [Gson 8.2.5 ](https://github.com/google/gson)
+- [Glide 4.5.0 ](https://github.com/bumptech/glide)
+- [Logger 2.2.0 ](https://github.com/orhanobut/logger)
+- [RxAndroid 2.1.0](https://github.com/ReactiveX/RxAndroid)
+- [RxJava 2.2.0](https://github.com/ReactiveX/RxJava)
+- UtilCode 1.21.2 [](https://github.com/Blankj/AndroidUtilCode)
+
+## 其他
+ 
+![home](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/alipay.jpg)
+![nav](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/wechat.jpg)
 
