@@ -1,6 +1,7 @@
 # V2EX
 
 V2EX 第三方 Android 客户端
+[酷安下载页面](https://www.coolapk.com/apk/215995)
 
 ## Screenshot
 
@@ -44,7 +45,7 @@ V2EX 第三方 Android 客户端
 - [Logger 2.2.0 ](https://github.com/orhanobut/logger)
 - [RxAndroid 2.1.0](https://github.com/ReactiveX/RxAndroid)
 - [RxJava 2.2.0](https://github.com/ReactiveX/RxJava)
-- UtilCode 1.21.2 [](https://github.com/Blankj/AndroidUtilCode)
+- [UtilCode 1.21.2 ](https://github.com/Blankj/AndroidUtilCode)
 
 ## 其他
  
