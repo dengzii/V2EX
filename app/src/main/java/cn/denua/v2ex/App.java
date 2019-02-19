@@ -1,26 +1,20 @@
-package cn.denua.v2ex.base;
+package cn.denua.v2ex;
 
 import android.app.Activity;
 import android.app.Application;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.denua.v2ex.Config;
-import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.http.RetrofitManager;
-import cn.denua.v2ex.interfaces.ResponseListener;
-import cn.denua.v2ex.model.Account;
-import cn.denua.v2ex.service.UserService;
+import cn.denua.v2ex.interfaces.Secret;
 
 
 public class App extends Application implements Application.ActivityLifecycleCallbacks {
@@ -28,6 +22,7 @@ public class App extends Application implements Application.ActivityLifecycleCal
     private static App app;
     private List<Activity> mActivities = new ArrayList<>();
     private Configuration mConfig;
+    private Secret mSecretConfig;
 
     @Override
     public void onCreate() {
@@ -41,9 +36,11 @@ public class App extends Application implements Application.ActivityLifecycleCal
         RetrofitManager.init(this);
         Utils.init(this);
 
-        Logger.i("maxMemory" +( Runtime.getRuntime().maxMemory() / 1024 / 1024) + ", ");
         registerActivityLifecycleCallbacks(this);
         setFontScaleAndUiScale();
+        mSecretConfig = new SecretImpl();
+        mSecretConfig.init(this);
+
     }
 
     private void setFontScaleAndUiScale(){

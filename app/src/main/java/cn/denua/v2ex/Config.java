@@ -12,18 +12,15 @@ import android.support.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import cn.denua.v2ex.base.App;
 import cn.denua.v2ex.model.Account;
 import cn.denua.v2ex.utils.TimeUtil;
 
@@ -45,10 +42,10 @@ public class Config {
     private static Configuration mConfig;
 
     static final ArrayList<Tab> HOME_TAB_DEFAULT = new ArrayList<Tab>(){{
-        add(new Tab(TabEnum.LATEST, "",TabEnum.LATEST.getTitle()));
-        add(new Tab(TabEnum.HOT, "", TabEnum.HOT.getTitle()));
-        add(new Tab(TabEnum.TAB, "tech","技 术"));
-        add(new Tab(TabEnum.TAB, "creative","好 玩"));
+        add(new Tab(TabEnum.LATEST,TabEnum.LATEST.getTitle(), "最 新"));
+        add(new Tab(TabEnum.HOT, TabEnum.HOT.getTitle(), "热 门"));
+        add(new Tab(TabEnum.TAB,"技 术","tech"));
+        add(new Tab(TabEnum.TAB,"好 玩", "creative"));
     }};
 
     public static final ArrayList<Locale> LOCAL_LIST = new ArrayList<Locale>(){{
@@ -74,7 +71,12 @@ public class Config {
         if (mConfig == null){
             mConfig = context.getResources().getConfiguration();
         }
-        loadConfig(context);
+        try {
+            loadConfig(context);
+        }catch (Exception e){
+            CrashReport.postCatchedException(e);
+        }
+
         restoreAccount();
 
         if (getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_THEME)){

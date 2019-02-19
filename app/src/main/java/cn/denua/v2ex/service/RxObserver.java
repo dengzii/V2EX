@@ -4,6 +4,8 @@
 
 package cn.denua.v2ex.service;
 
+import com.tencent.bugly.crashreport.CrashReport;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -47,9 +49,11 @@ public abstract class RxObserver<T> implements Observer<T> {
         }catch (V2exException e){
             e.printStackTrace();
             _onError(e.getMsg());
+            CrashReport.postCatchedException(e);
         }catch (NullPointerException e){
             e.printStackTrace();
             _onError(e.getMessage());
+            CrashReport.postCatchedException(e);
         }
     }
 
@@ -62,6 +66,7 @@ public abstract class RxObserver<T> implements Observer<T> {
     public void onError(Throwable e) {
         e.printStackTrace();
         _onError(e.getMessage());
+        CrashReport.postCatchedException(e);
     }
 
     @Override

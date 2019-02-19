@@ -5,6 +5,7 @@
 package cn.denua.v2ex.service;
 
 import com.orhanobut.logger.Logger;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.regex.Pattern;
 
@@ -64,6 +65,8 @@ public enum ErrorEnum {
     }
 
     public void throwThis() throws VException{
-        throw new VException(readable);
+        VException vException = new VException(readable);
+        CrashReport.postCatchedException(vException);
+        throw vException;
     }
 }

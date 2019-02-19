@@ -20,8 +20,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import cn.denua.v2ex.base.App;
-
 /*
  * X.509 TrustManager
  * SslSocketFactory

@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.X509TrustManager;
 
-import cn.denua.v2ex.base.App;
 import cn.denua.v2ex.http.converters.BitmapConverterFactory;
 import cn.denua.v2ex.http.cookie.CookiesManager;
 import cn.denua.v2ex.http.cookie.TransientCookieJar;
