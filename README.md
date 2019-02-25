@@ -48,7 +48,7 @@ V2EX 第三方 Android 客户端
 - [UtilCode 1.21.2 ](https://github.com/Blankj/AndroidUtilCode)
 
 ## 其他
- 
-![home](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/alipay.png)
-![nav](https://raw.githubusercontent.com/MrDenua/V2EX/master/screenshot/wechat.png)
+
+感谢提出意见以及建议贡献代码的朋友.
+如果你有什么好的建议, 可直接 issue 或 pullrequest, 或有意参与开发都可提出
 

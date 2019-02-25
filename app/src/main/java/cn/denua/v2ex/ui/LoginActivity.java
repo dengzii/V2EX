@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -59,10 +60,13 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
         loginService.preLogin();
         ivCaptcha.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
+        etAccount.setOnKeyListener(onNextKey);
+        etPassword.setOnKeyListener(onNextKey);
+        etCaptchaCode.setOnKeyListener(onNextKey);
     }
 
     @OnClick(R.id.bt_login)
-    public void login(View view){
+    public void login(){
 
         String mAccount = etAccount.getText().toString().trim();
         String mPassword = etPassword.getText().toString().trim();
@@ -123,4 +127,15 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
         Config.persistentAccount(this);
         finish();
     }
+
+    View.OnKeyListener onNextKey = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+            if(keyCode == KeyEvent.KEYCODE_ENTER){
+                login();
+                return true;
+            }
+            return false;
+        }
+    };
 }
