@@ -13,6 +13,7 @@ import com.tencent.bugly.crashreport.CrashReport;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.denua.v2ex.base.BaseActivity;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.Secret;
 
@@ -20,7 +21,7 @@ import cn.denua.v2ex.interfaces.Secret;
 public class App extends Application implements Application.ActivityLifecycleCallbacks {
 
     private static App app;
-    private List<Activity> mActivities = new ArrayList<>();
+    private static List<Activity> mActivities = new ArrayList<>();
     private Configuration mConfig;
     private Secret mSecretConfig;
 
@@ -41,6 +42,19 @@ public class App extends Application implements Application.ActivityLifecycleCal
         mSecretConfig = new SecretImpl();
         mSecretConfig.init(this);
 
+    }
+
+    public static Activity getPreActivity(Activity activity){
+
+        return  (mActivities.size() <= 1)
+                ? null
+                : mActivities.get(mActivities.indexOf(activity) - 1);
+    }
+
+    public static Activity getLatestActivity(){
+        return (mActivities.size() == 0)
+                ? null
+                : mActivities.get(mActivities.size() - 1);
     }
 
     private void setFontScaleAndUiScale(){

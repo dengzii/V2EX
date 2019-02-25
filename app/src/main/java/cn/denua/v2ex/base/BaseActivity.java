@@ -1,6 +1,7 @@
 package cn.denua.v2ex.base;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -15,12 +16,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.BarUtils;
 
+import cn.denua.v2ex.App;
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
@@ -185,8 +190,15 @@ public class BaseActivity extends AppCompatActivity {
         getResources().updateConfiguration(Config.getConfiguration(), getResources().getDisplayMetrics());
     }
 
-    private void setRootView(){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    /**
+     * 初始化根布局
+     */
+    private void setRootView(){
         mViewRoot = find(R.id.v_root);
         mToolBarContainer = find(R.id.ll_toolbar);
         if (!mIsShowToolBar){

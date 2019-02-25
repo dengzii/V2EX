@@ -24,20 +24,20 @@ android {
     }
     productFlavors {
     }
-//    applicationVariants.all { variant ->
-//        variant.outputs.each { output ->
-//            def outputFile = output.outputFile
-//            if (outputFile?.name?.endsWith('.apk')) {
-//                def fileName = defaultConfig.applicationId + defaultConfig.versionName
-//                if (variant.buildType.name == "release") {
-//                    fileName = fileName + '_release.apk'
-//                } else if (variant.buildType.name == "debug") {
-//                    fileName = fileName + '_debug.apk'
-//                }
-//                outputFileName = fileName
-//            }
-//        }
-//    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile?.name?.endsWith('.apk')) {
+                def fileName = 'v2explore_' + defaultConfig.versionName
+                if (variant.buildType.name == "release") {
+                    fileName = fileName + '_release.apk'
+                } else if (variant.buildType.name == "debug") {
+                    fileName = fileName + '_debug.apk'
+                }
+                outputFileName = fileName
+            }
+        }
+    }
 }
 
 dependencies {
