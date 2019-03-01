@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="?attr_color_background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="?attr_color_accent"
+        android:text="DELETE"
+        android:textColor="?attr_color_text_lightish"
+        android:drawableTint="?attr_color_icons"
+        android:drawableStart="@drawable/ic_cancel_black_24dp"
+        android:drawableEnd="@drawable/ic_cancel_black_24dp"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/container"
+        android:background="?attr_color_background"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_title"/>
+
+        <ImageView
+            android:id="@+id/iv_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:backgroundTint="?attr_color_icons"
+            android:src="@drawable/ic_menu_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start|center"
+            android:padding="15dp"
+            android:text="@string/app_name"
+            android:textColor="?attr_color_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_menu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr_color_divider"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>
+

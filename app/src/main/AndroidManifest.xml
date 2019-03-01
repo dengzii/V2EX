@@ -63,6 +63,7 @@
             android:name=".ui.PostTopicActivity"
             android:label="@string/post"/>
         <activity android:name=".ui.WebViewActivity" />
+        <activity android:name=".ui.CustomTabActivity" />
     </application>
 
 </manifest>
