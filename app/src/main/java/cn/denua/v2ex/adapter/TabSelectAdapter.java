@@ -44,7 +44,8 @@ public class TabSelectAdapter extends RecyclerView.Adapter<TabSelectAdapter.MVie
 
     @Override
     public void onBindViewHolder(@NonNull MViewHolder holder, int position) {
-        holder.setTitle(mTabs.get(position).getName());
+        Tab tab = mTabs.get(position);
+        holder.setTitle(tab.getType().name()  + "_" + tab.getTitle() + "_" + tab.getName());
     }
 
     @Override
@@ -52,25 +53,18 @@ public class TabSelectAdapter extends RecyclerView.Adapter<TabSelectAdapter.MVie
         return mTabs.size();
     }
 
-    interface OnDragListener{
-        void onDrag(MotionEvent event, int pos);
+    public interface OnDragListener{
+        void onDrag(int pos);
     }
 
     class MViewHolder extends RecyclerView.ViewHolder{
 
         private TextView mTitle;
-        private View mContainer;
 
-        @SuppressLint("ClickableViewAccessibility")
-        public MViewHolder(View itemView) {
+        private MViewHolder(View itemView) {
             super(itemView);
             mTitle = itemView.findViewById(R.id.tv_title);
-            mContainer = itemView.findViewById(R.id.container);
-
-            itemView.findViewById(R.id.iv_menu).setOnTouchListener((v,e)->{
-                mOnDragListener.onDrag(e, getAdapterPosition());
-                return false;
-            });
+            new DragSwipeListener(this, mOnDragListener);
         }
         public void setTitle(String title){
             mTitle.setText(title);
@@ -78,7 +72,7 @@ public class TabSelectAdapter extends RecyclerView.Adapter<TabSelectAdapter.MVie
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private class DeleteListener implements View.OnTouchListener{
+    private class DragSwipeListener{
 
         private float mStartX;
         private float mIncrement;
@@ -89,16 +83,18 @@ public class TabSelectAdapter extends RecyclerView.Adapter<TabSelectAdapter.MVie
         private RecyclerView.ViewHolder mViewHolder;
         private View mContainer;
 
-
-        private DeleteListener(RecyclerView.ViewHolder viewHolder){
+        private DragSwipeListener(RecyclerView.ViewHolder viewHolder, OnDragListener onDragListener){
             this.mViewHolder = viewHolder;
-
             mContainer = viewHolder.itemView.findViewById(R.id.container);
             mContainerWidth = mContainer.getWidth();
+            mContainer.setOnTouchListener(this::onTouch);
+            mContainer.findViewById(R.id.iv_menu).setOnTouchListener((v, e)->{
+                onDragListener.onDrag(viewHolder.getAdapterPosition());
+                return false;
+            });
         }
 
-        @Override
-        public boolean onTouch(View vi, MotionEvent event) {
+        private boolean onTouch(View vi, MotionEvent event) {
 
             if (ANIMATING)  return false;
             switch (event.getAction()){
@@ -131,6 +127,7 @@ public class TabSelectAdapter extends RecyclerView.Adapter<TabSelectAdapter.MVie
                         int p = mViewHolder.getAdapterPosition();
                         animator.addUpdateListener(animation -> {
                             if (Math.abs((float)animation.getAnimatedValue()) == mContainerWidth){
+                                mContainer.setVisibility(View.GONE);
                                 animator1.start();
                             }
                         });
@@ -151,13 +148,14 @@ public class TabSelectAdapter extends RecyclerView.Adapter<TabSelectAdapter.MVie
         }
         private void cancelDeleteAnim(View o){
             ObjectAnimator animator = ObjectAnimator.ofFloat(o, "X", 0).setDuration(400);
+            o.clearAnimation();
             animator.start();
         }
     }
     private class ViewWrapper {
 
         private View rView;
-        public ViewWrapper(View target) {
+        private ViewWrapper(View target) {
             rView = target;
         }
 

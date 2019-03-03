@@ -16,6 +16,7 @@ import java.util.Locale;
 import cn.denua.v2ex.Config;
 import cn.denua.v2ex.ConfigRefEnum;
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.ui.CustomTabActivity;
 import cn.denua.v2ex.utils.TimeUtil;
 
 /*
@@ -63,6 +64,10 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
         Preference clearCachePreference = findPreference(getString(R.string.clear_cache));
         clearCachePreference.setOnPreferenceClickListener(this::clearCache);
         clearCachePreference.setSummary("缓存大小 12 MB");
+        findPreference(getString(R.string.key_home_tabs)).setOnPreferenceClickListener(preference -> {
+            CustomTabActivity.start(getActivity());
+            return false;
+        });
     }
 
 

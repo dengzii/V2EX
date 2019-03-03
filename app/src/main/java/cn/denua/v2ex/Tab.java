@@ -14,11 +14,20 @@ public class Tab implements Serializable {
     private String name;
     private TabEnum type;
     private String title;
+    private int index;
 
     public Tab(TabEnum type, String name,  String title) {
         this.name = name;
         this.type = type;
         this.title = title;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public String getName() {
@@ -43,5 +52,10 @@ public class Tab implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public String toString() {
+        return type.name().toLowerCase() + "_" + name + "_" + (title == null ? name : title);
     }
 }

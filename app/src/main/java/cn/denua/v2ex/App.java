@@ -29,6 +29,8 @@ public class App extends Application implements Application.ActivityLifecycleCal
     public void onCreate() {
         super.onCreate();
         app = this;
+        mSecretConfig = new SecretImpl();
+        mSecretConfig.init(this);
 
         Config.init(this);
         setTheme(getResources().getIdentifier(Config.getConfig(ConfigRefEnum.CONFIG_THEME),
@@ -39,8 +41,7 @@ public class App extends Application implements Application.ActivityLifecycleCal
 
         registerActivityLifecycleCallbacks(this);
         setFontScaleAndUiScale();
-        mSecretConfig = new SecretImpl();
-        mSecretConfig.init(this);
+
 
     }
 

@@ -17,6 +17,7 @@ import com.tencent.bugly.crashreport.CrashReport;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +33,7 @@ import cn.denua.v2ex.utils.TimeUtil;
  */
 public class Config {
 
-    private static HashMap<ConfigRefEnum, Serializable> CONFIG = new HashMap<>();
+    private static HashMap<ConfigRefEnum, Object> CONFIG = new HashMap<>();
 
     private static Account sAccount;
 
@@ -41,7 +42,7 @@ public class Config {
      */
     private static Configuration mConfig;
 
-    static final ArrayList<Tab> HOME_TAB_DEFAULT = new ArrayList<Tab>(){{
+    static final HashSet<Tab> HOME_TAB_DEFAULT = new HashSet<Tab>(){{
         add(new Tab(TabEnum.LATEST,TabEnum.LATEST.getTitle(), "最 新"));
         add(new Tab(TabEnum.HOT, TabEnum.HOT.getTitle(), "热 门"));
         add(new Tab(TabEnum.TAB,"技 术","tech"));
@@ -98,6 +99,12 @@ public class Config {
 
     public static void restoreState(Bundle bundle){
 
+    }
+
+    public static SharedPreferences getConfSP(){
+        return App.getApplication()
+                .getSharedPreferences(
+                        ConfigRefEnum.CONFIG_PREFERENCE_SETTING_FILE.getKey(), Context.MODE_PRIVATE);
     }
 
     @SuppressWarnings("unchecked")
@@ -175,21 +182,22 @@ public class Config {
         }
         ArrayList<Tab> tabEnums = new ArrayList<>();
         for (String tab:homeTabs){
-            if (tab.startsWith("tab")){
-                Tab tabEnum = new Tab(TabEnum.TAB, tab.split("_")[1], tab.split("_")[2]);
-                tabEnums.add(tabEnum);
-            } else if (tab.startsWith("node")){
-                Tab tabEnum = new Tab(TabEnum.NODE, tab.split("_")[1], tab.split("_")[2]);
-                tabEnums.add(tabEnum);
-            } else{
-                TabEnum tabEnum = TabEnum.contains(tab)
-                        ? TabEnum.valueOf(tab)
-                        : TabEnum.findByDescriptor(tab);
-                Tab tab1 = new Tab(tabEnum, null, tabEnum.getTitle());
-                tabEnums.add(tab1);
-            }
+            Tab tab1 = new Gson().fromJson(tab, Tab.class);
+//            if (tab.startsWith("tab")){
+//                Tab tabEnum = new Tab(TabEnum.TAB, tab.split("_")[1], tab.split("_")[2]);
+//                tabEnums.add(tabEnum.getIndex(), tabEnum);
+//            } else if (tab.startsWith("node")){
+//                Tab tabEnum = new Tab(TabEnum.NODE, tab.split("_")[1], tab.split("_")[2]);
+//                tabEnums.add(tabEnum.getIndex(), tabEnum);
+//            } else{
+//                TabEnum tabEnum = TabEnum.contains(tab)
+//                        ? TabEnum.valueOf(tab)
+//                        : TabEnum.findByDescriptor(tab);
+//                Tab tab1 = new Tab(tabEnum, null, tabEnum.getTitle());
+                tabEnums.add(tab1.getIndex(), tab1);
+//            }
         }
-        CONFIG.put(ConfigRefEnum.CONFIG_HOME_TAB, tabEnums);
+        CONFIG.put(ConfigRefEnum.CONFIG_HOME_TAB, new HashSet<>(tabEnums));
         mConfig.fontScale =
                 mConfig.fontScale * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_FONT_SCALE));
         mConfig.densityDpi = (int) (mConfig.densityDpi

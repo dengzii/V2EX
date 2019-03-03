@@ -33,6 +33,7 @@
         <item>TealTheme</item>
         <item>OrangeTheme</item>
         <item>DarkTheme</item>
+        <item>BlackTheme</item>
     </string-array>
     <string-array name="list_theme_entries">
         <item>Main</item>
@@ -41,6 +42,7 @@
         <item>Teal</item>
         <item>Orange</item>
         <item>Dark</item>
+        <item>Black</item>
     </string-array>
 
     <string-array name="list_home_tabs">

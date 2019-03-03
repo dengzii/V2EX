@@ -29,6 +29,9 @@ import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +42,7 @@ import cn.denua.v2ex.R;
 import cn.denua.v2ex.Tab;
 import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.adapter.MainPagerAdapter;
+import cn.denua.v2ex.adapter.TabSelectAdapter;
 import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.fragment.TopicFragment;
 import cn.denua.v2ex.http.RetrofitManager;
@@ -109,7 +113,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         toolbar.inflateMenu(R.menu.menu_toolbar_main);
         tabLayout.setupWithViewPager(viewPager);
 
-        ArrayList<Tab> tabEnums = Config.getConfig(ConfigRefEnum.CONFIG_HOME_TAB);
+        HashSet<Tab> tabEnums = Config.getConfig(ConfigRefEnum.CONFIG_HOME_TAB);
         for (Tab s:tabEnums){
             tabLayout.addTab(tabLayout.newTab());
             topicFragments.add(TopicFragment.create(s));

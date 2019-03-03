@@ -24,6 +24,17 @@
     <color name="label_accent">#bbbbbb</color>
     <color name="default_text_link">#52b1ff</color>
 
+    <color name="black_primary_dark">#000</color>
+    <color name="black_primary_light">#494949</color>
+    <color name="black_primary">#000000</color>
+    <color name="black_accent">#722E2B</color>
+    <color name="black_text">#5C5C5C</color>
+    <color name="black_secondary_text">#444444</color>
+    <color name="black_divider">#3F3E3E</color>
+    <color name="black_icons">#5C5C5C</color>
+    <color name="black_text_lightish">#7A7A7A</color>
+    <color name="black_link">#722424</color>
+
     <!--Dark-->
     <color name="dark_primary_dark">#313335</color>
     <color name="dark_primary_light">#595b5d</color>

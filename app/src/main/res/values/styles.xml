@@ -19,6 +19,35 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="BlackTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/black_primary</item>
+        <item name="colorAccent">@color/black_accent</item>
+        <item name="colorPrimaryDark">@color/black_primary_dark</item>
+        <item name="colorError">@color/black_accent</item>
+
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textColorSecondary">@color/black_secondary_text</item>
+        <item name="android:windowBackground">@color/black_primary</item>
+        <item name="android:colorForeground">@color/black_text</item>
+        <item name="android:textColorLink">@color/black_link</item>
+
+        <item name="attr_color_badge">@color/black_secondary_text</item>
+        <item name="attr_color_background">@color/black_primary</item>
+        <item name="attr_color_primary">@color/black_primary</item>
+        <item name="attr_color_primary_light">@color/black_primary_light</item>
+        <item name="attr_color_primary_dark">@color/black_primary_dark</item>
+        <item name="attr_color_accent">@color/black_accent</item>
+        <item name="attr_color_text_secondary">@color/black_secondary_text</item>
+        <item name="attr_color_text">@color/black_text</item>
+        <item name="attr_color_icons">@color/black_icons</item>
+        <item name="attr_color_divider">@color/black_divider</item>
+        <item name="attr_color_text_link">@color/black_link</item>
+
+        <item name="attr_color_text_lightish">@color/black_text_lightish</item>
+        <item name="attr_color_text_secondary_inverse">@color/black_primary_dark</item>
+        <item name="attr_color_text_inverse">@color/black_primary_light</item>
+    </style>
+
     <style name="DarkTheme" parent="AppTheme">
         <item name="colorPrimary">@color/dark_primary</item>
         <item name="colorAccent">@color/dark_accent</item>

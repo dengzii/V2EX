@@ -62,13 +62,10 @@
 
     <PreferenceCategory
         android:title="@string/advanced">
-        <MultiSelectListPreference
+        <Preference
             android:key="@string/key_home_tabs"
             android:title="@string/home_tab"
-            android:summary="@string/summary_home_tab"
-            android:entryValues="@array/list_home_tabs"
-            android:entries="@array/list_home_tabs_entries"
-            android:dialogTitle="@string/home_tabs"/>
+            android:summary="@string/summary_home_tab"/>
         <ListPreference
             android:title="@string/ui_scale"
             android:key="@string/key_ui_scale"
