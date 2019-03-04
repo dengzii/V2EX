@@ -1,6 +1,9 @@
 package cn.denua.v2ex;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * cn.denua.v2ex
@@ -9,7 +12,7 @@ import java.io.Serializable;
  * @email denua@foxmail.com
  * @date 2019/2/16
  */
-public class Tab implements Serializable {
+public class Tab implements Serializable, Comparable<Tab> {
 
     private String name;
     private TabEnum type;
@@ -57,5 +60,11 @@ public class Tab implements Serializable {
     @Override
     public String toString() {
         return type.name().toLowerCase() + "_" + name + "_" + (title == null ? name : title);
+    }
+
+    @Override
+    public int compareTo(@NonNull Tab o) {
+        if (o.getIndex() == this.getIndex()) return 0;
+        return o.getIndex() > getIndex() ?  -1 : 1;
     }
 }

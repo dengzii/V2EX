@@ -2,6 +2,7 @@ package cn.denua.v2ex;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -25,6 +26,7 @@ public class App extends Application implements Application.ActivityLifecycleCal
     private Configuration mConfig;
     private Secret mSecretConfig;
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -41,8 +43,6 @@ public class App extends Application implements Application.ActivityLifecycleCal
 
         registerActivityLifecycleCallbacks(this);
         setFontScaleAndUiScale();
-
-
     }
 
     public static Activity getPreActivity(Activity activity){

@@ -112,8 +112,8 @@ public class CustomTabActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(Menu.NONE,Menu.NONE,0, "addTab");
-        menu.add(Menu.NONE, Menu.NONE, 1,"addNode");
+        menu.add(Menu.NONE,Menu.NONE,0, "添加 Tab");
+        menu.add(Menu.NONE, Menu.NONE, 1,"添加 Node");
         menu.getItem(0).setOnMenuItemClickListener(item -> {
             DialogUtil.showInputDialog(this, "Add By Tab", "建议格式: 标题_英文名称",
                     "创意_creative",

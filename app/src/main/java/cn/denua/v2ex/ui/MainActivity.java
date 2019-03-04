@@ -113,7 +113,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         toolbar.inflateMenu(R.menu.menu_toolbar_main);
         tabLayout.setupWithViewPager(viewPager);
 
-        HashSet<Tab> tabEnums = Config.getConfig(ConfigRefEnum.CONFIG_HOME_TAB);
+        ArrayList<Tab> tabEnums = Config.getConfig(ConfigRefEnum.CONFIG_HOME_TAB);
         for (Tab s:tabEnums){
             tabLayout.addTab(tabLayout.newTab());
             topicFragments.add(TopicFragment.create(s));

@@ -45,7 +45,7 @@ public class TabSelectAdapter extends RecyclerView.Adapter<TabSelectAdapter.MVie
     @Override
     public void onBindViewHolder(@NonNull MViewHolder holder, int position) {
         Tab tab = mTabs.get(position);
-        holder.setTitle(tab.getType().name()  + "_" + tab.getTitle() + "_" + tab.getName());
+        holder.setTitle( tab.getTitle() + "_" + tab.getName());
     }
 
     @Override

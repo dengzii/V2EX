@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -16,8 +17,11 @@ import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -42,7 +46,7 @@ public class Config {
      */
     private static Configuration mConfig;
 
-    static final HashSet<Tab> HOME_TAB_DEFAULT = new HashSet<Tab>(){{
+    static final ArrayList<Tab> HOME_TAB_DEFAULT = new ArrayList<Tab>(){{
         add(new Tab(TabEnum.LATEST,TabEnum.LATEST.getTitle(), "最 新"));
         add(new Tab(TabEnum.HOT, TabEnum.HOT.getTitle(), "热 门"));
         add(new Tab(TabEnum.TAB,"技 术","tech"));
@@ -75,6 +79,7 @@ public class Config {
         try {
             loadConfig(context);
         }catch (Exception e){
+            e.printStackTrace();
             CrashReport.postCatchedException(e);
         }
 
@@ -83,7 +88,6 @@ public class Config {
         if (getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_THEME)){
             String[] autoNightThemeTime =
                     ((String)getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_TIME)).split("_");
-            ToastUtils.showShort( autoNightThemeTime[0] + "-" + autoNightThemeTime[1]);
             if (autoNightThemeTime.length == 2 &&
                     TimeUtil.isNowBetweenTimeSpanOfDay(autoNightThemeTime[0], autoNightThemeTime[1])){
                 ToastUtils.showShort("黑暗主题已启用, " + autoNightThemeTime[0] + "-" + autoNightThemeTime[1]);
@@ -162,7 +166,7 @@ public class Config {
 
     }
 
-    private static void loadConfig(Context context){
+    private static void loadConfig(@NonNull Context context){
 
         SharedPreferences preferences = context.getSharedPreferences(
                 Config.getConfig(ConfigRefEnum.CONFIG_PREFERENCE_SETTING_FILE),
@@ -183,21 +187,10 @@ public class Config {
         ArrayList<Tab> tabEnums = new ArrayList<>();
         for (String tab:homeTabs){
             Tab tab1 = new Gson().fromJson(tab, Tab.class);
-//            if (tab.startsWith("tab")){
-//                Tab tabEnum = new Tab(TabEnum.TAB, tab.split("_")[1], tab.split("_")[2]);
-//                tabEnums.add(tabEnum.getIndex(), tabEnum);
-//            } else if (tab.startsWith("node")){
-//                Tab tabEnum = new Tab(TabEnum.NODE, tab.split("_")[1], tab.split("_")[2]);
-//                tabEnums.add(tabEnum.getIndex(), tabEnum);
-//            } else{
-//                TabEnum tabEnum = TabEnum.contains(tab)
-//                        ? TabEnum.valueOf(tab)
-//                        : TabEnum.findByDescriptor(tab);
-//                Tab tab1 = new Tab(tabEnum, null, tabEnum.getTitle());
-                tabEnums.add(tab1.getIndex(), tab1);
-//            }
+            tabEnums.add(tab1);
         }
-        CONFIG.put(ConfigRefEnum.CONFIG_HOME_TAB, new HashSet<>(tabEnums));
+        Collections.sort(tabEnums);
+        CONFIG.put(ConfigRefEnum.CONFIG_HOME_TAB, tabEnums);
         mConfig.fontScale =
                 mConfig.fontScale * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_FONT_SCALE));
         mConfig.densityDpi = (int) (mConfig.densityDpi
