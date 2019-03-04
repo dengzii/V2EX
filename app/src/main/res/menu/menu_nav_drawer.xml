@@ -31,6 +31,9 @@
             android:enabled="false"
             android:icon="@drawable/ic_close"
             android:title="@string/logout"/>
+        <item android:id="@+id/it_ideas"
+            android:title="@string/feed_back"
+            android:icon="@drawable/ic_feedback_black"/>
     </group>
 
 </menu>

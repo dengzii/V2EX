@@ -15,8 +15,9 @@
         android:text="DELETE"
         android:textColor="?attr_color_text_lightish"
         android:drawableTint="?attr_color_icons"
-        android:drawableStart="@drawable/ic_cancel_black_24dp"
-        android:drawableEnd="@drawable/ic_cancel_black_24dp"/>
+        android:drawableStart="@drawable/ic_trash"
+        android:drawableEnd="@drawable/ic_trash"
+        android:padding="20dp"/>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/container"

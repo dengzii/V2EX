@@ -9,6 +9,7 @@
     <string name="not_login">未登录</string>
     <string name="click_to_login">点击登录</string>
     <string name="login_success">登录成功</string>
+    <string name="feed_back">反 馈 &amp; 建 议</string>
 
     <string name="topic">话 题</string>
     <string name="checked">签 到</string>
