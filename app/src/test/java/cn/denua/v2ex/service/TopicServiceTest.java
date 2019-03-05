@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import cn.denua.v2ex.Tab;
 import cn.denua.v2ex.TabEnum;
 import cn.denua.v2ex.api.TopicApi;
 import cn.denua.v2ex.http.RetrofitManager;
@@ -72,7 +73,7 @@ public class TopicServiceTest {
             public void onFailed(String msg) {
                 System.err.println(msg);
             }
-        }).getTopic(tabEnum,1);
+        }).getTopic(new Tab(TabEnum.NODE,"v2ex","v2ex"),1);
     }
 
     @Test

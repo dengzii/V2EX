@@ -82,19 +82,8 @@ public class Config {
             e.printStackTrace();
             CrashReport.postCatchedException(e);
         }
-
+        setNightTheme();
         restoreAccount();
-
-        if (getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_THEME)){
-            String[] autoNightThemeTime =
-                    ((String)getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_TIME)).split("_");
-            if (autoNightThemeTime.length == 2 &&
-                    TimeUtil.isNowBetweenTimeSpanOfDay(autoNightThemeTime[0], autoNightThemeTime[1])){
-                ToastUtils.showShort("黑暗主题已启用, " + autoNightThemeTime[0] + "-" + autoNightThemeTime[1]);
-                setConfig(ConfigRefEnum.CONFIG_THEME, "DarkTheme");
-            }
-        }
-
     }
 
     public static void saveState(Bundle bundle){
@@ -163,7 +152,6 @@ public class Config {
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     private static void loadConfig(@NonNull Context context){
@@ -195,6 +183,20 @@ public class Config {
                 mConfig.fontScale * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_FONT_SCALE));
         mConfig.densityDpi = (int) (mConfig.densityDpi
                 * Float.valueOf(Config.getConfig(ConfigRefEnum.CONFIG_UI_SCALE)));
+    }
+
+    private static void setNightTheme(){
+        if (getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_THEME)){
+            String[] autoNightThemeTime =
+                    ((String)getConfig(ConfigRefEnum.CONFIG_AUTO_NIGHT_TIME)).split("_");
+            if (autoNightThemeTime.length == 2
+                    && TimeUtil.isNowBetweenTimeSpanOfDay(
+                            autoNightThemeTime[0], autoNightThemeTime[1])){
+                ToastUtils.showShort(
+                        "黑暗主题已启用, " + autoNightThemeTime[0] + "-" + autoNightThemeTime[1]);
+                setConfig(ConfigRefEnum.CONFIG_THEME, "DarkTheme");
+            }
+        }
     }
 }
 

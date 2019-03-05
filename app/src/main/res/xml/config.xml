@@ -6,13 +6,14 @@
 <resources>
 
     <!--对应配置在 SharedPreferences 文件中的 key 和 ConfigEnum 中的 key-->
+    <!--配置升级时需要改键名，以防旧版配置与新版不同-->
     <string name="key_auto_night_theme">auto_night_theme</string>
     <string name="key_auto_night_time">auto_night_time</string>
     <string name="key_auto_check">auto_check</string>
     <string name="key_check_message_background">check_message_background</string>
     <string name="key_date_format">date_format</string>
     <string name="key_theme">theme</string>
-    <string name="key_home_tabs">home_tabs</string>
+    <string name="key_home_tabs">home_tabs_v2</string>
     <string name="key_detailed_user_info">detailed_user_info</string>
     <string name="key_local">local</string>
     <string name="key_topic_created_instead_touched">topic_created_instead_touched</string>

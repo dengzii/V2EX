@@ -28,15 +28,18 @@ public class TimeUtil {
      */
     public static boolean isNowBetweenTimeSpanOfDay(String startHourMin, String endHourMin){
 
-        Calendar calendar = Calendar.getInstance();
+        Calendar now = Calendar.getInstance();
 
-        int now = calendar.get(Calendar.HOUR_OF_DAY) *  60 + calendar.get(Calendar.MINUTE);
+        Calendar start = (Calendar) now.clone();
+        start.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startHourMin.split(":")[0]));
+        start.set(Calendar.MINUTE, Integer.parseInt(startHourMin.split(":")[1]));
 
-        int start = Integer.valueOf(startHourMin.substring(0, 2)) * 60
-                +  Integer.valueOf(startHourMin.substring(3, 5));
-        int end = Integer.valueOf(endHourMin.substring(0, 2)) * 60
-                + Integer.valueOf(endHourMin.substring(3, 5));
-        return ((now < (24 * 60)) && now >= start) || (now <= end);
+        Calendar end = (Calendar) now.clone();
+        end.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH) + 1);
+        end.set(Calendar.HOUR_OF_DAY, Integer.parseInt(endHourMin.split(":")[0]));
+        end.set(Calendar.MINUTE, Integer.parseInt(endHourMin.split(":")[1]));
+
+        return now.after(start) && now.before(end);
     }
 
     public static String timestampToStr(long secondTimestamp){

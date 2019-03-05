@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -245,6 +246,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             case R.id.it_login_out:
                 onNavItemUserStatusClick();
                 break;
+            case R.id.it_feedback:
+                feedBack();
+                break;
             default:break;
         }
         drawerLayout.closeDrawer(Gravity.START);
@@ -411,6 +415,18 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
             public void onFailed(String msg) {
                 ToastUtils.showShort(msg);
             }
+        });
+    }
+
+    private void feedBack(){
+
+        DialogUtil.showInputDialog(this,
+                getString(R.string.feed_back),
+                getString(R.string.summary_feed_back),
+                "", value -> {
+                    if ((null != value) && value.isEmpty()) return;
+                    CrashReport.postCatchedException(new Throwable("Feed back. " + value));
+                    ToastUtils.showShort(getString(R.string.thanks));
         });
     }
 }

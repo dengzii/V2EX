@@ -6,6 +6,7 @@ package cn.denua.v2ex;
 
 import org.junit.Test;
 
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -20,19 +21,14 @@ import cn.denua.v2ex.utils.TimeUtil;
 public class ConfigTest {
 
     @Test
-    public void dataFormatTest(){
-        System.out.println(TimeUtil.isNowBetweenTimeSpanOfDay("14:11", "14:11"));
+    public void dataFormatTest() {
+        System.out.println(TimeUtil.isNowBetweenTimeSpanOfDay("08:11", "14:11"));
         System.out.println(TimeUtil.timestampToStr(1272203146L));
         System.out.println(TimeUtil.timestampToStr(System.currentTimeMillis()));
     }
 
     @Test
     public void test1(){
-        TabEnum tabEnum = TabEnum.TAB;
-        tabEnum.setName("he");
-        TabEnum tabEnum1 = TabEnum.TAB;
-        System.out.println(tabEnum == tabEnum1);
-        System.out.println(tabEnum1.getName());
     }
 
     @Test
