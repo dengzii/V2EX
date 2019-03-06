@@ -60,6 +60,7 @@ public class BaseService<T> {
         }
         if (view.getContextStatus() == IResponsibleView.VIEW_STATUS_ACTIVATED){
             responseListener.onFailed(msg);
+            view.onFailMsg(msg);
         }
         view.onCompleteRequest();
     }

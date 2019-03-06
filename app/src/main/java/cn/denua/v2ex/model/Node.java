@@ -210,4 +210,23 @@ public class Node implements Parcelable, Cloneable {
             return new Node[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
+                ", topics=" + topics +
+                ", footer='" + footer + '\'' +
+                ", header='" + header + '\'' +
+                ", title_alternative='" + title_alternative + '\'' +
+                ", parent_node_name='" + parent_node_name + '\'' +
+                ", starts=" + starts +
+                ", root=" + root +
+                ", avart_normal='" + avart_normal + '\'' +
+                ", avart_mini='" + avart_mini + '\'' +
+                ", avart_large='" + avart_large + '\'' +
+                '}';
+    }
 }

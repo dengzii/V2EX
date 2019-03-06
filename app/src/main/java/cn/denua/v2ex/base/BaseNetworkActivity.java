@@ -58,6 +58,11 @@ public class BaseNetworkActivity extends BaseActivity implements IResponsibleVie
     }
 
     @Override
+    public void onFailMsg(String msg) {
+
+    }
+
+    @Override
     @CallSuper
     public int getContextStatus() {
         return mViewStatus;

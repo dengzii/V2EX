@@ -17,10 +17,6 @@ public class TimeUtilTest {
 
     @Test
     public void isNowBetweenTimeSpanOfDay() {
-        try {
-            TimeUtil.isNowBetweenTimeSpanOfDay("21:31","06:00");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        TimeUtil.isNowBetweenTimeSpanOfDay("21:31","06:00");
     }
 }

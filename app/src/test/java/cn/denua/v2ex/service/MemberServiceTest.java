@@ -39,8 +39,9 @@ public class MemberServiceTest {
         Member livid = new Member("Livid");
         new MemberService(iResponsibleView, new ResponseListener<Member>() {
             @Override
-            public void onFailed(String msg) {
+            public boolean onFailed(String msg) {
                 System.err.println(msg);
+                return true;
             }
             @Override
             public void onComplete(Member result) {
@@ -66,6 +67,11 @@ public class MemberServiceTest {
         @Override
         public void onCompleteRequest() {
             System.out.println("MemberServiceTest.onCompleteRequest");
+        }
+
+        @Override
+        public void onFailMsg(String msg) {
+
         }
 
         @Override

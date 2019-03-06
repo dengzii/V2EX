@@ -292,8 +292,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 updateMenu();
             }
             @Override
-            public void onFailed(String msg) {
+            public boolean onFailed(String msg) {
                 ToastUtils.showShort(msg);
+                return true;
             }
         });
     }
@@ -383,8 +384,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
 
         UserService.getInfo(new ResponseListener<Account>() {
             @Override
-            public void onFailed(String msg) {
+            public boolean onFailed(String msg) {
                 mAccount.logout();
+                return true;
             }
             @Override
             public void onComplete(Account result) {
@@ -412,8 +414,9 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
                 setUserStatus();
             }
             @Override
-            public void onFailed(String msg) {
+            public boolean onFailed(String msg) {
                 ToastUtils.showShort(msg);
+                return true;
             }
         });
     }

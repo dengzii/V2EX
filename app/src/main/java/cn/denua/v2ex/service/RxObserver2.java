@@ -34,12 +34,14 @@ public class RxObserver2<T> implements Observer<T> {
         }
     }
 
+    @CallSuper
     @Override
     public void onError(Throwable e) {
         e.printStackTrace();
         CrashReport.postCatchedException(e);
         if (isViewReady()){
             mResponseListener.onFailed(e.getMessage());
+            mResponsibleView.onFailMsg(e.getMessage());
         }
     }
 

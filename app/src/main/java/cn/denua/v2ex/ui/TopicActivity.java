@@ -70,8 +70,9 @@ public class TopicActivity extends BaseNetworkActivity{
                     mReplies.size() - result.size(), result.size());
         }
         @Override
-        public void onFailed(String msg) {
+        public boolean onFailed(String msg) {
             ToastUtils.showShort(msg);
+            return true;
         }
     };
 
@@ -98,7 +99,7 @@ public class TopicActivity extends BaseNetworkActivity{
             mPullRecyclerAdapter.notifyDataSetChanged();
         }
         @Override
-        public void onFailed(String msg) {
+        public boolean onFailed(String msg) {
 
             mSwipeRefreshLayout.setRefreshing(false);
             ToastUtils.showShort(msg);
@@ -115,6 +116,7 @@ public class TopicActivity extends BaseNetworkActivity{
                 mLlHeader.addView(mTvError);
                 mErrorMsg = msg;
             }
+            return true;
         }
     };
 

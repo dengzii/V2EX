@@ -126,7 +126,7 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     }
 
     @Override
-    public void onFailed(String msg) {
+    public boolean onFailed(String msg) {
 
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
         if(msg.equals(ErrorEnum.ERR_PAGE_NEED_LOGIN.getReadable())){
@@ -143,6 +143,6 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
         }else{
             ToastUtils.showShort(msg);
         }
-
+        return true;
     }
 }

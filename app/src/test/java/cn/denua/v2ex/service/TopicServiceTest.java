@@ -70,8 +70,9 @@ public class TopicServiceTest {
                 System.out.println(result);
             }
             @Override
-            public void onFailed(String msg) {
+            public boolean onFailed(String msg) {
                 System.err.println(msg);
+                return true;
             }
         }).getTopic(new Tab(TabEnum.NODE,"v2ex","v2ex"),1);
     }
@@ -81,8 +82,9 @@ public class TopicServiceTest {
 
         TopicService.getTopicAndReply(this.iResponsibleView, 524071,1, new ResponseListener<Topic>() {
             @Override
-            public void onFailed(String msg) {
+            public boolean onFailed(String msg) {
                 System.err.println(msg);
+                return true;
             }
             @Override
             public void onComplete(Topic result) {
@@ -103,8 +105,9 @@ public class TopicServiceTest {
                 }
             }
             @Override
-            public void onFailed(String msg) {
+            public boolean onFailed(String msg) {
                 System.out.println(msg);
+                return true;
             }
         });
     }
@@ -199,6 +202,11 @@ public class TopicServiceTest {
         @Override
         public void onCompleteRequest() {
             System.out.println("TopicServiceTest.onCompleteRequest");
+        }
+
+        @Override
+        public void onFailMsg(String msg) {
+
         }
 
         @Override

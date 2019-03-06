@@ -100,13 +100,14 @@ public class LoginActivity extends BaseNetworkActivity implements NextResponseLi
     }
 
     @Override
-    public void onFailed(String msg) {
+    public boolean onFailed(String msg) {
         mProgressDialog.dismiss();
         if (msg.equals(UserService.STATUS_WRONG_FIELDS)) {
             loginService.preLogin();
         }
         progressBar.setVisibility(View.GONE);
         ToastUtils.showShort(msg);
+        return true;
     }
 
     @Override

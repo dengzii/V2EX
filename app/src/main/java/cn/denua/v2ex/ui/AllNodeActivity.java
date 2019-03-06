@@ -64,7 +64,7 @@ public class AllNodeActivity extends BaseNetworkActivity implements ResponseList
     @Override
     protected void onStart() {
         super.onStart();
-        new NodeService<List<Node>>(this).getAllNode(this);
+        new NodeService<List<Node>>(this).getAllNode(this, this);
     }
 
     @Override
@@ -94,8 +94,9 @@ public class AllNodeActivity extends BaseNetworkActivity implements ResponseList
     }
 
     @Override
-    public void onFailed(String msg) {
+    public boolean onFailed(String msg) {
         ToastUtils.showShort(msg);
+        return false;
     }
 
     public void onRefresh(){

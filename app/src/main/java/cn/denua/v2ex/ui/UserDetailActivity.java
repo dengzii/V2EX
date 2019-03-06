@@ -151,8 +151,9 @@ public class UserDetailActivity extends BaseNetworkActivity implements ResponseL
     }
 
     @Override
-    public void onFailed(String msg) {
+    public boolean onFailed(String msg) {
         ToastUtils.showShort(msg);
+        return true;
     }
 }
 

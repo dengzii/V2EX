@@ -21,7 +21,7 @@ import cn.denua.v2ex.model.Node;
  */
 public class NodeActivity extends BaseNetworkActivity {
 
-    private Node node;
+    private Node mNode;
 
     public static void start(Context context, Node node){
 
@@ -35,6 +35,6 @@ public class NodeActivity extends BaseNetworkActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_node);
 
-        node = getIntent().getParcelableExtra("node");
+        mNode = getIntent().getParcelableExtra("node");
     }
 }
