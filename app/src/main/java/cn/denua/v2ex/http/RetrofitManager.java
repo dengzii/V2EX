@@ -31,6 +31,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 public class RetrofitManager {
 
+    public static boolean DEBUG = false;
     private static final long READ_TIMEOUT = 5000L;
     private static final long WRITE_TIMEOUT = 5000L;
     private static final long CONNECT_TIMEOUT = 5000L;
@@ -57,9 +58,10 @@ public class RetrofitManager {
 
     public static void init(@Nullable Context context){
 
+        DEBUG = context == null;
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
                 .cookieJar(
-                        context == null
+                        DEBUG
                         ? new TransientCookieJar()
                         : (cookiesManager = new CookiesManager(context)))
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -68,7 +70,7 @@ public class RetrofitManager {
                 .addInterceptor(HeadersInterceptor.getInstance())
                 .hostnameVerifier((hostname, session) -> VERIFIED_HOST.contains(hostname));
 
-        if (context != null){
+        if (!DEBUG){
             X509TrustManager trustManager = HttpsUtil.getX509TrustManager(context);
             okHttpClientBuilder.sslSocketFactory(
                     HttpsUtil.getSslSocketFactory(trustManager),
@@ -86,7 +88,7 @@ public class RetrofitManager {
                 .baseUrl(BASE_URL)
                 .client(okHttpClientBuilder.build())
                 .callFactory(okHttpClientBuilder.build());
-        if (context!=null){
+        if (!DEBUG){
             retrofitBuilder.addConverterFactory(BitmapConverterFactory.create());
         }
         retrofitBuilder.addConverterFactory(ScalarsConverterFactory.create())

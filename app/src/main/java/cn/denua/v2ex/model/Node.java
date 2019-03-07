@@ -26,7 +26,7 @@ public class Node implements Parcelable, Cloneable {
 
     protected String parent_node_name;
 
-    protected int starts;
+    protected int stars;
     protected boolean root;
 
     protected String avart_normal;
@@ -102,11 +102,11 @@ public class Node implements Parcelable, Cloneable {
     }
 
     public int getStarts() {
-        return starts;
+        return stars;
     }
 
-    public void setStarts(int starts) {
-        this.starts = starts;
+    public void setStarts(int stars) {
+        this.stars = stars;
     }
 
     public boolean isRoot() {
@@ -118,7 +118,7 @@ public class Node implements Parcelable, Cloneable {
     }
 
     public String getAvart_normal() {
-        return avart_normal;
+        return "https:" + avart_normal;
     }
 
     public void setAvart_normal(String avart_normal) {
@@ -134,7 +134,7 @@ public class Node implements Parcelable, Cloneable {
     }
 
     public String getAvart_large() {
-        return avart_large;
+        return "https:" + avart_large;
     }
 
     public void setAvart_large(String avart_large) {
@@ -168,7 +168,7 @@ public class Node implements Parcelable, Cloneable {
         dest.writeString(this.header);
         dest.writeString(this.title_alternative);
         dest.writeString(this.parent_node_name);
-        dest.writeInt(this.starts);
+        dest.writeInt(this.stars);
         dest.writeByte(this.root ? (byte) 1 : (byte) 0);
         dest.writeString(this.avart_normal);
         dest.writeString(this.avart_mini);
@@ -192,7 +192,7 @@ public class Node implements Parcelable, Cloneable {
         this.header = in.readString();
         this.title_alternative = in.readString();
         this.parent_node_name = in.readString();
-        this.starts = in.readInt();
+        this.stars = in.readInt();
         this.root = in.readByte() != 0;
         this.avart_normal = in.readString();
         this.avart_mini = in.readString();
@@ -222,7 +222,7 @@ public class Node implements Parcelable, Cloneable {
                 ", header='" + header + '\'' +
                 ", title_alternative='" + title_alternative + '\'' +
                 ", parent_node_name='" + parent_node_name + '\'' +
-                ", starts=" + starts +
+                ", starts=" + stars +
                 ", root=" + root +
                 ", avart_normal='" + avart_normal + '\'' +
                 ", avart_mini='" + avart_mini + '\'' +

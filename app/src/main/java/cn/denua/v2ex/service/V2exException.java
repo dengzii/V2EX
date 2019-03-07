@@ -12,11 +12,15 @@ package cn.denua.v2ex.service;
  */
 public class V2exException extends RuntimeException {
 
-    private Exception e;
+    private Throwable e;
     private String msg;
 
     public V2exException(String msg){
         this.msg = msg;
+    }
+
+    public V2exException(Throwable throwable){
+        e = throwable;
     }
 
     public String getMsg() {

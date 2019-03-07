@@ -51,6 +51,7 @@ public class HtmlUtil {
             PATTERN_TOPIC_AGO_          = Pattern.compile("•?[^•]+?• {2}([^<•]+) {2}•"),
             PATTERN_TOPIC_CLICK         = Pattern.compile(" · (\\d+) 次点击"),
             PATTERN_TOPIC_UP_VOTE       = Pattern.compile("votes\"><li class=\"fa fa-chevron-up\"></li> (\\d+)"),
+            PATTERN_TOPIC_LAST_REPLY    = Pattern.compile("最后回复来自 <strong><a href=\"/member/([\\d\\w]+)"),
 
             PATTERN_REPLY_ID            = Pattern.compile("id=\"r_(\\d+)\""),
             PATTERN_REPLY_USERNAME      = Pattern.compile("href=\"/member/([^\"]+)\""),
@@ -90,11 +91,9 @@ public class HtmlUtil {
 
         Document document = Jsoup.parse(html);
         Elements elements;
-        Node node = Node.getNode();
 
         if (html.contains("TopicsNode")){
             elements = document.select("#TopicsNode >  .cell");
-            node = new Node("","");
         }else {
             elements = document.selectFirst("#Main > .box").select("> .item");
         }
@@ -113,6 +112,7 @@ public class HtmlUtil {
                 topic.setTitle(element.selectFirst(".item_title").text());
                 topic.setReplies(matcherGroup1Int(PATTERN_TOPIC_REPLY_COUNT_, s));
                 topic.setAgo(matcherGroup1(PATTERN_TOPIC_AGO_, s));
+                topic.setLast_reply_by(matcherGroup1(PATTERN_TOPIC_LAST_REPLY, s));
 
                 member = new Member();
                 member.setUsername(matcherGroup1(PATTERN_TOPIC_USERNAME, s));
@@ -123,8 +123,8 @@ public class HtmlUtil {
                 topic.setMember(member);
                 topics.add(topic);
             }catch (Exception e){
-                System.out.println(element.html());
-                e.printStackTrace();
+                e.addSuppressed(new Throwable(element.html()));
+                throw new V2exException(e);
             }
         }
         return topics;

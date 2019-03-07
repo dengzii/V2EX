@@ -18,6 +18,7 @@ import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Node;
 import cn.denua.v2ex.model.Topic;
+import cn.denua.v2ex.utils.HtmlUtil;
 import cn.denua.v2ex.utils.RxUtil;
 import io.reactivex.functions.Function;
 
@@ -53,8 +54,8 @@ public class NodeService<T> extends BaseService<T> {
     public static void getNodeInfo(IResponsibleView iResponsibleView,
                                    ResponseListener<Node> responseListener,
                                    String name){
-        mNodeApi.getNode(name)
-                .compose(RxUtil.io2io())
+        mNodeApi.getNodeInfo(name)
+                .compose(RxUtil.io2main())
                 .map(jsonObject -> new Gson().fromJson(jsonObject, Node.class))
                 .subscribe(new RxObserver2<>(iResponsibleView, responseListener));
     }
@@ -64,6 +65,9 @@ public class NodeService<T> extends BaseService<T> {
                                         String name,
                                         int page){
 
-        mNodeApi.getNode(name);
+        mNodeApi.getNode(name, page)
+                .compose(RxUtil.io2main())
+                .map(HtmlUtil::getTopics)
+                .subscribe(new RxObserver2<>(iResponsibleView, responseListener));
     }
 }

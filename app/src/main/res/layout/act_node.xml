@@ -24,7 +24,7 @@
                 android:layout_marginTop="?attr/actionBarSize"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="60dp"
+                android:paddingTop="40dp"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp">
 
@@ -32,7 +32,6 @@
                     android:id="@+id/iv_node_avatar"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
-                    android:src="@drawable/ic_launcher"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -78,7 +77,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_start"
+                    android:id="@+id/tv_star"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/placeholder"
