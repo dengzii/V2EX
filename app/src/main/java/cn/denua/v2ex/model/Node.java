@@ -29,9 +29,9 @@ public class Node implements Parcelable, Cloneable {
     protected int stars;
     protected boolean root;
 
-    protected String avart_normal;
-    protected String avart_mini;
-    protected String avart_large;
+    protected String avatar_normal;
+    protected String avatar_mini;
+    protected String avatar_large;
 
     public static Node getNode(){
         return (Node) node.clone();
@@ -117,28 +117,36 @@ public class Node implements Parcelable, Cloneable {
         this.root = root;
     }
 
-    public String getAvart_normal() {
-        return "https:" + avart_normal;
+    public int getStars() {
+        return stars;
     }
 
-    public void setAvart_normal(String avart_normal) {
-        this.avart_normal = avart_normal;
+    public void setStars(int stars) {
+        this.stars = stars;
     }
 
-    public String getAvart_mini() {
-        return avart_mini;
+    public String getAvatar_normal() {
+        return "https:" + avatar_normal;
     }
 
-    public void setAvart_mini(String avart_mini) {
-        this.avart_mini = avart_mini;
+    public void setAvatar_normal(String avatar_normal) {
+        this.avatar_normal = avatar_normal;
     }
 
-    public String getAvart_large() {
-        return "https:" + avart_large;
+    public String getAvatar_mini() {
+        return "https:" + avatar_mini;
     }
 
-    public void setAvart_large(String avart_large) {
-        this.avart_large = avart_large;
+    public void setAvatar_mini(String avatar_mini) {
+        this.avatar_mini = avatar_mini;
+    }
+
+    public String getAvatar_large() {
+        return "https:" + avatar_large;
+    }
+
+    public void setAvatar_large(String avatar_large) {
+        this.avatar_large = avatar_large;
     }
 
     public Object clone(){
@@ -170,9 +178,9 @@ public class Node implements Parcelable, Cloneable {
         dest.writeString(this.parent_node_name);
         dest.writeInt(this.stars);
         dest.writeByte(this.root ? (byte) 1 : (byte) 0);
-        dest.writeString(this.avart_normal);
-        dest.writeString(this.avart_mini);
-        dest.writeString(this.avart_large);
+        dest.writeString(this.avatar_mini);
+        dest.writeString(this.avatar_normal);
+        dest.writeString(this.avatar_large);
     }
 
     public Node() {
@@ -194,9 +202,9 @@ public class Node implements Parcelable, Cloneable {
         this.parent_node_name = in.readString();
         this.stars = in.readInt();
         this.root = in.readByte() != 0;
-        this.avart_normal = in.readString();
-        this.avart_mini = in.readString();
-        this.avart_large = in.readString();
+        this.avatar_mini = in.readString();
+        this.avatar_normal = in.readString();
+        this.avatar_large = in.readString();
     }
 
     public static final Creator<Node> CREATOR = new Creator<Node>() {
@@ -222,11 +230,11 @@ public class Node implements Parcelable, Cloneable {
                 ", header='" + header + '\'' +
                 ", title_alternative='" + title_alternative + '\'' +
                 ", parent_node_name='" + parent_node_name + '\'' +
-                ", starts=" + stars +
+                ", stars=" + stars +
                 ", root=" + root +
-                ", avart_normal='" + avart_normal + '\'' +
-                ", avart_mini='" + avart_mini + '\'' +
-                ", avart_large='" + avart_large + '\'' +
+                ", avatar_normal='" + avatar_normal + '\'' +
+                ", avatar_mini='" + avatar_mini + '\'' +
+                ", avatar_large='" + avatar_large + '\'' +
                 '}';
     }
 }

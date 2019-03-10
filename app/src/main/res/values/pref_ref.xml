@@ -105,18 +105,18 @@
         <item>0.8</item>
         <item>0.9</item>
         <item>1</item>
+        <item>1.1</item>
         <item>1.2</item>
         <item>1.3</item>
-        <item>1.4</item>
     </string-array>
     <string-array name="list_ui_scale_entries">
         <item>0.7 倍</item>
         <item>0.8 倍</item>
         <item>0.9 倍</item>
         <item>默认缩放</item>
+        <item>1.1 倍</item>
         <item>1.2 倍</item>
         <item>1.3 倍</item>
-        <item>1.4 倍</item>
     </string-array>
 
     <string-array name="list_font_size">
@@ -124,9 +124,9 @@
         <item>0.8</item>
         <item>0.9</item>
         <item>1</item>
+        <item>1.1</item>
         <item>1.2</item>
         <item>1.3</item>
-        <item>1.4</item>
     </string-array>
     <string-array name="list_font_size_entries">
         <item>非常小</item>
