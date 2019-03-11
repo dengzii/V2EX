@@ -28,35 +28,38 @@ import cn.denua.v2ex.model.Reply;
  */
 public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ReplyRecyclerViewAdapter mAdapter;
+    private static final int ITEM_TYPE_FOOTER = 6;
+    private static final int ITEM_TYPE_MARGIN_BOTTOM = 7;
+    private static final int SHOW_NO_MORE_HINT = 10;
 
+    private RecyclerView.Adapter<RecyclerView.ViewHolder> mAdapter;
+
+    private View mBottomPaddingView;
     private ViewGroup mFooterViewGroup;
     private FooterStatus mStatus = FooterStatus.LOADING;
     private OnPullUpListener mOnPullUpListener;
     private TextView mTvStatus;
     private ProgressBar mPbLoading;
+    private Context mContext;
 
     public enum FooterStatus{
         LOADING, HIDDEN, COMPLETE
     }
 
-    public PullRefreshReplyAdapter(Context context, List<Reply> replies){
-        this(new ReplyRecyclerViewAdapter(context, replies));
-    }
-
-    public PullRefreshReplyAdapter(ReplyRecyclerViewAdapter adapter){
+    public PullRefreshReplyAdapter(Context context, RecyclerView.Adapter<RecyclerView.ViewHolder> adapter){
         this.mAdapter = adapter;
+        this.mContext = context;
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200);
-        mFooterViewGroup = new FrameLayout(mAdapter.getContext());
+        mFooterViewGroup = new FrameLayout(mContext);
         mFooterViewGroup.setLayoutParams(layoutParams);
-        mPbLoading = new ProgressBar(mAdapter.getContext());
+        mPbLoading = new ProgressBar(mContext);
         mPbLoading.setLayoutParams(new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 80));
         mFooterViewGroup.addView(mPbLoading);
         mFooterViewGroup.setVisibility(View.INVISIBLE);
 
-        mTvStatus = new TextView(mAdapter.getContext());
+        mTvStatus = new TextView(mContext);
         mTvStatus.setTextSize(15);
         mTvStatus.setLayoutParams(new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
@@ -68,7 +71,7 @@ public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.V
         switch (mStatus){
             case COMPLETE:
                 mFooterViewGroup.removeAllViews();
-                mTvStatus.setText(mAdapter.getContext().getString(R.string.no_more));
+                mTvStatus.setText(mContext.getString(R.string.no_more));
                 mFooterViewGroup.addView(mTvStatus);
                 break;
             case LOADING:
@@ -81,31 +84,30 @@ public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    public void setOnPullUpListener(OnPullUpListener onPullUpListener) {
-        this.mOnPullUpListener = onPullUpListener;
+    public void setBottomPadding(int height){
+        mBottomPaddingView = new View(mContext);
+        mBottomPaddingView.setLayoutParams(
+                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+        this.mBottomPaddingView.getLayoutParams().height = height;
     }
 
-    public void setBottomPadding(int height){
-        mAdapter.setBottomPadding(height);
+    public void setOnPullUpListener(OnPullUpListener onPullUpListener) {
+        this.mOnPullUpListener = onPullUpListener;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == mAdapter.FOOTER){
+        if (viewType == ITEM_TYPE_FOOTER){
             return new FooterViewHolder(mFooterViewGroup);
+        }else if (viewType == ITEM_TYPE_MARGIN_BOTTOM){
+            return new RecyclerView.ViewHolder(mBottomPaddingView) {};
         }else{
             return mAdapter.onCreateViewHolder(parent, viewType);
         }
     }
 
-    public void setHeaderView(LinearLayout mLlHeader) {
-
-        mAdapter.setHeaderView(mLlHeader);
-    }
-
     public void notifyRangeChanged(int start, int count){
-
         mAdapter.notifyItemRangeChanged(start, count);
     }
 
@@ -119,7 +121,10 @@ public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof FooterViewHolder && position > 10){
+        if (holder instanceof FooterViewHolder){
+            if (position < SHOW_NO_MORE_HINT){
+                return;
+            }
             switch (mStatus){
                 case HIDDEN:
                     mFooterViewGroup.setVisibility(View.GONE);
@@ -143,12 +148,18 @@ public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
+        if (position == getItemCount() - 2){
+            return ITEM_TYPE_FOOTER;
+        }
+        if ((mBottomPaddingView != null) && (position == getItemCount() - 1)){
+            return ITEM_TYPE_MARGIN_BOTTOM;
+        }
         return mAdapter.getItemViewType(position);
     }
 
     @Override
     public int getItemCount() {
-        return mAdapter.getItemCount() + 1;
+        return mAdapter.getItemCount() + 1 + (mBottomPaddingView != null ? 1:0);
     }
 
     private static class FooterViewHolder extends RecyclerView.ViewHolder{

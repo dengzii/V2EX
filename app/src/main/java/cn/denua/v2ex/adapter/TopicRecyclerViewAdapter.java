@@ -25,14 +25,11 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     private boolean mIsSimpleView;
     private final int ITEM = 0;
     private final int HEADER = 1;
-    private final int FOOT = 2;
     private final int BOTTOM_PADDING = 3;
-    private int mItemCount = 0;
 
     private FrameLayout mHeaderFrameLayout;
-    private FrameLayout mFooterFrameLayout;
 
-    private View mBottomPading;
+    private View mBottomPadding;
 
     private FrameLayout.LayoutParams mWrapContentParams;
 
@@ -42,9 +39,6 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         this.context = context;
         this.mWrapContentParams = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        mBottomPading = new View(context);
-        mBottomPading.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                0));
     }
 
     public void setIsSimpleView(boolean isSimpleView){
@@ -56,20 +50,12 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         mHeaderFrameLayout.setLayoutParams(new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 100, Gravity.CENTER_VERTICAL));
         mHeaderFrameLayout.addView(headerView);
-        mItemCount += 1;
     }
 
     public void setBottomPadding(int height){
-        mBottomPading.getLayoutParams().height = height;
-    }
-
-    public void setFooterView(View footerView){
-
-        mFooterFrameLayout = new FrameLayout(context);
-        mFooterFrameLayout.setLayoutParams(new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 150, Gravity.CENTER));
-        mFooterFrameLayout.addView(footerView);
-        mItemCount += 1;
+        mBottomPadding = new View(context);
+        mBottomPadding.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                height));
     }
 
     @NonNull
@@ -77,13 +63,10 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         if (viewType == HEADER && mHeaderFrameLayout != null){
-            return new OtherViewHolder(mHeaderFrameLayout);
-        }
-        if (viewType == FOOT && mFooterFrameLayout != null){
-            return new OtherViewHolder(mFooterFrameLayout);
+            return new RecyclerView.ViewHolder(mHeaderFrameLayout) {};
         }
         if (viewType == BOTTOM_PADDING){
-            return new OtherViewHolder(mBottomPading);
+            return new RecyclerView.ViewHolder(mBottomPadding) {};
         }
         TopicView topicView = new TopicView(context, mIsSimpleView);
         topicView.setLayoutParams(mWrapContentParams);
@@ -93,12 +76,10 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public int getItemViewType(int position) {
 
-        if (position + 1 == getItemCount()){
+        if (position + 1 == getItemCount() && mBottomPadding != null){
             return BOTTOM_PADDING;
         }else if (position == 0){
             return HEADER;
-        }else if (position + 1 == getItemCount() && mTopics.size() > 12){
-            return FOOT;
         }else{
             return ITEM;
         }
@@ -107,21 +88,22 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        if (holder instanceof OtherViewHolder){
-            return;
+        if (holder instanceof ItemViewHolder){
+            Topic topic = mTopics.get(position - ((mHeaderFrameLayout == null) ? 0 : 1));
+            if (topic == null){
+                return;
+            }
+            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            itemViewHolder.topicView.setTopic(topic);
+            itemViewHolder.topicView.setOnClickListener(v-> TopicActivity.start(context, topic));
         }
-        Topic topic = mTopics.get(position - ((mHeaderFrameLayout == null) ? 0 : 1));
-        if (topic == null){
-            return;
-        }
-        ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-        itemViewHolder.topicView.setTopic(topic);
-        itemViewHolder.topicView.setOnClickListener(v-> TopicActivity.start(context, topic));
     }
 
     @Override
     public int getItemCount() {
-        return mItemCount + mTopics.size() + 1;
+        return mTopics.size()
+                + (mHeaderFrameLayout != null ? 1:0)
+                + (mBottomPadding != null ? 1:0);
     }
 
     static class ItemViewHolder extends RecyclerView.ViewHolder{
@@ -130,15 +112,6 @@ public class TopicRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         ItemViewHolder(View itemView) {
             super(itemView);
             this.topicView = (TopicView) itemView;
-        }
-    }
-
-    static class OtherViewHolder extends RecyclerView.ViewHolder{
-
-        View frameLayout;
-        OtherViewHolder(View itemView) {
-            super(itemView);
-            this.frameLayout  = itemView;
         }
     }
 }

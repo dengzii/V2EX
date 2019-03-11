@@ -4,7 +4,6 @@
 
 package cn.denua.v2ex.fragment;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,10 +26,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
-import cn.denua.v2ex.adapter.PullRefreshReplyAdapter;
 import cn.denua.v2ex.adapter.TopicRecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseNetworkFragment;
-import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Member;
 import cn.denua.v2ex.model.Topic;

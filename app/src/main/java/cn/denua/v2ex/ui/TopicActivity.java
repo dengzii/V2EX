@@ -11,10 +11,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
 
@@ -25,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.denua.v2ex.R;
 import cn.denua.v2ex.adapter.PullRefreshReplyAdapter;
+import cn.denua.v2ex.adapter.ReplyRecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Reply;
@@ -49,6 +48,7 @@ public class TopicActivity extends BaseNetworkActivity{
 
     private int mTopicId = -1;
     private Topic mTopic = null;
+    private ReplyRecyclerViewAdapter mReplyAdapter;
     private PullRefreshReplyAdapter mPullRecyclerAdapter;
     private String mErrorMsg = null;
 
@@ -189,7 +189,8 @@ public class TopicActivity extends BaseNetworkActivity{
         mRecyclerView.setDrawingCacheEnabled(true);
         mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
-        mPullRecyclerAdapter = new PullRefreshReplyAdapter(this, mReplies);
+        mReplyAdapter = new ReplyRecyclerViewAdapter(this, mReplies);
+        mPullRecyclerAdapter = new PullRefreshReplyAdapter(this, mReplyAdapter);
         mPullRecyclerAdapter.setBottomPadding(mNavBarHeight);
         mPullRecyclerAdapter.setOnPullUpListener(this::loadNextPage);
         mRecyclerView.setAdapter(mPullRecyclerAdapter);
@@ -254,7 +255,7 @@ public class TopicActivity extends BaseNetworkActivity{
 
         mLlHeader.addView(mTopicView);
         mLlHeader.addView(mWebView);
-        mPullRecyclerAdapter.setHeaderView(mLlHeader);
+        mReplyAdapter.setHeaderView(mLlHeader);
         mPullRecyclerAdapter.notifyItem(0);
     }
 

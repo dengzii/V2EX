@@ -49,6 +49,7 @@ import cn.denua.v2ex.fragment.TopicFragment;
 import cn.denua.v2ex.http.RetrofitManager;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Account;
+import cn.denua.v2ex.model.Node;
 import cn.denua.v2ex.service.RxObserver;
 import cn.denua.v2ex.service.UserService;
 import cn.denua.v2ex.Config;

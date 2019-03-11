@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.denua.v2ex.R;
+import cn.denua.v2ex.adapter.PullRefreshReplyAdapter;
 import cn.denua.v2ex.adapter.TopicRecyclerViewAdapter;
 import cn.denua.v2ex.base.BaseNetworkActivity;
 import cn.denua.v2ex.interfaces.ResponseListener;
@@ -59,14 +60,18 @@ public class NodeActivity extends BaseNetworkActivity {
     @BindView(R.id.rv_list)
     RecyclerView mRvList;
 
-    private TopicRecyclerViewAdapter mAdapter;
+    private PullRefreshReplyAdapter mRefreshAdapter;
     private Node mNode;
-    private int mCurrentPage = 0;
+
+    private int mCurrentPage = 1;
+    private int mPageCount =  0;
     private List<Topic> mTopic = new ArrayList<>();
 
     private ResponseListener<Node> mResponseListener = new ResponseListener<Node>() {
         @Override
         public void onComplete(Node result) {
+
+            mNode = result;
             mTvTitle.setText(result.getTitle());
             mTvSummary.setText(result.getHeader());
             String path = (result.getParent_node_name() != null
@@ -77,6 +82,7 @@ public class NodeActivity extends BaseNetworkActivity {
             mTvTopicCount.setText(String.format("话题数: %d".toLowerCase(), result.getTopics()));
             ImageLoader.load(result.getAvatar_large(), mIvAvatar, NodeActivity.this);
             mTvName.setText(mNode.getTitle_alternative());
+            mPageCount = result.getTopics() / 20;
         }
         @Override
         public boolean onFailed(String msg) {
@@ -89,7 +95,10 @@ public class NodeActivity extends BaseNetworkActivity {
         @Override
         public void onComplete(List<Topic> result) {
             mTopic.addAll(result);
-            mAdapter.notifyDataSetChanged();
+            mRefreshAdapter.setStatus(mPageCount == mCurrentPage
+                            ? PullRefreshReplyAdapter.FooterStatus.COMPLETE
+                            : PullRefreshReplyAdapter.FooterStatus.LOADING);
+            mRefreshAdapter.notifyRangeChanged(mTopic.size() - result.size(), result.size());
         }
         @Override
         public boolean onFailed(String msg) {
@@ -113,22 +122,33 @@ public class NodeActivity extends BaseNetworkActivity {
         ButterKnife.bind(this);
 
         mNode = getIntent().getParcelableExtra("node");
-        mAdapter = new TopicRecyclerViewAdapter(this, mTopic);
+
+        mRefreshAdapter = new PullRefreshReplyAdapter(
+                this, new TopicRecyclerViewAdapter(this, mTopic));
+        mRefreshAdapter.setBottomPadding(mNavBarHeight);
+        mRefreshAdapter.setOnPullUpListener(() -> {
+            mCurrentPage ++;
+            NodeService.getNodeTopicList(this, mTopicListener, mNode.getName(), mCurrentPage);
+        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRvList.setLayoutManager(layoutManager);
-        mRvList.setAdapter(mAdapter);
+        mRvList.setAdapter(mRefreshAdapter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        NodeService.getNodeInfo(this, mResponseListener, mNode.getName());
+        onRefresh();
         NodeService.getNodeTopicList(this, mTopicListener, mNode.getName(), mCurrentPage);
     }
 
     @OnClick(R.id.fb_follow)
     public void follow(){
         ToastUtils.showShort("follow");
+    }
+
+    private void onRefresh(){
+        NodeService.getNodeInfo(this, mResponseListener, mNode.getName());
     }
 }
