@@ -41,6 +41,7 @@ public class RetrofitManager {
         add("www.v2ex.com");
         add("cdn.v2ex.com");
         add("*.v2ex.com");
+        add("www.sov2ex.com");
     }};
 
     private static Retrofit retrofit;

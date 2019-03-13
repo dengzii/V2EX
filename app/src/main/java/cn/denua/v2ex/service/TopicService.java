@@ -75,7 +75,6 @@ public class TopicService extends BaseService<List<Topic>> {
                 break;
         }
     }
-
     public static void  postTopic(IResponsibleView iResponsibleView,
                           String title,
                           String content,
@@ -153,6 +152,20 @@ public class TopicService extends BaseService<List<Topic>> {
                 .subscribe(new RxObserver2<>(getView(), getResponseListener()));
     }
 
+    public static void getTopicByNode(IResponsibleView view,
+                                      String node,
+                                      int page,
+                                      ResponseListener<List<Topic>> listener){
+
+        topicApi.getTopicsByNode(node, page)
+                .compose(RxUtil.io2computation())
+                .map(s -> {
+                    ErrorEnum.ERR_PAGE_NEED_LOGIN0.check(s);
+                    return HtmlUtil.getTopics(s);
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RxObserver2<>(view, listener));
+    }
     public static void getTopicAndReply(IResponsibleView responsibleView,
                                         int topicId,
                                         int page,

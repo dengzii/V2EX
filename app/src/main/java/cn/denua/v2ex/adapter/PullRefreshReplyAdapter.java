@@ -111,6 +111,10 @@ public class PullRefreshReplyAdapter extends RecyclerView.Adapter<RecyclerView.V
         mAdapter.notifyItemRangeChanged(start, count);
     }
 
+    public void notifyRangeInserted(int start, int count){
+        mAdapter.notifyItemRangeInserted(start, count);
+    }
+
     public void notifyItem(int position){
         mAdapter.notifyItemChanged(position);
     }
