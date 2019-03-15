@@ -114,6 +114,7 @@ public class CustomTabActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(Menu.NONE,Menu.NONE,0, "添加 Tab");
         menu.add(Menu.NONE, Menu.NONE, 1,"添加 Node");
+        menu.add(Menu.NONE, Menu.NONE, 2,"重 置");
         menu.getItem(0).setOnMenuItemClickListener(item -> {
             DialogUtil.showInputDialog(this, "Add By Tab", "建议格式: 标题_英文名称",
                     "创意_creative",
@@ -132,6 +133,12 @@ public class CustomTabActivity extends BaseActivity {
                         mTabs.add(new Tab(TabEnum.NODE, s[0], s.length == 2 ? s[1] : s[0]));
                         mTabSelectAdapter.notifyItemInserted(mTabs.size());
             });
+            return false;
+        });
+        menu.getItem(2).setOnMenuItemClickListener( item -> {
+            mTabs.clear();
+            mTabs.addAll(Config.HOME_TAB_DEFAULT);
+            mTabSelectAdapter.notifyDataSetChanged();
             return false;
         });
         return super.onCreateOptionsMenu(menu);

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="128dp"
-    android:height="128dp"
-    android:viewportHeight="128"
-    android:viewportWidth="128">
+    android:width="144dp"
+    android:height="144dp"
+    android:viewportHeight="144"
+    android:viewportWidth="144">
+
 
     <path
         android:fillColor="@color/white"
-        android:pathData="M63,0 a64,64 0,1 0 2,0"/>
+        android:pathData="M71,0 a72,72 0,1 0 2,0"/>
 
-    <clip-path android:pathData="M63,0 a64,64 0,1 0 2,0"/>
-
-    <path
-        android:fillColor="@color/blue_grey_divider"
-        android:pathData="M46,30 L96,80 46,80z"/>
+    <clip-path android:pathData="M71,0 a72,72 0,1 0 2,0"/>
 
     <path
         android:fillColor="@color/blue_grey_divider"
-        android:pathData="M100,30 L53,98 82,128 128,128 128,57"/>
+        android:pathData="M56,40 L106,90 56,90z"/>
+
+    <path
+        android:fillColor="@color/blue_grey_divider"
+        android:pathData="M110,40 L63,108 108,144 144,144 144,69"/>
 
     <path
         android:fillColor="@color/black"
-        android:pathData="M26,30 L46,30 64,78 82,30 100, 30 75,98 53,98"/>
-
+        android:pathData="M36,40 L56,40 74,88 92,40 110, 40 85,108 63,108"/>
 </vector>

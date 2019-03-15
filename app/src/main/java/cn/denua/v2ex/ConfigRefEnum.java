@@ -26,6 +26,7 @@ public enum ConfigRefEnum implements Serializable {
     CONFIG_LAST_TOUCHED         ("last_touched",        0L),
     CONFIG_THEME                ("key_theme",           "MainTheme"),
     CONFIG_AUTO_NIGHT_THEME     ("auto_night_theme",    true),
+    CONFIG_USE_BLACK_THEME      ("use_black_theme",     false),
     CONFIG_AUTO_NIGHT_TIME      ("auto_night_time",     "20:30_06:30"),
     CONFIG_AUTO_CHECK           ("auto_check",          false),
 

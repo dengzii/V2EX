@@ -71,6 +71,8 @@
     <string name="auto_check">自动签到</string>
     <string name="summary_auto_check">每次开启app时自动签到</string>
     <string name="auto_night_theme">自动夜晚主题</string>
+    <string name="use_black_theme">使用纯黑主题</string>
+    <string name="summary_use_black_theme">开启时自动夜间主题时使用黑色主题, 否则使用暗色主题</string>
     <string name="auto_night_time">自动夜间主题时间</string>
     <string name="auto_night_time_default">21:00–7:00</string>
     <string name="summary_auto_night_theme">自动设置为夜晚在指定时间或在黑暗的环境</string>

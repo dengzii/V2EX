@@ -46,7 +46,7 @@ public class Config {
      */
     private static Configuration mConfig;
 
-    static final ArrayList<Tab> HOME_TAB_DEFAULT = new ArrayList<Tab>(){{
+    public static final ArrayList<Tab> HOME_TAB_DEFAULT = new ArrayList<Tab>(){{
         add(new Tab(TabEnum.LATEST,TabEnum.LATEST.getTitle(), "最 新"));
         add(new Tab(TabEnum.HOT, TabEnum.HOT.getTitle(), "热 门"));
         add(new Tab(TabEnum.TAB,"技 术","tech"));
@@ -194,7 +194,9 @@ public class Config {
                             autoNightThemeTime[0], autoNightThemeTime[1])){
                 ToastUtils.showShort(
                         "黑暗主题已启用, " + autoNightThemeTime[0] + "-" + autoNightThemeTime[1]);
-                setConfig(ConfigRefEnum.CONFIG_THEME, "DarkTheme");
+                String theme = getConfig(ConfigRefEnum.CONFIG_USE_BLACK_THEME)
+                        ? "BlackTheme":"DarkTheme";
+                setConfig(ConfigRefEnum.CONFIG_THEME,theme);
             }
         }
     }

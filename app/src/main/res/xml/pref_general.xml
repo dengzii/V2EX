@@ -39,6 +39,12 @@
             android:title="@string/auto_night_theme"
             android:defaultValue="true"
             android:summary="@string/summary_auto_night_theme"/>
+        <SwitchPreference
+            android:key="@string/key_use_black_theme"
+            android:title="@string/use_black_theme"
+            android:summary="@string/summary_use_black_theme"
+            android:defaultValue="false"
+            />
         <ListPreference
             android:key="@string/key_auto_night_time"
             android:title="@string/auto_night_time"

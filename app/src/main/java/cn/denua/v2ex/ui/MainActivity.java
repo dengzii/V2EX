@@ -362,7 +362,7 @@ public class MainActivity extends BaseNetworkActivity implements NavigationView.
         if (sSignIn == 0){
             miSignIn.setTitle(R.string.checked);
         }else {
-            miSignIn.setTitle("已连续签到");
+            miSignIn.setTitle("已签到");
         }
         boolean enabled = sSignIn >= 0;
         TextView tvSignIn =  (TextView) miSignIn.getActionView().findViewById(R.id.tv_badge_msg);

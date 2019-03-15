@@ -7,6 +7,7 @@
 
     <string name="key_auto_night_theme">auto_night_theme</string>
     <string name="key_auto_night_time">auto_night_time</string>
+    <string name="key_use_black_theme">use_black_theme</string>
     <string name="key_auto_check">auto_check</string>
     <string name="key_font_scale">font_scale</string>
     <string name="key_check_message_background">check_message_background</string>
