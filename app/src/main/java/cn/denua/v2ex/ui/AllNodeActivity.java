@@ -28,7 +28,7 @@ import cn.denua.v2ex.interfaces.IResponsibleView;
 import cn.denua.v2ex.interfaces.ResponseListener;
 import cn.denua.v2ex.model.Node;
 import cn.denua.v2ex.service.NodeService;
-import cn.denua.v2ex.widget.LabelLaoutManager;
+import cn.denua.v2ex.widget.LabelLayoutManager;
 
 /*
  * @author denua
@@ -51,11 +51,11 @@ public class AllNodeActivity extends BaseNetworkActivity implements ResponseList
         ButterKnife.bind(this);
 
         mRecyclerView.setNestedScrollingEnabled(false);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        layoutManager.setSmoothScrollbarEnabled(false);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        layoutManager.setSmoothScrollbarEnabled(false);
 
-        mRecyclerView.setLayoutManager(new LabelLaoutManager());
+        mRecyclerView.setLayoutManager(new LabelLayoutManager());
         mNodeAdapter = new NodeAdapter(new ArrayList<>());
         mRecyclerView.setAdapter(mNodeAdapter);
         mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);

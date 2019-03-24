@@ -149,6 +149,11 @@ public class TopicFragment extends BaseNetworkFragment implements ResponseListen
     }
 
     @Override
+    public int getContextStatus() {
+        return !isDetached()||isRemoving() ? VIEW_STATUS_DESTROYED : VIEW_STATUS_ACTIVATED;
+    }
+
+    @Override
     public boolean onFailed(String msg) {
 
         Toast.makeText(getContext(), msg + ", " + mTabType.getTitle(), Toast.LENGTH_SHORT).show();

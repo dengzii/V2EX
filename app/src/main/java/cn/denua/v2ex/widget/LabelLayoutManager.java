@@ -15,10 +15,10 @@ import java.util.List;
  * 一种流式布局的LayoutManager
  */
 
-public class LabelLaoutManager extends RecyclerView.LayoutManager {
+public class LabelLayoutManager extends RecyclerView.LayoutManager {
 
-    private static final String TAG = LabelLaoutManager.class.getSimpleName();
-    final LabelLaoutManager self = this;
+    private static final String TAG = LabelLayoutManager.class.getSimpleName();
+    final LabelLayoutManager self = this;
 
     protected int width, height;
     private int left, top, right;
@@ -39,7 +39,7 @@ public class LabelLaoutManager extends RecyclerView.LayoutManager {
     //保存所有的Item的上下左右的偏移量信息
     private SparseArray<Rect> allItemFrames = new SparseArray<>();
 
-    public LabelLaoutManager() {
+    public LabelLayoutManager() {
         //设置主动测量规则,适应recyclerView高度为wrap_content
         setAutoMeasureEnabled(true);
     }
@@ -92,7 +92,6 @@ public class LabelLaoutManager extends RecyclerView.LayoutManager {
     //该方法主要用来获取每一个item在屏幕上占据的位置
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        Log.d(TAG, "onLayoutChildren");
         totalHeight = 0;
         int cuLineTop = top;
         //当前行使用的宽度
@@ -124,7 +123,6 @@ public class LabelLaoutManager extends RecyclerView.LayoutManager {
         }
 
         for (int i = 0; i < getItemCount(); i++) {
-            Log.d(TAG, "index:" + i);
             View childAt = recycler.getViewForPosition(i);
             if (View.GONE == childAt.getVisibility()) {
                 continue;
@@ -176,7 +174,6 @@ public class LabelLaoutManager extends RecyclerView.LayoutManager {
 
         }
         totalHeight = Math.max(totalHeight, getVerticalSpace());
-        Log.d(TAG, "onLayoutChildren totalHeight:" + totalHeight);
         fillLayout(recycler, state);
     }
 
