@@ -57,7 +57,7 @@ public class ReplyView extends FrameLayout  {
     @BindView(R.id.tv_like)
     TextView mLikeCount;
     @BindView(R.id.tv_content)
-    TextView mContent;
+    RichTextView mContent;
     @BindView(R.id.tv_floor)
     TextView mFloor;
     @BindView(R.id.tv_poster)

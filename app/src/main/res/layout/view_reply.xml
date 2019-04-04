@@ -80,7 +80,7 @@
         app:layout_constraintTop_toTopOf="@+id/tv_like" />
 
 
-    <TextView
+    <cn.denua.v2ex.widget.RichTextView
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
