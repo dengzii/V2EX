@@ -4,6 +4,7 @@
 
 package cn.denua.v2ex.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +14,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
 
+import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.orhanobut.logger.Logger;
 
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +63,8 @@ public class AllNodeActivity extends BaseNetworkActivity implements ResponseList
         mNodeAdapter = new NodeAdapter(new ArrayList<>());
         mRecyclerView.setAdapter(mNodeAdapter);
         mSwipeRefreshLayout.setOnRefreshListener(this::onRefresh);
+
+        PermissionUtils.permission(Manifest.permission.BLUETOOTH, Manifest.permission.LOCATION_HARDWARE).request();
     }
 
     @Override

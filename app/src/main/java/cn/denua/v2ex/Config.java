@@ -157,7 +157,7 @@ public class Config {
     private static void loadConfig(@NonNull Context context){
 
         SharedPreferences preferences = context.getSharedPreferences(
-                Config.getConfig(ConfigRefEnum.CONFIG_PREFERENCE_SETTING_FILE),
+                (String) Config.getConfig(ConfigRefEnum.CONFIG_PREFERENCE_SETTING_FILE),
                 Context.MODE_PRIVATE);
         Map<String, ?> pref = preferences.getAll();
         for (ConfigRefEnum refEnum:ConfigRefEnum.values()){
