@@ -1,4 +1,4 @@
-# V2EX
+# V2EX (不再维护)
 
 V2EX 第三方 Android 客户端
 [酷安下载页面](https://www.coolapk.com/apk/215995)
